@@ -1,0 +1,26 @@
+// PlacementRadar on Cloudflare Workers (see README.md → Hosting).
+// Deployed via the GitHub connection in the Cloudflare dashboard (same as Moritz' other sites).
+{
+  "name": "placementradar",              // → https://placementradar.itsmoribind.workers.dev
+  "main": "worker.js",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]        // API goes to worker.js, everything else is served as static file
+  },
+  "vars": {
+    "KEY_MODE": "shared",                 // "shared" until the grade is in, then "own" (viewers enter their own key)
+    "MAX_VIDEO_S": "1200",                // longest video we analyse (20 min)
+    "DAILY_ANALYSES": "10",               // per visitor and day
+    "DAILY_IDENTIFY": "60"                // live-mode Gemini fallbacks per visitor and day
+  },
+  "keep_vars": true
+  // Secrets (set in the Cloudflare dashboard, never in this file):
+  //   GEMINI_API_KEY  – Google AI Studio key (free tier, no billing)
+  //   INVITE_TOKEN    – optional; new analyses only with ?invite=<token>
+  // Optional KV namespace for cache + daily counters:
+  // "kv_namespaces": [{ "binding": "STORE", "id": "<id from dashboard>" }]
+}

@@ -47,9 +47,11 @@ export async function renderLive(main) {
   stopLive();
   S = { tracks: [], lost: [], nextId: 1, seen: new Map(), barcodes: new Map(), running: false, source: null, lastBarcode: 0, lastOcr: 0, lastOwn: 0, busy: false, ocrBusy: false, ownBusy: false };
   main.innerHTML = `
-    <div class="toolbar"><h1>Live scanner <span class="sub">· products in front of the camera</span></h1>
-      <span class="badge" id="lvBackend">${icon("chip")} loading model…</span></div>
-    <div class="content live">
+    <section class="stage-band live-stage">
+      <div class="rings" aria-hidden="true"></div><div class="sweep" aria-hidden="true"></div>
+      <div class="live-head"><div><h1>Live scanner</h1><p>Products in front of your camera, recognised on your device.</p></div>
+        <span class="badge" id="lvBackend">${icon("chip")} loading model…</span></div>
+    <div class="live-grid">
       <div class="stage" id="stage">
         <video id="cam" playsinline muted></video><canvas id="ov"></canvas>
         <div class="stage-empty" id="stageEmpty">
@@ -62,7 +64,7 @@ export async function renderLive(main) {
         </div>
       </div>
       <aside class="live-side">
-        <div class="card"><h3>${icon("sparkle")} How it decides</h3>
+        <div class="card"><h3>How it decides</h3>
           <div class="cascade">
             <div><span class="eng e-device">1</span><b>Find objects</b><span id="st-find">packaging finder in your browser</span></div>
             <div><span class="eng e-device">2</span><b>Barcode</b><span id="st-code">exact product via Open Food Facts</span></div>
@@ -74,10 +76,11 @@ export async function renderLive(main) {
             <button class="btn" id="stopCam" hidden>Stop</button></div>
           <p class="small muted" id="liveMsg"></p>
         </div>
-        <div class="nav-label" style="padding-left:4px">Seen in this session</div>
-        <div id="seen" class="seen"><div class="card small muted">Nothing yet.</div></div>
       </aside>
-    </div>`;
+    </div>
+    </section>
+    <div class="content"><div class="seen-wrap"><div class="sect-head"><h3>Seen in this session</h3></div>
+      <div id="seen" class="seen-list"><div class="card">Nothing yet. Start the camera or analyse a photo.</div></div></div></div>`;
   $("#startCam").onclick = startCamera;
   $("#stopCam").onclick = () => { stopLive(); renderLive(main); };
   $("#photo").onchange = (e) => e.target.files[0] && analysePhoto(e.target.files[0]);

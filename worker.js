@@ -244,7 +244,7 @@ export async function videoMeta(id, env = {}) {
   const trace = [];
   const step = async (fn) => { if (complete(meta)) return; try { fill(meta, await fn()); } catch (e) { trace.push(`err:${String(e?.message || e).slice(0, 60)}`); } };
   if (env.YOUTUBE_API_KEY) await step(() => fromDataApi(id, env.YOUTUBE_API_KEY, trace));
-  await step(() => fromWatchPage(id, trace));
+  for (let i = 0; i < 3 && meta.duration_s == null; i++) await step(() => fromWatchPage(id, trace)); // the bot check is intermittent
   for (const c of CLIENTS) await step(() => fromPlayerApi(id, c, trace));
   await step(async () => {
     const o = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`);
@@ -374,6 +374,10 @@ async function analyze(request, env, ctx) {
 
     await send("stage", { id: "done" });
     const result = normalizeAnalysis({ video: meta, timeline: tl.data, authenticity: au?.data, models: [tl.model, au?.model].filter(Boolean) });
+    if (!result.video.duration_s) { // YouTube withheld the length (bot check) → last brand appearance as lower bound
+      const ends = (result.brands || []).flatMap((b) => (b.appearances || []).map((x) => x.end_s || 0));
+      if (ends.length) { result.video.duration_s = Math.max(...ends); result.video.duration_estimated = true; }
+    }
     if (env.STORE) {
       // kept forever: whatever the professor analyses once loads instantly the next time
       const metadata = { title: meta.title, channel: meta.channel, views: meta.views, duration_s: meta.duration_s,

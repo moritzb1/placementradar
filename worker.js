@@ -163,28 +163,46 @@ async function recent(env) {
 }
 
 // ------------------------------------------------------------------------------------------------
-// YouTube metadata: oEmbed (title, channel) + watch page (views, length, description, upload date)
+// YouTube metadata: oEmbed (title, channel) + player data (views, length, description, upload date).
+// Player data comes from the watch page; when YouTube serves a consent/bot page to the Worker's data-centre
+// IP (seen online on 20 Nov: views and description were missing), we ask YouTube's own player endpoint instead.
 // ------------------------------------------------------------------------------------------------
+const BROWSER_HEADERS = {
+  "accept-language": "en",
+  "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36",
+  cookie: "CONSENT=YES+cb; SOCS=CAI", // skips the EU cookie-consent interstitial
+};
+
+async function playerFromWatchPage(id) {
+  const page = await fetch(`https://www.youtube.com/watch?v=${id}&hl=en`, { headers: BROWSER_HEADERS });
+  if (!page.ok) return null;
+  const m = (await page.text()).match(/ytInitialPlayerResponse\s*=\s*(\{.+?\});\s*(?:var|<\/script>)/s);
+  try { return m ? JSON.parse(m[1]) : null; } catch { return null; }
+}
+
+async function playerFromApi(id) {
+  const r = await fetch("https://www.youtube.com/youtubei/v1/player?prettyPrint=false", {
+    method: "POST", headers: { ...BROWSER_HEADERS, "content-type": "application/json" },
+    body: JSON.stringify({ context: { client: { clientName: "WEB", clientVersion: "2.20241120.01.00", hl: "en" } }, videoId: id }) });
+  return r.ok ? r.json().catch(() => null) : null;
+}
+
 export async function videoMeta(id) {
   if (!ID_RE.test(id || "")) throw new ApiError("invalid_video", 400);
   const meta = { id, title: "", channel: "", views: null, duration_s: null, upload_date: null, description: "" };
   const o = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`);
   if (o.ok) { const j = await o.json(); meta.title = j.title; meta.channel = j.author_name; }
-  const page = await fetch(`https://www.youtube.com/watch?v=${id}&hl=en`, { headers: { "accept-language": "en" } });
-  if (page.ok) {
-    const html = await page.text();
-    const m = html.match(/ytInitialPlayerResponse\s*=\s*(\{.+?\});\s*(?:var|<\/script>)/s);
-    if (m) {
-      try {
-        const p = JSON.parse(m[1]);
-        const d = p.videoDetails || {};
-        meta.title ||= d.title; meta.channel ||= d.author;
-        meta.views = d.viewCount ? Number(d.viewCount) : null;
-        meta.duration_s = d.lengthSeconds ? Number(d.lengthSeconds) : null;
-        meta.description = d.shortDescription || "";
-        meta.upload_date = p.microformat?.playerMicroformatRenderer?.uploadDate?.slice(0, 10) || null;
-      } catch { /* page format changed – keep oEmbed data */ }
-    }
+  let p = await playerFromWatchPage(id);
+  if (!p?.videoDetails?.viewCount) p = (await playerFromApi(id)) || p;
+  const d = p?.videoDetails;
+  if (d) {
+    meta.title ||= d.title; meta.channel ||= d.author;
+    meta.views = d.viewCount ? Number(d.viewCount) : null;
+    meta.duration_s = d.lengthSeconds ? Number(d.lengthSeconds) : null;
+    meta.description = d.shortDescription || "";
+    meta.upload_date = p.microformat?.playerMicroformatRenderer?.uploadDate?.slice(0, 10) || null;
+  } else {
+    console.log(`videoMeta ${id}: no player data from YouTube (consent/bot page?) – only oEmbed`);
   }
   return meta;
 }
@@ -331,10 +349,11 @@ function frameProviders(env) {
 }
 
 async function identify(request, env, ctx) {
-  const { image } = await request.json().catch(() => ({}));
+  // `provider` (optional) forces one enabled provider – for tests and the README comparison; same limits apply
+  const { image, provider } = await request.json().catch(() => ({}));
   if (!image || typeof image !== "string" || image.length > 400_000) throw new ApiError("image_invalid", 400);
 
-  const key = `frame:${await sha256(image)}`;
+  const key = `frame:${provider ? `${provider}:` : ""}${await sha256(image)}`;
   const hit = env.STORE && (await env.STORE.get(key, "json"));
   if (hit) return json({ ...hit, cached: true });
 
@@ -342,7 +361,7 @@ async function identify(request, env, ctx) {
     const token = request.headers.get("x-invite") || new URL(request.url).searchParams.get("invite");
     if (token !== env.INVITE_TOKEN) throw new ApiError("invite_required", 401);
   }
-  const providers = frameProviders(env);
+  const providers = frameProviders(env).filter((p) => !provider || p.name === provider);
   if (!providers.length) throw new ApiError(env.KEY_MODE === "own" ? "own_key_required" : "server_key_missing", 503);
   if (!(await withinLimit(env, request, "identify", Number(env.DAILY_IDENTIFY || 60)))) throw new ApiError("daily_limit", 429);
 

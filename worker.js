@@ -61,7 +61,7 @@ export default {
     const url = new URL(request.url);
     try {
       if (url.pathname === "/api/config") return json(await config(env));
-      if (url.pathname === "/api/meta") return json(await videoMeta(url.searchParams.get("v")));
+      if (url.pathname === "/api/meta") return json(await videoMeta(url.searchParams.get("v"), env));
       if (url.pathname === "/api/recent") return json(await recent(env));
       if (url.pathname === "/api/analyze" && request.method === "POST") return await analyze(request, env, ctx);
       if (url.pathname === "/api/identify" && request.method === "POST") return await identify(request, env, ctx);
@@ -163,53 +163,92 @@ async function recent(env) {
 }
 
 // ------------------------------------------------------------------------------------------------
-// YouTube metadata: oEmbed (title, channel) + player data (views, length, description, upload date).
-// Player data comes from the watch page; when YouTube serves a consent/bot page to the Worker's data-centre
-// IP (seen online on 20 Nov: views and description were missing), we ask YouTube's own player endpoint instead.
+// YouTube metadata: title, channel, views, length, description, upload date.
+// Online (20 Nov) YouTube answers the Worker's data-centre IP with "LOGIN_REQUIRED" (bot check) on the watch
+// page and the player endpoint, so views/description were missing. Sources, best first – each one only fills
+// the fields still empty:
+//   1. YouTube Data API v3 (official, free 10,000 units/day, 1 unit per video) – if secret YOUTUBE_API_KEY is set
+//   2. watch page: player data, else the page data (ytInitialData) that may still be present behind the bot check
+//   3. player endpoint with other clients (embedded / TV / iOS)
+//   4. oEmbed (title + channel only, never blocked)
+// meta.source records what each source answered, for diagnosis.
 // ------------------------------------------------------------------------------------------------
 const BROWSER_HEADERS = {
   "accept-language": "en",
   "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36",
   cookie: "CONSENT=YES+cb; SOCS=CAI", // skips the EU cookie-consent interstitial
 };
+const complete = (m) => m.views != null && m.duration_s != null && !!m.description;
 
-async function playerFromWatchPage(id, trace) {
+function fill(meta, f) {
+  for (const [k, v] of Object.entries(f)) if (v != null && v !== "" && (meta[k] == null || meta[k] === "")) meta[k] = v;
+}
+
+function fromPlayer(p) {
+  const d = p?.videoDetails || {};
+  return { title: d.title, channel: d.author, views: d.viewCount ? Number(d.viewCount) : null,
+    duration_s: d.lengthSeconds ? Number(d.lengthSeconds) : null, description: d.shortDescription,
+    upload_date: p?.microformat?.playerMicroformatRenderer?.uploadDate?.slice(0, 10) };
+}
+
+const isoDuration = (s) => { const m = /P(?:(\d+)D)?T?(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/.exec(s || ""); return m ? (+m[1] || 0) * 86400 + (+m[2] || 0) * 3600 + (+m[3] || 0) * 60 + (+m[4] || 0) : null; };
+
+async function fromDataApi(id, key, trace) {
+  const r = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics,contentDetails&id=${id}&key=${key}`);
+  const it = r.ok ? (await r.json()).items?.[0] : null;
+  trace.push(`dataapi:${r.status}:${it ? "ok" : "-"}`);
+  if (!it) return {};
+  return { title: it.snippet?.title, channel: it.snippet?.channelTitle, views: it.statistics?.viewCount ? Number(it.statistics.viewCount) : null,
+    duration_s: isoDuration(it.contentDetails?.duration), description: it.snippet?.description, upload_date: it.snippet?.publishedAt?.slice(0, 10) };
+}
+
+async function fromWatchPage(id, trace) {
   const page = await fetch(`https://www.youtube.com/watch?v=${id}&hl=en`, { headers: BROWSER_HEADERS });
   const html = page.ok ? await page.text() : "";
   const m = html.match(/ytInitialPlayerResponse\s*=\s*(\{.+?\});\s*(?:var|<\/script>)/s);
   let p = null; try { p = m ? JSON.parse(m[1]) : null; } catch { /* format changed */ }
-  trace.push(`watch:${page.status}${/consent\./.test(page.url + html.slice(0, 5000)) ? ":consent" : ""}:${p?.playabilityStatus?.status || (m ? "unparsed" : "no-player")}`);
-  return p;
+  const f = fromPlayer(p);
+  // page data (rendered info below the player) – often still there when the player itself is blocked
+  const views = /"originalViewCount":"(\d+)"/.exec(html)?.[1];
+  const desc = /"attributedDescription":\{"content":"((?:[^"\\]|\\.)*)"/.exec(html)?.[1];
+  const len = /"approxDurationMs":"(\d+)"/.exec(html)?.[1];
+  const date = /"(?:uploadDate|datePublished)"\s*:\s*"(\d{4}-\d{2}-\d{2})/.exec(html)?.[1];
+  let description = null; try { description = desc ? JSON.parse(`"${desc}"`) : null; } catch { /* ignore */ }
+  fill(f, { views: views ? Number(views) : null, description, duration_s: len ? Math.round(Number(len) / 1000) : null, upload_date: date });
+  trace.push(`watch:${page.status}:${p?.playabilityStatus?.status || "no-player"}:${["views", "duration_s", "description"].filter((k) => f[k]).join("+") || "nothing"}`);
+  return f;
 }
 
-async function playerFromApi(id, trace) {
+const CLIENTS = [
+  { clientName: "WEB_EMBEDDED_PLAYER", clientVersion: "1.20241120.01.00", extra: { thirdParty: { embedUrl: "https://www.google.com" } } },
+  { clientName: "TVHTML5_SIMPLY_EMBEDDED_PLAYER", clientVersion: "2.0", extra: { thirdParty: { embedUrl: "https://www.google.com" } } },
+  { clientName: "IOS", clientVersion: "19.45.4", deviceModel: "iPhone16,2" },
+];
+async function fromPlayerApi(id, c, trace) {
+  const { extra = {}, ...client } = c;
   const r = await fetch("https://www.youtube.com/youtubei/v1/player?prettyPrint=false", {
     method: "POST", headers: { ...BROWSER_HEADERS, "content-type": "application/json" },
-    body: JSON.stringify({ context: { client: { clientName: "WEB", clientVersion: "2.20241120.01.00", hl: "en" } }, videoId: id }) });
+    body: JSON.stringify({ context: { client: { ...client, hl: "en" }, ...extra }, videoId: id }) });
   const j = r.ok ? await r.json().catch(() => null) : null;
-  trace.push(`api:${r.status}:${j?.playabilityStatus?.status || "-"}:${j?.videoDetails?.viewCount ? "details" : "no-details"}`);
-  return j;
+  trace.push(`${c.clientName}:${r.status}:${j?.playabilityStatus?.status || "-"}:${j?.videoDetails?.viewCount ? "details" : "no-details"}`);
+  return fromPlayer(j);
 }
 
-export async function videoMeta(id) {
+export async function videoMeta(id, env = {}) {
   if (!ID_RE.test(id || "")) throw new ApiError("invalid_video", 400);
   const meta = { id, title: "", channel: "", views: null, duration_s: null, upload_date: null, description: "" };
-  const o = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`);
-  if (o.ok) { const j = await o.json(); meta.title = j.title; meta.channel = j.author_name; }
-  const trace = []; // which YouTube source answered how – returned as meta.source for diagnosis
-  let p = await playerFromWatchPage(id, trace);
-  if (!p?.videoDetails?.viewCount) p = (await playerFromApi(id, trace)) || p;
+  const trace = [];
+  const step = async (fn) => { if (complete(meta)) return; try { fill(meta, await fn()); } catch (e) { trace.push(`err:${String(e?.message || e).slice(0, 60)}`); } };
+  if (env.YOUTUBE_API_KEY) await step(() => fromDataApi(id, env.YOUTUBE_API_KEY, trace));
+  await step(() => fromWatchPage(id, trace));
+  for (const c of CLIENTS) await step(() => fromPlayerApi(id, c, trace));
+  await step(async () => {
+    const o = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`);
+    const j = o.ok ? await o.json() : {};
+    return { title: j.title, channel: j.author_name };
+  });
   meta.source = trace.join(" ");
-  const d = p?.videoDetails;
-  if (d) {
-    meta.title ||= d.title; meta.channel ||= d.author;
-    meta.views = d.viewCount ? Number(d.viewCount) : null;
-    meta.duration_s = d.lengthSeconds ? Number(d.lengthSeconds) : null;
-    meta.description = d.shortDescription || "";
-    meta.upload_date = p.microformat?.playerMicroformatRenderer?.uploadDate?.slice(0, 10) || null;
-  } else {
-    console.log(`videoMeta ${id}: no player data from YouTube (consent/bot page?) – only oEmbed`);
-  }
+  if (!complete(meta)) console.log(`videoMeta ${id} incomplete: ${meta.source}`);
   return meta;
 }
 
@@ -313,7 +352,7 @@ async function analyze(request, env, ctx) {
 
   return sseResponse(ctx, async (send) => {
     await send("stage", { id: "meta" });
-    const meta = await videoMeta(v);
+    const meta = await videoMeta(v, env);
     await send("meta", meta);
     if (meta.duration_s && meta.duration_s > Number(env.MAX_VIDEO_S || 1200)) throw new ApiError("video_too_long");
 

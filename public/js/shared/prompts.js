@@ -25,6 +25,10 @@ export const FRAME_MODELS = ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite"];
 // ---------------------------------------------------------------------------------------------
 export const TIMELINE_PROMPT = `You are a brand-placement analyst. Watch the whole video (image AND audio).
 List every brand or branded product that is visible, shown as on-screen text, or mentioned in speech.
+Name the MOST SPECIFIC product you can: brand + product line + model (e.g. "Bose QuietComfort Ultra", not "headphones").
+Use speech and on-screen text to identify the model, and link what is said to what is shown.
+Also include products that are clearly visible and recognisable by their design even without a readable logo
+(e.g. a reviewer wearing the headphones being discussed) – for those set basis to "design".
 For each appearance give start and end as MM:SS timestamps of the full video.
 Rate size (small/medium/large) and position (center/edge) honestly, and say whether the product is held or used.
 For each VISUAL appearance also pick one representative moment (frame_time, MM:SS) and give the product's
@@ -46,6 +50,8 @@ export const TIMELINE_SCHEMA = {
         position: { type: "STRING", enum: ["center", "edge"] },
         in_use: { type: "BOOLEAN" },
         evidence: { type: "STRING" },
+        basis: { type: "STRING", enum: ["logo", "text", "speech", "design"], description: "how the brand was recognised in this appearance" },
+        confidence: { type: "NUMBER", description: "0-1" },
         frame_time: { type: "STRING", description: "MM:SS" },
         box_2d: { type: "ARRAY", items: { type: "INTEGER" } },
       }, required: ["start", "end", "channel"] } },

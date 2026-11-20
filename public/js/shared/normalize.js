@@ -33,12 +33,16 @@ export function normalizeAnalysis({ video, timeline, authenticity, models }) {
   const brands = new Map();
   for (const b of timeline?.brands ?? []) {
     const key = canon(b.brand);
-    const entry = brands.get(key) ?? { brand: key, product: b.product || "", category: b.category || "", appearances: [], frames: [] };
+    const entry = brands.get(key) ?? { brand: key, product: "", products: [], category: b.category || "", appearances: [], frames: [] };
+    // several models of one brand (e.g. two Sony headphones) stay one card; the models are listed
+    if (b.product && !entry.products.includes(b.product)) entry.products.push(b.product);
+    entry.product = entry.products.slice(0, 2).join(" · ") + (entry.products.length > 2 ? ` +${entry.products.length - 2}` : "");
     for (const ap of b.appearances ?? []) {
       const start = Math.min(sec(ap.start), dur);
       const end = Math.min(Math.max(sec(ap.end), start + 1), dur);
       entry.appearances.push({ start_s: start, end_s: end, channel: ap.channel || "visual", size: ap.size ?? null,
-        position: ap.position ?? null, in_use: ap.in_use ?? null, evidence: ap.evidence || "" });
+        position: ap.position ?? null, in_use: ap.in_use ?? null, evidence: ap.evidence || "",
+        ...(ap.basis ? { basis: ap.basis } : {}), ...(Number.isFinite(ap.confidence) ? { confidence: ap.confidence } : {}) });
       if (ap.box_2d?.length === 4 && ap.frame_time) entry.frames.push({ t: sec(ap.frame_time), box: ap.box_2d });
     }
     brands.set(key, entry);

@@ -369,17 +369,27 @@ function mountPlayer(onTime) {
       host.append(g);
     }
     const now = $("#now"); if (!now) return;
-    now.querySelector(".now-time").textContent = mmss(t);
-    now.querySelector(".now-list").innerHTML = hits.length ? hits.map((b) => {
+    const said = mentionedAt(t).filter((b) => !hits.includes(b));
+    const item = (b, how) => {
       const link = productLink(b);
-      return `<div class="now-item" data-b="${esc(b.brand)}">${logoBox(b.brand, "sm")}<div class="ni-text"><b>${esc(b.brand)}</b><span>${esc(b.product || b.category || "")}</span></div>
+      return `<div class="now-item ${how}" data-b="${esc(b.brand)}">${logoBox(b.brand, "sm")}<div class="ni-text"><b>${esc(b.brand)}</b><span>${esc(b.product || b.category || "")}</span></div>
         <a href="${esc(link.url)}" target="_blank" rel="noopener" title="${esc(link.title)}">${link.label}</a></div>`;
-    }).join("") : `<div class="now-empty">No product in view at this second.<br><span>Press play, or pick a product below to jump to it.</span></div>`;
+    };
+    now.querySelector(".now-time").textContent = mmss(t);
+    now.querySelector(".now-list").innerHTML =
+      (hits.length ? `<div class="now-sub">${icon("eye")} In the picture</div>${hits.map((b) => item(b, "seen")).join("")}` : "") +
+      (said.length ? `<div class="now-sub">${icon("ear")} Mentioned or written</div>${said.map((b) => item(b, "said")).join("")}` : "") +
+      (!hits.length && !said.length ? `<div class="now-empty">No product at this second.<br><span>Press play, or pick a product below to jump to it.</span></div>` : "");
     hydrateLogos(now);
-    $("#view").querySelectorAll(".pcard").forEach((c) => c.classList.toggle("live", hits.some((b) => b.brand === c.dataset.brand)));
+    $("#view").querySelectorAll(".pcard").forEach((c) => {
+      c.classList.toggle("live", hits.some((b) => b.brand === c.dataset.brand));
+      c.classList.toggle("said", said.some((b) => b.brand === c.dataset.brand));
+    });
   }
 }
 
+/** Brands spoken about or shown as text around second t (±1.5 s – speech timestamps are less exact than image ones). */
+const mentionedAt = (t) => state.data.brands.filter((b) => b.appearances.some((a) => a.channel !== "visual" && t >= a.start_s - 1.5 && t <= a.end_s + 1.5));
 const productsAt = (t) => state.data.brands.filter((b) => b.appearances.some((a) => a.channel === "visual" && t >= a.start_s - 1 && t <= a.end_s + 1));
 /** Logo tile: coloured initial first, replaced by the official logo once Wikidata answers (logos.js). */
 const logoBox = (brand, size = "") => `<span class="logo ${size}" data-logo="${esc(brand)}" style="--c:${color(brand)}">${esc(brand.replace(/^the /i, "").charAt(0).toUpperCase())}</span>`;
@@ -421,7 +431,7 @@ function viewOverview() {
     <div class="watch">
       <div class="player" id="playerHost"><div class="yt-host"></div></div>
       <aside class="now card" id="now">
-        <div class="now-head"><span class="pulse"></span><b>Right now</b><span class="now-time num">0:00</span>${info("Products Gemini saw in the picture at this second. Follows the video while it plays. Links: the creator's own link from the description if there is one (affiliate links are marked), otherwise a neutral shopping search.")}</div>
+        <div class="now-head"><span class="pulse"></span><b>Right now</b><span class="now-time num">0:00</span>${info("In the picture: products Gemini saw at this second. Mentioned or written: brands that are spoken about or shown as on-screen text right now. Follows the video while it plays. Links: the creator's own link from the description if there is one (affiliate links are marked), otherwise a neutral shopping search.")}</div>
         <div class="now-list"></div>
       </aside>
     </div>

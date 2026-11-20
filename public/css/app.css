@@ -609,3 +609,7 @@ main > .toolbar h1 .sub { font-size: 15px; font-weight: 500; }
 .v-hero-in, .tabs { max-width: none; }
 .content { padding-inline: 32px; box-sizing: content-box; }
 .now-item { animation: none; }
+.now-sub { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 600; color: var(--text-3); margin: 6px 2px 0; text-transform: uppercase; letter-spacing: .05em; }
+.now-sub .icon { width: 13px; height: 13px; }
+.now-item.said { background: transparent; box-shadow: inset 0 0 0 1px var(--line-2); }
+.pcard.said:not(.live) { box-shadow: 0 0 0 2px var(--accent), 0 10px 34px rgba(10,132,255,.14); }

@@ -422,11 +422,11 @@ async function identify(request, env, ctx) {
   for (const p of providers) {
     try {
       const r = await p.run(env, image);
-      const out = { items: cleanItems(r.items), model: r.model, provider: p.name, tried };
+      const out = { items: cleanItems(r.items), model: r.model, provider: p.name, tried, ...(r.shape != null ? { input_shape: r.shape } : {}) };
       if (env.STORE) ctx.waitUntil(env.STORE.put(key, JSON.stringify(out), { expirationTtl: 60 * 60 * 24 * 30 }));
       return json(out);
     } catch (e) {
-      tried.push({ provider: p.name, error: e instanceof ApiError ? e.code : String(e?.message || e).slice(0, 120) });
+      tried.push({ provider: p.name, error: e instanceof ApiError ? e.code : String(e?.message || e).slice(0, 400) });
     }
   }
   throw new ApiError("frame_quota_exhausted", 429, JSON.stringify(tried));
@@ -463,22 +463,32 @@ If no brand is identifiable, answer {"items":[]}.`;
 /** Cloudflare Workers AI – free 10,000 neurons/day on the account, no key; capped by DAILY_WORKERS_AI as a safety net. */
 async function identifyWorkersAI(env, image) {
   if (!(await bumpGlobal(env, "workers-ai", Number(env.DAILY_WORKERS_AI || 250)))) throw new ApiError("quota_exhausted", 429);
-  let lastErr;
+  const dataUri = `data:image/jpeg;base64,${image}`;
+  const bytes = () => [...Uint8Array.from(atob(image), (c) => c.charCodeAt(0))];
+  // Cloudflare documents several input shapes for vision models; we try them in this order (first that works wins)
+  const shapes = [
+    () => ({ messages: [{ role: "user", content: [{ type: "text", text: OPEN_PROMPT }, { type: "image_url", image_url: { url: dataUri } }] }] }),
+    () => ({ messages: [{ role: "system", content: "You identify brands in images." }, { role: "user", content: OPEN_PROMPT }], image: bytes() }),
+    () => ({ prompt: OPEN_PROMPT, image: bytes() }),
+  ];
+  const errors = [];
   for (const model of list(env.WORKERS_AI_MODELS, ["@cf/meta/llama-3.2-11b-vision-instruct"])) {
-    const input = { messages: [{ role: "user", content: OPEN_PROMPT }], image: `data:image/jpeg;base64,${image}`, max_tokens: 512, temperature: 0.1 };
-    try {
-      let r;
-      try { r = await env.AI.run(model, input); }
-      catch (e) {
-        if (!/agree/i.test(String(e?.message))) throw e;
-        await env.AI.run(model, { prompt: "agree" }); // Meta's licence must be accepted once per account (Cloudflare docs)
-        r = await env.AI.run(model, input);
-      }
-      const text = typeof r?.response === "string" ? r.response : JSON.stringify(r?.response ?? r);
-      return { items: parseLooseJson(text).items, model };
-    } catch (e) { lastErr = e; }
+    for (const [i, shape] of shapes.entries()) {
+      const input = { ...shape(), max_tokens: 512, temperature: 0.1 };
+      try {
+        let r;
+        try { r = await env.AI.run(model, input); }
+        catch (e) {
+          if (!/agree/i.test(String(e?.message))) throw e;
+          await env.AI.run(model, { prompt: "agree" }); // Meta's licence must be accepted once per account (Cloudflare docs)
+          r = await env.AI.run(model, input);
+        }
+        const text = typeof r?.response === "string" ? r.response : JSON.stringify(r?.response ?? r);
+        return { items: parseLooseJson(text).items, model, raw: text.slice(0, 300), shape: i };
+      } catch (e) { errors.push(`${model.split("/").pop()}#${i}: ${String(e?.message || e).slice(0, 90)}`); }
+    }
   }
-  throw lastErr || new Error("no Workers AI model");
+  throw new Error(errors.join(" | ") || "no Workers AI model");
 }
 
 /** OpenRouter free models (":free" suffix): 50 requests/day without credits. Only active if the secret is set. */

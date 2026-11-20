@@ -195,7 +195,7 @@ async function renderAnalyze(id) {
     const r = await fetch("api/analyze", { method: "POST", headers: { "content-type": "application/json", "x-invite": invite }, body: JSON.stringify({ v: id }) });
     if (!r.ok) {
       const j = await r.json().catch(() => ({}));
-      const why = { own_key_required: "This version needs your own Gemini key (coming soon).", invite_required: "New analyses need an invite link. The examples work without one.",
+      const why = j.message || { own_key_required: "This version needs your own Gemini key (coming soon).", invite_required: "New analyses need an invite link. The examples work without one.",
         server_key_missing: "The server has no Gemini key configured." }[j.error] || j.error || `HTTP ${r.status}`;
       return fail(why);
     }
@@ -209,11 +209,12 @@ async function renderAnalyze(id) {
         const ev = /event: (.+)/.exec(chunk)?.[1]; const data = JSON.parse(/data: (.+)/s.exec(chunk)?.[1] || "{}");
         if (ev === "stage") setStage(data.id);
         if (ev === "meta") $("#mtitle").innerHTML = `${icon("clock")} ${esc(data.title)} <span class="right num" id="elapsed"></span>`;
-        if (ev === "error") return fail(data.error === "daily_limit" ? "Daily limit reached – please try again tomorrow." : data.error);
+        if (ev === "error") return fail(data.message || data.error); // worker sends a visitor-friendly message
         if (ev === "result") {
           clearInterval(tick);
           sessionStorage.setItem(`analysis:${id}`, JSON.stringify(data));
-          state.id = null; return go(id);
+          // same hash as now (#/v/<id>/overview) → no hashchange event, so re-route directly
+          state.id = null; return route();
         }
       }
     }

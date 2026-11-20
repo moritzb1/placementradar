@@ -104,6 +104,20 @@ The app runs on a Cloudflare Worker. The Gemini key is a Cloudflare **secret** �
 
 The key runs on Google's free tier without billing, so the worst case is an exhausted daily quota – never a bill.
 
+### Staying within free quotas
+Everything runs on free tiers; there is no paid fallback. The Worker therefore never pays twice and spreads the load:
+
+| Layer | What happens | API calls |
+|---|---|---|
+| Example videos | served from `public/data/` in this repository | 0 |
+| Every new analysis | stored permanently in Workers KV – the second visitor gets it instantly; `GET /api/recent` lists them | 2 the first time, then 0 |
+| Identical camera crops | cached by SHA-256 hash for 30 days | 0 |
+| Gemini model chain | each model family has its own free daily quota; a model that reports "per day" quota exhausted is skipped until the reset | – |
+| Single-frame provider router | Gemini Flash-Lite → **Cloudflare Workers AI** (Llama 3.2 Vision, free daily allowance, no key) → OpenRouter free models (optional) | 1 per crop |
+| Quota empty | the visitor sees *"Today's free analyses are used up – try an example, the live scanner, or come back tomorrow."* `GET /api/config` reports `video_quota_left` beforehand | 0 |
+
+Model names are Worker variables (`VIDEO_MODELS`, `FRAME_MODELS`, `FRAME_PROVIDERS`, …, see `wrangler.jsonc`). When Google retires a model, the variable is changed in the dashboard – no rebuild; a model that returns 404 is skipped automatically.
+
 ## 7. Run it
 
 ```bash
@@ -117,7 +131,8 @@ npx wrangler dev
 ## 8. Repository
 
 ```
-worker.js                  Cloudflare Worker: API (meta, analyze, identify), key modes, limits
+worker.js                  Cloudflare Worker: API (config, meta, recent, analyze, identify), key modes, limits,
+                           KV cache, quota tracking, single-frame provider router
 wrangler.jsonc             Worker configuration (no secrets)
 public/index.html          app shell
 public/css/app.css         design system (light/dark, Apple-like)

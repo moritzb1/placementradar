@@ -11,16 +11,29 @@
     "binding": "ASSETS",
     "run_worker_first": ["/api/*"]        // API goes to worker.js, everything else is served as static file
   },
+  // Cache + daily counters. No id on purpose: `wrangler deploy` creates the namespace on the first deploy
+  // (automatic resource provisioning) and reuses it afterwards.
+  "kv_namespaces": [{ "binding": "STORE" }],
+  // Cloudflare Workers AI – free daily allowance on the account, no API key needed (single-frame fallback).
+  "ai": { "binding": "AI" },
   "vars": {
     "KEY_MODE": "shared",                 // "shared" until the grade is in, then "own" (viewers enter their own key)
     "MAX_VIDEO_S": "1200",                // longest video we analyse (20 min)
-    "DAILY_ANALYSES": "10",               // per visitor and day
-    "DAILY_IDENTIFY": "60"                // live-mode Gemini fallbacks per visitor and day
+    "DAILY_ANALYSES": "10",               // new video analyses per visitor and day (cached ones are unlimited)
+    "DAILY_IDENTIFY": "60",               // cloud recognitions per visitor and day (live scanner fallback)
+    "DAILY_WORKERS_AI": "250"             // safety cap for all visitors together (~40 neurons each → well below 10,000)
   },
+  // Model lists are deliberately NOT set here (a value here would overwrite the dashboard on every deploy).
+  // Defaults live in the code; to switch models without a rebuild, add a variable in the dashboard
+  // (Settings → Variables), comma-separated – keep_vars keeps it across deploys:
+  //   VIDEO_MODELS       default: gemini-3.8-flash, gemini-3.6-flash, gemini-3.5-flash, gemini-3-flash-preview
+  //   FRAME_MODELS       default: gemini-3.5-flash-lite, gemini-3.1-flash-lite
+  //   FRAME_PROVIDERS    default: gemini, workers-ai, openrouter   (order of the single-frame router)
+  //   WORKERS_AI_MODELS  default: @cf/meta/llama-3.2-11b-vision-instruct
+  //   OPENROUTER_MODELS  default: qwen/qwen2.5-vl-72b-instruct:free
   "keep_vars": true
   // Secrets (set in the Cloudflare dashboard, never in this file):
-  //   GEMINI_API_KEY  – Google AI Studio key (free tier, no billing)
-  //   INVITE_TOKEN    – optional; new analyses only with ?invite=<token>
-  // Optional KV namespace for cache + daily counters:
-  // "kv_namespaces": [{ "binding": "STORE", "id": "<id from dashboard>" }]
+  //   GEMINI_API_KEY      – Google AI Studio key (free tier, no billing)
+  //   INVITE_TOKEN        – optional; new analyses only with ?invite=<token>
+  //   OPENROUTER_API_KEY  – optional; enables the OpenRouter free models as third provider
 }

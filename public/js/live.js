@@ -252,12 +252,13 @@ async function identify(t) {
     const invite = localStorage.getItem("invite") || "";
     const r = await fetch("api/identify", { method: "POST", headers: { "content-type": "application/json", "x-invite": invite }, body: JSON.stringify({ image }) });
     const j = await r.json();
-    if (!r.ok) throw new Error({ invite_required: "Identify needs an invite link.", daily_limit: "Daily limit reached.", own_key_required: "This version needs your own Gemini key." }[j.error] || j.error || `HTTP ${r.status}`);
+    if (!r.ok) throw new Error(j.message || { invite_required: "Identify needs an invite link.", daily_limit: "Daily limit reached.", own_key_required: "This version needs your own Gemini key." }[j.error] || j.error || `HTTP ${r.status}`);
     const best = (j.items || []).sort((a, b) => (b.confidence || 0) - (a.confidence || 0))[0];
     if (!best) { $("#liveMsg").textContent = "Gemini found no brand in this crop."; return; }
     const item = { brand: best.brand, product: best.product || "", engine: "gemini", model: j.model };
     if (t) t.label = item; addSeen(item); draw(w, h);
-    $("#liveMsg").textContent = `Identified by ${j.model}. Next time the on-device model can learn this product.`;
+    $("#liveMsg").textContent = j.cached ? `Already known (${j.model}) – answered from the cache, no API call.`
+      : `Identified by ${j.model}. Next time the on-device model can learn this product.`;
   } catch (e) {
     $("#liveMsg").textContent = e instanceof TypeError ? "Gemini is only available in the online version." : e.message;
   }

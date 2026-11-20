@@ -54,6 +54,17 @@ Boxes on single images are far more precise than positions from video analysis (
 ## Quota
 Free tier: **20 requests/day per model family**. `gemini-3.7-flash` and `gemini-flash-latest` share the 3.8 quota; 3.6-flash, 3.5-flash, 3.5-flash-lite, 3.1-flash-lite and 3-flash-preview have their own → ~100/day with a model chain. Error text confirms free tier (no billing possible).
 
+## S1 – Worker end-to-end (20 Nov, local Workers runtime via `wrangler dev`, real Gemini key)
+| Check | Result |
+|---|---|
+| Example video via `/api/analyze` | served from `public/data`, 0 API calls, < 10 ms |
+| Camera crop via `/api/identify` (provider router) | Gemini 3.5 Flash-Lite, **1.85 s**, brand correct (Lidl logo); same crop again: **from cache in 0.01 s**, no API call |
+| Simulated empty quota (all video models flagged) | `/api/config` → `video_quota_left: false`; new video → HTTP 429 with the friendly message; examples keep working |
+| Real analysis, 17.5-min video `WK5s-gDideg` | 3.8-Flash and 3.6-Flash failed (overloaded/rate-limited, not daily quota), 3.5-Flash delivered the timeline; **~10 min in total**. Stream stayed open with heartbeats; our test client gave up after 590 s, **but the Worker finished in the background and stored the result in KV** – the next request got it instantly and the app showed it (10 brands, "Disclosure found") |
+| Workers AI (Llama 3.2 Vision) | not testable locally (needs Cloudflare login) → *to be measured online* |
+
+Consequences: failures are now logged per model (`wrangler tail`) and sent to the UI as `retry` events; long analyses are safe because the result is cached even if the visitor closes the page.
+
 ## H – Recognising brands without the API
 | Test | Setup | Result |
 |---|---|---|

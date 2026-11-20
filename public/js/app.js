@@ -32,6 +32,22 @@ const PALETTE = ["#0a84ff", "#ff9f0a", "#30d158", "#bf5af2", "#ff375f", "#64d2ff
 
 const state = { demos: [], recent: [], data: null, id: null, view: "overview", player: null, colors: new Map(), opts: { ...DEFAULTS }, pendingSeek: null };
 
+// ------------------------------------------------------------------------------------------------
+// Preferences (Settings sheet) – stored per browser; storage may be blocked, so every access is guarded
+// ------------------------------------------------------------------------------------------------
+const PREFS_KEY = "pr:prefs";
+const prefs = { theme: "auto", usage: false, tech: false };
+try { Object.assign(prefs, JSON.parse(localStorage.getItem(PREFS_KEY) || "{}")); } catch { /* private mode */ }
+const savePrefs = () => { try { localStorage.setItem(PREFS_KEY, JSON.stringify(prefs)); } catch { /* ignore */ } };
+function applyTheme() {
+  if (prefs.theme === "auto") delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = prefs.theme;
+}
+applyTheme();
+
+// Recognitions in the live scanner (on device = 0 tokens) – counted for the usage meter
+const session = { recognitions: {} };
+window.addEventListener("pr:recognition", (e) => { const k = e.detail.engine || "other"; session.recognitions[k] = (session.recognitions[k] || 0) + 1; refreshUsagePill(); });
+
 const VIEWS = [
   { id: "overview", label: "Overview", icon: "overview" },
   { id: "timeline", label: "Brand timeline", icon: "timeline" },
@@ -113,19 +129,23 @@ const mono = (brand) => `<span class="mono" style="background:${color(brand)}">$
 // ------------------------------------------------------------------------------------------------
 function renderSidebar() {
   const inVideo = !!state.data;
+  const lib = (list) => list.map((d) => `<button class="nav-item lib ${state.id === d.id ? "active" : ""}" data-open="${esc(d.id)}"><img alt="" src="https://i.ytimg.com/vi/${esc(d.id)}/default.jpg"><span>${esc(d.title || d.id)}</span></button>`).join("");
   $("#sidebar").innerHTML = `
     <div class="brandmark" data-home>${LOGO}<span>PlacementRadar</span></div>
-    <div class="nav-label">Analysis</div>
-    ${VIEWS.map((v) => `<button class="nav-item ${inVideo && state.view === v.id ? "active" : ""}" data-view="${v.id}" ${inVideo ? "" : "disabled"}>
-      ${icon(v.icon)}<span>${v.label}</span></button>`).join("")}
-    <div class="nav-label">On device</div>
+    <button class="nav-item ${state.page === "start" ? "active" : ""}" data-home>${icon("search")}<span>Analyse a video</span></button>
     <button class="nav-item ${state.page === "live" ? "active" : ""}" data-live>${icon("camera")}<span>Live scanner</span></button>
-    <div class="nav-label">Examples</div>
-    ${state.demos.map((d) => `<div class="recent ${state.id === d.id ? "active" : ""}" data-open="${d.id}"><img alt="" src="https://i.ytimg.com/vi/${d.id}/mqdefault.jpg"><span>${esc(d.title)}</span></div>`).join("")}
-    ${state.recent.length ? `<div class="nav-label">Analysed by visitors</div>${state.recent.slice(0, 6).map((d) => `<div class="recent ${state.id === d.id ? "active" : ""}" data-open="${esc(d.id)}"><img alt="" src="https://i.ytimg.com/vi/${esc(d.id)}/mqdefault.jpg"><span>${esc(d.title || d.id)}</span></div>`).join("")}` : ""}
-    <div class="foot">Final project · MMI5190E<br>HS Pforzheim · WiSe 2026/27</div>`;
-  $("[data-home]").onclick = () => { location.hash = "#/"; };
+    ${inVideo ? `<div class="nav-label">This video</div>
+      ${VIEWS.map((v) => `<button class="nav-item ${state.view === v.id ? "active" : ""}" data-view="${v.id}">${icon(v.icon)}<span>${v.label}</span></button>`).join("")}` : ""}
+    <div class="nav-label">Examples</div>${lib(state.demos)}
+    ${state.recent.length ? `<div class="nav-label">Analysed by visitors</div>${lib(state.recent.slice(0, 5))}` : ""}
+    <div class="side-foot">
+      <button class="nav-item" data-settings>${icon("sliders")}<span>Settings</span></button>
+      <button class="nav-item" data-about><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".6" fill="currentColor"/></svg><span>About</span></button>
+    </div>`;
+  $("#sidebar").querySelectorAll("[data-home]").forEach((b) => (b.onclick = () => { location.hash = "#/"; }));
   $("[data-live]").onclick = () => { location.hash = "#/live"; };
+  $("[data-settings]").onclick = showSettings;
+  $("[data-about]").onclick = showInfo;
   $("#sidebar").querySelectorAll("[data-view]").forEach((b) => (b.onclick = () => go(state.id, b.dataset.view)));
   $("#sidebar").querySelectorAll("[data-open]").forEach((b) => (b.onclick = () => go(b.dataset.open)));
 }
@@ -135,37 +155,31 @@ function renderSidebar() {
 // ------------------------------------------------------------------------------------------------
 function renderStart() {
   destroyPlayer();
+  const card = (d, big) => `
+    <article class="demo" data-open="${esc(d.id)}">
+      <div class="thumb"><img alt="" src="https://i.ytimg.com/vi/${esc(d.id)}/${big ? "hqdefault" : "mqdefault"}.jpg"></div>
+      <div class="t">${esc(d.title || d.id)}</div>
+      <div class="m">${esc(d.channel || "")}${d.views != null ? ` · ${fmtViews(d.views)} views` : ""} · ${d.brands ?? "?"} brands</div>
+    </article>`;
   $("#main").innerHTML = `
+    <div class="toolbar plain"><span class="spacer"></span><span id="tbActions" class="tb-actions"></span></div>
     <section class="start">
-      <div class="hero-mark"><div>${LOGO}</div></div>
-      <h2>PlacementRadar</h2>
-      <p class="lead">Paste a YouTube link. PlacementRadar finds every brand in the video, estimates what the exposure is worth and checks whether the advertising is labelled.</p>
-      <form class="spotlight" id="go">${icon("search")}<input id="url" placeholder="youtube.com/watch?v=…" autocomplete="off" spellcheck="false"><button>Analyze</button></form>
-      <div class="hint" id="hint"></div>
-      <div class="how">
-        <div class="step-card"><div class="ic">${icon("cloud")}</div><b>Gemini watches</b><span>the whole video – image and audio – straight from the link. Nothing is downloaded.</span></div>
-        <div class="step-card"><div class="ic">${icon("timeline")}</div><b>Every brand, every second</b><span>visible, spoken or written – on a timeline you can click through.</span></div>
-        <div class="step-card"><div class="ic">${icon("value")}</div><b>What it is worth</b><span>media value per brand, with a transparent formula.</span></div>
-        <div class="step-card"><div class="ic">${icon("shield")}</div><b>Is it labelled?</b><span>ad disclosure check and how genuine the recommendation feels.</span></div>
+      <div class="hero">
+        <div class="app-icon">${LOGO}</div>
+        <h1>Every brand in a video.</h1>
+        <p class="lead">Paste a YouTube link – PlacementRadar shows which brands appear, what that exposure is worth and whether it is labelled as advertising.</p>
+        <form class="spotlight" id="go">${icon("search")}<input id="url" placeholder="Paste a YouTube link" autocomplete="off" spellcheck="false"><button>Analyse</button></form>
+        <div class="hint" id="hint"></div>
+        <ol class="steps"><li><b>1</b>Paste a link</li><li><b>2</b>Gemini watches image and sound</li><li><b>3</b>Brands, value, disclosure</li></ol>
       </div>
-      <div class="section-title">Analysed examples</div>
-      <div class="demos">${state.demos.map((d) => `
-        <article class="demo" data-open="${d.id}">
-          <img alt="" src="https://i.ytimg.com/vi/${d.id}/hqdefault.jpg">
-          <div class="body"><div class="t">${esc(d.title)}</div>
-          <div class="m">${esc(d.channel)} · ${fmtViews(d.views)} views · ${d.brands} brands
-            <a class="yt-link" href="https://www.youtube.com/watch?v=${d.id}" target="_blank" rel="noopener" title="Open on YouTube" data-stop>${icon("play")}</a></div></div>
-        </article>`).join("")}</div>
-      ${state.recent.length ? `<div class="section-title">Recently analysed by visitors</div>
-      <div class="demos recent-grid">${state.recent.map((d) => `
-        <article class="demo" data-open="${esc(d.id)}">
-          <img alt="" src="https://i.ytimg.com/vi/${esc(d.id)}/mqdefault.jpg">
-          <div class="body"><div class="t">${esc(d.title || d.id)}</div>
-          <div class="m">${esc(d.channel || "")}${d.views != null ? ` · ${fmtViews(d.views)} views` : ""} · ${d.brands ?? "?"} brands</div></div>
-        </article>`).join("")}</div>` : ""}
+      <div class="shelf"><div class="shelf-head"><h2>Examples</h2><span>open instantly</span></div>
+        <div class="shelf-row">${state.demos.map((d) => card(d, true)).join("")}</div></div>
+      ${state.recent.length ? `<div class="shelf"><div class="shelf-head"><h2>Analysed by visitors</h2><span>saved for everyone</span></div>
+        <div class="shelf-row small">${state.recent.map((d) => card(d, false)).join("")}</div></div>` : ""}
+      <a class="tool-card" href="#/live"><span class="tc-ic">${icon("camera")}</span><span><b>Live scanner</b><br><span class="muted">Hold a product into your camera – recognised on your device, no cloud needed.</span></span><span class="chev">${icon("chevron")}</span></a>
     </section>`;
-  $("#main").querySelectorAll("[data-open]").forEach((el) => (el.onclick = (e) => { if (!e.target.closest("[data-stop]")) go(el.dataset.open); }));
-  addInfoButton(true);
+  $("#main").querySelectorAll("[data-open]").forEach((el) => (el.onclick = () => go(el.dataset.open)));
+  toolbarActions();
   $("#go").onsubmit = (e) => {
     e.preventDefault();
     const id = parseYouTubeId($("#url").value);
@@ -306,16 +320,19 @@ async function renderAnalyze(id) {
 function renderResult() {
   const d = state.data; const v = d.video;
   const viewLabel = VIEWS.find((x) => x.id === state.view).label;
-  const engine = [...new Set(d.source?.models || [])].join(" + ") || "Gemini";
+  const engine = [...new Set(d.source?.models || [])].map(modelName).join(" + ") || "Gemini";
+  const meta = [v.channel, v.views != null ? `${fmtViews(v.views)} views` : null, v.duration_s ? fmtDur(v) : null, v.upload_date ? fmtDate(v.upload_date) : null].filter(Boolean);
   $("#main").innerHTML = `
-    <div class="toolbar">
-      <h1>${esc(viewLabel)} <span class="sub">· ${esc(v.title)}</span></h1>
-      <span class="badge" title="Which model produced this analysis">${icon("cloud")} ${esc(engine)}</span>
-      <span class="badge">${icon("clock")} analysed ${esc(d.source?.analyzed_at || "")}</span>
-      <a class="badge" href="https://www.youtube.com/watch?v=${esc(v.id)}" target="_blank" rel="noopener">${icon("play")} YouTube</a>
-    </div>
-    <div class="content" id="view"></div>`;
-  addInfoButton();
+    <div class="toolbar"><h1>${esc(viewLabel)}</h1><span id="tbActions" class="tb-actions"></span></div>
+    <div class="content">
+      <header class="page-head">
+        <div style="min-width:0"><h2 class="large-title">${esc(v.title)}</h2>
+          <div class="meta">${esc(meta.join(" · "))}${prefs.tech ? ` <span class="tech">· ${esc(engine)} · analysed ${esc(d.source?.analyzed_at || "")}${d.cached ? " · from cache" : ""}</span>` : ""}</div></div>
+        <a class="btn" href="https://www.youtube.com/watch?v=${esc(v.id)}" target="_blank" rel="noopener">${icon("play")} YouTube</a>
+      </header>
+      <div id="view"></div>
+    </div>`;
+  toolbarActions();
   ({ overview: viewOverview, timeline: viewTimeline, value: viewValue, disclosure: viewDisclosure, authenticity: viewAuthenticity, report: viewReport })[state.view]();
 }
 
@@ -328,12 +345,13 @@ function mountPlayer(onTime) {
   const find = document.createElement("div"); find.className = "find";
   const veil = document.createElement("div"); veil.className = "veil";
   const p = new Player(host.querySelector(".yt-host"), state.id, {
-    onState: (paused) => { host.classList.toggle("paused", paused); if (paused) updateFind(p.t); },
+    // "In this frame" appears only when the viewer pauses or jumps – not over the untouched poster
+    onState: (paused) => { host.classList.toggle("paused", paused && (p.hasPlayed || p.t > 0.5)); if (paused) updateFind(p.t); },
     onTime: (t) => { onTime?.(t); if (p.paused) updateFind(t); },
   });
   host.append(veil, find);
   state.player = p;
-  host.classList.add("paused");
+  if (state.pendingSeek) host.classList.add("paused");
   updateFind(state.pendingSeek ?? 0);
   if (state.pendingSeek != null) { const t = state.pendingSeek; setTimeout(() => p.seek(t), 900); state.pendingSeek = null; }
 
@@ -383,32 +401,31 @@ function viewOverview() {
   const d = state.data; const v = d.video;
   const val = videoValue(d, state.opts); const disc = checkDisclosure(d);
   const union = brandTimeShare(d);
+  const au = d.authenticity || [];
+  const auTxt = au.length ? `${round5(au.reduce((n, a) => n + a.overall, 0) / au.length)} · ${band(round5(au.reduce((n, a) => n + a.overall, 0) / au.length))}` : "not rated";
+  const spoken = d.brands.filter((b) => b.appearances.some((a) => a.channel === "audio")).length;
   $("#view").innerHTML = `
-    <div class="grid-top">
+    <div class="ov-grid">
       <div class="player" id="playerHost"><div class="yt-host"></div></div>
-      <div class="kpis">
-        <div class="kpi wide"><div class="label">${icon("value")} Estimated media value</div>
-          <div class="value num" data-count="${val.total}" data-fmt="euro">€0</div>
-          <div class="foot">${fmtViews(v.views)} views · CPM €${state.opts.cpm} · ${Math.round(state.opts.viewThrough * 100)}% view-through</div></div>
-        <div class="kpi"><div class="label">${icon("bag")} Brands</div><div class="value num" data-count="${d.brands.length}">0</div>
-          <div class="foot">${d.brands.filter((b) => b.appearances.some((a) => a.channel === "audio")).length} also mentioned in speech</div></div>
-        <div class="kpi"><div class="label">${icon("eye")} Brand on screen</div><div class="value num" data-count="${union}" data-fmt="pct">0%</div>
-          <div class="foot">of ${fmtDur(v)} video</div></div>
-        <div class="kpi wide lvl-${disc.level}" style="cursor:pointer" data-goto="disclosure"><div class="label">${icon("shield")} Ad disclosure</div>
-          <div><span class="pill lvl-${disc.level}"><span class="dot"></span>${esc(disc.title)}</span></div>
-          <div class="foot">${esc(disc.sub)}</div></div>
+      <div class="summary">
+        <div class="hero-metric"><span class="label">Estimated media value</span>
+          <span class="big num" data-count="${val.total}" data-fmt="euro">€0</span>
+          <span class="sub">${fmtViews(v.views)} views · CPM €${state.opts.cpm} · ${Math.round(state.opts.viewThrough * 100)}% watched</span></div>
+        <div class="glist">
+          <button class="grow" data-goto="timeline"><span>Brands</span><b class="num"><span data-count="${d.brands.length}">0</span></b><span class="g-sub">${spoken} also spoken</span>${icon("chevron")}</button>
+          <button class="grow" data-goto="timeline"><span>Brand on screen</span><b class="num"><span data-count="${union}" data-fmt="pct">0%</span></b><span class="g-sub">of the video</span>${icon("chevron")}</button>
+          <button class="grow" data-goto="disclosure"><span>Ad disclosure</span><b class="status lvl-${disc.level}"><i class="dot"></i>${esc(disc.title)}</b><span class="g-sub"></span>${icon("chevron")}</button>
+          <button class="grow" data-goto="authenticity"><span>Authenticity</span><b>${esc(auTxt)}</b><span class="g-sub"></span>${icon("chevron")}</button>
+          <button class="grow" data-goto="report"><span>Brand report</span><b class="muted-b">PDF + pitch mail</b><span class="g-sub"></span>${icon("chevron")}</button>
+        </div>
       </div>
     </div>
-    <div class="card" style="margin-top:20px"><h3>${icon("timeline")} Brand timeline <span class="right">${legend()}</span></h3><div id="tl"></div></div>
-    <div class="cols-2" style="margin-top:20px">
-      <div><div class="nav-label" style="padding-left:4px">Top brands by media value</div><div class="list">${valueRows(val.rows.slice(0, 5))}</div></div>
-      <div><div class="nav-label" style="padding-left:4px">Authenticity</div>${authSummary()}</div>
-    </div>`;
-  const tl = timeline($("#tl"), { maxRows: 8 });
+    <section class="sect"><div class="sect-head"><h3>Brand timeline</h3>${legend()}<button class="link" data-goto="timeline">Show all ${d.brands.length}</button></div>
+      <div class="card" id="tl"></div></section>`;
+  const tl = timeline($("#tl"), { maxRows: 6 });
   mountPlayer((t) => tl.setTime(t));
-  bindRows(); countUp();
-  $("[data-goto=disclosure]").onclick = () => go(state.id, "disclosure");
-  $("#view").querySelectorAll("[data-auth]").forEach((el) => (el.onclick = () => go(state.id, "authenticity")));
+  countUp();
+  $("#view").querySelectorAll("[data-goto]").forEach((el) => (el.onclick = () => go(state.id, el.dataset.goto)));
 }
 
 function brandTimeShare(d) {
@@ -448,7 +465,10 @@ function timeline(root, { maxRows = Infinity } = {}) {
   const ph = root.querySelector(".playhead"); const lane = root.querySelector(".lane");
   const setTime = (t) => { const w = lane ? lane.getBoundingClientRect().width : 0; ph.style.left = `${162 + (w * Math.min(1, t / dur))}px`; };
   root.querySelectorAll("[data-t]").forEach((el) => {
-    el.onclick = () => (state.player ? state.player.seek(Number(el.dataset.t)) : go(state.id, "overview", Number(el.dataset.t)));
+    el.onclick = () => {
+      if (!state.player) return go(state.id, "overview", Number(el.dataset.t));
+      $("#playerHost")?.classList.add("paused"); state.player.seek(Number(el.dataset.t));
+    };
   });
   tooltips(root);
   setTime(0);
@@ -703,14 +723,87 @@ function pitchMail(b, r, mentions, disc) {
 // ------------------------------------------------------------------------------------------------
 // "i" button: what PlacementRadar does, in one screen
 // ------------------------------------------------------------------------------------------------
-function addInfoButton(floating = false) {
-  const btn = document.createElement("button");
-  btn.className = "icon-btn"; btn.title = "What is PlacementRadar?"; btn.setAttribute("aria-label", "About PlacementRadar");
-  btn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".6" fill="currentColor"/></svg>`;
-  btn.onclick = showInfo;
-  const bar = $("#main .toolbar");
-  if (bar && !floating) bar.append(btn);
-  else { btn.style.cssText = "position:absolute;top:18px;right:24px;z-index:5"; $("#main").append(btn); }
+function addInfoButton() { toolbarActions(); } // kept for live.js / older call sites
+
+/** Right side of every toolbar: usage pill (if enabled in Settings) + settings + about. */
+function toolbarActions() {
+  const host = $("#tbActions") || (() => { const bar = $("#main .toolbar"); if (!bar) return null; const s = document.createElement("span"); s.id = "tbActions"; s.className = "tb-actions"; bar.append(s); return s; })();
+  if (!host) return;
+  host.innerHTML = `${prefs.usage ? `<button class="usage-pill" id="usagePill" title="AI usage today">${icon("chip")}<span>AI usage</span></button>` : ""}
+    <button class="icon-btn" id="tbSettings" title="Settings" aria-label="Settings">${icon("sliders")}</button>
+    <button class="icon-btn" id="tbAbout" title="What is PlacementRadar?" aria-label="About PlacementRadar"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".6" fill="currentColor"/></svg></button>`;
+  $("#tbSettings").onclick = showSettings; $("#tbAbout").onclick = showInfo;
+  if (prefs.usage) { $("#usagePill").onclick = showUsage; refreshUsagePill(); }
+}
+
+let usageCache = null;
+async function fetchUsage(force = false) {
+  if (usageCache && !force && Date.now() - usageCache.at < 30000) return usageCache.data;
+  try { const r = await fetch("api/usage"); if (!r.ok) throw 0; usageCache = { at: Date.now(), data: await r.json() }; }
+  catch { usageCache = { at: Date.now(), data: { available: false, offline: true } }; }
+  return usageCache.data;
+}
+async function refreshUsagePill() {
+  const pill = $("#usagePill"); if (!pill) return;
+  const u = await fetchUsage();
+  const video = (u.models || []).filter((m) => m.kind === "video");
+  const used = video.reduce((n, m) => n + m.requests, 0), cap = video.length * (u.free_requests_per_model || 20);
+  const dev = ["barcode", "ocr", "own", "yolo"].reduce((n, k) => n + (session.recognitions[k] || 0), 0);
+  pill.querySelector("span").textContent = u.available ? `Gemini ${used}/${cap} today` + (dev ? ` · ${dev} on device` : "") : dev ? `${dev} on device · 0 tokens` : "AI usage";
+}
+
+const sheet = (html) => {
+  const scrim = document.createElement("div"); scrim.className = "scrim";
+  scrim.innerHTML = `<div class="sheet">${html}</div>`;
+  document.body.append(scrim);
+  scrim.onclick = (e) => { if (e.target === scrim || e.target.closest("[data-close]")) scrim.remove(); };
+  return scrim;
+};
+const fmtTok = (n) => n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}k` : String(n || 0);
+
+function showSettings() {
+  let invite = ""; try { invite = localStorage.getItem("invite") || ""; } catch { /* ignore */ }
+  const s = sheet(`
+    <h2>Settings</h2>
+    <div class="set-group"><div class="set-row"><span>Appearance</span>
+      <span class="seg-ctl" id="theme">${["auto", "light", "dark"].map((t) => `<button data-t="${t}" class="${prefs.theme === t ? "on" : ""}">${t[0].toUpperCase() + t.slice(1)}</button>`).join("")}</span></div></div>
+    <div class="set-group">
+      <label class="set-row"><span>Show AI usage<small>Requests and tokens per model today, what this analysis cost, recognitions on your device.</small></span><input type="checkbox" class="switch" id="pUsage" ${prefs.usage ? "checked" : ""}></label>
+      <label class="set-row"><span>Show technical details<small>Model names, analysis date and cache status under the video title.</small></span><input type="checkbox" class="switch" id="pTech" ${prefs.tech ? "checked" : ""}></label>
+    </div>
+    <div class="set-group"><label class="set-row col"><span>Invite code<small>Only needed if the owner asks for one to start new analyses. Examples and the live scanner always work.</small></span>
+      <input class="field" id="pInvite" value="${esc(invite)}" placeholder="optional" autocomplete="off"></label></div>
+    <div style="text-align:right;margin-top:16px"><button class="btn primary" data-close>Done</button></div>`);
+  s.querySelectorAll("#theme button").forEach((b) => (b.onclick = () => { prefs.theme = b.dataset.t; savePrefs(); applyTheme(); s.querySelectorAll("#theme button").forEach((x) => x.classList.toggle("on", x === b)); }));
+  s.querySelector("#pUsage").onchange = (e) => { prefs.usage = e.target.checked; savePrefs(); toolbarActions(); };
+  s.querySelector("#pTech").onchange = (e) => { prefs.tech = e.target.checked; savePrefs(); if (state.data) renderResult(); };
+  s.querySelector("#pInvite").onchange = (e) => { try { localStorage.setItem("invite", e.target.value.trim()); } catch { /* ignore */ } };
+}
+
+async function showUsage() {
+  const s = sheet(`<h2>AI usage</h2><div id="uBody"><div class="skeleton" style="height:160px"></div></div><div style="text-align:right;margin-top:16px"><button class="btn primary" data-close>Done</button></div>`);
+  const u = await fetchUsage(true);
+  const d = state.data;
+  const calls = d?.source?.usage || [];
+  const rec = session.recognitions; const dev = ["barcode", "ocr", "own", "yolo"].reduce((n, k) => n + (rec[k] || 0), 0); const cloud = (rec.gemini || 0) + (rec["workers-ai"] || 0);
+  const hrs = u.reset_in_s ? Math.max(1, Math.round(u.reset_in_s / 3600)) : null;
+  const modelRows = (u.models || []).map((m) => {
+    const cap = u.free_requests_per_model || 20; const pct = Math.min(100, (100 * m.requests) / cap);
+    return `<div class="u-row"><span><b>${esc(modelName(m.model))}</b><small>${m.kind === "video" ? "video analysis" : "camera fallback"}${m.exhausted ? " · used up today" : ""}</small></span>
+      <div class="bar"><i style="width:${pct}%;background:${m.exhausted ? "var(--red)" : "var(--accent)"}"></i></div>
+      <span class="num">${m.requests}/${cap}<small>${fmtTok(m.prompt + m.output + m.thoughts)} tokens</small></span></div>`;
+  }).join("");
+  s.querySelector("#uBody").innerHTML = `
+    <p class="muted small">Gemini's free tier allows about ${u.free_requests_per_model || 20} requests per day and model family. Cached analyses and everything recognised on your device cost nothing.</p>
+    <div class="sect-head"><h3>Today on the server</h3><span class="muted small">${u.available ? `resets in about ${hrs} h` : ""}</span></div>
+    ${u.available ? `<div class="card">${modelRows}${u.workers_ai ? `<div class="u-row"><span><b>Cloudflare Workers AI</b><small>free camera fallback</small></span><div class="bar"><i style="width:${Math.min(100, (100 * u.workers_ai.used) / u.workers_ai.cap)}%"></i></div><span class="num">${u.workers_ai.used}/${u.workers_ai.cap}</span></div>` : ""}</div>`
+      : `<div class="card muted small">Usage numbers come from the online version (Cloudflare Worker). Locally, only this browser's numbers are shown.</div>`}
+    <div class="sect-head"><h3>This video</h3></div>
+    <div class="card">${d ? (calls.length ? calls.map((c) => `<div class="u-row"><span><b>${c.call === "timeline" ? "Brands, timeline, disclosure" : "Authenticity"}</b><small>${esc(modelName(c.model))}</small></span><span class="muted small">${fmtTok(c.prompt)} in · ${fmtTok(c.output)} out${c.thoughts ? ` · ${fmtTok(c.thoughts)} thinking` : ""}</span><span class="num">${fmtTok(c.total || c.prompt + c.output + c.thoughts)}</span></div>`).join("")
+      : `<p class="muted small" style="margin:0">${state.demos.some((x) => x.id === d.video.id) ? "Prepared example – loaded from the repository, no request now." : "Loaded from the saved analysis – no request now. Token numbers are recorded for analyses made from today on."}</p>`)
+      : `<p class="muted small" style="margin:0">Open a video to see what its analysis cost.</p>`}</div>
+    <div class="sect-head"><h3>This session on your device</h3></div>
+    <div class="card"><div class="u-row"><span><b>Live scanner</b><small>barcode, text, own model</small></span><span class="muted small">${dev} recognised on device · 0 tokens</span><span class="num">${cloud ? `${cloud} cloud` : "0 cloud"}</span></div></div>`;
 }
 
 function showInfo() {

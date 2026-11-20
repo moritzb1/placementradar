@@ -63,6 +63,7 @@ export default {
       if (url.pathname === "/api/config") return json(await config(env));
       if (url.pathname === "/api/meta") return json(await videoMeta(url.searchParams.get("v"), env));
       if (url.pathname === "/api/recent") return json(await recent(env));
+      if (url.pathname === "/api/usage") return json(await usage(env));
       if (url.pathname === "/api/analyze" && request.method === "POST") return await analyze(request, env, ctx);
       if (url.pathname === "/api/identify" && request.method === "POST") return await identify(request, env, ctx);
       if (url.pathname.startsWith("/api/")) return json({ error: "not_found" }, 404);
@@ -257,6 +258,39 @@ export async function videoMeta(id, env = {}) {
 }
 
 // ------------------------------------------------------------------------------------------------
+// Usage meter (shown in the app under Settings → "Show AI usage")
+//   usage:<UTC day>:<model> = { requests, ok, failed, prompt, output, thoughts }   (expires after 3 days)
+//   Free tier = ~20 requests per day and model family; the app shows requests against that limit.
+// ------------------------------------------------------------------------------------------------
+const FREE_REQUESTS_PER_MODEL = 20;
+const tokens = (u = {}) => ({ prompt: u.promptTokenCount || 0, output: u.candidatesTokenCount || 0, thoughts: u.thoughtsTokenCount || 0, total: u.totalTokenCount || 0 });
+
+async function recordUsage(env, model, ok, usageMetadata) {
+  if (!env.STORE) return;
+  const key = `usage:${today()}:${model}`;
+  try {
+    const u = (await env.STORE.get(key, "json")) || { requests: 0, ok: 0, failed: 0, prompt: 0, output: 0, thoughts: 0 };
+    const t = tokens(usageMetadata);
+    u.requests += 1; ok ? (u.ok += 1) : (u.failed += 1);
+    u.prompt += t.prompt; u.output += t.output; u.thoughts += t.thoughts;
+    await env.STORE.put(key, JSON.stringify(u), { expirationTtl: 60 * 60 * 24 * 3 }); // KV is not atomic – good enough for a meter
+  } catch { /* the meter must never break an analysis */ }
+}
+
+/** GET /api/usage → today's requests and tokens per model, exhausted flags, Workers AI counter. */
+async function usage(env) {
+  const models = [...new Set([...videoModels(env), ...frameModels(env)])];
+  const out = { day: today(), reset_in_s: secondsToReset(), free_requests_per_model: FREE_REQUESTS_PER_MODEL, models: [], workers_ai: null };
+  if (!env.STORE) return { ...out, available: false };
+  const exhausted = new Set(await exhaustedModels(env, models));
+  const rows = await Promise.all(models.map((m) => env.STORE.get(`usage:${today()}:${m}`, "json")));
+  out.models = models.map((m, i) => ({ model: m, kind: videoModels(env).includes(m) ? "video" : "frame", exhausted: exhausted.has(m),
+    ...(rows[i] || { requests: 0, ok: 0, failed: 0, prompt: 0, output: 0, thoughts: 0 }) }));
+  out.workers_ai = { used: Number(await env.STORE.get(`global:workers-ai:${today()}`)) || 0, cap: Number(env.DAILY_WORKERS_AI || 250) };
+  return { ...out, available: true };
+}
+
+// ------------------------------------------------------------------------------------------------
 // Gemini with model chain.
 //   429 per-day quota → model marked exhausted until the next reset, skipped instantly afterwards
 //   429 per-minute / 500 / 503 → next model, then one more round after a short pause
@@ -280,9 +314,11 @@ export async function gemini(env, models, body, onEvent = () => {}) {
       if (r.ok) {
         const j = await r.json();
         const text = (j.candidates?.[0]?.content?.parts || []).map((p) => p.text || "").join("");
-        return { model, data: JSON.parse(text), usage: j.usageMetadata };
+        await recordUsage(env, model, true, j.usageMetadata);
+        return { model, data: JSON.parse(text), usage: tokens(j.usageMetadata) };
       }
       const err = await r.text();
+      await recordUsage(env, model, false);
       last = `${model}: HTTP ${r.status} ${err.slice(0, 160)}`;
       const after_s = Math.round((Date.now() - t0) / 1000);
       console.log(`gemini fail ${model} HTTP ${r.status} after ${after_s}s: ${err.slice(0, 300)}`); // visible in `wrangler tail` / dashboard logs
@@ -384,6 +420,8 @@ async function analyze(request, env, ctx) {
 
     await send("stage", { id: "done" });
     const result = normalizeAnalysis({ video: meta, timeline: tl.data, authenticity: au?.data, models: [tl.model, au?.model].filter(Boolean) });
+    // tokens per call, shown in the app's usage meter ("this analysis cost …")
+    result.source.usage = [{ call: "timeline", model: tl.model, ...tl.usage }, ...(au ? [{ call: "authenticity", model: au.model, ...au.usage }] : [])];
     if (!result.video.duration_s) { // YouTube withheld the length (bot check) → last brand appearance as lower bound
       const ends = (result.brands || []).flatMap((b) => (b.appearances || []).map((x) => x.end_s || 0));
       if (ends.length) { result.video.duration_s = Math.max(...ends); result.video.duration_estimated = true; }

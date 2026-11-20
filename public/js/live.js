@@ -420,6 +420,8 @@ async function identify(t) {
 // "Seen in this session" list
 // ------------------------------------------------------------------------------------------------
 function addSeen(item) {
+  // usage meter (Settings → Show AI usage): on-device results cost 0 tokens, Gemini/Workers AI results cost one request
+  window.dispatchEvent(new CustomEvent("pr:recognition", { detail: { engine: item.engine, model: item.model || null } }));
   const key = item.code || `${item.brand}|${item.engine}`; const prev = S.seen.get(key);
   S.seen.delete(key); // re-insert → most recent on top
   S.seen.set(key, { ...prev, ...item, image: item.image || prev?.image, n: (prev?.n || 0) + 1 });

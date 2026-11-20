@@ -436,8 +436,10 @@ async function identify(request, env, ctx) {
 function cleanItems(items) {
   return (Array.isArray(items) ? items : []).filter((it) => it && typeof it.brand === "string" && it.brand.trim())
     .map((it) => {
-      const b = Array.isArray(it.box_2d) && it.box_2d.length === 4 && it.box_2d.every((n) => Number.isFinite(Number(n)))
-        ? it.box_2d.map((n) => Math.max(0, Math.min(1000, Math.round(Number(n))))) : null;
+      const raw = Array.isArray(it.box_2d) && it.box_2d.length === 4 && it.box_2d.every((n) => Number.isFinite(Number(n))) ? it.box_2d.map(Number) : null;
+      const scale = raw && raw.every((n) => n <= 1) ? 1000 : 1; // some models answer 0–1 instead of 0–1000
+      let b = raw && raw.map((n) => Math.max(0, Math.min(1000, Math.round(n * scale))));
+      if (b && (b[2] - b[0] < 5 || b[3] - b[1] < 5)) b = null; // degenerate box = no position
       const c = Number(it.confidence);
       return { brand: it.brand.trim(), product: String(it.product || "").trim(), box_2d: b, confidence: Number.isFinite(c) ? Math.max(0, Math.min(1, c)) : null };
     }).slice(0, 12);
@@ -466,9 +468,10 @@ async function identifyWorkersAI(env, image) {
   const dataUri = `data:image/jpeg;base64,${image}`;
   const bytes = () => [...Uint8Array.from(atob(image), (c) => c.charCodeAt(0))];
   // Cloudflare documents several input shapes for vision models; we try them in this order (first that works wins)
+  // (online test 20 Nov: Llama 3.2 Vision accepts the "messages + image bytes" shape; the image_url shape fails with 3030)
   const shapes = [
-    () => ({ messages: [{ role: "user", content: [{ type: "text", text: OPEN_PROMPT }, { type: "image_url", image_url: { url: dataUri } }] }] }),
     () => ({ messages: [{ role: "system", content: "You identify brands in images." }, { role: "user", content: OPEN_PROMPT }], image: bytes() }),
+    () => ({ messages: [{ role: "user", content: [{ type: "text", text: OPEN_PROMPT }, { type: "image_url", image_url: { url: dataUri } }] }] }),
     () => ({ prompt: OPEN_PROMPT, image: bytes() }),
   ];
   const errors = [];

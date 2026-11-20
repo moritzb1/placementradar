@@ -173,18 +173,22 @@ const BROWSER_HEADERS = {
   cookie: "CONSENT=YES+cb; SOCS=CAI", // skips the EU cookie-consent interstitial
 };
 
-async function playerFromWatchPage(id) {
+async function playerFromWatchPage(id, trace) {
   const page = await fetch(`https://www.youtube.com/watch?v=${id}&hl=en`, { headers: BROWSER_HEADERS });
-  if (!page.ok) return null;
-  const m = (await page.text()).match(/ytInitialPlayerResponse\s*=\s*(\{.+?\});\s*(?:var|<\/script>)/s);
-  try { return m ? JSON.parse(m[1]) : null; } catch { return null; }
+  const html = page.ok ? await page.text() : "";
+  const m = html.match(/ytInitialPlayerResponse\s*=\s*(\{.+?\});\s*(?:var|<\/script>)/s);
+  let p = null; try { p = m ? JSON.parse(m[1]) : null; } catch { /* format changed */ }
+  trace.push(`watch:${page.status}${/consent\./.test(page.url + html.slice(0, 5000)) ? ":consent" : ""}:${p?.playabilityStatus?.status || (m ? "unparsed" : "no-player")}`);
+  return p;
 }
 
-async function playerFromApi(id) {
+async function playerFromApi(id, trace) {
   const r = await fetch("https://www.youtube.com/youtubei/v1/player?prettyPrint=false", {
     method: "POST", headers: { ...BROWSER_HEADERS, "content-type": "application/json" },
     body: JSON.stringify({ context: { client: { clientName: "WEB", clientVersion: "2.20241120.01.00", hl: "en" } }, videoId: id }) });
-  return r.ok ? r.json().catch(() => null) : null;
+  const j = r.ok ? await r.json().catch(() => null) : null;
+  trace.push(`api:${r.status}:${j?.playabilityStatus?.status || "-"}:${j?.videoDetails?.viewCount ? "details" : "no-details"}`);
+  return j;
 }
 
 export async function videoMeta(id) {
@@ -192,8 +196,10 @@ export async function videoMeta(id) {
   const meta = { id, title: "", channel: "", views: null, duration_s: null, upload_date: null, description: "" };
   const o = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`);
   if (o.ok) { const j = await o.json(); meta.title = j.title; meta.channel = j.author_name; }
-  let p = await playerFromWatchPage(id);
-  if (!p?.videoDetails?.viewCount) p = (await playerFromApi(id)) || p;
+  const trace = []; // which YouTube source answered how – returned as meta.source for diagnosis
+  let p = await playerFromWatchPage(id, trace);
+  if (!p?.videoDetails?.viewCount) p = (await playerFromApi(id, trace)) || p;
+  meta.source = trace.join(" ");
   const d = p?.videoDetails;
   if (d) {
     meta.title ||= d.title; meta.channel ||= d.author;

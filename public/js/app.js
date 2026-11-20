@@ -20,6 +20,7 @@ import { videoValue, brandValue, euro, WEIGHTS, DEFAULTS } from "./value.js";
 import { checkDisclosure } from "./disclosure.js";
 import { mmss } from "./shared/normalize.js";
 import { renderLive, stopLive } from "./live.js";
+import { hydrateLogos } from "./logos.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -28,6 +29,8 @@ const fmtViews = (n) => n == null ? "–" : n >= 1e6 ? `${(n / 1e6).toFixed(1)}M
 const fmtDur = (v) => (v?.duration_estimated ? "≈ " : "") + mmss(v?.duration_s || 0);
 /** "20261117" (yt-dlp style) or "2026-11-17" → "2026-11-17". */
 const fmtDate = (d) => String(d || "").replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3");
+/** Small (i) with an explanation on hover/focus – used next to every number. */
+const info = (text) => `<span class="info" tabindex="0" role="note" aria-label="${esc(text)}" data-info="${esc(text)}">i</span>`;
 const PALETTE = ["#0a84ff", "#ff9f0a", "#30d158", "#bf5af2", "#ff375f", "#64d2ff", "#ffd60a", "#ac8e68", "#5e5ce6", "#66d4cf"];
 
 const state = { demos: [], recent: [], data: null, id: null, view: "overview", player: null, colors: new Map(), opts: { ...DEFAULTS }, pendingSeek: null };
@@ -49,7 +52,7 @@ const session = { recognitions: {} };
 window.addEventListener("pr:recognition", (e) => { const k = e.detail.engine || "other"; session.recognitions[k] = (session.recognitions[k] || 0) + 1; refreshUsagePill(); });
 
 const VIEWS = [
-  { id: "overview", label: "Overview", icon: "overview" },
+  { id: "overview", label: "Products", icon: "bag" },
   { id: "timeline", label: "Brand timeline", icon: "timeline" },
   { id: "value", label: "Media value", icon: "value" },
   { id: "disclosure", label: "Ad disclosure", icon: "shield" },
@@ -74,8 +77,12 @@ function parseHash() {
   return { parts, t: params.has("t") ? Number(params.get("t")) : null };
 }
 
+let lastPage = "";
 async function route() {
   const { parts, t } = parseHash();
+  // new page (not just another tab of the same video) → start at the top
+  const pageKey = parts[0] === "v" ? `v/${parts[1]}` : parts[0] || "start";
+  if (pageKey !== lastPage) { window.scrollTo(0, 0); lastPage = pageKey; }
   stopLive();
   if (parts[0] === "live") {
     state.id = null; state.data = null; state.page = "live";
@@ -127,27 +134,20 @@ const mono = (brand) => `<span class="mono" style="background:${color(brand)}">$
 // ------------------------------------------------------------------------------------------------
 // Sidebar
 // ------------------------------------------------------------------------------------------------
-function renderSidebar() {
-  const inVideo = !!state.data;
-  const lib = (list) => list.map((d) => `<button class="nav-item lib ${state.id === d.id ? "active" : ""}" data-open="${esc(d.id)}"><img alt="" src="https://i.ytimg.com/vi/${esc(d.id)}/default.jpg"><span>${esc(d.title || d.id)}</span></button>`).join("");
-  $("#sidebar").innerHTML = `
-    <div class="brandmark" data-home>${LOGO}<span>PlacementRadar</span></div>
-    <button class="nav-item ${state.page === "start" ? "active" : ""}" data-home>${icon("search")}<span>Analyse a video</span></button>
-    <button class="nav-item ${state.page === "live" ? "active" : ""}" data-live>${icon("camera")}<span>Live scanner</span></button>
-    ${inVideo ? `<div class="nav-label">This video</div>
-      ${VIEWS.map((v) => `<button class="nav-item ${state.view === v.id ? "active" : ""}" data-view="${v.id}">${icon(v.icon)}<span>${v.label}</span></button>`).join("")}` : ""}
-    <div class="nav-label">Examples</div>${lib(state.demos)}
-    ${state.recent.length ? `<div class="nav-label">Analysed by visitors</div>${lib(state.recent.slice(0, 5))}` : ""}
-    <div class="side-foot">
-      <button class="nav-item" data-settings>${icon("sliders")}<span>Settings</span></button>
-      <button class="nav-item" data-about><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".6" fill="currentColor"/></svg><span>About</span></button>
-    </div>`;
-  $("#sidebar").querySelectorAll("[data-home]").forEach((b) => (b.onclick = () => { location.hash = "#/"; }));
-  $("[data-live]").onclick = () => { location.hash = "#/live"; };
-  $("[data-settings]").onclick = showSettings;
-  $("[data-about]").onclick = showInfo;
-  $("#sidebar").querySelectorAll("[data-view]").forEach((b) => (b.onclick = () => go(state.id, b.dataset.view)));
-  $("#sidebar").querySelectorAll("[data-open]").forEach((b) => (b.onclick = () => go(b.dataset.open)));
+/** Glass top bar: logo · the two modes (analyse a video / camera) · usage + settings + about. One place for everything. */
+function renderSidebar() { renderTopbar(); } // old name, still called from routing
+function renderTopbar() {
+  const mode = state.page === "live" ? "live" : "video";
+  $("#topbar").innerHTML = `
+    <button class="tb-brand" data-home>${LOGO}<span>PlacementRadar</span></button>
+    <nav class="mode-switch" aria-label="Mode">
+      <button class="${mode === "video" ? "on" : ""}" data-home>${icon("play")}<span>Video analysis</span></button>
+      <button class="${mode === "live" ? "on" : ""}" data-live>${icon("camera")}<span>Live scanner</span></button>
+    </nav>
+    <span id="tbActions" class="tb-actions"></span>`;
+  $("#topbar").querySelectorAll("[data-home]").forEach((b) => (b.onclick = () => { location.hash = "#/"; }));
+  $("#topbar [data-live]").onclick = () => { location.hash = "#/live"; };
+  toolbarActions();
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -162,7 +162,6 @@ function renderStart() {
       <div class="m">${esc(d.channel || "")}${d.views != null ? ` · ${fmtViews(d.views)} views` : ""} · ${d.brands ?? "?"} brands</div>
     </article>`;
   $("#main").innerHTML = `
-    <div class="toolbar plain"><span class="spacer"></span><span id="tbActions" class="tb-actions"></span></div>
     <section class="start">
       <div class="hero">
         <div class="app-icon">${LOGO}</div>
@@ -179,7 +178,6 @@ function renderStart() {
       <a class="tool-card" href="#/live"><span class="tc-ic">${icon("camera")}</span><span><b>Live scanner</b><br><span class="muted">Hold a product into your camera – recognised on your device, no cloud needed.</span></span><span class="chev">${icon("chevron")}</span></a>
     </section>`;
   $("#main").querySelectorAll("[data-open]").forEach((el) => (el.onclick = () => go(el.dataset.open)));
-  toolbarActions();
   $("#go").onsubmit = (e) => {
     e.preventDefault();
     const id = parseYouTubeId($("#url").value);
@@ -319,51 +317,50 @@ async function renderAnalyze(id) {
 // ------------------------------------------------------------------------------------------------
 function renderResult() {
   const d = state.data; const v = d.video;
-  const viewLabel = VIEWS.find((x) => x.id === state.view).label;
   const engine = [...new Set(d.source?.models || [])].map(modelName).join(" + ") || "Gemini";
   const meta = [v.channel, v.views != null ? `${fmtViews(v.views)} views` : null, v.duration_s ? fmtDur(v) : null, v.upload_date ? fmtDate(v.upload_date) : null].filter(Boolean);
+  const thumb = `https://i.ytimg.com/vi/${encodeURIComponent(v.id)}/hqdefault.jpg`;
   $("#main").innerHTML = `
-    <div class="toolbar"><h1>${esc(viewLabel)}</h1><span id="tbActions" class="tb-actions"></span></div>
-    <div class="content">
-      <header class="page-head">
-        <div style="min-width:0"><h2 class="large-title">${esc(v.title)}</h2>
-          <div class="meta">${esc(meta.join(" · "))}${prefs.tech ? ` <span class="tech">· ${esc(engine)} · analysed ${esc(d.source?.analyzed_at || "")}${d.cached ? " · from cache" : ""}</span>` : ""}</div></div>
-        <a class="btn" href="https://www.youtube.com/watch?v=${esc(v.id)}" target="_blank" rel="noopener">${icon("play")} YouTube</a>
-      </header>
-      <div id="view"></div>
-    </div>`;
-  toolbarActions();
+    <header class="v-hero">
+      <div class="v-hero-bg" style="background-image:url('${thumb}')"></div>
+      <div class="v-hero-in">
+        <img class="v-thumb" alt="" src="${thumb}">
+        <div class="v-text">
+          <div class="eyebrow">Analysed video</div>
+          <h1>${esc(v.title)}</h1>
+          <div class="meta">${esc(meta.join(" · "))}${prefs.tech ? `<span class="tech"> · ${esc(engine)} · analysed ${esc(d.source?.analyzed_at || "")}</span>` : ""}</div>
+        </div>
+        <a class="btn glass" href="https://www.youtube.com/watch?v=${esc(v.id)}" target="_blank" rel="noopener">${icon("play")} Open on YouTube</a>
+      </div>
+      <nav class="tabs" aria-label="Views">${VIEWS.map((x) => `<button class="${state.view === x.id ? "on" : ""}" data-view="${x.id}">${x.label}</button>`).join("")}</nav>
+    </header>
+    <div class="content" id="view"></div>`;
+  $("#main").querySelectorAll(".tabs [data-view]").forEach((b) => (b.onclick = () => go(state.id, b.dataset.view)));
   ({ overview: viewOverview, timeline: viewTimeline, value: viewValue, disclosure: viewDisclosure, authenticity: viewAuthenticity, report: viewReport })[state.view]();
 }
 
 function destroyPlayer() { state.player?.destroy(); state.player = null; }
 
-/** Mounts the YouTube player incl. "Pause & Find" overlay into #playerHost. */
+/**
+ * Mounts the YouTube player into #playerHost. Products at the current second are listed OUTSIDE the video
+ * (#now panel, if the view has one) – nothing covers the picture. Soft markers show roughly where they are
+ * while the video is paused (positions from Gemini are approximate, see EVALUATION.md test E).
+ */
 function mountPlayer(onTime) {
   destroyPlayer();
   const host = $("#playerHost");
-  const find = document.createElement("div"); find.className = "find";
-  const veil = document.createElement("div"); veil.className = "veil";
   const p = new Player(host.querySelector(".yt-host"), state.id, {
-    // "In this frame" appears only when the viewer pauses or jumps – not over the untouched poster
-    onState: (paused) => { host.classList.toggle("paused", paused && (p.hasPlayed || p.t > 0.5)); if (paused) updateFind(p.t); },
-    onTime: (t) => { onTime?.(t); if (p.paused) updateFind(t); },
+    onState: (paused) => { host.classList.toggle("paused", paused && (p.hasPlayed || p.t > 0.5)); updateNow(p.t); },
+    onTime: (t) => { onTime?.(t); updateNow(t); },
   });
-  host.append(veil, find);
   state.player = p;
-  if (state.pendingSeek) host.classList.add("paused");
-  updateFind(state.pendingSeek ?? 0);
+  updateNow(state.pendingSeek ?? 0);
   if (state.pendingSeek != null) { const t = state.pendingSeek; setTimeout(() => p.seek(t), 900); state.pendingSeek = null; }
+  return p;
 
-  function updateFind(t) {
-    const hits = state.data.brands.filter((b) => b.appearances.some((a) => a.channel === "visual" && t >= a.start_s - 1 && t <= a.end_s + 1));
+  function updateNow(t) {
+    const hits = productsAt(t);
     host.querySelectorAll(".glow").forEach((g) => g.remove());
-    find.innerHTML = `<h4>${icon("bag")} In this frame · ${mmss(t)}</h4>` + (hits.length ? hits.map((b) => {
-      const link = productLink(b);
-      return `<div class="item" data-b="${esc(b.brand)}">${mono(b.brand)}<div style="min-width:0"><div class="t">${esc(b.brand)}</div><div class="p">${esc(b.product || b.category || "")}</div></div>
-        <a href="${esc(link.url)}" target="_blank" rel="noopener" title="${esc(link.title)}">${link.label}</a></div>`;
-    }).join("") : `<div class="empty">No products visible at this moment. Press play or pick a moment on the timeline.</div>`);
-    // Approximate positions (test E: boxes are rough) → soft glowing dots instead of tight frames
     for (const b of hits) {
       const f = (b.frames || []).filter((fr) => Math.abs(fr.t - t) <= 4).sort((x, y) => Math.abs(x.t - t) - Math.abs(y.t - t))[0];
       if (!f) continue;
@@ -371,13 +368,21 @@ function mountPlayer(onTime) {
       g.className = "glow"; g.dataset.b = b.brand; g.style.left = `${(x0 + x1) / 20}%`; g.style.top = `${(y0 + y1) / 20}%`;
       host.append(g);
     }
-    find.querySelectorAll(".item").forEach((it) => {
-      it.onmouseenter = () => host.querySelector(`.glow[data-b="${CSS.escape(it.dataset.b)}"]`)?.classList.add("hot");
-      it.onmouseleave = () => host.querySelectorAll(".glow").forEach((g) => g.classList.remove("hot"));
-    });
+    const now = $("#now"); if (!now) return;
+    now.querySelector(".now-time").textContent = mmss(t);
+    now.querySelector(".now-list").innerHTML = hits.length ? hits.map((b) => {
+      const link = productLink(b);
+      return `<div class="now-item" data-b="${esc(b.brand)}">${logoBox(b.brand, "sm")}<div class="ni-text"><b>${esc(b.brand)}</b><span>${esc(b.product || b.category || "")}</span></div>
+        <a href="${esc(link.url)}" target="_blank" rel="noopener" title="${esc(link.title)}">${link.label}</a></div>`;
+    }).join("") : `<div class="now-empty">No product in view at this second.<br><span>Press play, or pick a product below to jump to it.</span></div>`;
+    hydrateLogos(now);
+    $("#view").querySelectorAll(".pcard").forEach((c) => c.classList.toggle("live", hits.some((b) => b.brand === c.dataset.brand)));
   }
-  return p;
 }
+
+const productsAt = (t) => state.data.brands.filter((b) => b.appearances.some((a) => a.channel === "visual" && t >= a.start_s - 1 && t <= a.end_s + 1));
+/** Logo tile: coloured initial first, replaced by the official logo once Wikidata answers (logos.js). */
+const logoBox = (brand, size = "") => `<span class="logo ${size}" data-logo="${esc(brand)}" style="--c:${color(brand)}">${esc(brand.replace(/^the /i, "").charAt(0).toUpperCase())}</span>`;
 
 /** Creator's own link from the description if the brand is mentioned next to a URL, else a neutral shopping search. */
 function productLink(b) {
@@ -402,30 +407,61 @@ function viewOverview() {
   const val = videoValue(d, state.opts); const disc = checkDisclosure(d);
   const union = brandTimeShare(d);
   const au = d.authenticity || [];
-  const auTxt = au.length ? `${round5(au.reduce((n, a) => n + a.overall, 0) / au.length)} · ${band(round5(au.reduce((n, a) => n + a.overall, 0) / au.length))}` : "not rated";
-  const spoken = d.brands.filter((b) => b.appearances.some((a) => a.channel === "audio")).length;
+  const auAvg = au.length ? round5(au.reduce((n, a) => n + a.overall, 0) / au.length) : null;
+  const dur = v.duration_s || Math.max(1, ...d.brands.flatMap((b) => b.appearances.map((a) => a.end_s)));
+  const valueOf = new Map(val.rows.map((r) => [r.brand.brand, r]));
+  const sortBy = state.sortBy || "screen";
+  const promoted = new Set(au.map((a) => a.brand.toLowerCase()));
+  const firstAt = (b) => b.appearances[0]?.start_s ?? Infinity;
+  const rows = d.brands.filter((b) => b.appearances?.length).sort((a, b) => sortBy === "first" ? firstAt(a) - firstAt(b)
+    : sortBy === "value" ? (valueOf.get(b.brand)?.euros || 0) - (valueOf.get(a.brand)?.euros || 0)
+    : (valueOf.get(b.brand)?.raw.visual || 0) - (valueOf.get(a.brand)?.raw.visual || 0));
+
   $("#view").innerHTML = `
-    <div class="ov-grid">
+    <div class="watch">
       <div class="player" id="playerHost"><div class="yt-host"></div></div>
-      <div class="summary">
-        <div class="hero-metric"><span class="label">Estimated media value</span>
-          <span class="big num" data-count="${val.total}" data-fmt="euro">€0</span>
-          <span class="sub">${fmtViews(v.views)} views · CPM €${state.opts.cpm} · ${Math.round(state.opts.viewThrough * 100)}% watched</span></div>
-        <div class="glist">
-          <button class="grow" data-goto="timeline"><span>Brands</span><b class="num"><span data-count="${d.brands.length}">0</span></b><span class="g-sub">${spoken} also spoken</span>${icon("chevron")}</button>
-          <button class="grow" data-goto="timeline"><span>Brand on screen</span><b class="num"><span data-count="${union}" data-fmt="pct">0%</span></b><span class="g-sub">of the video</span>${icon("chevron")}</button>
-          <button class="grow" data-goto="disclosure"><span>Ad disclosure</span><b class="status lvl-${disc.level}"><i class="dot"></i>${esc(disc.title)}</b><span class="g-sub"></span>${icon("chevron")}</button>
-          <button class="grow" data-goto="authenticity"><span>Authenticity</span><b>${esc(auTxt)}</b><span class="g-sub"></span>${icon("chevron")}</button>
-          <button class="grow" data-goto="report"><span>Brand report</span><b class="muted-b">PDF + pitch mail</b><span class="g-sub"></span>${icon("chevron")}</button>
-        </div>
-      </div>
+      <aside class="now card" id="now">
+        <div class="now-head"><span class="pulse"></span><b>Right now</b><span class="now-time num">0:00</span>${info("Products Gemini saw in the picture at this second. Follows the video while it plays. Links: the creator's own link from the description if there is one (affiliate links are marked), otherwise a neutral shopping search.")}</div>
+        <div class="now-list"></div>
+      </aside>
     </div>
-    <section class="sect"><div class="sect-head"><h3>Brand timeline</h3>${legend()}<button class="link" data-goto="timeline">Show all ${d.brands.length}</button></div>
-      <div class="card" id="tl"></div></section>`;
-  const tl = timeline($("#tl"), { maxRows: 6 });
-  mountPlayer((t) => tl.setTime(t));
-  countUp();
-  $("#view").querySelectorAll("[data-goto]").forEach((el) => (el.onclick = () => go(state.id, el.dataset.goto)));
+
+    <div class="stats">
+      <button class="stat" data-goto="timeline"><span class="s-label">Products ${info("Distinct brands Gemini found in the picture, in on-screen text or in speech. Spelling variants are merged.")}</span><b class="num">${d.brands.length}</b><span class="s-sub">${d.brands.filter((b) => b.appearances.some((a) => a.channel === "audio")).length} also mentioned in speech</span></button>
+      <button class="stat" data-goto="timeline"><span class="s-label">Brand on screen ${info("Share of the video in which at least one brand is visible. Overlapping appearances are counted once.")}</span><b class="num">${union}%</b><span class="s-sub">of ${fmtDur(v)}</span></button>
+      <button class="stat" data-goto="disclosure"><span class="s-label">Ad disclosure ${info("Looks for an advertising label in title, description, on screen and in speech (§ 5a UWG, § 22 MStV). Green = clear label, orange = weak label, red = commercial signals but no label. A screening aid, not legal advice.")}</span><b class="status lvl-${disc.level}"><i class="dot"></i>${esc(disc.title)}</b><span class="s-sub">${esc(disc.sub)}</span></button>
+      <button class="stat" data-goto="authenticity"><span class="s-label">Authenticity ${info("How genuine the recommendation feels: six factors rated by Gemini from image and sound (use shown, balance, specificity, delivery, body language, sales pressure). Rounded to 5 because runs vary by about ±6 points.")}</span><b class="num">${auAvg ?? "–"}</b><span class="s-sub">${auAvg != null ? band(auAvg) : "not rated"}</span></button>
+      <button class="stat" data-goto="value"><span class="s-label">Media value ${info(`What the same exposure would cost as 30-second video ads: views ÷ 1000 × CPM (€${state.opts.cpm}) × weighted seconds ÷ 30 × share watched (${Math.round(state.opts.viewThrough * 100)}%). Weighted seconds count large, central, in-use appearances more. Adjustable under Media value.`)}</span><b class="num">${euro(val.total)}</b><span class="s-sub">${fmtViews(v.views)} views</span></button>
+    </div>
+
+    <section class="sect">
+      <div class="sect-head"><h3>All products <span class="count">${rows.length}</span></h3>
+        <span class="seg-ctl" id="psort">${[["screen", "Screen time"], ["first", "In order"], ["value", "Value"]].map(([k, l]) => `<button data-s="${k}" class="${sortBy === k ? "on" : ""}">${l}</button>`).join("")}</span></div>
+      <div class="pgrid">${rows.map((b) => {
+        const r = valueOf.get(b.brand) || { raw: {}, euros: 0 };
+        const vis = b.appearances.filter((a) => a.channel === "visual");
+        const spoken = b.appearances.filter((a) => a.channel === "audio").length;
+        const first = (vis[0] || b.appearances[0])?.start_s ?? 0;
+        const jumps = (vis.length ? vis : b.appearances).slice(0, 5);
+        return `<article class="pcard" data-brand="${esc(b.brand)}" data-t="${first}" tabindex="0">
+          <div class="pc-top">${logoBox(b.brand)}<div class="pc-name"><b>${esc(b.brand)}</b><span>${esc(b.product || b.category || "")}</span></div>
+            ${promoted.has(b.brand.toLowerCase()) ? `<span class="tag">promoted</span>` : b.appearances.some((a) => a.in_use) ? `<span class="tag soft">in use</span>` : ""}</div>
+          <div class="pc-lane">${b.appearances.map((a) => `<i class="${a.channel}" style="left:${Math.min(100, (100 * a.start_s) / dur)}%;width:${Math.max(0.8, (100 * (a.end_s - a.start_s)) / dur)}%;background:${color(b.brand)};color:${color(b.brand)}"></i>`).join("")}</div>
+          <div class="pc-facts"><span><b class="num">${Math.round(r.raw.visual || 0)} s</b> on screen</span><span><b class="num">${spoken}×</b> spoken</span><span><b class="num">${euro(r.euros)}</b> value</span></div>
+          <div class="pc-jumps">${jumps.map((a) => `<button class="time" data-jump="${a.start_s}">${mmss(a.start_s)}</button>`).join("")}${b.appearances.length > jumps.length ? `<span class="more">+${b.appearances.length - jumps.length}</span>` : ""}</div>
+        </article>`;
+      }).join("")}</div>
+    </section>`;
+
+  mountPlayer();
+  hydrateLogos($("#view"));
+  const jump = (t) => { $("#playerHost").classList.add("paused"); state.player?.seek(t); $("#playerHost").scrollIntoView({ behavior: "smooth", block: "center" }); };
+  $("#view").querySelectorAll(".pcard").forEach((c) => {
+    c.onclick = (e) => { const j = e.target.closest("[data-jump]"); jump(Number(j ? j.dataset.jump : c.dataset.t)); };
+    c.onkeydown = (e) => { if (e.key === "Enter") jump(Number(c.dataset.t)); };
+  });
+  $("#view").querySelectorAll("[data-goto]").forEach((el) => (el.onclick = (e) => { if (!e.target.closest(".info")) go(state.id, el.dataset.goto); }));
+  $("#psort").querySelectorAll("button").forEach((b) => (b.onclick = () => { state.sortBy = b.dataset.s; viewOverview(); }));
 }
 
 function brandTimeShare(d) {
@@ -494,7 +530,7 @@ function viewTimeline() {
   $("#view").innerHTML = `
     <div class="grid-top" style="grid-template-columns:minmax(0,1fr) 300px">
       <div class="player" id="playerHost"><div class="yt-host"></div></div>
-      <div class="card"><h3>${icon("sparkle")} How to read it</h3>
+      <div class="card"><h3>How to read it</h3>
         <p class="small muted">Every row is one brand. Filled bars: visible in the image. Outlined: mentioned in speech. Dotted: on-screen text. Flags mark advertising labels.</p>
         <p class="small muted">Click a bar to jump there. Pause the video to see <b>which products are in the frame</b> (Pause &amp; Find).</p>
         <p class="small muted">Positions in the frame are approximate – Gemini's boxes are rough for video (see EVALUATION.md, test E).</p></div>
@@ -723,11 +759,11 @@ function pitchMail(b, r, mentions, disc) {
 // ------------------------------------------------------------------------------------------------
 // "i" button: what PlacementRadar does, in one screen
 // ------------------------------------------------------------------------------------------------
-function addInfoButton() { toolbarActions(); } // kept for live.js / older call sites
+function addInfoButton() { /* actions live in the top bar now */ }
 
 /** Right side of every toolbar: usage pill (if enabled in Settings) + settings + about. */
 function toolbarActions() {
-  const host = $("#tbActions") || (() => { const bar = $("#main .toolbar"); if (!bar) return null; const s = document.createElement("span"); s.id = "tbActions"; s.className = "tb-actions"; bar.append(s); return s; })();
+  const host = $("#tbActions");
   if (!host) return;
   host.innerHTML = `${prefs.usage ? `<button class="usage-pill" id="usagePill" title="AI usage today">${icon("chip")}<span>AI usage</span></button>` : ""}
     <button class="icon-btn" id="tbSettings" title="Settings" aria-label="Settings">${icon("sliders")}</button>

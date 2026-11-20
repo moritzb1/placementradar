@@ -11,13 +11,11 @@
 <body>
   <!--
     PlacementRadar – final project, MMI5190E "The New Frontiers of AI" (Prof. Pin Luarn), HS Pforzheim, WiSe 2026/27.
-    Structure:  sidebar (navigation, recent analyses)  |  main (toolbar + current view)
+    Structure:  glass top bar (logo · Video / Camera switch · settings)  over  main (current page)
     All views are rendered by js/app.js. See README.md for architecture and data flow.
   -->
-  <div class="app">
-    <aside class="sidebar" id="sidebar"></aside>
-    <main id="main"></main>
-  </div>
+  <header class="topbar" id="topbar"></header>
+  <main id="main"></main>
   <script type="module" src="js/app.js"></script>
 </body>
 </html>

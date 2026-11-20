@@ -1,7 +1,24 @@
 # Evaluation – feasibility tests before building
 
 Every mechanism was tested on its own before it went into the app ("small tests first, then the whole").
-Scripts and raw results: `../tests/` (`test_*.py`, `ergebnisse/*.json`). Dates: 19 Nov 2026.
+Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). Dates: 19–20 Nov 2026.
+
+## At a glance
+| Question | Answer (measured) | Test |
+|---|---|---|
+| Can Gemini watch a YouTube video from the link alone? | yes, free tier, image + audio, 100–300 s per video | A |
+| Are its timestamps right? | ±2 s at 9 of 9 spot checks | B |
+| How stable is it? | 22 vs. 27 brands in two runs; authenticity ±6 | B, E |
+| How many requests are free? | 20 per day per model family (~100 with a model chain) | Quota |
+| Can a camera frame go to Gemini? | yes, 6/6 in 1.7 s – but a live camera would use the day's quota in 40 s | D |
+| Does a standard detector (YOLO26, COCO) find groceries? | no – 0 of 6 packages | S2 |
+| Does an open-vocabulary detector (YOLOE)? | 6 of 6 | S2 |
+| Can the browser read the brand (OCR)? | 37/49 real product photos, 0 wrong brands, 125 ms | S2 |
+| Does our own trained model add anything? | OCR + own model 41/49 (84 %), 0 wrong labels from the model; 96 % of its answers right on 741 held-back products | S2b |
+| Does general CLIP work for product search? | no – 0/5 on small crops | H3 |
+| Does a free fallback provider help? | Workers AI (Llama 3.2 Vision) finds main brands, reads slogans as brands → last resort only | S1 |
+
+Failures are part of the result: H3, the combined Gemini call (E), the first OCR run with 11 wrong brands (S2), the "other brand" class (S2b) and the dropped supermarket video (S3) each changed the design.
 
 Test videos (public YouTube): *What's in my Bag? These are the essentials* (8:11, EN), *Glückstoff orthopädisches Kopfkissen im Test* (3:50, DE), *2019 BMW X5 vs 2019 Volvo XC90 – Crash Test* (1:54).
 

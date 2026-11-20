@@ -61,7 +61,8 @@ Free tier: **20 requests/day per model family**. `gemini-3.7-flash` and `gemini-
 | Camera crop via `/api/identify` (provider router) | Gemini 3.5 Flash-Lite, **1.85 s**, brand correct (Lidl logo); same crop again: **from cache in 0.01 s**, no API call |
 | Simulated empty quota (all video models flagged) | `/api/config` → `video_quota_left: false`; new video → HTTP 429 with the friendly message; examples keep working |
 | Real analysis, 17.5-min video `WK5s-gDideg` | 3.8-Flash and 3.6-Flash failed (overloaded/rate-limited, not daily quota), 3.5-Flash delivered the timeline; **~10 min in total**. Stream stayed open with heartbeats; our test client gave up after 590 s, **but the Worker finished in the background and stored the result in KV** – the next request got it instantly and the app showed it (10 brands, "Disclosure found") |
-| Workers AI (Llama 3.2 Vision) | not testable locally (needs Cloudflare login) → *to be measured online* |
+| Workers AI (Llama 3.2 Vision), **online** | works with the input shape *messages + image bytes* (the `image_url` shape fails with error 3030). On the thumbnail collage it found REWE, Lidl and "XC90" (Volvo) but also read slogans as brands ("Perfektes Kissen") and gave useless boxes (0–1 scale, degenerate) → good enough as a fallback after Gemini, not as a first choice |
+| YouTube metadata, **online** | YouTube answers the Worker's data-centre IP with `LOGIN_REQUIRED` (bot check) on the watch page and the player endpoint in almost every request – locally everything worked. Views, upload date and description are still in the rendered page data and are read from there; **the video length is missing** → estimated from the brand timeline (`duration_estimated`), exact with an optional YouTube Data API key |
 
 Consequences: failures are now logged per model (`wrangler tail`) and sent to the UI as `retry` events; long analyses are safe because the result is cached even if the visitor closes the page.
 

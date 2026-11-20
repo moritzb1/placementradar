@@ -116,6 +116,8 @@ Everything runs on free tiers; there is no paid fallback. The Worker therefore n
 | Single-frame provider router | Gemini Flash-Lite → **Cloudflare Workers AI** (Llama 3.2 Vision, free daily allowance, no key) → OpenRouter free models (optional) | 1 per crop |
 | Quota empty | the visitor sees *"Today's free analyses are used up – try an example, the live scanner, or come back tomorrow."* `GET /api/config` reports `video_quota_left` beforehand | 0 |
 
+YouTube shows a bot check to data-centre IPs, so the Worker reads views, date and description from the rendered page data; the exact video length needs the optional secret `YOUTUBE_API_KEY` (YouTube Data API v3, free 10,000 units/day), otherwise it is estimated from the brand timeline.
+
 Model names are Worker variables (`VIDEO_MODELS`, `FRAME_MODELS`, `FRAME_PROVIDERS`, …, see `wrangler.jsonc`). When Google retires a model, the variable is changed in the dashboard – no rebuild; a model that returns 404 is skipped automatically.
 
 ## 7. Run it

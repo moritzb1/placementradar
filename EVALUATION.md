@@ -66,6 +66,21 @@ Free tier: **20 requests/day per model family**. `gemini-3.7-flash` and `gemini-
 
 Consequences: failures are now logged per model (`wrangler tail`) and sent to the UI as `retry` events; long analyses are safe because the result is cached even if the visitor closes the page.
 
+## S2 – Live scanner on the device: packaging finder + text recognition (20 Nov, in the browser)
+Problem from 19 Nov: on a photo of six German grocery packages (Kaba, Prinzen Rolle, ültje, Lorenz, Zentis, Meggle) YOLO26 (COCO classes) found **nothing** – bags, jars, tubs and boxes are not COCO classes.
+
+| Check | Setup | Result |
+|---|---|---|
+| **YOLOE packaging finder** vs. YOLO26 | same 6-package photo, 512 px, WebGPU | YOLO26: 0 objects. **YOLOE-26s with a packaging vocabulary: 6/6 packages boxed.** YOLOE-26n (smaller): 5/6 → we use 26s |
+| Model size for the web | YOLOE-26s ONNX | 40 MB → 19 MB by cutting the unused mask branch and storing float16 weights; outputs identical to float32 (checked on the test photo). Below Cloudflare's 25 MiB per-file limit |
+| **OCR → brand dictionary** on the 6-package photo | PaddleOCR v3 (ONNX, WASM) + 868 brands from Open Food Facts | **6/6 brands** in 0.6 s (first 5/6: "Lorenz" was read as "Lolen2" → digit/letter look-alikes are now mapped before the fuzzy comparison) |
+| **OCR → brand**, 49 real product photos | same photos as H4, ground truth = brands in Open Food Facts; second run in webcam quality (640 px, blur, JPEG 0.6) | original: **37/49 (76 %)** correct brand incl. brand family (Sprite ↔ Coca-Cola, Actimel ↔ Danone), 34/49 exact; webcam: **36/49 (73 %)**. **Wrong brands: 0** (one "Oreo" on the Philadelphia-Oreo mousse is printed on the pack). Median **125 ms** (webcam 169 ms) per photo |
+| First run, before tuning | same 49 photos | 11 wrong brands: package words one typo away from a brand ("HAFER" → Hofer, "VEGAN" → Veganz, "PROTEIN" → Myprotein). Fix: common package words may only match a brand exactly; 2 typos only from 10 letters |
+| Camera mode | simulated camera (moving test photo, 20 fps) | 6 objects tracked, all 6 named; text recognition every 1.8 s, ~0.55 s each, runs beside the detector |
+
+Not recognised by text (12/49): script or picture logos (Coca-Cola ×3, Kinder, Babybel wax, Fruchtzwerge), store brands without a brand name on the front (REWE Beste Wahl, Milbona). These are the cases for the next stages: own image model, then Gemini.
+Test script: `tests/test_s2_ocr_browser.js`, results: `tests/ergebnisse/s2_live/`.
+
 ## H – Recognising brands without the API
 | Test | Setup | Result |
 |---|---|---|
@@ -82,3 +97,4 @@ Caveat H4: query photo and gallery image come from the same original shot (galle
 2. For live recognition the free quota is the bottleneck – use on-device models and ask Gemini only when unsure.
 3. A domain-specific embedding model (Marqo-Ecommerce) beats a general one (CLIP) clearly for products.
 4. Report uncertainty honestly in the UI: rounded scores, approximate markers, neutral wording.
+5. On packages, *reading* beats *recognising*: brand names are printed large, and a 13 MB OCR model plus an open brand list names three out of four products on the device in ~0.15 s – with no wrong brands once ordinary package words are excluded from fuzzy matching.

@@ -27,7 +27,7 @@ PlacementRadar answers both from a single YouTube link and adds a third, newer q
 | **Media value** | visibility score 0–100 and estimated € value per brand; transparent formula, adjustable CPM and view-through | done |
 | **Ad disclosure check** | traffic light: *Disclosure found / Check disclosure / No disclosure found / No advertising detected*, with every place that was checked | done |
 | **Authenticity score** | six sub-scores (use shown, balance, specificity, delivery, body language, sales pressure), each with timestamped evidence | done |
-| **Live scanner** | webcam or photo: YOLO26 finds objects on the device, a **barcode gives the exact product** via Open Food Facts (name, photo, Nutri-Score), tap a box to ask Gemini | v1 done |
+| **Live scanner** | webcam or photo: a packaging finder (YOLOE) boxes products on the device, **text recognition reads the brand** (3 of 4 products, no API), a **barcode gives the exact product** via Open Food Facts (name, photo, Nutri-Score), tap a box to ask Gemini; the side panel shows live what each stage sees | v2 done |
 | **Own model** | brand classifier trained by us on open product images, learns from Gemini's answers | in progress |
 | **Brand report** | one-page PDF for the brand + pitch mail to the creator | planned |
 
@@ -54,7 +54,7 @@ flowchart LR
 
 **Engine 1 – Gemini (cloud).** Understands the whole video, image *and* audio, directly from the YouTube URL (no download). Two calls per video: (1) brand timeline incl. disclosures and rough positions, (2) authenticity of the promoted products. Splitting the calls was necessary: one combined call made smaller models drop most brands (EVALUATION.md, test E).
 
-**Engine 2 – on-device vision (browser).** For the live scanner: object detection (YOLO26, ONNX in the browser, known from unit 3), a logo detector, text recognition (OCR), barcode scanning with a lookup in Open Food Facts, and visual product search with an e-commerce embedding model. Costs no API quota and keeps camera images on the device.
+**Engine 2 – on-device vision (browser).** For the live scanner: a packaging finder (YOLOE – an open-vocabulary YOLO told "snack bag, jar, tub, box …" before export; YOLO26 from unit 3 as fallback), text recognition (OCR) matched against an Open Food Facts brand list, barcode scanning with a lookup in Open Food Facts, and visual product search with an e-commerce embedding model. Costs no API quota and keeps camera images on the device.
 
 **Engine 3 – our own model.** A brand classifier trained on open product images (Open Food Facts) – and continuously on Gemini's answers ("Gemini teaches, the device remembers"). The more the app is used, the less it needs the API.
 

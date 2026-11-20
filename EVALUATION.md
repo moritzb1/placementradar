@@ -81,6 +81,60 @@ Problem from 19 Nov: on a photo of six German grocery packages (Kaba, Prinzen Ro
 Not recognised by text (12/49): script or picture logos (Coca-Cola ×3, Kinder, Babybel wax, Fruchtzwerge), store brands without a brand name on the front (REWE Beste Wahl, Milbona). These are the cases for the next stages: own image model, then Gemini.
 Test script: `tests/test_s2_ocr_browser.js`, results: `tests/ergebnisse/s2_live/`.
 
+## S2b – Our own brand model (stage 4), trained and measured (20 Nov)
+Goal: name the packages OCR cannot read – script and picture logos, store brands. Idea: a small pretrained image encoder
+(Apple **MobileCLIP**, open weights) turns a package into a 512-number fingerprint; we keep it frozen and train only a
+**linear brand head** on top. Data (`tools/train_brand_data.py`): the 20,000 most-scanned products in Germany on Open Food
+Facts → **131 brands, 3,707 products, 7,400 photos** (clean packshot + original upload with hand/shelf/background).
+Split **by product**: 2,966 products for training (+3 webcam-like variants per photo), **741 held back**. The 49 photos of
+the OCR test are excluded completely. Extra false-alarm set: **146 packs of brands the model does not know**.
+
+| Encoder (image part) | Variant | held-back products, original photo | … webcam quality | 49 OCR test photos | false alarm on unknown brands (≥ 0.9) |
+|---|---|---|---|---|---|
+| MobileCLIP2-S0 (11 M) | text only, no training (zero-shot) | 39 % | 28 % | 57 % | 0 % |
+| | trained head | 67 % | 59 % | 61 % | 6 % |
+| | trained head + text | 70 % | 61 % | 71 % | 10 % |
+| MobileCLIP-S1 (21 M) | text only | 55 % | 35 % | 61 % | 1 % |
+| | trained head | 72 % | 62 % | 61 % | 4 % |
+| | **trained head + text** | **76 %** | 62 % | 71 % | 12 % |
+| MobileCLIP2-S2 (36 M) | text only | 46 % | 31 % | 61 % | 1 % |
+| | trained head | 72 % | 64 % | 65 % | 6 % |
+| | trained head + text | 76 % | 65 % | 76 % | 9 % |
+
+(top-1, no threshold.) "Head + text" is still **one** matrix: both heads are linear in the fingerprint, so
+`W = W_trained + 0.5 · W_text`. Tried and dropped: an extra class "other brand" (1,390 photos of other brands) – it did
+**not** lower false alarms (13–19 %) and cost accuracy.
+
+**Final rule – two opinions must agree:** answer only if the head is ≥ 90 % sure **and** the same brand is among the top 5
+of the text-only comparison. False alarms on unknown brands drop to 3–7 %.
+
+| Encoder | held back: answered · right · wrong | webcam: right · wrong | 49 photos: right · wrong | false alarm |
+|---|---|---|---|---|
+| MobileCLIP2-S0 | 37 % · 269 · 6 | 179 · 5 | 19 · 2 | 5 % |
+| **MobileCLIP-S1 (shipped)** | **55 % · 388 · 16 → 96 % of answers right** | 229 · 7 | 27 · 3 | 7 % |
+| MobileCLIP2-S2 | 46 % · 328 · 10 | 212 · 5 | 24 · 1 | 3 % |
+
+S1 answers far more often than S0 at the same precision; S2 is barely better but 72 MB. S1 as float16 ONNX = 42 MB →
+shipped in three ≤ 20 MB parts (Cloudflare limit 25 MiB per file), joined in the browser; fingerprints match PyTorch
+(cosine ≥ 0.9997).
+
+**Whole cascade in the browser** (`tests/test_s2_eigenes_modell_browser.js`; rule as in the app: brand read exactly >
+own model > brand read with a typo):
+
+| 49 real product photos | OCR only | own model "sure": right · wrong | **OCR + own model** |
+|---|---|---|---|
+| original | 36 | 32 · **0** | **41/49 (84 %)** |
+| webcam quality | 36 | 31 · **0** | **39/49 (80 %)** |
+
+Added by the own model: Babybel, Coca-Cola (script logo), Oreo, Müller, Grafschafter, Milka. Still missed: Kinder,
+Fruchtzwerge, Milbona ×2, REWE Beste Wahl ×2 – there the model is unsure or the text opinion disagrees, so it stays silent.
+~0.24 s per package (WASM, one thread). UI: photo of a Coca-Cola bottle – OCR reads "CcaG · ZERO SUGAR", stage 4 says
+**Coca-Cola 100 %**; grocery photo still 6/6, "Lorenz" (read as "Lolen2") confirmed by the own model at 98 %.
+
+Bugs found on the way: (1) camera mode – ONNX Runtime's WASM backend runs one model at a time ("Session already started")
+→ shared queue `public/js/wasmqueue.js`; (2) OCR read the Coca-Cola logo as "icaoc" → fuzzy match "iChoc" overwrote the
+correct label → a brand read *with a typo* now ranks below the own model. Results: `tests/ergebnisse/s2_live/S2_eigenes_modell.*`.
+
 ## S3 – New example videos, waiting screen, brand report (20 Nov, online Worker)
 | Video | Result | Models | Kept as example? |
 |---|---|---|---|
@@ -110,3 +164,6 @@ Caveat H4: query photo and gallery image come from the same original shot (galle
 3. A domain-specific embedding model (Marqo-Ecommerce) beats a general one (CLIP) clearly for products.
 4. Report uncertainty honestly in the UI: rounded scores, approximate markers, neutral wording.
 5. On packages, *reading* beats *recognising*: brand names are printed large, and a 13 MB OCR model plus an open brand list names three out of four products on the device in ~0.15 s – with no wrong brands once ordinary package words are excluded from fuzzy matching.
+6. Training a small head on a frozen encoder takes seconds on a laptop and adds the brands OCR cannot read (+5 of 49
+   photos, no wrong brand) – but only with a guard: "two opinions agree" (trained head + the encoder's own knowledge of
+   brand names) cut false alarms on unknown brands from 12 % to 7 %; an extra "other brand" class did not help.

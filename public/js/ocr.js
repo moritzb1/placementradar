@@ -14,6 +14,7 @@
  *
  * Connected to: live.js (calls readText + matchBrands), models/brands_de.json, vendor/ort (loaded by live.js).
  */
+import { runWasm } from "./wasmqueue.js";
 
 const DET_LIMIT = 960;        // longer image side for detection (multiple of 32); bigger = finds smaller text, slower
 const DET_THRESH = 0.3;       // pixel probability that counts as text (RapidOCR default)
@@ -69,7 +70,7 @@ async function detectText(src, w, h) {
   const W = Math.max(32, Math.round((w * s) / 32) * 32), H = Math.max(32, Math.round((h * s) / 32) * 32);
   cv.width = W; cv.height = H; cx.drawImage(src, 0, 0, w, h, 0, 0, W, H);
   const x = toTensor(cx.getImageData(0, 0, W, H).data, W * H, [0.485, 0.456, 0.406], [0.229, 0.224, 0.225]);
-  const out = await OCR.det.run({ [OCR.det.inputNames[0]]: new window.ort.Tensor("float32", x, [1, 3, H, W]) });
+  const out = await runWasm(OCR.det, { [OCR.det.inputNames[0]]: new window.ort.Tensor("float32", x, [1, 3, H, W]) });
   const prob = out[OCR.det.outputNames[0]].data;
 
   // Connected regions above DET_THRESH (4-neighbourhood flood fill) → axis-aligned boxes
@@ -112,7 +113,7 @@ async function recognise(src, b) {
   const W = Math.min(REC_MAX_W, Math.max(16, Math.ceil((REC_H * bw) / bh)));
   rc.width = W; rc.height = REC_H; rx.drawImage(src, b.x1, b.y1, bw, bh, 0, 0, W, REC_H);
   const x = toTensor(rx.getImageData(0, 0, W, REC_H).data, W * REC_H, [0.5, 0.5, 0.5], [0.5, 0.5, 0.5]);
-  const out = await OCR.rec.run({ [OCR.rec.inputNames[0]]: new window.ort.Tensor("float32", x, [1, 3, REC_H, W]) });
+  const out = await runWasm(OCR.rec, { [OCR.rec.inputNames[0]]: new window.ort.Tensor("float32", x, [1, 3, REC_H, W]) });
   const t = out[OCR.rec.outputNames[0]], [, T, C] = t.dims, p = t.data;
   // CTC greedy decoding: best class per time step, merge repeats, drop blanks
   let text = "", conf = 0, n = 0, prev = 0;

@@ -7,7 +7,8 @@
  *      Objects are tracked, so each product is identified once, not every frame.
  *   2. Barcode in view → Open Food Facts → the EXACT product (name, brand, photo, Nutri-Score)   [no API quota]
  *   3. Read brand text: OCR on the device (ocr.js) → brand dictionary from Open Food Facts       [no API quota]
- *   4. (next version) own brand model / visual product search on the device
+ *   4. Own brand model on the device (brandmodel.js): recognises the LOOK of a brand (logo, colours) for boxes
+ *      that OCR could not name – trained by us on Open Food Facts photos (tools/train_brand_model.py)  [no API quota]
  *   5. Tap a box or press "Identify" → one Gemini Flash-Lite request for that crop               [uses quota]
  * Every result shows which engine produced it, and the side panel shows live what each stage currently sees.
  *
@@ -15,6 +16,8 @@
  */
 import { icon } from "./icons.js";
 import { loadOcr, loadBrands, readText, matchBrands } from "./ocr.js";
+import { loadBrandModel, classifyBox } from "./brandmodel.js";
+import { runWasm } from "./wasmqueue.js";
 
 const $ = (s, r = document) => r.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -25,17 +28,24 @@ const PRODUCT_CLASSES = new Set(["bottle", "cup", "wine glass", "bowl", "cell ph
 const ENGINE = {
   barcode: { label: "Barcode · Open Food Facts", icon: "chip", cls: "e-device" },
   ocr: { label: "Text recognition · on device", icon: "text", cls: "e-device" },
+  own: { label: "Own model · on device", icon: "sparkle", cls: "e-device" },
   gemini: { label: "Gemini · cloud", icon: "cloud", cls: "e-cloud" },
 };
-// A label from a stronger engine is never replaced by a weaker one
-const RANK = { ocr: 1, gemini: 2, barcode: 3 };
+// A label from a stronger engine is never replaced by a weaker one. Order of certainty:
+// barcode > Gemini > brand name read EXACTLY > own model (look) > brand name read with a typo.
+// Why fuzzy text is last: a script logo read as garbage can be one letter away from another brand
+// ("icaoc" → iChoc on a Coca-Cola bottle, camera test 20 Nov) – the own model recognised Coca-Cola correctly.
+const RANK = { ocrFuzzy: 0.5, own: 1, ocr: 2, gemini: 3, barcode: 4 };
+const rank = (item) => RANK[item.engine === "ocr" && item.fuzzy ? "ocrFuzzy" : item.engine] || 0;
+const OWN_EVERY_MS = 800;    // camera mode: classify one unnamed box this often (≈ 0.25 s each on WASM, keeps video smooth)
+const OWN_RETRY_MS = 1500;   // …and the same box again at most this often
 const OCR_EVERY_MS = 1800;   // whole-frame text recognition in camera mode (≈ 0.3–1 s each, runs beside the detector)
 
 let S = null; // scanner state (one instance)
 
 export async function renderLive(main) {
   stopLive();
-  S = { tracks: [], lost: [], nextId: 1, seen: new Map(), barcodes: new Map(), running: false, source: null, lastBarcode: 0, lastOcr: 0, busy: false, ocrBusy: false };
+  S = { tracks: [], lost: [], nextId: 1, seen: new Map(), barcodes: new Map(), running: false, source: null, lastBarcode: 0, lastOcr: 0, lastOwn: 0, busy: false, ocrBusy: false, ownBusy: false };
   main.innerHTML = `
     <div class="toolbar"><h1>Live scanner <span class="sub">· products in front of the camera</span></h1>
       <span class="badge" id="lvBackend">${icon("chip")} loading model…</span></div>
@@ -57,7 +67,7 @@ export async function renderLive(main) {
             <div><span class="eng e-device">1</span><b>Find objects</b><span id="st-find">packaging finder in your browser</span></div>
             <div><span class="eng e-device">2</span><b>Barcode</b><span id="st-code">exact product via Open Food Facts</span></div>
             <div><span class="eng e-device">3</span><b>Read brand text</b><span id="st-ocr">text recognition on your device</span></div>
-            <div><span class="eng e-device">4</span><b>Own model</b><span id="st-own">brand recognition on device · next version</span></div>
+            <div><span class="eng e-device">4</span><b>Own model</b><span id="st-own">recognises the look of a brand on your device</span></div>
             <div><span class="eng e-cloud">5</span><b>Ask Gemini</b><span id="st-gem">only when you tap a box</span></div>
           </div>
           <div class="row-btns" style="margin-top:12px"><button class="btn" id="identify" disabled>${icon("cloud")} Identify largest object</button>
@@ -76,6 +86,7 @@ export async function renderLive(main) {
   try { await loadModel(); } catch (e) { $("#lvBackend").innerHTML = `${icon("chip")} model failed: ${esc(e.message)}`; }
   // OCR models + brand list load in the background (≈ 13 MB, cached by the browser afterwards)
   Promise.all([loadOcr(), loadBrands()]).then(() => stage("ocr", "ready · Open Food Facts brand list")).catch((e) => stage("ocr", `not available (${e.message})`));
+  loadModel().then(loadBrandModel).then((m) => stage("own", `ready · ${m.head.names.length} brands · trained by us`)).catch((e) => stage("own", `not available (${esc(e.message)})`));
 }
 
 export function stopLive() {
@@ -140,7 +151,9 @@ async function detect(src, w, h) {
   pre.width = pre.height = N; pctx.fillStyle = "rgb(114,114,114)"; pctx.fillRect(0, 0, N, N); pctx.drawImage(src, 0, 0, w, h, px, py, nw, nh);
   const d = pctx.getImageData(0, 0, N, N).data, n = N * N, x = new Float32Array(3 * n);
   for (let i = 0; i < n; i++) { x[i] = d[i * 4] / 255; x[n + i] = d[i * 4 + 1] / 255; x[2 * n + i] = d[i * 4 + 2] / 255; }
-  const out = await session.run({ [session.inputNames[0]]: new window.ort.Tensor("float32", x, [1, 3, N, N]) });
+  const feeds = { [session.inputNames[0]]: new window.ort.Tensor("float32", x, [1, 3, N, N]) };
+  // without WebGPU the detector also runs on WASM → it must queue behind OCR and the own model
+  const out = MODEL.backend === "WASM" ? await runWasm(session, feeds) : await session.run(feeds);
   const t = out[session.outputNames[0]], o = t.data, boxes = [];
   const back = (x1, y1, x2, y2) => ({ x1: Math.max(0, (x1 - px) / s), y1: Math.max(0, (y1 - py) / s), x2: Math.min(w, (x2 - px) / s), y2: Math.min(h, (y2 - py) / s) });
   if (kind === "raw") {
@@ -206,6 +219,7 @@ async function loop() {
       draw(v.videoWidth, v.videoHeight);
       if (performance.now() - S.lastBarcode > 700) { S.lastBarcode = performance.now(); scanBarcode(v, v.videoWidth, v.videoHeight); }
       if (!S.ocrBusy && performance.now() - S.lastOcr > OCR_EVERY_MS) runOcr(v, v.videoWidth, v.videoHeight);
+      if (!S.ownBusy && performance.now() - S.lastOwn > OWN_EVERY_MS) runOwn(v, v.videoWidth, v.videoHeight);
     } finally { S.busy = false; }
   }
   setTimeout(() => requestAnimationFrame(loop), 60);
@@ -222,6 +236,7 @@ async function analysePhoto(file) {
   await loadModel();
   S.tracks = []; track(await detect(c, c.width, c.height)); draw(c.width, c.height);
   await Promise.all([scanBarcode(c, c.width, c.height), runOcr(c, c.width, c.height)]);
+  await runOwn(c, c.width, c.height, true); // every box the text could not name
   for (const t of S.tracks) t.ttl = Infinity; // a photo does not move – keep every box
   draw(c.width, c.height);
   const objs = S.tracks.filter((t) => !t.textOnly).length, named = S.tracks.filter((t) => t.label);
@@ -263,7 +278,7 @@ function setLabel(box, item, ttl) {
     const geo = { x1: box.x1 - pad, y1: box.y1 - pad, x2: box.x2 + pad, y2: box.y2 + pad, seen: now };
     if (t) Object.assign(t, geo); else S.tracks.push(t = { ...geo, id: S.nextId++, ttl, name: "brand text", textOnly: true, label: null });
   }
-  if (!t.label || (RANK[item.engine] || 0) >= (RANK[t.label.engine] || 0)) t.label = item;
+  if (!t.label || rank(item) >= rank(t.label)) t.label = item;
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -320,7 +335,7 @@ async function runOcr(src, w, h) {
     const words = await readText(src, w, h);
     const brands = matchBrands(words);
     for (const b of brands) {
-      const item = { brand: b.brand, product: `read on the package: “${b.read}”`, engine: "ocr" };
+      const item = { brand: b.brand, product: `read on the package: “${b.read}”${b.exact ? "" : " (close match)"}`, engine: "ocr", fuzzy: !b.exact };
       setLabel(b, item, OCR_EVERY_MS * 1.6);
       addSeen(item);
     }
@@ -331,6 +346,35 @@ async function runOcr(src, w, h) {
   } catch (e) {
     console.warn("OCR failed", e); stage("ocr", "text recognition failed on this device");
   } finally { S.ocrBusy = false; }
+}
+
+// ------------------------------------------------------------------------------------------------
+// Engine 4: own brand model (look of the package → brand), only for boxes without a stronger label
+// ------------------------------------------------------------------------------------------------
+async function runOwn(src, w, h, all = false) {
+  S.ownBusy = true; S.lastOwn = performance.now();
+  try {
+    await loadBrandModel();
+    const now = performance.now();
+    const todo = S.tracks.filter((t) => !t.textOnly && (!t.label || rank(t.label) <= RANK.own) && !(now - (t.ownAt || -1e9) < OWN_RETRY_MS))
+      .sort((a, b) => (a.ownAt || 0) - (b.ownAt || 0) || area(b) - area(a));
+    for (const t of all ? todo : todo.slice(0, 1)) {
+      t.ownAt = performance.now();
+      const r = await classifyBox(src, t, w, h); if (!r) continue;
+      const alt = r.top.slice(1).map(([b, p]) => `${esc(b)} ${Math.round(p * 100)} %`).join(", ");
+      if (r.sure) {
+        const item = { brand: r.brand, product: `recognised by its look · ${Math.round(r.conf * 100)} % sure`, engine: "own" };
+        if (!t.label || rank(t.label) <= RANK.own) t.label = item;
+        addSeen(item);
+        stage("own", `<b>${esc(r.brand)}</b> ${Math.round(r.conf * 100)} % · ${r.ms} ms`);
+      } else {
+        stage("own", `not sure – maybe ${esc(r.brand)} ${Math.round(r.conf * 100)} %${alt ? `, ${alt}` : ""} · ${r.ms} ms`);
+      }
+    }
+    if (S.source && !S.running) draw(w, h);
+  } catch (e) {
+    console.warn("own model failed", e); stage("own", "not available on this device");
+  } finally { S.ownBusy = false; }
 }
 
 // ------------------------------------------------------------------------------------------------

@@ -28,7 +28,7 @@ PlacementRadar answers both from a single YouTube link and adds a third, newer q
 | **Ad disclosure check** | traffic light: *Disclosure found / Check disclosure / No disclosure found / No advertising detected*, with every place that was checked | done |
 | **Authenticity score** | six sub-scores (use shown, balance, specificity, delivery, body language, sales pressure), each with timestamped evidence | done |
 | **Live scanner** | webcam or photo: a packaging finder (YOLOE) boxes products on the device, **text recognition reads the brand** (3 of 4 products, no API), a **barcode gives the exact product** via Open Food Facts (name, photo, Nutri-Score), tap a box to ask Gemini; the side panel shows live what each stage sees | v2 done |
-| **Own model** | brand classifier trained by us on open product images, learns from Gemini's answers | in progress |
+| **Own model** | brand classifier trained by us (frozen MobileCLIP encoder + our brand head, 131 brands, 7,400 Open Food Facts photos): names the packages OCR cannot read – script logos like Coca-Cola, Babybel, Oreo; OCR + own model name **41 of 49** real product photos on the device (OCR alone 36), without a wrong brand | v1 done |
 | **Brand report** | one A4 page per brand (value, exposure strip, key moments with YouTube links, disclosure, authenticity, method) – "Save as PDF" via the print dialog – plus a pitch mail to the creator filled with the measured numbers (no extra API call) | done |
 | **Waiting screen** | while Gemini watches (2–5 min): video details, a text-only disclosure check of title and description, which model is working and when Google is busy; the page may be closed – the result is stored and loads instantly later | done |
 
@@ -57,7 +57,7 @@ flowchart LR
 
 **Engine 2 – on-device vision (browser).** For the live scanner: a packaging finder (YOLOE – an open-vocabulary YOLO told "snack bag, jar, tub, box …" before export; YOLO26 from unit 3 as fallback), text recognition (OCR) matched against an Open Food Facts brand list, barcode scanning with a lookup in Open Food Facts, and visual product search with an e-commerce embedding model. Costs no API quota and keeps camera images on the device.
 
-**Engine 3 – our own model.** A brand classifier trained on open product images (Open Food Facts) – and continuously on Gemini's answers ("Gemini teaches, the device remembers"). The more the app is used, the less it needs the API.
+**Engine 3 – our own model.** A brand classifier trained by us on open product images (Open Food Facts): Apple's small MobileCLIP image encoder stays frozen, we train a linear head for 131 brands and combine it with what the encoder already knows about brand names. It answers only when both opinions agree (EVALUATION.md, S2b). Next step: learn from Gemini's answers ("Gemini teaches, the device remembers").
 
 Every result in the UI shows which engine produced it.
 
@@ -160,4 +160,4 @@ EVALUATION.md              all feasibility tests, incl. what did not work
 
 ## 10. Credits
 
-Gemini API (Google) · YouTube IFrame Player API · Open Food Facts (ODbL) · Marqo-Ecommerce embeddings (Apache-2.0) · Ultralytics YOLO26 · Open Food Facts universal-logo-detector (AGPL-3.0) · literature as cited above.
+Gemini API (Google) · YouTube IFrame Player API · Open Food Facts (ODbL) · Marqo-Ecommerce embeddings (Apache-2.0, offline tests) · Apple MobileCLIP (own brand model encoder) · OpenCLIP · PaddleOCR via RapidOCR (Apache-2.0) · ONNX Runtime Web · Ultralytics YOLO26 / YOLOE (AGPL-3.0) · Open Food Facts universal-logo-detector (AGPL-3.0) · literature as cited above.

@@ -295,7 +295,7 @@ export async function gemini(env, models, body, onEvent = () => {}) {
         body = { ...body, generationConfig: rest };
       } else if (r.status === 404) {
         skip.add(model); // model retired or renamed → continue with the rest of the chain
-      } else if ([429, 500, 503].includes(r.status)) {
+      } else if ([429, 500, 503, 504, 524].includes(r.status)) { // 524: request timed out at the edge (seen 20 Nov on the authenticity call)
         busy = true;
       } else {
         throw new ApiError("gemini_error", 502, last);
@@ -309,8 +309,8 @@ export async function gemini(env, models, body, onEvent = () => {}) {
 }
 
 // ------------------------------------------------------------------------------------------------
-// POST /api/analyze  → SSE stream: stage | meta | model | result | error  (+ ping every 5 s)
-// Order: repo demo → KV cache → access check → quota check → Gemini.
+// POST /api/analyze  → SSE stream: stage | meta | model | retry | joined | result | error  (+ ping every 5 s)
+// Order: repo demo → KV cache → access check → quota check → already running? (wait for it) → Gemini.
 // ------------------------------------------------------------------------------------------------
 async function cachedAnalysis(request, env, v) {
   const demo = await env.ASSETS.fetch(new Request(new URL(`/data/${v}.json`, request.url)));
@@ -352,9 +352,19 @@ async function analyze(request, env, ctx) {
   if (denied) throw new ApiError(denied, denied === "invite_required" ? 401 : denied === "own_key_required" ? 403 : 503);
   const models = videoModels(env);
   if ((await exhaustedModels(env, models)).length >= models.length) throw new ApiError("quota_exhausted", 429);
+  // Same video already running (visitor closed the tab and came back, or two visitors at once)?
+  // → do not pay twice: wait for the first run's result in KV instead of asking Gemini again.
+  const running = env.STORE && (await env.STORE.get(`pending:${v}`));
+  if (running) return sseResponse(ctx, (send) => waitForRunning(env, v, Number(running), send));
+
   if (!(await withinLimit(env, request, "analyze", Number(env.DAILY_ANALYSES || 10)))) throw new ApiError("daily_limit", 429);
+  if (env.STORE) await env.STORE.put(`pending:${v}`, String(Date.now()), { expirationTtl: 900 }); // 15 min max, then a new run may start
 
   return sseResponse(ctx, async (send) => {
+    try { await runAnalysis(send); } finally { if (env.STORE) ctx.waitUntil(env.STORE.delete(`pending:${v}`)); }
+  });
+
+  async function runAnalysis(send) {
     await send("stage", { id: "meta" });
     const meta = await videoMeta(v, env);
     await send("meta", meta);
@@ -382,10 +392,24 @@ async function analyze(request, env, ctx) {
       // kept forever: whatever the professor analyses once loads instantly the next time
       const metadata = { title: meta.title, channel: meta.channel, views: meta.views, duration_s: meta.duration_s,
         brands: result.brands?.length || 0, analyzed_at: new Date().toISOString() };
-      ctx.waitUntil(env.STORE.put(`analysis:${v}`, JSON.stringify(result), { metadata }));
+      await env.STORE.put(`analysis:${v}`, JSON.stringify(result), { metadata }); // before the pending flag is removed
     }
     await send("result", result);
-  });
+  }
+}
+
+/** Second request for a video that is being analysed right now: poll KV for the first run's result (no Gemini call). */
+async function waitForRunning(env, v, startedAt, send) {
+  await send("stage", { id: "timeline" });
+  await send("joined", { started_at: startedAt }); // UI: "this video is already being analysed – joining"
+  const until = Date.now() + 14 * 60 * 1000;
+  while (Date.now() < until) {
+    await new Promise((res) => setTimeout(res, 10000));
+    const stored = await env.STORE.get(`analysis:${v}`, "json");
+    if (stored) return send("result", { ...stored, cached: "store" });
+    if (!(await env.STORE.get(`pending:${v}`))) break; // first run ended without a result (error) → stop waiting
+  }
+  throw new ApiError("busy", 503);
 }
 
 // ------------------------------------------------------------------------------------------------

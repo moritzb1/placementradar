@@ -5,7 +5,7 @@
 Final project for *MMI5190E – The New Frontiers of AI: From Perception to Agentic Intelligence* (Prof. Pin Luarn), M.Sc. Marketing Intelligence, Pforzheim University, winter term 2026/27. Author: Moritz Binder.
 
 > Live version: `https://placementradar.itsmoribind.workers.dev` *(link follows after deployment)*
-> The three example videos work instantly without any setup.
+> The five example videos work instantly without any setup.
 
 ---
 
@@ -29,7 +29,8 @@ PlacementRadar answers both from a single YouTube link and adds a third, newer q
 | **Authenticity score** | six sub-scores (use shown, balance, specificity, delivery, body language, sales pressure), each with timestamped evidence | done |
 | **Live scanner** | webcam or photo: a packaging finder (YOLOE) boxes products on the device, **text recognition reads the brand** (3 of 4 products, no API), a **barcode gives the exact product** via Open Food Facts (name, photo, Nutri-Score), tap a box to ask Gemini; the side panel shows live what each stage sees | v2 done |
 | **Own model** | brand classifier trained by us on open product images, learns from Gemini's answers | in progress |
-| **Brand report** | one-page PDF for the brand + pitch mail to the creator | planned |
+| **Brand report** | one A4 page per brand (value, exposure strip, key moments with YouTube links, disclosure, authenticity, method) – "Save as PDF" via the print dialog – plus a pitch mail to the creator filled with the measured numbers (no extra API call) | done |
+| **Waiting screen** | while Gemini watches (2–5 min): video details, a text-only disclosure check of title and description, which model is working and when Google is busy; the page may be closed – the result is stored and loads instantly later | done |
 
 ## 3. Architecture – three engines that work together
 

@@ -48,7 +48,9 @@ export function normalizeAnalysis({ video, timeline, authenticity, models }) {
   return {
     video,
     brands: list,
-    disclosures: (timeline?.disclosures ?? []).map((d) => ({ time_s: sec(d.time), kind: d.kind || "", text: d.text || "" })),
+    // drop empty or impossible entries (20 Nov: one run returned {time: 1832429, kind: "", text: ""})
+    disclosures: (timeline?.disclosures ?? []).map((d) => ({ time_s: sec(d.time), kind: d.kind || "", text: d.text || "" }))
+      .filter((d) => (d.kind || d.text) && d.time_s >= 0 && d.time_s <= dur),
     paid: { looks_like_paid_promotion: !!timeline?.looks_like_paid_promotion, reasoning: timeline?.reasoning || "" },
     authenticity: (authenticity?.items ?? []).map((a) => ({
       brand: canon(a.brand), product: a.product || "", overall: a.overall, verdict: a.verdict || "",

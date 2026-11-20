@@ -3,7 +3,7 @@
  *
  * Routes (hash based, so the app also works as plain static files):
  *   #/                       start screen: paste a YouTube link or pick a demo
- *   #/v/<id>/<view>[?t=12]   result for one video; view = overview | timeline | value | disclosure | authenticity
+ *   #/v/<id>/<view>[?t=12]   result for one video; view = overview | timeline | value | disclosure | authenticity | report
  *   #/live                   live scanner (camera or photo, mostly on-device; see live.js)
  *
  * Where the data comes from:
@@ -24,9 +24,13 @@ import { renderLive, stopLive } from "./live.js";
 const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const fmtViews = (n) => n == null ? "–" : n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}k` : String(n);
+/** Video length; "≈" when YouTube withheld it and the Worker estimated it from the last brand appearance. */
+const fmtDur = (v) => (v?.duration_estimated ? "≈ " : "") + mmss(v?.duration_s || 0);
+/** "20261117" (yt-dlp style) or "2026-11-17" → "2026-11-17". */
+const fmtDate = (d) => String(d || "").replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3");
 const PALETTE = ["#0a84ff", "#ff9f0a", "#30d158", "#bf5af2", "#ff375f", "#64d2ff", "#ffd60a", "#ac8e68", "#5e5ce6", "#66d4cf"];
 
-const state = { demos: [], data: null, id: null, view: "overview", player: null, colors: new Map(), opts: { ...DEFAULTS }, pendingSeek: null };
+const state = { demos: [], recent: [], data: null, id: null, view: "overview", player: null, colors: new Map(), opts: { ...DEFAULTS }, pendingSeek: null };
 
 const VIEWS = [
   { id: "overview", label: "Overview", icon: "overview" },
@@ -34,6 +38,7 @@ const VIEWS = [
   { id: "value", label: "Media value", icon: "value" },
   { id: "disclosure", label: "Ad disclosure", icon: "shield" },
   { id: "authenticity", label: "Authenticity", icon: "heart" },
+  { id: "report", label: "Brand report", icon: "doc" },
 ];
 
 // ------------------------------------------------------------------------------------------------
@@ -41,6 +46,7 @@ const VIEWS = [
 // ------------------------------------------------------------------------------------------------
 async function boot() {
   try { state.demos = await (await fetch("data/index.json")).json(); } catch { state.demos = []; }
+  loadRecent(); // videos other visitors analysed (online only) – not awaited, the start screen updates when it arrives
   window.addEventListener("hashchange", route);
   route();
 }
@@ -76,6 +82,17 @@ async function route() {
   }
 }
 
+/** GET /api/recent → analyses stored in the Worker's KV, minus the repo examples. Silent when offline/local. */
+async function loadRecent() {
+  try {
+    const r = await fetch("api/recent"); if (!r.ok) return;
+    const demoIds = new Set(state.demos.map((d) => d.id));
+    state.recent = ((await r.json()).items || []).filter((x) => x.id && !demoIds.has(x.id)).slice(0, 12);
+  } catch { return; }
+  if (!state.recent.length) return;
+  if (state.page === "start" && !$("#url")?.value) renderStart(); else renderSidebar(); // never wipe a link being typed
+}
+
 const go = (id, view = "overview", t = null) => { location.hash = `#/v/${id}/${view}${t != null ? `?t=${Math.round(t)}` : ""}`; };
 
 async function loadAnalysis(id) {
@@ -103,9 +120,9 @@ function renderSidebar() {
       ${icon(v.icon)}<span>${v.label}</span></button>`).join("")}
     <div class="nav-label">On device</div>
     <button class="nav-item ${state.page === "live" ? "active" : ""}" data-live>${icon("camera")}<span>Live scanner</span></button>
-    <button class="nav-item" disabled>${icon("doc")}<span>Brand report</span><span class="soon">soon</span></button>
     <div class="nav-label">Examples</div>
-    ${state.demos.map((d) => `<div class="recent" data-open="${d.id}"><img alt="" src="https://i.ytimg.com/vi/${d.id}/mqdefault.jpg"><span>${esc(d.title)}</span></div>`).join("")}
+    ${state.demos.map((d) => `<div class="recent ${state.id === d.id ? "active" : ""}" data-open="${d.id}"><img alt="" src="https://i.ytimg.com/vi/${d.id}/mqdefault.jpg"><span>${esc(d.title)}</span></div>`).join("")}
+    ${state.recent.length ? `<div class="nav-label">Analysed by visitors</div>${state.recent.slice(0, 6).map((d) => `<div class="recent ${state.id === d.id ? "active" : ""}" data-open="${esc(d.id)}"><img alt="" src="https://i.ytimg.com/vi/${esc(d.id)}/mqdefault.jpg"><span>${esc(d.title || d.id)}</span></div>`).join("")}` : ""}
     <div class="foot">Final project · MMI5190E<br>HS Pforzheim · WiSe 2026/27</div>`;
   $("[data-home]").onclick = () => { location.hash = "#/"; };
   $("[data-live]").onclick = () => { location.hash = "#/live"; };
@@ -139,6 +156,13 @@ function renderStart() {
           <div class="m">${esc(d.channel)} · ${fmtViews(d.views)} views · ${d.brands} brands
             <a class="yt-link" href="https://www.youtube.com/watch?v=${d.id}" target="_blank" rel="noopener" title="Open on YouTube" data-stop>${icon("play")}</a></div></div>
         </article>`).join("")}</div>
+      ${state.recent.length ? `<div class="section-title">Recently analysed by visitors</div>
+      <div class="demos recent-grid">${state.recent.map((d) => `
+        <article class="demo" data-open="${esc(d.id)}">
+          <img alt="" src="https://i.ytimg.com/vi/${esc(d.id)}/mqdefault.jpg">
+          <div class="body"><div class="t">${esc(d.title || d.id)}</div>
+          <div class="m">${esc(d.channel || "")}${d.views != null ? ` · ${fmtViews(d.views)} views` : ""} · ${d.brands ?? "?"} brands</div></div>
+        </article>`).join("")}</div>` : ""}
     </section>`;
   $("#main").querySelectorAll("[data-open]").forEach((el) => (el.onclick = (e) => { if (!e.target.closest("[data-stop]")) go(el.dataset.open); }));
   addInfoButton(true);
@@ -167,19 +191,45 @@ const STAGES = [
   { id: "authenticity", label: "Rating how genuine the recommendations feel" },
   { id: "done", label: "Calculating media value and disclosure check" },
 ];
+const modelName = (m) => String(m || "").replace(/^gemini-/, "Gemini ").replace(/-flash-lite/, " Flash-Lite").replace(/-flash/, " Flash").replace(/-preview/, " (preview)").replace(/-pro/, " Pro");
+const HTTP_WHY = { 429: "busy", 500: "had an internal error", 503: "overloaded", 504: "timed out", 524: "timed out" };
 
+/**
+ * Waiting screen for a new analysis. Gemini needs 1.5–5 minutes (longer if Google is busy), so the screen shows
+ * everything that is already known instead of a bare spinner:
+ *   - video details as soon as the Worker sends them (event "meta"),
+ *   - a first disclosure check on title + description (pure text, no AI needed),
+ *   - which model is watching and when Google is busy and the next model takes over (events "model", "retry"),
+ *   - that the page may be closed: the Worker finishes and stores the result; reopening the link loads it.
+ */
 async function renderAnalyze(id) {
   destroyPlayer(); renderSidebar();
   const t0 = Date.now();
+  const link = `${location.origin}${location.pathname}#/v/${id}/overview`;
   $("#main").innerHTML = `
-    <div class="toolbar"><h1>New analysis</h1><span class="badge"><span class="dot"></span>Gemini · video understanding</span></div>
-    <div class="content"><div class="grid-top">
-      <div class="player"><img class="poster" alt="" src="https://i.ytimg.com/vi/${id}/hqdefault.jpg"></div>
-      <div class="card"><h3 id="mtitle">${icon("clock")} Analysing <span class="right num" id="elapsed">0 s</span></h3>
-        <div class="progress" style="margin:0">${STAGES.map((s) => `<div class="step" data-stage="${s.id}"><span class="icon"></span>${s.label}</div>`).join("")}</div>
-        <p class="small muted" id="anote">A full analysis takes about 1.5–5 minutes, because Gemini watches the whole video including the audio.</p>
-      </div></div></div>`;
-  const tick = setInterval(() => { const e = $("#elapsed"); if (e) e.textContent = `${Math.round((Date.now() - t0) / 1000)} s`; else clearInterval(tick); }, 1000);
+    <div class="toolbar"><h1>New analysis</h1><span class="badge"><span class="dot live-dot"></span>Gemini · video understanding</span></div>
+    <div class="content">
+      <div class="grid-top">
+        <div class="player waiting"><img class="poster" alt="" src="https://i.ytimg.com/vi/${id}/hqdefault.jpg"><div class="scanline"></div>
+          <div class="wait-cap"><div class="t" id="wtitle">Loading video details …</div><div class="m" id="wmeta"></div></div></div>
+        <div class="card wait-card"><h3>${icon("clock")} <span id="wstate">Analysing</span><span class="right num" id="elapsed">0:00</span></h3>
+          <div class="progress" style="margin:0">${STAGES.map((s) => `<div class="step" data-stage="${s.id}"><span class="icon"></span>${s.label}</div>`).join("")}</div>
+          <div class="wait-status" id="wstatus">Connecting to the server …</div>
+          <div class="wait-log" id="wlog"></div>
+        </div>
+      </div>
+      <div class="cols-2" style="margin-top:20px;align-items:start">
+        <div class="card"><h3>${icon("shield")} Checked while you wait <span class="right">text only, no AI</span></h3><div id="wpre"><div class="skeleton" style="height:84px"></div></div></div>
+        <div class="card"><h3>${icon("sparkle")} What happens now</h3>
+          <p class="small muted" style="margin-top:0">Gemini watches the whole video including the audio – usually <b>2–5 minutes</b>, longer when Google's free tier is busy.</p>
+          <p class="small muted"><b>You can close this page.</b> The analysis keeps running on the server and is saved permanently. Open the same link later and it loads instantly – for everyone.</p>
+          <button class="btn" id="wcopy">${icon("link")} Copy link</button></div>
+      </div>
+    </div>`;
+  $("#wcopy").onclick = async () => { try { await navigator.clipboard.writeText(link); $("#wcopy").lastChild.textContent = " Copied"; } catch { prompt("Link:", link); } };
+  const tick = setInterval(() => { const e = $("#elapsed"); if (e) e.textContent = mmss((Date.now() - t0) / 1000); else clearInterval(tick); }, 1000);
+  const status = (html) => { const el = $("#wstatus"); if (el) el.innerHTML = html; };
+  const log = (html) => { const el = $("#wlog"); if (el) el.insertAdjacentHTML("afterbegin", `<div><span class="num">${mmss((Date.now() - t0) / 1000)}</span><span>${html}</span></div>`); };
   const setStage = (sid) => {
     let reached = false;
     for (const s of STAGES) {
@@ -188,8 +238,28 @@ async function renderAnalyze(id) {
       el.className = `step ${s.id === sid ? "on" : done ? "done" : ""}`;
       el.firstElementChild.outerHTML = s.id === sid ? `<span class="spinner"></span>` : done ? icon("check") : `<span class="icon"></span>`;
     }
+    const msg = { meta: "Reading title, views and description …", timeline: "Gemini is watching the video …", authenticity: "Gemini is rating the recommendations …", done: "Putting the dashboard together …" }[sid];
+    if (msg) status(msg);
   };
-  const fail = (msg) => { clearInterval(tick); const n = $("#anote"); if (n) n.innerHTML = `<b>Could not analyse this video.</b> ${esc(msg)}`; };
+  const fail = (msg) => {
+    clearInterval(tick);
+    const card = $(".wait-card"); if (!card) return;
+    card.innerHTML = `<h3>${icon("clock")} Analysis not possible right now</h3><p style="margin:0 0 14px">${esc(msg)}</p>
+      <div class="row-btns" style="justify-content:flex-start">${state.demos[0] ? `<button class="btn primary" data-demo>${icon("play")} Open an example</button>` : ""}
+      <button class="btn" data-livego>${icon("camera")} Live scanner</button></div>`;
+    card.querySelector("[data-demo]")?.addEventListener("click", () => go(state.demos[0].id));
+    card.querySelector("[data-livego]").onclick = () => { location.hash = "#/live"; };
+    $(".player.waiting")?.classList.add("stopped");
+  };
+  const onMeta = (m) => {
+    $("#wtitle").textContent = m.title || "Untitled video";
+    $("#wmeta").textContent = [m.channel, m.views != null ? `${fmtViews(m.views)} views` : null, m.duration_s ? mmss(m.duration_s) : null, fmtDate(m.upload_date)].filter(Boolean).join(" · ");
+    const c = checkDisclosure({ video: m });
+    const aff = c.signals.find((s) => /affiliate/i.test(s));
+    $("#wpre").innerHTML = c.checklist.slice(0, 2).map((x) => `<div class="check"><span class="${x.ok ? "ok" : "no"}">${icon(x.ok ? "check" : "minus")}</span><b>${x.label}</b><span class="small muted">${esc(x.ok ? `ad label ${x.detail}` : "no ad label")}</span></div>`).join("") +
+      `<div class="check"><span class="${aff ? "ok" : "no"}">${icon(aff ? "check" : "minus")}</span><b>Shop links</b><span class="small muted">${esc(aff ? aff.replace(/^Shop \/ affiliate link in description /, "affiliate / shop link ") : "none in the description")}</span></div>` +
+      `<p class="small muted" style="margin:10px 0 0">On-screen and spoken labels follow once Gemini has watched the video.</p>`;
+  };
   try {
     const invite = new URLSearchParams(location.search).get("invite") || localStorage.getItem("invite") || "";
     const r = await fetch("api/analyze", { method: "POST", headers: { "content-type": "application/json", "x-invite": invite }, body: JSON.stringify({ v: id }) });
@@ -208,7 +278,13 @@ async function renderAnalyze(id) {
         const chunk = buf.slice(0, i); buf = buf.slice(i + 2);
         const ev = /event: (.+)/.exec(chunk)?.[1]; const data = JSON.parse(/data: (.+)/s.exec(chunk)?.[1] || "{}");
         if (ev === "stage") setStage(data.id);
-        if (ev === "meta") $("#mtitle").innerHTML = `${icon("clock")} ${esc(data.title)} <span class="right num" id="elapsed"></span>`;
+        if (ev === "meta") onMeta(data);
+        if (ev === "model") { status(`<b>${esc(modelName(data.model))}</b> is watching the video …`); log(`${esc(modelName(data.model))} started`); }
+        if (ev === "retry") {
+          status(`Google is busy – switching to the next model …`);
+          log(`${esc(modelName(data.model))} ${HTTP_WHY[data.status] || `answered HTTP ${data.status}`} after ${data.after_s} s`);
+        }
+        if (ev === "joined") { status("This video is already being analysed – waiting for that result …"); log("joined a running analysis (no extra API request)"); }
         if (ev === "error") return fail(data.message || data.error); // worker sends a visitor-friendly message
         if (ev === "result") {
           clearInterval(tick);
@@ -218,6 +294,7 @@ async function renderAnalyze(id) {
         }
       }
     }
+    fail("The connection ended before the result arrived. The analysis may still finish – open the link again in a few minutes.");
   } catch {
     fail("Live analysis runs in the online version (Cloudflare Worker). Locally, only the examples are available.");
   }
@@ -239,7 +316,7 @@ function renderResult() {
     </div>
     <div class="content" id="view"></div>`;
   addInfoButton();
-  ({ overview: viewOverview, timeline: viewTimeline, value: viewValue, disclosure: viewDisclosure, authenticity: viewAuthenticity })[state.view]();
+  ({ overview: viewOverview, timeline: viewTimeline, value: viewValue, disclosure: viewDisclosure, authenticity: viewAuthenticity, report: viewReport })[state.view]();
 }
 
 function destroyPlayer() { state.player?.destroy(); state.player = null; }
@@ -316,7 +393,7 @@ function viewOverview() {
         <div class="kpi"><div class="label">${icon("bag")} Brands</div><div class="value num" data-count="${d.brands.length}">0</div>
           <div class="foot">${d.brands.filter((b) => b.appearances.some((a) => a.channel === "audio")).length} also mentioned in speech</div></div>
         <div class="kpi"><div class="label">${icon("eye")} Brand on screen</div><div class="value num" data-count="${union}" data-fmt="pct">0%</div>
-          <div class="foot">of ${mmss(v.duration_s)} video</div></div>
+          <div class="foot">of ${fmtDur(v)} video</div></div>
         <div class="kpi wide lvl-${disc.level}" style="cursor:pointer" data-goto="disclosure"><div class="label">${icon("shield")} Ad disclosure</div>
           <div><span class="pill lvl-${disc.level}"><span class="dot"></span>${esc(disc.title)}</span></div>
           <div class="foot">${esc(disc.sub)}</div></div>
@@ -500,9 +577,14 @@ function gauge(score) {
     <text x="100" y="114" text-anchor="middle" font-size="12" fill="var(--text-2)">${band(s)}</text></svg>`;
 }
 
+/** Empty authenticity: either nothing was promoted, or the optional second Gemini call did not succeed. */
+const noAuthText = () => state.data.paid?.looks_like_paid_promotion
+  ? "Authenticity was not rated in this analysis – Google's model did not answer the second request in time."
+  : "No promoted products found in this video, so there is nothing to rate.";
+
 function authSummary() {
   const items = state.data.authenticity || [];
-  if (!items.length) return `<div class="card"><p class="muted small" style="margin:0">No promoted products – nothing to rate.</p></div>`;
+  if (!items.length) return `<div class="card"><p class="muted small" style="margin:0">${esc(noAuthText())}</p></div>`;
   return items.map((a) => `<div class="card" data-auth style="cursor:pointer;display:flex;gap:16px;align-items:center;margin-bottom:12px">
     <div style="width:140px">${gauge(a.overall)}</div><div><b>${esc(a.brand)}</b> <span class="muted small">${esc(a.product)}</span><p class="small muted" style="margin:6px 0 0">${esc(a.verdict)}</p></div></div>`).join("");
 }
@@ -515,11 +597,107 @@ function viewAuthenticity() {
       <div><p style="margin:0 0 12px">${esc(a.verdict)}</p><div class="subs">
         ${SUBS.map(([k, label]) => { const s = a.sub?.[k] || {}; return `<div class="factor" data-i="${i}"><span>${label}</span><div class="bar"><i style="width:${s.score ?? 0}%"></i></div><span class="num">${s.score ?? "–"}</span></div>
           <div class="evidence">${s.time_s != null ? `<button class="time" data-t="${s.time_s}">${mmss(s.time_s)}</button> ` : ""}${esc(s.evidence)}</div>`; }).join("")}
-      </div></div></div></div>`).join("") : `<div class="empty-state">No promoted products found in this video, so there is nothing to rate.</div>`) +
+      </div></div></div></div>`).join("") : `<div class="empty-state">${esc(noAuthText())}</div>`) +
     `<p class="legal">Perceived authenticity – an AI estimate from image and audio, not a judgement of the creator. Body language is a weak signal for honesty
       (people detect deception barely above chance, Bond &amp; DePaulo 2006), so it is one of six factors and the score is rounded to steps of 5. Theory: source credibility (Hovland) and the Persuasion Knowledge Model (Friestad &amp; Wright 1994).</p>`;
   $("#view").querySelectorAll(".factor").forEach((f) => (f.onclick = () => f.classList.toggle("open")));
   $("#view").querySelectorAll("[data-t]").forEach((el) => (el.onclick = (e) => { e.stopPropagation(); go(state.id, "overview", Number(el.dataset.t)); }));
+}
+
+// ---------- Brand report (one page for the brand, printable as PDF) + pitch mail ----------
+/**
+ * Everything a brand manager needs on one A4 page: exposure, value, key moments with YouTube links, the
+ * disclosure verdict and – if rated – authenticity. "Save as PDF" uses the browser's print dialog with a
+ * print stylesheet (no PDF library, nothing leaves the browser). The pitch mail is a plain template filled
+ * with the measured numbers – no AI call, so it costs no quota.
+ */
+function viewReport() {
+  const d = state.data; const v = d.video;
+  const val = videoValue(d, state.opts);
+  if (!val.rows.length) { $("#view").innerHTML = `<div class="empty-state">No brands found in this video – nothing to report.</div>`; return; }
+  if (!val.rows.some((r) => r.brand.brand === state.reportBrand)) state.reportBrand = val.rows[0].brand.brand;
+  const rank = val.rows.findIndex((r) => r.brand.brand === state.reportBrand);
+  const r = val.rows[rank]; const b = r.brand;
+  const disc = checkDisclosure(d);
+  const auth = (d.authenticity || []).find((a) => a.brand.toLowerCase() === b.brand.toLowerCase());
+  const share = val.total ? Math.round((100 * r.euros) / val.total) : 0;
+  const mentions = b.appearances.filter((a) => a.channel === "audio").length;
+  const dur = v.duration_s || Math.max(...b.appearances.map((a) => a.end_s), 1);
+  const pct = (x) => `${Math.min(100, (100 * x) / dur)}%`;
+  const ytAt = (t) => `https://www.youtube.com/watch?v=${encodeURIComponent(v.id)}&t=${Math.round(t)}s`;
+  const today = new Date().toISOString().slice(0, 10);
+  const moments = [...b.appearances].sort((x, y) => (y.channel === "visual") - (x.channel === "visual") || (y.end_s - y.start_s) - (x.end_s - x.start_s)).slice(0, 8).sort((x, y) => x.start_s - y.start_s);
+
+  $("#view").innerHTML = `
+    <div class="report-wrap">
+      <article class="report" id="report">
+        <header class="rp-head"><div class="rp-logo">${LOGO.replace(/id="lg"/, 'id="lg-rp"').replace("url(#lg)", "url(#lg-rp)")}<span>PlacementRadar · Brand report</span></div><span class="small muted">${today}</span></header>
+        <div class="rp-brand">${mono(b.brand)}<div><h2>${esc(b.brand)}</h2><div class="muted">${esc(b.product || b.category || "")}</div></div>
+          <div class="rp-rank"><b>#${rank + 1}</b> of ${val.rows.length} brands<br><span class="muted small">${share}% of the video's brand value</span></div></div>
+        <div class="rp-video"><img alt="" src="https://i.ytimg.com/vi/${esc(v.id)}/mqdefault.jpg">
+          <div><b>${esc(v.title)}</b><div class="small muted">${esc(v.channel || "")} · ${fmtViews(v.views)} views · ${fmtDur(v)}${v.upload_date ? ` · uploaded ${esc(fmtDate(v.upload_date))}` : ""}</div>
+          <a class="small" href="https://www.youtube.com/watch?v=${esc(v.id)}" target="_blank" rel="noopener">youtube.com/watch?v=${esc(v.id)}</a></div></div>
+        <div class="rp-kpis">
+          <div><span>Media value</span><b class="num">${euro(r.euros)}</b><i>CPM €${state.opts.cpm} · ${Math.round(state.opts.viewThrough * 100)}% view-through</i></div>
+          <div><span>Visibility score</span><b class="num">${r.score}<small>/100</small></b><i>${r.inUse ? "shown in use" : "not shown in use"}</i></div>
+          <div><span>On screen</span><b class="num">${Math.round(r.raw.visual || 0)} s</b><i>${Math.round(r.raw.text || 0)} s as on-screen text</i></div>
+          <div><span>Mentioned</span><b class="num">${mentions}×</b><i>${Math.round(r.raw.audio || 0)} s in speech</i></div>
+        </div>
+        <h4>Exposure over the video</h4>
+        <div class="rp-lane"><div class="lane">${b.appearances.map((a) => `<div class="seg ${a.channel}" style="left:${pct(a.start_s)};width:${pct(a.end_s - a.start_s)};color:${color(b.brand)};background:${color(b.brand)}"></div>`).join("")}</div>
+          <div class="axis" style="margin-left:0"><span>0:00</span><span>${mmss(dur / 2)}</span><span>${fmtDur({ ...v, duration_s: dur })}</span></div>
+          <div class="small muted" style="margin-top:4px">${legend()}</div></div>
+        <h4>Key moments</h4>
+        <table class="rp-table"><tbody>${moments.map((a) => `<tr><td><a class="time" href="${ytAt(a.start_s)}" target="_blank" rel="noopener">${mmss(a.start_s)}</a></td>
+          <td>${esc({ visual: "on screen", audio: "spoken", text: "on-screen text" }[a.channel] || a.channel)}${a.size ? ` · ${esc(a.size)}` : ""}${a.position ? ` · ${esc(a.position)}` : ""}${a.in_use ? " · in use" : ""}</td>
+          <td>${esc(a.evidence)}</td></tr>`).join("")}</tbody></table>
+        <div class="rp-two">
+          <div class="lvl-${disc.level}"><h4>Ad disclosure (whole video)</h4><span class="pill lvl-${disc.level}"><span class="dot"></span>${esc(disc.title)}</span><p class="small muted">${esc(disc.sub)}</p></div>
+          <div><h4>Authenticity</h4>${auth ? `<div class="rp-auth"><b class="num">${round5(auth.overall)}</b><div><b>${esc(band(round5(auth.overall)))}</b><p class="small muted" style="margin:2px 0 0">${esc(auth.verdict)}</p></div></div>`
+            : `<p class="small muted">Not rated – ${esc(b.brand)} was not identified as a promoted product in this video.</p>`}</div>
+        </div>
+        <h4>Method</h4>
+        <div class="formula">${Math.round(v.views || 0).toLocaleString("en")} views / 1000 × €${state.opts.cpm} CPM × (${r.weighted.total.toFixed(1)} weighted s / 30) × ${state.opts.viewThrough} = ${euro(r.euros)}</div>
+        <p class="legal">Weighted seconds: on screen × size × position (× ${WEIGHTS.inUse} when in use) + spoken × ${WEIGHTS.audio} + on-screen text × ${WEIGHTS.text}. Appearances detected by ${esc([...new Set(d.source?.models || [])].map(modelName).join(" + ") || "Gemini")} from image and audio (analysed ${esc(d.source?.analyzed_at || "")}); times are approximate (±3 s).
+          The disclosure check refers to § 5a (4) UWG and § 22 MStV and is a screening aid, not legal advice. All values are estimates.</p>
+      </article>
+      <aside class="report-side">
+        <div class="card"><h3>${icon("bag")} Brand</h3>
+          <select id="rbrand" class="select">${val.rows.map((x) => `<option ${x.brand.brand === b.brand ? "selected" : ""}>${esc(x.brand.brand)}</option>`).join("")}</select>
+          <button class="btn primary" id="rprint" style="margin-top:12px;width:100%;justify-content:center">${icon("doc")} Save as PDF</button>
+          <p class="small muted" style="margin:8px 0 0">Opens the print dialog – choose "Save as PDF". CPM and view-through come from the Media value view.</p></div>
+        <div class="card"><h3>${icon("link")} Pitch mail to the creator</h3>
+          <textarea id="rmail" class="mail" rows="14" spellcheck="false">${esc(pitchMail(b, r, mentions, disc))}</textarea>
+          <button class="btn" id="rcopy" style="margin-top:10px">${icon("check")} <span>Copy text</span></button></div>
+      </aside>
+    </div>`;
+  $("#rbrand").onchange = (e) => { state.reportBrand = e.target.value; viewReport(); };
+  $("#rprint").onclick = () => window.print();
+  $("#rcopy").onclick = async () => { try { await navigator.clipboard.writeText($("#rmail").value); $("#rcopy span").textContent = "Copied"; } catch { $("#rmail").select(); } };
+}
+
+/** Plain template, filled with the measured numbers (no AI call). Wording: the brand writes to the creator. */
+function pitchMail(b, r, mentions, disc) {
+  const v = state.data.video;
+  const seen = Math.round(r.raw.visual || 0);
+  const lines = [
+    `Subject: Collaboration – ${b.brand} × ${v.channel || "your channel"}`,
+    "",
+    `Hi ${v.channel || "there"},`,
+    "",
+    `we came across your video "${v.title}"${v.views ? ` (${fmtViews(v.views)} views)` : ""}.`,
+    `${b.brand}${b.product ? ` (${b.product})` : ""} is on screen for about ${seen} seconds${mentions ? ` and you mention it ${mentions === 1 ? "once" : `${mentions} times`}` : ""}${r.inUse ? " – and you actually use it, which is exactly what we like to see" : ""}.`,
+    `By our estimate that exposure equals roughly ${euro(r.euros)} in video advertising.`,
+    "",
+    "We would love to talk about a paid collaboration for an upcoming video. Of course any partnership would be clearly labelled as advertising from the start (§ 5a UWG, § 22 MStV)" +
+      (disc.level === "red" || disc.level === "orange" ? " – we provide the wording and are happy to help with the disclosure." : "."),
+    "",
+    "Would you be open to a short call next week?",
+    "",
+    "Best regards",
+    `${b.brand} – Influencer partnerships`,
+  ];
+  return lines.join("\n");
 }
 
 // ------------------------------------------------------------------------------------------------

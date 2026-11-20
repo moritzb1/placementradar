@@ -81,6 +81,18 @@ Problem from 19 Nov: on a photo of six German grocery packages (Kaba, Prinzen Ro
 Not recognised by text (12/49): script or picture logos (Coca-Cola ×3, Kinder, Babybel wax, Fruchtzwerge), store brands without a brand name on the front (REWE Beste Wahl, Milbona). These are the cases for the next stages: own image model, then Gemini.
 Test script: `tests/test_s2_ocr_browser.js`, results: `tests/ergebnisse/s2_live/`.
 
+## S3 – New example videos, waiting screen, brand report (20 Nov, online Worker)
+| Video | Result | Models | Kept as example? |
+|---|---|---|---|
+| `WK5s-gDideg` PR unboxing, 17 min, "Werbung" in the title | 10 brands, disclosure **green** | 3.5 Flash + 3.6 Flash | yes – the clearly labelled example |
+| `VnBZfauMR5M` "What's in my Bag – 45 Must Haves", 12.5 min | 23 brands, on-screen "Werbung" label from 0:00 → **green**; authenticity call failed (HTTP 524 after 125 s) | 3.6 Flash | yes – fullest timeline |
+| `xRZSftRtB-s` supermarket haul, 20 min, 1.7 M views | only **1 brand** (ESN) and one disclosure with an impossible time (1,832,429 s) | 3.5 Flash | **no** – clearly incomplete |
+
+- Both runs hit Google overload first (HTTP 503 on 3.8 and 3.6 Flash) – the model chain carried them through. The second call (authenticity) twice ended with **HTTP 524** (edge timeout); the Worker treated 524 as fatal and dropped authenticity. Fixed: 504/524 now count as "busy" → next model.
+- Fixed in `normalize.js`: empty or impossible disclosure entries are dropped.
+- New: a second request for a video that is still being analysed waits for the first run's result in KV instead of starting a second Gemini run (`pending:<id>` flag, 15 min).
+- Brand report printed with Chrome (A4): one page each for the two tested examples (WK5s-gDideg, dhFY1yo83d4); PDFs in `tests/ergebnisse/s3_demos/`.
+
 ## H – Recognising brands without the API
 | Test | Setup | Result |
 |---|---|---|

@@ -212,7 +212,11 @@ async function fromWatchPage(id, trace) {
   const views = /"originalViewCount":"(\d+)"/.exec(html)?.[1];
   const desc = /"attributedDescription":\{"content":"((?:[^"\\]|\\.)*)"/.exec(html)?.[1];
   const len = /"approxDurationMs":"(\d+)"/.exec(html)?.[1];
-  const date = /"(?:uploadDate|datePublished)"\s*:\s*"(\d{4}-\d{2}-\d{2})/.exec(html)?.[1];
+  let date = /"(?:uploadDate|datePublished)"\s*:\s*"(\d{4}-\d{2}-\d{2})/.exec(html)?.[1];
+  if (!date) { // rendered date, e.g. "Dec 8, 2017"
+    const t = /"dateText":\{"simpleText":"([^"]+)"/.exec(html)?.[1]; const d = t && new Date(`${t} 12:00 UTC`);
+    if (d && !isNaN(d)) date = d.toISOString().slice(0, 10);
+  }
   let description = null; try { description = desc ? JSON.parse(`"${desc}"`) : null; } catch { /* ignore */ }
   fill(f, { views: views ? Number(views) : null, description, duration_s: len ? Math.round(Number(len) / 1000) : null, upload_date: date });
   trace.push(`watch:${page.status}:${p?.playabilityStatus?.status || "no-player"}:${["views", "duration_s", "description"].filter((k) => f[k]).join("+") || "nothing"}`);

@@ -243,7 +243,7 @@ input[type=range]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 
 .toolbar a.badge:hover { color: var(--accent); }
 
 /* ---------- info sheet ---------- */
-.info h2 { font-size: 24px; } .info p { color: var(--text-2); }
+.about h2 { font-size: 24px; } .about p { color: var(--text-2); }
 .engines { display: grid; gap: 10px; margin: 14px 0; }
 .engines > div { display: grid; grid-template-columns: 38px 1fr; gap: 12px; align-items: start; padding: 12px; border-radius: 12px; background: var(--bg-sunken); }
 .engines .ic { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; color: #fff; }

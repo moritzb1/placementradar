@@ -854,7 +854,7 @@ async function showUsage() {
 
 function showInfo() {
   const scrim = document.createElement("div"); scrim.className = "scrim";
-  scrim.innerHTML = `<div class="sheet info">
+  scrim.innerHTML = `<div class="sheet about">
     <div style="display:flex;gap:12px;align-items:center"><div style="width:44px;height:44px">${LOGO}</div><h2 style="margin:0">What PlacementRadar does</h2></div>
     <p>Influencers place products in their videos. Brands want to know what that exposure is worth, and viewers have a right to know when it is advertising.
       PlacementRadar answers both from a single YouTube link – and asks a third question: does the recommendation feel genuine?</p>

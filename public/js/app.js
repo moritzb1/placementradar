@@ -252,7 +252,7 @@ const STAGES = [
   { id: "done", label: "Calculating media value and disclosure check" },
 ];
 const modelName = (m) => String(m || "").replace(/^gemini-/, "Gemini ").replace(/-flash-lite/, " Flash-Lite").replace(/-flash/, " Flash").replace(/-preview/, " (preview)").replace(/-pro/, " Pro");
-const HTTP_WHY = { 429: "busy", 500: "had an internal error", 503: "overloaded", 504: "timed out", 524: "timed out" };
+const HTTP_WHY = { bad_answer: "gave an unreadable answer", 429: "busy", 500: "had an internal error", 503: "overloaded", 504: "timed out", 524: "timed out" };
 
 /**
  * Waiting screen for a new analysis. Gemini needs 1.5–5 minutes (longer if Google is busy), so the screen shows
@@ -644,7 +644,7 @@ async function lookCloser() {
         const chunk = buf.slice(0, i); buf = buf.slice(i + 2);
         const ev = /event: (.+)/.exec(chunk)?.[1]; const data = JSON.parse(/data: (.+)/s.exec(chunk)?.[1] || "{}");
         if (ev === "model") msg = `${esc(modelName(data.model))} is watching`;
-        if (ev === "retry") msg = "Google is busy – trying the next model";
+        if (ev === "retry") msg = data.status === "bad_answer" ? "Unreadable answer – asking the next model" : "Google is busy – trying the next model";
         if (ev === "error") return done(`${icon("minus")}<div><b>Look closer did not finish</b><span>${esc(data.message || data.error)}</span></div>`, "err");
         if (ev === "result") {
           if (state.id !== id) return done("", "");

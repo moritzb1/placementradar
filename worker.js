@@ -52,6 +52,7 @@ const MESSAGES = {
   server_key_missing: "The server has no Gemini key configured. The examples still work.",
   video_too_long: "This video is too long – PlacementRadar analyses videos up to 20 minutes.",
   busy: "Google's AI is overloaded right now – please try again in a few minutes.",
+  bad_answer: "Gemini's answer was unreadable – please try again in a moment.",
   invalid_video: "That does not look like a YouTube video link.",
 };
 
@@ -319,7 +320,14 @@ export async function gemini(env, models, body, onEvent = () => {}) {
         const j = await r.json();
         const text = (j.candidates?.[0]?.content?.parts || []).map((p) => p.text || "").join("");
         await recordUsage(env, model, true, j.usageMetadata);
-        return { model, data: JSON.parse(text), usage: tokens(j.usageMetadata) };
+        try { return { model, data: JSON.parse(text), usage: tokens(j.usageMetadata) }; } catch {
+          // 21 Nov: a "Look closer" answer looped until the token limit (315,000 characters, cut-off JSON)
+          // → not the visitor's problem: try the next model
+          last = `${model}: unreadable answer (${text.length} chars, finish ${j.candidates?.[0]?.finishReason || "?"})`;
+          console.log(`gemini bad json ${last}`);
+          onEvent("retry", { model, status: "bad_answer", after_s: Math.round((Date.now() - t0) / 1000) });
+          skip.add(model); busy = true; continue;
+        }
       }
       const err = await r.text();
       await recordUsage(env, model, false);
@@ -463,7 +471,7 @@ async function closer(request, env, ctx) {
   if (!(await withinLimit(env, request, "closer", Number(env.DAILY_CLOSER || 8)))) throw new ApiError("closer_limit", 429);
 
   return sseResponse(ctx, async (send) => {
-    const r = await gemini(env, models, geminiBody({ video: v, prompt: CLOSER_PROMPT, schema: CLOSER_SCHEMA, clip: { start, end, fps: 2 } }),
+    const r = await gemini(env, models, geminiBody({ video: v, prompt: CLOSER_PROMPT, schema: CLOSER_SCHEMA, clip: { start, end, fps: 2 }, maxTokens: 8192 }),
       (ev, data) => send(ev, data));
     // timestamps outside the clip (Gemini sometimes counts from the clip start) are shifted into it
     const items = (r.data?.items || []).map((it) => fixClipTimes(it, start, end));

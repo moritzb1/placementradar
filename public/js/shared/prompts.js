@@ -150,13 +150,15 @@ export const FRAME_SCHEMA = {
  * `clip` = {start, end, fps} in seconds → only that part of the video, sampled at `fps` frames per second
  * (default sampling is 1 frame/s; small items such as a watch need 2, test I).
  */
-export function geminiBody({ video, image, prompt, schema, lowThinking = true, clip = null }) {
+export function geminiBody({ video, image, prompt, schema, lowThinking = true, clip = null, maxTokens = 0 }) {
   const parts = [];
   if (video) parts.push({ file_data: { file_uri: `https://www.youtube.com/watch?v=${video}` },
     ...(clip ? { video_metadata: { start_offset: `${Math.round(clip.start)}s`, end_offset: `${Math.round(clip.end)}s`, ...(clip.fps ? { fps: clip.fps } : {}) } } : {}) });
   if (image) parts.push({ inline_data: { mime_type: "image/jpeg", data: image } });
   parts.push({ text: prompt });
   const generationConfig = { responseMimeType: "application/json", responseSchema: schema, temperature: 0.2 };
+  // a cap stops an answer that loops (seen once on a clip: 315,000 characters) – a normal clip answer is ~500 tokens
+  if (maxTokens) generationConfig.maxOutputTokens = maxTokens;
   // Test B2: "low thinking" halved the time (141 s instead of ~300 s) without losing brands.
   if (lowThinking) generationConfig.thinkingConfig = { thinkingLevel: "LOW" };
   return { contents: [{ parts }], generationConfig };

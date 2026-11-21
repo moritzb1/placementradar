@@ -214,12 +214,21 @@ function renderStart() {
 let startMode = "video";
 
 /**
- * Background of the start page: a slowly drifting wall of video stills. Every analysed video contributes its
- * thumbnail plus three frames YouTube extracts from it (mq1–mq3 ≈ 25/50/75 % of the video), shuffled so that
- * the same picture never sits next to itself.
+ * Background of the start page: a slowly drifting wall of video stills. A fixed, deliberately mixed set of
+ * public product videos (cars, tech, sport, gaming, food – plus our own non-beauty analyses), so the first
+ * impression is not dominated by one genre. Every video contributes its thumbnail plus three frames YouTube
+ * extracts from it (mq1–mq3 ≈ 25/50/75 % of the video), shuffled so the same video never sits next to itself.
+ * Purely decorative – only the images are loaded, the videos are not analysed.
  */
+const WALL_VIDEOS = [
+  "zkp3umO8ej0", "pgvEnDkNUfg", "q31RfZOIrXk", "pPFK72soYDs", "wtDyhM_18Yo",   // cars: Tesla Model Y ×2, Suzuki Vitara, LEGO BMW M4, BMW X5 vs XC90
+  "M2Twmj-AvOg", "cn5DsF9FXls", "FoIn0f9rdVc", "mMeGu-DZAJc", "-pTGc7cIBIA", "2CqNFIn1AEo", // tech: iPhone, smartwatch, drone, camera gear, everyday tech, headphones
+  "kmZCzZBXAHA", "47uH3NU-c84", "YAEVnzbyq40", "xRZSftRtB-s",                  // sport: running shoes, e-bike, fitness grocery hauls ×2
+  "jlnAtwHXRCI", "8PsiVBYF1BM",                                                 // gaming setups
+  "mAYbmcqPphc", "sdEfiPvUL2U", "2fAruP6qKd4",                                  // coffee, own-brand vs brand food test, pillow test
+];
 function thumbWall() {
-  const ids = [...new Set([...state.demos, ...(state.recentAll || [])].map((d) => d.id))];
+  const ids = WALL_VIDEOS;
   if (!ids.length) return "";
   const pics = ids.flatMap((id) => ["mqdefault", "mq1", "mq2", "mq3"].map((f) => ({ id, src: `https://i.ytimg.com/vi/${encodeURIComponent(id)}/${f}.jpg` })));
   const shuffle = (a) => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };

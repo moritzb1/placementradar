@@ -14,14 +14,17 @@
  * picture logos (Coca-Cola, Kinder) or store brands that hardly print their name.
  */
 import { runWasm } from "./wasmqueue.js";
+import { fetchBytes, markGroup } from "./loadprogress.js";
 let M = null, M_P = null;
+/** True once the model is in memory (the camera loop skips stage 4 until then instead of waiting). */
+export const brandModelReady = () => !!M;
 
 export async function loadBrandModel() {
   M_P ??= (async () => {
     const ort = window.ort; // loaded by live.js together with the detector
-    const head = await (await fetch("models/brand_head.json")).json();
-    // the model is stored in parts (Cloudflare: max 25 MiB per file) → download all, join into one buffer
-    const bufs = await Promise.all(head.parts.map(async (p) => { const r = await fetch(`models/${p}`); if (!r.ok) throw new Error(`${p}: HTTP ${r.status}`); return new Uint8Array(await r.arrayBuffer()); }));
+    const head = JSON.parse(new TextDecoder().decode(await fetchBytes("models/brand_head.json", "own")));
+    // the model is stored in parts (Cloudflare: max 25 MiB per file) → download all (with progress), join into one buffer
+    const bufs = await Promise.all(head.parts.map((p) => fetchBytes(`models/${p}`, "own")));
     const bytes = new Uint8Array(bufs.reduce((n, b) => n + b.length, 0)); let o = 0; for (const b of bufs) { bytes.set(b, o); o += b.length; }
     // WASM on purpose: the detector already uses WebGPU every frame; this model runs a few times per second at most
     const s = await ort.InferenceSession.create(bytes, { executionProviders: ["wasm"], graphOptimizationLevel: "all" });
@@ -29,7 +32,8 @@ export async function loadBrandModel() {
     if (head.head?.file) {
       // v2: one binary float16 file [W (classes×dim) | b (classes) | Z (text classes×dim)] – ~2 MB for 1,000 brands
       const { classes: C, dim: D, text_classes: CZ } = head.head;
-      const f = halfToFloat(new Uint16Array(await (await fetch(`models/${head.head.file}`)).arrayBuffer()));
+      const hb = await fetchBytes(`models/${head.head.file}`, "own");
+      const f = halfToFloat(new Uint16Array(hb.buffer, hb.byteOffset, hb.byteLength / 2));
       W = Array.from({ length: C }, (_, i) => f.subarray(i * D, (i + 1) * D));
       b = f.subarray(C * D, C * D + C);
       Z = Array.from({ length: CZ }, (_, i) => f.subarray(C * D + C + i * D, C * D + C + (i + 1) * D));
@@ -38,8 +42,9 @@ export async function loadBrandModel() {
     }
     const brands = head.names.filter((n) => n !== head.other).length;
     M = { s, head, N: head.input[2], W, b, Z, rule: head.rule, other: head.other ? head.names.indexOf(head.other) : -1, brands };
+    markGroup("own", "ready");
     return M;
-  })().catch((e) => { M_P = null; throw e; });
+  })().catch((e) => { M_P = null; markGroup("own", "failed"); throw e; });
   return M_P;
 }
 

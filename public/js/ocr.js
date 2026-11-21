@@ -15,6 +15,7 @@
  * Connected to: live.js (calls readText + matchBrands), models/brands_de.json, vendor/ort (loaded by live.js).
  */
 import { runWasm } from "./wasmqueue.js";
+import { fetchBytes, markGroup } from "./loadprogress.js";
 
 const DET_LIMIT = 960;        // longer image side for detection (multiple of 32); bigger = finds smaller text, slower
 const DET_THRESH = 0.3;       // pixel probability that counts as text (RapidOCR default)
@@ -27,27 +28,34 @@ let OCR = null;      // { det, rec, keys }
 let BRANDS = null;   // { exact: Map(key → brand), list: [brand] }
 
 /** Load both models once (wasm backend: dynamic input sizes run reliably there, WebGPU is busy with YOLO). */
-export async function loadOcr() {
-  if (OCR) return OCR;
-  const ort = window.ort;
-  const opt = { executionProviders: ["wasm"], graphOptimizationLevel: "all" };
-  const [det, rec, keysTxt] = await Promise.all([
-    ort.InferenceSession.create("models/ocr/det.onnx", opt),
-    ort.InferenceSession.create("models/ocr/rec.onnx", opt),
-    fetch("models/ocr/keys.txt").then((r) => r.text()),
-  ]);
-  // CTC alphabet: index 0 = blank, then the dictionary, then a space (PaddleOCR "use_space_char")
-  OCR = { det, rec, keys: ["", ...keysTxt.split("\n"), " "] };
-  return OCR;
+// One shared promise each: the background loader (live.js) and a photo analysis may ask at the same time.
+let OCR_P = null, BRANDS_P = null;
+export function loadOcr() {
+  OCR_P ??= (async () => {
+    const ort = window.ort;
+    const opt = { executionProviders: ["wasm"], graphOptimizationLevel: "all" };
+    // bytes via loadprogress.js → the scanner shows "x / 13 MB" instead of a silent download
+    const [detB, recB, keysB] = await Promise.all(["models/ocr/det.onnx", "models/ocr/rec.onnx", "models/ocr/keys.txt"].map((u) => fetchBytes(u, "ocr")));
+    const det = await ort.InferenceSession.create(detB, opt), rec = await ort.InferenceSession.create(recB, opt);
+    // CTC alphabet: index 0 = blank, then the dictionary, then a space (PaddleOCR "use_space_char")
+    OCR = { det, rec, keys: ["", ...new TextDecoder().decode(keysB).split("\n"), " "] };
+    return OCR;
+  })().catch((e) => { OCR_P = null; markGroup("ocr", "failed"); throw e; });
+  return OCR_P;
 }
 
-export async function loadBrands() {
-  if (BRANDS) return BRANDS;
-  const j = await (await fetch("models/brands_de.json")).json();
-  const exact = new Map(j.brands.map((b) => [b.key, b]));
-  BRANDS = { exact, list: j.brands, source: j.source };
-  return BRANDS;
+export function loadBrands() {
+  BRANDS_P ??= (async () => {
+    const j = JSON.parse(new TextDecoder().decode(await fetchBytes("models/brands_de.json", "ocr")));
+    const exact = new Map(j.brands.map((b) => [b.key, b]));
+    BRANDS = { exact, list: j.brands, source: j.source };
+    return BRANDS;
+  })().catch((e) => { BRANDS_P = null; throw e; });
+  return BRANDS_P;
 }
+
+/** True once models and brand list are in memory (the camera loop skips OCR until then instead of waiting). */
+export const ocrReady = () => !!(OCR && BRANDS);
 
 // ------------------------------------------------------------------------------------------------
 // 1. Text detection

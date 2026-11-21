@@ -1,0 +1,8 @@
+# Cloudflare Workers static assets: extra response headers (not served as a file).
+# Live-scanner models (~100 MB): without this Cloudflare sends "max-age=0, must-revalidate", so every visit
+# re-checks each file (fast 304, but 15+ round trips on weak Wi-Fi). One day fresh + one week "use the cached
+# copy while checking in the background". A retrained model reaches visitors within a day.
+/models/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/vendor/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800

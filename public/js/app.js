@@ -337,7 +337,7 @@ async function renderAnalyze(id) {
     const r = await fetch("api/analyze", { method: "POST", headers: { "content-type": "application/json", "x-invite": invite }, body: JSON.stringify({ v: id }) });
     if (!r.ok) {
       const j = await r.json().catch(() => ({}));
-      const why = j.message || { own_key_required: "This version needs your own Gemini key (coming soon).", invite_required: "New analyses need an invite link. The examples work without one.",
+      const why = j.message || { own_key_required: "New analyses are switched off right now. The examples and the live scanner still work.", invite_required: "New analyses need an invite link. The examples work without one.",
         server_key_missing: "The server has no Gemini key configured." }[j.error] || j.error || `HTTP ${r.status}`;
       return fail(why);
     }
@@ -467,7 +467,9 @@ function bindTrackSwitch(tracker) {
   const hint = $("#trackHint");
   if (hint) hint.dataset.base = hint.textContent = !cov.withBox ? "No positions in this analysis – boxes appear for videos analysed from 21 Nov on."
     : cov.keys > cov.withBox * 1.5 ? `${cov.keys} approximate positions from Gemini. Solid = close to a reported position, dashed or dot = rough.`
-    : `${cov.withBox} of ${cov.all} appearances located, one position each (older analysis) – mostly shown as dots.`;
+    // one position per appearance: either an analysis from before the keyframe prompt, or Gemini gave only one keyframe
+    // (seen 21 Nov on a 13-min desk tour: 23 keyframes for 21 appearances) – so no "(older analysis)" claim here
+    : `${cov.withBox} of ${cov.all} appearances located, about one position each – mostly shown as dots. Look closer adds more.`;
 }
 
 /**

@@ -473,6 +473,24 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
 .live-side .btn { background: rgba(255, 255, 255, .14); color: #fff; }
 .cascade { display: grid; gap: 12px; }
 .teach-note { margin: 12px 0 0; line-height: 1.45; }
+/* live scanner: model download progress (loadprogress.js) */
+.load:empty { display: none; }
+.load { margin: 2px 0 16px; padding: 12px 14px; border-radius: 14px; background: rgba(255, 255, 255, .06); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08); display: grid; gap: 8px; }
+.load-head { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+.load-head span { font-variant-numeric: tabular-nums; color: var(--text-2); }
+.load-sub { margin: -4px 0 2px; font-size: 12px; color: var(--text-2); line-height: 1.4; }
+.load-row { display: grid; grid-template-columns: 18px 1fr auto; column-gap: 8px; row-gap: 4px; align-items: center; font-size: 12.5px; }
+.load-st { width: 18px; height: 18px; border-radius: 9px; display: grid; place-items: center; font-size: 10.5px; font-weight: 600; background: rgba(255, 255, 255, .14); }
+.load-lb { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.load-mb { font-variant-numeric: tabular-nums; color: var(--text-2); white-space: nowrap; }
+.load-bar { grid-column: 2 / 4; height: 4px; border-radius: 2px; background: rgba(255, 255, 255, .12); overflow: hidden; }
+.load-bar i { display: block; height: 100%; border-radius: 2px; background: var(--accent); transition: width .2s linear; }
+.load-row.ready .load-st { background: #30d158; color: #0b2a14; }
+.load-row.ready .load-bar i { background: #30d158; }
+.load-row.failed .load-mb { color: #ff6961; }
+.load-row.waiting { opacity: .6; }
+.load-done { margin: 0; font-size: 12.5px; color: var(--text-2); }
+.load-done svg { width: 13px; height: 13px; vertical-align: -2px; margin-right: 4px; color: #30d158; }
 .teach-note svg { width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px; opacity: .8; }
 .teach-note .linklike { margin-left: 4px; }
 .linklike { appearance: none; border: 0; background: none; padding: 0; font: inherit; color: #2997ff; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }

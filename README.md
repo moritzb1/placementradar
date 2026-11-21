@@ -190,10 +190,9 @@ One JSON file per analysed video (`public/data/<video-id>.json`):
 
 The app runs on a Cloudflare Worker. The Gemini key is a Cloudflare **secret** – it never reaches the browser or this repository.
 
-- `KEY_MODE = shared` (until grading): new analyses use the project key. Protected by fixed prompts (no open proxy), daily limits per visitor, a result cache, max. 20-minute videos and an optional invite token.
-- `KEY_MODE = own` (afterwards, planned): the Worker makes no Gemini calls; examples, cached analyses and the live scanner keep working. A browser-side analysis with the viewer's own key is not built yet – `public/js/shared/prompts.js` is written so the browser could use the same prompts.
-
-The key runs on Google's free tier without billing, so the worst case is an exhausted daily quota – never a bill.
+- **`KEY_MODE = shared` – the permanent mode.** New analyses use the project key. Protected by fixed prompts (no open proxy), daily limits per visitor (`DAILY_ANALYSES`, `DAILY_CLOSER`, `DAILY_IDENTIFY`), a result cache in KV (every video and Look-closer clip is paid for once), max. 20-minute videos and an optional invite token.
+- **Why it stays shared:** the key runs on Google's free tier and the Google project has **no billing account**, so a bill is impossible – the worst case is an exhausted daily quota, and then the app says so kindly while examples, stored analyses and the live scanner keep working.
+- `KEY_MODE = own` exists only as an emergency switch: the Worker then makes no Gemini calls at all (new analyses, Look closer and the Gemini fallback in the scanner are off; everything else keeps working). A "bring your own key" mode in the browser was considered and **deliberately not built** – it is not needed while the key cannot cause costs.
 
 ### Staying within free quotas
 Everything runs on free tiers; there is no paid fallback. The Worker therefore never pays twice and spreads the load:
@@ -223,6 +222,9 @@ Everything runs on free tiers; there is no paid fallback. The Worker therefore n
 Video metadata comes from the YouTube Data API v3 (secret `YOUTUBE_API_KEY`, free 10,000 units/day). YouTube shows a bot check to data-centre IPs, so without that key the Worker falls back to the rendered page data (views, date, description) and estimates the length from the brand timeline (shown as "≈").
 
 Model names are Worker variables (`VIDEO_MODELS`, `FRAME_MODELS`, `FRAME_PROVIDERS`, …, see `wrangler.jsonc`). When Google retires a model, the variable is changed in the dashboard – no rebuild; a model that returns 404 is skipped automatically.
+
+### Live-scanner models: loading in stages
+The scanner needs ~100 MB on the first visit (ONNX runtime 21.7 MB, YOLOE 19.7 MB, OCR + brand list 13.4 MB, own model 45 MB). `public/js/loadprogress.js` streams every file and the side panel shows MB per model and stage: **stage 1** runtime + packaging finder → the scanner starts; **stage 2** text recognition; **stage 3** own model in the background (or at once when a box needs it). Until a stage is in, the camera loop skips it instead of waiting. Measured with an empty cache at 40 Mbit/s: usable after ~10 s, everything after ~22 s. `public/_headers` lets browsers keep `/models/*` and `/vendor/*` for a day (Cloudflare's default is `max-age=0, must-revalidate`).
 
 ## 7. Run it
 

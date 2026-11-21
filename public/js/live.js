@@ -12,11 +12,16 @@
  *   5. Tap a box or press "Identify" → one Gemini Flash-Lite request for that crop               [uses quota]
  * Every result shows which engine produced it, and the side panel shows live what each stage currently sees.
  *
+ * Loading in stages (loadprogress.js, panel "Loading models" with MB per model): 1 = ONNX runtime + packaging finder
+ * → the scanner starts; 2 = OCR + brand list; 3 = own brand model (in the background, or at once when a box needs it).
+ * Until a stage is in, the camera loop simply skips it instead of waiting.
+ *
  * Privacy: frames stay in the browser. Only a crop the user explicitly sends to "Identify" leaves the device.
  */
 import { icon } from "./icons.js";
-import { loadOcr, loadBrands, readText, matchBrands } from "./ocr.js";
-import { loadBrandModel, classifyBox } from "./brandmodel.js";
+import { loadOcr, loadBrands, readText, matchBrands, ocrReady } from "./ocr.js";
+import { loadBrandModel, classifyBox, brandModelReady } from "./brandmodel.js";
+import { onProgress, fetchBytes, markGroup } from "./loadprogress.js";
 import { runWasm } from "./wasmqueue.js";
 import { updateTracks, placeTracks, reidentify as reidentifyTrack, iou, HOLD_MS, COAST_MS } from "./tracker.js";
 
@@ -66,6 +71,7 @@ export async function renderLive(main) {
       </div>
       <aside class="live-side">
         <div class="card"><h3>How it decides</h3>
+          <div class="load" id="lvLoad" aria-live="polite"></div>
           <div class="cascade">
             <div><span class="eng e-device">1</span><b>Find objects</b><span id="st-find">packaging finder in your browser</span></div>
             <div><span class="eng e-device">2</span><b>Barcode</b><span id="st-code">exact product via Open Food Facts</span></div>
@@ -90,16 +96,55 @@ export async function renderLive(main) {
   $("#ov").onclick = (e) => identifyAt(e);
   teachNote();
   if (/[?&]start=1/.test(location.hash)) { history.replaceState(null, "", "#/live"); startCamera(); } // "Start camera" on the start page
+  S.unsub = onProgress(renderLoad);
+  // stage 1: runtime + packaging finder – the scanner can start as soon as these are in
   try { await loadModel(); } catch (e) { $("#lvBackend").innerHTML = `${icon("chip")} model failed: ${esc(e.message)}`; }
-  // OCR models + brand list load in the background (≈ 13 MB, cached by the browser afterwards)
-  Promise.all([loadOcr(), loadBrands()]).then(() => stage("ocr", "ready · Open Food Facts brand list")).catch((e) => stage("ocr", `not available (${e.message})`));
-  loadModel().then(loadBrandModel).then((m) => stage("own", `ready · ${m.brands.toLocaleString("en")} brands · trained by us`)).catch((e) => stage("own", `not available (${esc(e.message)})`));
+  // stage 2: text recognition + brand list (≈ 13 MB); stage 3: own model (≈ 45 MB) only after that, in the background –
+  // or earlier, when a box needs it (runOwn). One download at a time keeps stage 2 fast on weak Wi-Fi.
+  await loadStage2();
+  startOwnModel();
+}
+
+function loadStage2() {
+  stage("ocr", "loading…");
+  return Promise.all([loadOcr(), loadBrands()])
+    .then(() => { markGroup("ocr", "ready"); stage("ocr", "ready · Open Food Facts brand list"); })
+    .catch((e) => stage("ocr", `not available (${esc(e.message)})`));
+}
+function startOwnModel() {
+  if (!S || S.ownStarted) return; S.ownStarted = true; // the download itself is shared (brandmodel.js), this only avoids repeats
+  if (!brandModelReady()) stage("own", "loading in the background…");
+  loadModel().then(loadBrandModel).then((m) => stage("own", `ready · ${m.brands.toLocaleString("en")} brands · trained by us`))
+    .catch((e) => { if (S) S.ownStarted = false; stage("own", `not available (${esc(e.message)})`); });
+}
+
+/** Side panel: MB per model and stage while anything is loading; one short line when everything is in. */
+const fmt = (mb) => (mb >= 10 ? Math.round(mb) : mb.toFixed(1));
+function renderLoad(items) {
+  const el = $("#lvLoad"); if (!el) { S?.unsub?.(); return; }
+  const loaded = items.reduce((n, i) => n + Math.min(i.loadedMb, i.totalMb), 0), total = items.reduce((n, i) => n + i.totalMb, 0);
+  const allDone = items.every((i) => i.status === "ready" || i.status === "failed");
+  const s1 = items.filter((i) => i.stage === 1).every((i) => i.status === "ready");
+  if (allDone) {
+    el.innerHTML = `<p class="load-done">${icon("check")} All models on your device · kept in the browser cache for the next visit</p>`;
+    clearTimeout(S?.loadHide); if (S) S.loadHide = setTimeout(() => { el.innerHTML = ""; }, 6000);
+    return;
+  }
+  el.innerHTML = `<div class="load-head"><b>${s1 ? "Scanner ready" : "Loading models"}</b><span>${fmt(loaded)} / ${fmt(total)} MB</span></div>
+    <p class="load-sub">${s1 ? "More stages load in the background – first visit only." : "First visit only – about 100 MB, then cached. The scanner starts after stage 1."}</p>
+    ${items.map((i) => {
+      const pct = i.status === "ready" ? 100 : Math.min(100, (100 * i.loadedMb) / Math.max(i.totalMb, 0.1));
+      const right = i.status === "ready" ? "ready" : i.status === "failed" ? "failed" : i.status === "waiting" ? "waiting" : `${fmt(i.loadedMb)} / ${fmt(i.totalMb)} MB`;
+      return `<div class="load-row ${i.status}"><span class="load-st">${i.stage}</span><span class="load-lb">${esc(i.label)}</span><span class="load-mb">${right}</span>
+        <span class="load-bar"><i style="width:${pct.toFixed(1)}%"></i></span></div>`;
+    }).join("")}`;
 }
 
 export function stopLive() {
   if (!S) return;
   S.running = false;
   S.stream?.getTracks().forEach((t) => t.stop());
+  S.unsub?.(); clearTimeout(S.loadHide);
 }
 
 const stage = (id, html) => { const el = $(`#st-${id}`); if (el) el.innerHTML = html; };
@@ -131,15 +176,23 @@ async function createModel() {
   const ort = window.ort;
   ort.env.wasm.wasmPaths = new URL("vendor/", location.href).href;
   ort.env.wasm.numThreads = self.crossOriginIsolated ? Math.min(4, navigator.hardwareConcurrency || 2) : 1;
+  // the WebAssembly runtime (21.7 MB) and the finder (19.7 MB) are fetched in parallel with visible progress;
+  // ORT takes the runtime as bytes (env.wasm.wasmBinary) instead of downloading it silently itself
+  const finderBytes = fetchBytes("models/yoloe_pack.onnx", "finder").catch((e) => { markGroup("finder", "failed"); return e; });
+  try { ort.env.wasm.wasmBinary = await fetchBytes("vendor/ort-wasm-simd-threaded.jsep.wasm", "runtime"); }
+  catch (e) { console.warn("runtime prefetch failed, ORT loads it itself", e); }
   try {
     const meta = await (await fetch("models/yoloe_pack.json")).json();
-    const { s, backend } = await session("models/yoloe_pack.onnx");
+    const bytes = await finderBytes; if (bytes instanceof Error) throw bytes;
+    const { s, backend } = await session(bytes);
+    markGroup("runtime", "ready"); markGroup("finder", "ready");
     MODEL = { session: s, names: meta.names, size: meta.input[2], backend, kind: "raw", title: "YOLOE packaging finder" };
   } catch (e) {
     console.warn("YOLOE not available, using YOLO26n", e);
     const meta = await (await fetch("models/yolo26n.json")).json();
     const { s, backend } = await session("models/yolo26n.onnx");
     MODEL = { session: s, names: meta.names, size: meta.input[2], backend, kind: "e2e", title: "YOLO26n" };
+    markGroup("runtime", "ready"); markGroup("finder", "ready");
   }
   return MODEL;
 }
@@ -404,6 +457,7 @@ const area = (t) => (t.x2 - t.x1) * (t.y2 - t.y1);
 // Engine 3: read brand text (OCR on the device → Open Food Facts brand dictionary)
 // ------------------------------------------------------------------------------------------------
 async function runOcr(src, w, h) {
+  if (S.running && !ocrReady()) return; // camera: stage 2 still loading → skip instead of blocking (photo mode waits)
   S.ocrBusy = true; S.lastOcr = performance.now();
   try {
     await Promise.all([loadOcr(), loadBrands()]);
@@ -427,6 +481,11 @@ async function runOcr(src, w, h) {
 // Engine 4: own brand model (look of the package → brand), only for boxes without a stronger label
 // ------------------------------------------------------------------------------------------------
 async function runOwn(src, w, h, all = false) {
+  if (!brandModelReady()) {
+    // a box is waiting for a name → start stage 3 now (on demand); the camera does not wait for it
+    if (S.tracks.some((t) => !t.textOnly && !t.label)) startOwnModel();
+    if (S.running) return;
+  }
   S.ownBusy = true; S.lastOwn = performance.now();
   try {
     await loadBrandModel();

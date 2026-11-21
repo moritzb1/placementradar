@@ -17,7 +17,7 @@
   // Cloudflare Workers AI – free daily allowance on the account, no API key needed (single-frame fallback).
   "ai": { "binding": "AI" },
   "vars": {
-    "KEY_MODE": "shared",                 // "shared" until the grade is in, then "own" (viewers enter their own key)
+    "KEY_MODE": "shared",                 // permanent: free tier without billing, limits + cache protect the quota. "own" = emergency off-switch for all Gemini calls
     "MAX_VIDEO_S": "1200",                // longest video we analyse (20 min)
     "DAILY_ANALYSES": "10",               // new video analyses per visitor and day (cached ones are unlimited)
     "DAILY_IDENTIFY": "60",               // cloud recognitions per visitor and day (live scanner fallback)

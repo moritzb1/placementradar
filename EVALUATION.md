@@ -24,8 +24,9 @@ Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). 
 | Are small worn items (a smartwatch) found? | whole-video pass: no · 20 s clip at 2 frames/s with an inventory prompt ("Look closer"): yes, brand honestly "unknown" | I |
 | Can boxes follow a product while the video plays? | roughly: 101 Gemini keyframes for 33 appearances (~1 per 4 s), interpolated; estimates, not measurements | T |
 | Does the video description help? | yes: MKBHD re-analysed with title + description → exact models ("Canon EOS R5", "MacBook Pro 16\" M1 Max") and the right shop link for 6 of 7 brands; 3 new videos: 11 of 17 brands with a matching link (the rest have none in the description), 0 links not in the description | P |
-| Is €176k for MKBHD what he earned? | no – it was an equivalent ad cost and ignored drop-off and attention; now a range €38k – €141k (mid €75k) | P |
+| Is €176k for MKBHD what he earned? | no – it was an equivalent ad cost and ignored drop-off and attention; now a range €38k – €141k (mid €75k) on the same data; the re-run shown in the app finds more product time (~179 weighted s): €55k – €206k (mid €110k) | P |
 | Do the tracking boxes sit on the product? | not always; Gemini's confidence was 1.0 everywhere, so the app grades boxes by time distance: keyframe video 87 % solid, old one-box analysis 70 % dots | P |
+| Does a fresh analysis work online, end to end? | yes: 13-min desk tour, 18 brands, 15 shop links – all verbatim from the description, 0 invented; 14 of 18 exact models from the description; disclosure green; but only ~1 tracking position per appearance | Q |
 | Does a free fallback provider help? | Workers AI (Llama 3.2 Vision) finds main brands, reads slogans as brands → last resort only | S1 |
 
 Failures are part of the result: H3, the combined Gemini call (E), the first OCR run with 11 wrong brands (S2), the "other brand" class (S2b) and the dropped supermarket video (S3) each changed the design.
@@ -93,11 +94,29 @@ Before (old run of the MKBHD video): one product string "MacBook Pro / AirPods M
 
 | Video | Views | Before (point) | Now low – high (mid) |
 |---|---|---|---|
-| MKBHD | 5.7 M | €176k | €38k – €141k (€75k) |
+| MKBHD, first run (~125 weighted s) | 5.7 M | €176k | €38k – €141k (€75k) |
+| MKBHD, re-run with description (the example in the app, ~179 weighted s) | 5.7 M | (€255k) | €55k – €206k (€110k) |
 | Headphones `2CqNFIn1AEo` | 254k | €21k | €3.8k – €15k (€7.8k) |
 | Crash test `wtDyhM_18Yo` | 65.6 M | €1.9M | €356k – €1.4M (€724k) |
 
 **P3 – Honest tracking boxes.** Measured on the stored analyses, every 0.25 s: Gemini's `confidence` was 1.0 for all 33 appearances of the keyframe run, so it cannot separate good from bad positions. Instead each box gets a level from its time distance to a reported position: solid ≤ 1.5 s or a glide between keyframes ≤ 5 s apart that overlap (IoU ≥ 0.3); dashed "approx. position" ≤ 3 s; otherwise a dot. Keyframe video `2CqNFIn1AEo`: 87 % solid, 11 % dashed, 3 % dots. Old one-box-per-appearance analysis `dhFY1yo83d4`: 23 % solid, 7 % dashed, **70 % dots** – before, all of those were boxes held for up to 30 s. Interpolation check: 0 of 68 keyframe pairs had IoU < 0.1, but gaps were 4–6 s, so gliding is now limited to overlapping neighbours; a jump holds the nearest box instead of sliding across the picture. Caveat: Gemini often repeats the identical box for a whole appearance (espresso video: Gaggia at 4:09–4:14 three times the same box) – right for a machine standing on the counter, but not a new measurement; we cannot tell the two apart. A Look closer result now also refines boxes of products that were already known (before it was dropped as a duplicate). Where boxes are rough, the hint offers Look closer.
+
+## Q – Fresh analysis on the online app (21 Nov, 2 successful Gemini requests)
+Checked `/api/usage` first (2 requests used that day). Video: *The ULTIMATE PC Gaming & Mac Desk Setup – 2025* (Side of Tech, `6DMUMgQyVtc`, 13:08, 128k views) – products in the picture, talked about, and 24 links in the description (sponsor Vernal, Amazon affiliate links). Raw stream and result: `../tests/ergebnisse/q_online/`.
+
+| Check | Result |
+|---|---|
+| Run | timeline: 3.8 Flash HTTP 503 → 3.6 Flash; authenticity: 3.8 Flash HTTP 524 after 125 s → 3.6 Flash; **4.5 min** in total; 79,708 + 73,368 tokens, recorded in `source.usage` |
+| Brands | **18** (Razer, ASUS, Apple, Vernal, GravaStar, Philips Hue, Edifier, Divoom, NZXT, LG, Keychron, Logitech, CalDigit, Graywind, Nanoleaf, Focusrite, RØDE, beyerdynamic) |
+| Exact models | 14 of 18 match the description ("ASUS PG32UCDM", "LG 38WN95C-W Ultrawide", "Keychron Q3 Pro", "Logitech G502 X Plus" …); the typo "CalDigit TS$ Dock" came back as "TS4 Dock". 3 come from image/speech only (MacBook Pro, NZXT H9 Elite, beyerdynamic DT 770 PRO X – not checked frame by frame) |
+| Links | **15 links, all 15 verbatim in the description, 0 invented** (`cleanLink`); the creator's camera gear and music links were correctly left out (not shown in the video); the description's "Razer Viper Mini SE" (no link) is missing – Razer appears as the USB 4 Dock |
+| Disclosure | **green**: spoken "This video is sponsored by Vernal" at 0:16 (in the first 30 s) + sponsor line in the description; Gemini: paid promotion yes |
+| Media value | €600 – €2.4k (mid €1.2k) for 128k views, 9 % brand on screen; plausible order (Razer, ASUS, Apple first) |
+| Authenticity | 4 promoted brands rated 80–90 |
+| Tracking boxes | **weak**: 21 visual appearances with only 23 keyframes (~1 each; test T had 101 for 33) → the app shows mostly dots. Fixed on the way: the hint said "(older analysis)", which was wrong for a new analysis – now "about one position each … Look closer adds more" |
+| App, online | result page loads from the KV cache (no request), no console errors except the expected 404 of the example lookup (`data/<id>.json`) before the cache |
+
+Reading: the description as evidence works – exact models and links are right and nothing is invented. Keyframe density varies a lot between runs (short appearances, 18 brands in 13 min); boxes stay estimates, Look closer is the way to more positions.
 
 ## T – Tracking boxes with keyframes (21 Nov, 1 Gemini request)
 Question: can Gemini give enough positions for a box that follows the product while the video plays?
@@ -113,7 +132,7 @@ Prompt change: instead of one box per visual appearance, `track` = keyframes (ti
 - One combined call (brands + positions + authenticity) overloaded smaller models (5–7 instead of ~20 brands) → two separate calls.
 
 ## F/G – Hosting
-- Browser may call Gemini directly (CORS allowed) → "own key" mode possible.
+- Browser may call Gemini directly (CORS allowed) → an "own key" mode would be possible; not built, because the shared key on the free tier (no billing) cannot cause costs (README §6).
 - A Worker keeps a 1.5–5 min Gemini request alive when it streams a heartbeat every 5 s (tested locally in the Workers runtime: result after 85 s, connection stable). Production check pending.
 
 ## Quota

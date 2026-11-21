@@ -3,7 +3,8 @@
  *
  * Used by BOTH sides:
  *   - worker.js (server, "shared key" mode: the Worker calls Gemini with the project key)
- *   - the browser (planned "own key" mode, not built yet – KEY_MODE=own currently only disables new analyses)
+ *   - kept browser-safe (no Node APIs), so a browser-side path could reuse it; a "bring your own key" mode is
+ *     deliberately not built – the app stays in KEY_MODE=shared (README §6), KEY_MODE=own only switches Gemini off
  * Keeping prompts + JSON schemas in one file guarantees both paths produce identical data.
  *
  * Lessons from our feasibility tests (see EVALUATION.md) that are baked in here:

@@ -50,7 +50,7 @@ const MESSAGES = {
   closer_limit: "You reached today's limit for \"Look closer\" – the analysis itself and the examples still work.",
   invalid_clip: "That part of the video cannot be analysed.",
   invite_required: "New analyses need an invite link. The examples work without one.",
-  own_key_required: "This version needs your own Gemini key. The examples and the live scanner still work.",
+  own_key_required: "New analyses are switched off right now. The examples and the live scanner still work.",
   server_key_missing: "The server has no Gemini key configured. The examples still work.",
   video_too_long: "This video is too long – PlacementRadar analyses videos up to 20 minutes.",
   busy: "Google's AI is overloaded right now – please try again in a few minutes.",

@@ -53,7 +53,6 @@ window.addEventListener("pr:recognition", (e) => { const k = e.detail.engine || 
 
 const VIEWS = [
   { id: "overview", label: "Products", icon: "bag" },
-  { id: "timeline", label: "Brand timeline", icon: "timeline" },
   { id: "value", label: "Media value", icon: "value" },
   { id: "disclosure", label: "Ad disclosure", icon: "shield" },
   { id: "authenticity", label: "Authenticity", icon: "heart" },
@@ -86,12 +85,13 @@ async function route() {
   stopLive();
   if (parts[0] === "live") {
     state.id = null; state.data = null; state.page = "live";
-    renderSidebar(); destroyPlayer(); await renderLive($("#main")); addInfoButton(); return;
+    state.renderedId = null; renderSidebar(); destroyPlayer(); await renderLive($("#main")); addInfoButton(); return;
   }
   state.page = parts[0] === "v" ? "video" : "start";
   if (parts[0] === "v" && parts[1]) {
     const id = parts[1];
     state.view = VIEWS.some((v) => v.id === parts[2]) ? parts[2] : "overview";
+    if (parts[2] === "timeline") state.scrollTo = "tlSect"; // old links: the timeline now lives on the Products page
     if (state.id !== id || !state.data) {
       const data = await loadAnalysis(id);
       if (!data) return renderAnalyze(id);
@@ -110,7 +110,8 @@ async function loadRecent() {
   try {
     const r = await fetch("api/recent"); if (!r.ok) return;
     const demoIds = new Set(state.demos.map((d) => d.id));
-    state.recent = ((await r.json()).items || []).filter((x) => x.id && !demoIds.has(x.id)).slice(0, 12);
+    state.recentAll = ((await r.json()).items || []).filter((x) => x.id && !demoIds.has(x.id));
+    state.recent = state.recentAll.slice(0, 12);
   } catch { return; }
   if (!state.recent.length) return;
   if (state.page === "start" && !$("#url")?.value) renderStart(); else renderSidebar(); // never wipe a link being typed
@@ -137,28 +138,12 @@ const mono = (brand) => `<span class="mono" style="background:${color(brand)}">$
 /** Glass top bar: logo · the two modes (analyse a video / camera) · usage + settings + about. One place for everything. */
 function renderSidebar() { renderTopbar(); } // old name, still called from routing
 function renderTopbar() {
-  const mode = state.page === "live" ? "live" : "video";
   $("#topbar").innerHTML = `
-    <button class="tb-brand" data-home>${LOGO}<span>PlacementRadar</span></button>
-    <nav class="mode-switch" aria-label="Mode">
-      <button class="${mode === "video" ? "on" : ""}" data-home>${icon("play")}<span>Video analysis</span></button>
-      <button class="${mode === "live" ? "on" : ""}" data-live>${icon("camera")}<span>Live scanner</span></button>
-    </nav>
+    <button class="tb-brand" data-home aria-label="PlacementRadar – start">${LOGO}<span>PlacementRadar</span></button>
     <span id="tbActions" class="tb-actions"></span>`;
-  $("#topbar").querySelectorAll("[data-home]").forEach((b) => (b.onclick = () => { location.hash = "#/"; }));
-  $("#topbar [data-live]").onclick = () => { location.hash = "#/live"; };
+  $("#topbar [data-home]").onclick = () => { location.hash = "#/"; };
   toolbarActions();
-  requestAnimationFrame(updateTone);
 }
-
-/** The menu bar is dark glass while it sits on a page's black stage, and takes the page tone once scrolled past it. */
-function updateTone() {
-  const band = document.querySelector("#main .stage-band, #main .v-hero");
-  const nav = $("#topbar"); if (!nav) return;
-  nav.classList.toggle("on-stage", !!band && window.scrollY < band.offsetHeight - nav.offsetHeight);
-}
-window.addEventListener("scroll", updateTone, { passive: true });
-window.addEventListener("resize", updateTone);
 
 // ------------------------------------------------------------------------------------------------
 // Start screen
@@ -171,21 +156,30 @@ function renderStart() {
       <div class="t">${esc(d.title || d.id)}</div>
       <div class="m">${esc(d.channel || "")}${d.views != null ? ` · ${fmtViews(d.views)} views` : ""} · ${d.brands ?? "?"} brands</div>
     </article>`;
-  // background: a slowly drifting wall of the analysed videos' thumbnails (the subject of the app itself)
-  const ids = [...state.demos, ...state.recent].map((d) => d.id);
-  const pool = ids.length ? ids : [];
-  const cols = Array.from({ length: 6 }, (_, c) => Array.from({ length: 7 }, (_, r) => pool.length ? pool[(c * 3 + r * 2 + c) % pool.length] : null));
-  const wall = pool.length ? `<div class="wall" aria-hidden="true">${cols.map((col) => `<div class="wall-col">${col.map((id) => `<img alt="" loading="lazy" src="https://i.ytimg.com/vi/${esc(id)}/mqdefault.jpg">`).join("")}</div>`).join("")}</div>` : "";
+  state.renderedId = null;
   $("#main").innerHTML = `
     <section class="stage-band start-stage">
-      ${wall}<div class="rings" aria-hidden="true"></div><div class="sweep" aria-hidden="true"></div>
+      ${thumbWall()}<div class="rings" aria-hidden="true"></div><div class="sweep" aria-hidden="true"></div>
       <div class="hero">
         <div class="app-icon">${LOGO}</div>
         <h1>Every brand in a video.</h1>
-        <p class="lead">Paste a YouTube link. PlacementRadar shows which brands appear, what that exposure is worth and whether it is labelled as advertising.</p>
-        <form class="spotlight" id="go">${icon("search")}<input id="url" placeholder="Paste a YouTube link" autocomplete="off" spellcheck="false" aria-label="YouTube link"><button>Analyse</button></form>
-        <div class="hint" id="hint"></div>
-        <ol class="steps"><li><b>1</b>Paste a link</li><li><b>2</b>Gemini watches image and sound</li><li><b>3</b>Brands, value, disclosure</li></ol>
+        <p class="lead">Paste a YouTube link, or hold a product up to your camera. PlacementRadar shows which brands appear, what that exposure is worth and whether it is labelled as advertising.</p>
+        <div class="mode-pick" role="tablist" aria-label="What to analyse">
+          <button role="tab" data-mode="video" class="${startMode === "video" ? "on" : ""}">${icon("play")}<span>YouTube video</span></button>
+          <button role="tab" data-mode="camera" class="${startMode === "camera" ? "on" : ""}">${icon("camera")}<span>Live camera</span></button>
+        </div>
+        <div class="mode-panes" data-mode="${startMode}">
+          <div class="mode-pane pane-video">
+            <form class="spotlight" id="go">${icon("search")}<input id="url" placeholder="Paste a YouTube link" autocomplete="off" spellcheck="false" aria-label="YouTube link"><button>Analyse</button></form>
+            <div class="hint" id="hint"></div>
+            <ol class="steps"><li><b>1</b>Paste a link</li><li><b>2</b>Gemini watches image and sound</li><li><b>3</b>Brands, value, disclosure</li></ol>
+          </div>
+          <div class="mode-pane pane-camera">
+            <div class="spotlight cam-pill">${icon("camera")}<span class="cp-text">Recognised on your device, no cloud needed</span><a class="cp-btn" href="#/live?start=1">Start camera</a></div>
+            <div class="hint"><a href="#/live">or analyse a photo</a></div>
+            <ol class="steps"><li><b>1</b>Allow the camera</li><li><b>2</b>Hold up a product</li><li><b>3</b>Brand, barcode, product</li></ol>
+          </div>
+        </div>
       </div>
     </section>
     <section class="start-body">
@@ -198,6 +192,12 @@ function renderStart() {
         <div class="tc-art" aria-hidden="true"><span class="tc-ic">${icon("bag")}</span><span class="tc-label">Brand found</span></div>
       </a>
     </section>`;
+  $("#main").querySelectorAll(".mode-pick [data-mode]").forEach((b) => (b.onclick = () => {
+    startMode = b.dataset.mode;
+    $("#main").querySelectorAll(".mode-pick [data-mode]").forEach((x) => x.classList.toggle("on", x === b));
+    $(".mode-panes").dataset.mode = startMode;
+    if (startMode === "video") $("#url").focus({ preventScroll: true });
+  }));
   $("#main").querySelectorAll("[data-open]").forEach((el) => (el.onclick = () => go(el.dataset.open)));
   $("#go").onsubmit = (e) => {
     e.preventDefault();
@@ -205,7 +205,30 @@ function renderStart() {
     if (!id) { $("#hint").textContent = "That does not look like a YouTube link."; return; }
     go(id);
   };
-  if (matchMedia("(min-width: 761px)").matches) $("#url").focus({ preventScroll: true });
+  if (startMode === "video" && matchMedia("(min-width: 761px)").matches) $("#url").focus({ preventScroll: true });
+}
+let startMode = "video";
+
+/**
+ * Background of the start page: a slowly drifting wall of video stills. Every analysed video contributes its
+ * thumbnail plus three frames YouTube extracts from it (mq1–mq3 ≈ 25/50/75 % of the video), shuffled so that
+ * the same picture never sits next to itself.
+ */
+function thumbWall() {
+  const ids = [...new Set([...state.demos, ...(state.recentAll || [])].map((d) => d.id))];
+  if (!ids.length) return "";
+  const pics = ids.flatMap((id) => ["mqdefault", "mq1", "mq2", "mq3"].map((f) => ({ id, src: `https://i.ytimg.com/vi/${encodeURIComponent(id)}/${f}.jpg` })));
+  const shuffle = (a) => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const COLS = 6, ROWS = 7; const grid = Array.from({ length: COLS }, () => []);
+  let bag = [];
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+    if (!bag.length) bag = shuffle([...pics]);
+    // avoid the same video directly above or to the left (if the bag still offers something else)
+    const clash = (p) => p.id === grid[c][r - 1]?.id || p.id === grid[c - 1]?.[r]?.id;
+    const k = bag.findIndex((p) => !clash(p));
+    grid[c].push(bag.splice(k < 0 ? 0 : k, 1)[0]);
+  }
+  return `<div class="wall" aria-hidden="true">${grid.map((col) => `<div class="wall-col">${col.map((p) => `<img alt="" decoding="async" src="${p.src}">`).join("")}</div>`).join("")}</div>`;
 }
 
 export function parseYouTubeId(s) {
@@ -236,7 +259,7 @@ const HTTP_WHY = { 429: "busy", 500: "had an internal error", 503: "overloaded",
  *   - that the page may be closed: the Worker finishes and stores the result; reopening the link loads it.
  */
 async function renderAnalyze(id) {
-  destroyPlayer(); renderSidebar();
+  destroyPlayer(); renderSidebar(); state.renderedId = null;
   const t0 = Date.now();
   const link = `${location.origin}${location.pathname}#/v/${id}/overview`;
   $("#main").innerHTML = `
@@ -279,7 +302,7 @@ async function renderAnalyze(id) {
   };
   const fail = (msg) => {
     clearInterval(tick);
-    const card = $(".wait-card"); if (!card) return; updateTone();
+    const card = $(".wait-card"); if (!card) return;
     card.innerHTML = `<h3>Analysis not possible right now</h3><p style="margin:0 0 14px;color:rgba(255,255,255,.72)">${esc(msg)}</p>
       <div class="row-btns" style="justify-content:flex-start">${state.demos[0] ? `<button class="btn primary" data-demo>${icon("play")} Open an example</button>` : ""}
       <button class="btn" data-livego>${icon("camera")} Live scanner</button></div>`;
@@ -341,6 +364,12 @@ async function renderAnalyze(id) {
 // ------------------------------------------------------------------------------------------------
 function renderResult() {
   const d = state.data; const v = d.video;
+  if (state.renderedId === state.id && $("#view") && $("#main .v-hero")) { // same video, other tab
+    $("#main").querySelectorAll(".tabs [data-view]").forEach((b) => b.classList.toggle("on", b.dataset.view === state.view));
+    destroyPlayer();
+    return ({ overview: viewOverview, value: viewValue, disclosure: viewDisclosure, authenticity: viewAuthenticity, report: viewReport })[state.view]();
+  }
+  state.renderedId = state.id;
   const engine = [...new Set(d.source?.models || [])].map(modelName).join(" + ") || "Gemini";
   const meta = [v.channel, v.views != null ? `${fmtViews(v.views)} views` : null, v.duration_s ? fmtDur(v) : null, v.upload_date ? fmtDate(v.upload_date) : null].filter(Boolean);
   const thumb = `https://i.ytimg.com/vi/${encodeURIComponent(v.id)}/hqdefault.jpg`;
@@ -359,8 +388,7 @@ function renderResult() {
     </header>
     <div class="content" id="view"></div>`;
   $("#main").querySelectorAll(".tabs [data-view]").forEach((b) => (b.onclick = () => go(state.id, b.dataset.view)));
-  ({ overview: viewOverview, timeline: viewTimeline, value: viewValue, disclosure: viewDisclosure, authenticity: viewAuthenticity, report: viewReport })[state.view]();
-  updateTone();
+  ({ overview: viewOverview, value: viewValue, disclosure: viewDisclosure, authenticity: viewAuthenticity, report: viewReport })[state.view]();
 }
 
 function destroyPlayer() { state.player?.destroy(); state.player = null; }
@@ -444,12 +472,11 @@ function viewOverview() {
   const auAvg = au.length ? round5(au.reduce((n, a) => n + a.overall, 0) / au.length) : null;
   const dur = v.duration_s || Math.max(1, ...d.brands.flatMap((b) => b.appearances.map((a) => a.end_s)));
   const valueOf = new Map(val.rows.map((r) => [r.brand.brand, r]));
-  const sortBy = state.sortBy || "screen";
   const promoted = new Set(au.map((a) => a.brand.toLowerCase()));
   const firstAt = (b) => b.appearances[0]?.start_s ?? Infinity;
-  const rows = d.brands.filter((b) => b.appearances?.length).sort((a, b) => sortBy === "first" ? firstAt(a) - firstAt(b)
+  const rows = () => { const sortBy = state.sortBy || "screen"; return d.brands.filter((b) => b.appearances?.length).sort((a, b) => sortBy === "first" ? firstAt(a) - firstAt(b)
     : sortBy === "value" ? (valueOf.get(b.brand)?.euros || 0) - (valueOf.get(a.brand)?.euros || 0)
-    : (valueOf.get(b.brand)?.raw.visual || 0) - (valueOf.get(a.brand)?.raw.visual || 0));
+    : (valueOf.get(b.brand)?.raw.visual || 0) - (valueOf.get(a.brand)?.raw.visual || 0)); };
 
   $("#view").innerHTML = `
     <div class="watch">
@@ -461,41 +488,64 @@ function viewOverview() {
     </div>
 
     <div class="stats">
-      <button class="stat" data-goto="timeline"><span class="s-label">Products ${info("Distinct brands Gemini found in the picture, in on-screen text or in speech. Spelling variants are merged.")}</span><b class="num">${d.brands.length}</b><span class="s-sub">${d.brands.filter((b) => b.appearances.some((a) => a.channel === "audio")).length} also mentioned in speech</span></button>
-      <button class="stat" data-goto="timeline"><span class="s-label">Brand on screen ${info("Share of the video in which at least one brand is visible. Overlapping appearances are counted once.")}</span><b class="num">${union}%</b><span class="s-sub">of ${fmtDur(v)}</span></button>
+      <button class="stat" data-scroll="tlSect"><span class="s-label">Products ${info("Distinct brands Gemini found in the picture, in on-screen text or in speech. Spelling variants are merged.")}</span><b class="num">${d.brands.length}</b><span class="s-sub">${d.brands.filter((b) => b.appearances.some((a) => a.channel === "audio")).length} also mentioned in speech</span></button>
+      <button class="stat" data-scroll="tlSect"><span class="s-label">Brand on screen ${info("Share of the video in which at least one brand is visible. Overlapping appearances are counted once.")}</span><b class="num">${union}%</b><span class="s-sub">of ${fmtDur(v)}</span></button>
       <button class="stat" data-goto="disclosure"><span class="s-label">Ad disclosure ${info("Looks for an advertising label in title, description, on screen and in speech (§ 5a UWG, § 22 MStV). Green = clear label, orange = weak label, red = commercial signals but no label. A screening aid, not legal advice.")}</span><b class="status lvl-${disc.level}"><i class="dot"></i>${esc(disc.title)}</b><span class="s-sub">${esc(disc.sub)}</span></button>
       <button class="stat" data-goto="authenticity"><span class="s-label">Authenticity ${info("How genuine the recommendation feels: six factors rated by Gemini from image and sound (use shown, balance, specificity, delivery, body language, sales pressure). Rounded to 5 because runs vary by about ±6 points.")}</span><b class="num">${auAvg ?? "–"}</b><span class="s-sub">${auAvg != null ? band(auAvg) : "not rated"}</span></button>
       <button class="stat" data-goto="value"><span class="s-label">Media value ${info(`What the same exposure would cost as 30-second video ads: views ÷ 1000 × CPM (€${state.opts.cpm}) × weighted seconds ÷ 30 × share watched (${Math.round(state.opts.viewThrough * 100)}%). Weighted seconds count large, central, in-use appearances more. Adjustable under Media value.`)}</span><b class="num">${euro(val.total)}</b><span class="s-sub">${fmtViews(v.views)} views</span></button>
     </div>
 
+    <section class="sect" id="tlSect">
+      <div class="sect-head"><h3>Brand timeline <span class="count">${d.brands.length}</span></h3>${legend()}</div>
+      <div class="card tl-card"><div id="tl"></div><p class="small muted tl-help">Click a bar to jump there in the video. Flags mark advertising labels.</p></div>
+    </section>
+
     <section class="sect">
-      <div class="sect-head"><h3>All products <span class="count">${rows.length}</span></h3>
-        <span class="seg-ctl" id="psort">${[["screen", "Screen time"], ["first", "In order"], ["value", "Value"]].map(([k, l]) => `<button data-s="${k}" class="${sortBy === k ? "on" : ""}">${l}</button>`).join("")}</span></div>
-      <div class="pgrid">${rows.map((b) => {
-        const r = valueOf.get(b.brand) || { raw: {}, euros: 0 };
-        const vis = b.appearances.filter((a) => a.channel === "visual");
-        const spoken = b.appearances.filter((a) => a.channel === "audio").length;
-        const first = (vis[0] || b.appearances[0])?.start_s ?? 0;
-        const jumps = (vis.length ? vis : b.appearances).slice(0, 5);
-        return `<article class="pcard" data-brand="${esc(b.brand)}" data-t="${first}" tabindex="0">
-          <div class="pc-top">${logoBox(b.brand)}<div class="pc-name"><b>${esc(b.brand)}</b><span>${esc(b.product || b.category || "")}</span></div>
-            ${promoted.has(b.brand.toLowerCase()) ? `<span class="tag">promoted</span>` : b.appearances.some((a) => a.in_use) ? `<span class="tag soft">in use</span>` : ""}</div>
-          <div class="pc-lane">${b.appearances.map((a) => `<i class="${a.channel}" style="left:${Math.min(100, (100 * a.start_s) / dur)}%;width:${Math.max(0.8, (100 * (a.end_s - a.start_s)) / dur)}%;background:${color(b.brand)};color:${color(b.brand)}"></i>`).join("")}</div>
-          <div class="pc-facts"><span><b class="num">${Math.round(r.raw.visual || 0)} s</b> on screen</span><span><b class="num">${spoken}×</b> spoken</span><span><b class="num">${euro(r.euros)}</b> value</span></div>
-          <div class="pc-jumps">${jumps.map((a) => `<button class="time" data-jump="${a.start_s}">${mmss(a.start_s)}</button>`).join("")}${b.appearances.length > jumps.length ? `<span class="more">+${b.appearances.length - jumps.length}</span>` : ""}</div>
-        </article>`;
-      }).join("")}</div>
+      <div class="sect-head"><h3>All products <span class="count">${rows().length}</span></h3>
+        <span class="seg-ctl" id="psort">${[["screen", "Screen time"], ["first", "In order"], ["value", "Value"]].map(([k, l]) => `<button data-s="${k}" class="${(state.sortBy || "screen") === k ? "on" : ""}">${l}</button>`).join("")}</span></div>
+      <div class="pgrid" id="pgrid"></div>
     </section>`;
 
-  mountPlayer();
-  hydrateLogos($("#view"));
+  // the player is mounted once per visit of this tab – sorting and "show all" only redraw their own part
   const jump = (t) => { $("#playerHost").classList.add("paused"); state.player?.seek(t); $("#playerHost").scrollIntoView({ behavior: "smooth", block: "center" }); };
-  $("#view").querySelectorAll(".pcard").forEach((c) => {
-    c.onclick = (e) => { const j = e.target.closest("[data-jump]"); jump(Number(j ? j.dataset.jump : c.dataset.t)); };
-    c.onkeydown = (e) => { if (e.key === "Enter") jump(Number(c.dataset.t)); };
-  });
+  let tl = null;
+  const drawTimeline = (maxRows) => {
+    tl = timeline($("#tl"), { maxRows, onJump: jump });
+    tl.setTime(state.player?.t || 0);
+    $("#tl .tl-more")?.addEventListener("click", () => drawTimeline(Infinity));
+  };
+  const drawGrid = () => {
+    $("#pgrid").innerHTML = rows().map((b) => {
+      const r = valueOf.get(b.brand) || { raw: {}, euros: 0 };
+      const vis = b.appearances.filter((a) => a.channel === "visual");
+      const spoken = b.appearances.filter((a) => a.channel === "audio").length;
+      const first = (vis[0] || b.appearances[0])?.start_s ?? 0;
+      const jumps = (vis.length ? vis : b.appearances).slice(0, 5);
+      return `<article class="pcard" data-brand="${esc(b.brand)}" data-t="${first}" tabindex="0">
+        <div class="pc-top">${logoBox(b.brand)}<div class="pc-name"><b>${esc(b.brand)}</b><span>${esc(b.product || b.category || "")}</span></div>
+          ${promoted.has(b.brand.toLowerCase()) ? `<span class="tag">promoted</span>` : b.appearances.some((a) => a.in_use) ? `<span class="tag soft">in use</span>` : ""}</div>
+        <div class="pc-lane">${b.appearances.map((a) => `<i class="${a.channel}" style="left:${Math.min(100, (100 * a.start_s) / dur)}%;width:${Math.max(0.8, (100 * (a.end_s - a.start_s)) / dur)}%;background:${color(b.brand)};color:${color(b.brand)}"></i>`).join("")}</div>
+        <div class="pc-facts"><span><b class="num">${Math.round(r.raw.visual || 0)} s</b> on screen</span><span><b class="num">${spoken}×</b> spoken</span><span><b class="num">${euro(r.euros)}</b> value</span></div>
+        <div class="pc-jumps">${jumps.map((a) => `<button class="time" data-jump="${a.start_s}">${mmss(a.start_s)}</button>`).join("")}${b.appearances.length > jumps.length ? `<span class="more">+${b.appearances.length - jumps.length}</span>` : ""}</div>
+      </article>`;
+    }).join("");
+    $("#pgrid").querySelectorAll(".pcard").forEach((c) => {
+      c.onclick = (e) => { const j = e.target.closest("[data-jump]"); jump(Number(j ? j.dataset.jump : c.dataset.t)); };
+      c.onkeydown = (e) => { if (e.key === "Enter") jump(Number(c.dataset.t)); };
+    });
+    hydrateLogos($("#pgrid"));
+  };
+
+  drawGrid();
+  drawTimeline(8);
+  mountPlayer((t) => tl?.setTime(t));
+  hydrateLogos($("#view"));
   $("#view").querySelectorAll("[data-goto]").forEach((el) => (el.onclick = (e) => { if (!e.target.closest(".info")) go(state.id, el.dataset.goto); }));
-  $("#psort").querySelectorAll("button").forEach((b) => (b.onclick = () => { state.sortBy = b.dataset.s; viewOverview(); }));
+  $("#view").querySelectorAll("[data-scroll]").forEach((el) => (el.onclick = (e) => { if (!e.target.closest(".info")) $(`#${el.dataset.scroll}`).scrollIntoView({ behavior: "smooth", block: "start" }); }));
+  $("#psort").querySelectorAll("button").forEach((b) => (b.onclick = () => {
+    state.sortBy = b.dataset.s; $("#psort").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); drawGrid();
+  }));
+  if (state.scrollTo) { const id = state.scrollTo; state.scrollTo = null; setTimeout(() => $(`#${id}`)?.scrollIntoView({ block: "start" }), 50); }
 }
 
 function brandTimeShare(d) {
@@ -518,7 +568,7 @@ function countUp() {
 const legend = () => `<span class="legend"><span><b></b>visible</span><span><b class="audio"></b>spoken</span><span><b class="text"></b>on-screen text</span></span>`;
 
 // ---------- Timeline component ----------
-function timeline(root, { maxRows = Infinity } = {}) {
+function timeline(root, { maxRows = Infinity, onJump = null } = {}) {
   const d = state.data; const dur = d.video.duration_s || Math.max(...d.brands.flatMap((b) => b.appearances.map((a) => a.end_s)), 1);
   const rows = d.brands.slice(0, maxRows);
   const pct = (s) => `${Math.min(100, (100 * s) / dur)}%`;
@@ -528,7 +578,7 @@ function timeline(root, { maxRows = Infinity } = {}) {
       ${rows.map((b) => `<div class="tl-row"><div class="name"><i style="background:${color(b.brand)}"></i>${esc(b.brand)}</div>
         <div class="lane">${b.appearances.map((a) => `<div class="seg ${a.channel}" style="left:${pct(a.start_s)};width:calc(${pct(a.end_s - a.start_s)});color:${color(b.brand)};background:${color(b.brand)}"
           data-t="${a.start_s}" data-tip="${esc(`${b.brand} · ${mmss(a.start_s)}–${mmss(a.end_s)} · ${a.channel}${a.size ? " · " + a.size : ""}${a.in_use ? " · in use" : ""}|${a.evidence}`)}"></div>`).join("")}</div></div>`).join("")}
-      ${d.brands.length > rows.length ? `<div class="small muted" style="margin:8px 0 0 162px">+ ${d.brands.length - rows.length} more brands in the full timeline</div>` : ""}
+      ${d.brands.length > rows.length ? `<button class="link tl-more">Show all ${d.brands.length} brands</button>` : ""}
       <div class="axis"><span>0:00</span><span>${mmss(dur / 4)}</span><span>${mmss(dur / 2)}</span><span>${mmss((3 * dur) / 4)}</span><span>${mmss(dur)}</span></div>
       <div class="playhead" style="left:calc(162px + 0%)"></div>
     </div>`;
@@ -536,8 +586,8 @@ function timeline(root, { maxRows = Infinity } = {}) {
   const setTime = (t) => { const w = lane ? lane.getBoundingClientRect().width : 0; ph.style.left = `${162 + (w * Math.min(1, t / dur))}px`; };
   root.querySelectorAll("[data-t]").forEach((el) => {
     el.onclick = () => {
-      if (!state.player) return go(state.id, "overview", Number(el.dataset.t));
-      $("#playerHost")?.classList.add("paused"); state.player.seek(Number(el.dataset.t));
+      if (onJump) return onJump(Number(el.dataset.t));
+      go(state.id, "overview", Number(el.dataset.t));
     };
   });
   tooltips(root);
@@ -557,22 +607,6 @@ function tooltips(root) {
     el.onmouseleave = () => { tip?.remove(); tip = null; };
   });
   function move(e) { if (tip) { tip.style.left = `${Math.min(e.clientX + 14, innerWidth - 320)}px`; tip.style.top = `${e.clientY + 14}px`; } }
-}
-
-// ---------- Timeline view ----------
-function viewTimeline() {
-  $("#view").innerHTML = `
-    <div class="grid-top" style="grid-template-columns:minmax(0,1fr) 300px">
-      <div class="player" id="playerHost"><div class="yt-host"></div></div>
-      <div class="card howto"><h3>How to read it</h3>
-        <p class="muted">Every row is one brand. Filled bars: visible in the picture. Outlined: mentioned in speech. Dotted: on-screen text. Flags mark advertising labels.</p>
-        <p class="muted">Click a bar to jump there. Pause the video to see roughly where the products are in the frame.</p>
-        <p class="small muted">Positions in the frame are approximate, Gemini's boxes are rough for video (EVALUATION.md, test E).</p></div>
-    </div>
-    <section class="sect"><div class="sect-head"><h3>Every appearance <span class="count">${state.data.brands.length} brands</span></h3>${legend()}</div>
-      <div class="card"><div id="tl"></div></div></section>`;
-  const tl = timeline($("#tl"));
-  mountPlayer((t) => tl.setTime(t));
 }
 
 // ---------- Media value view ----------
@@ -848,7 +882,7 @@ function showSettings() {
     <div class="sheet-foot"><button class="btn primary" data-close>Done</button></div>`);
   s.querySelectorAll("#theme button").forEach((b) => (b.onclick = () => { prefs.theme = b.dataset.t; savePrefs(); applyTheme(); s.querySelectorAll("#theme button").forEach((x) => x.classList.toggle("on", x === b)); }));
   s.querySelector("#pUsage").onchange = (e) => { prefs.usage = e.target.checked; savePrefs(); toolbarActions(); };
-  s.querySelector("#pTech").onchange = (e) => { prefs.tech = e.target.checked; savePrefs(); if (state.data) renderResult(); };
+  s.querySelector("#pTech").onchange = (e) => { prefs.tech = e.target.checked; savePrefs(); state.renderedId = null; if (state.data) renderResult(); };
   s.querySelector("#pInvite").onchange = (e) => { try { localStorage.setItem("invite", e.target.value.trim()); } catch { /* ignore */ } };
 }
 

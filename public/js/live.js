@@ -50,7 +50,7 @@ export async function renderLive(main) {
     <section class="stage-band live-stage">
       <div class="rings" aria-hidden="true"></div><div class="sweep" aria-hidden="true"></div>
       <div class="live-head"><div><h1>Live scanner</h1><p>Products in front of your camera, recognised on your device.</p></div>
-        <span class="badge" id="lvBackend">${icon("chip")} loading model…</span></div>
+        <span class="badge" id="lvBackend">${icon("chip")} loading model…</span><a class="btn glass" href="#/">${icon("play")} Analyse a video instead</a></div>
     <div class="live-grid">
       <div class="stage" id="stage">
         <video id="cam" playsinline muted></video><canvas id="ov"></canvas>
@@ -86,6 +86,7 @@ export async function renderLive(main) {
   $("#photo").onchange = (e) => e.target.files[0] && analysePhoto(e.target.files[0]);
   $("#identify").onclick = () => identifyLargest();
   $("#ov").onclick = (e) => identifyAt(e);
+  if (/[?&]start=1/.test(location.hash)) { history.replaceState(null, "", "#/live"); startCamera(); } // "Start camera" on the start page
   try { await loadModel(); } catch (e) { $("#lvBackend").innerHTML = `${icon("chip")} model failed: ${esc(e.message)}`; }
   // OCR models + brand list load in the background (≈ 13 MB, cached by the browser afterwards)
   Promise.all([loadOcr(), loadBrands()]).then(() => stage("ocr", "ready · Open Food Facts brand list")).catch((e) => stage("ocr", `not available (${e.message})`));

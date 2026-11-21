@@ -55,33 +55,26 @@ a:hover { text-decoration: underline; }
 .ell { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
 
-main { position: relative; margin-top: calc(-1 * var(--nav)); min-height: 100vh; }
+main { position: relative; min-height: 100vh; }
 .content { max-width: var(--max); margin: 0 auto; padding: 40px var(--gut) 96px; }
 
 /* ------------------------------------------------------------------------------------------------
-   Menu bar (glass). Dark while it sits on a stage, page tone once scrolled past (app.js → .on-stage)
+   No menu bar: the mark (home) and a few round glass buttons float on top of every page's black stage
    ------------------------------------------------------------------------------------------------ */
-.topbar { position: sticky; top: 0; z-index: 40; height: var(--nav); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
-  padding: 0 var(--gut); background: var(--glass); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
-  box-shadow: 0 1px 0 var(--line); transition: background .4s ease, color .4s ease, box-shadow .4s ease; color: var(--text); }
-.topbar.on-stage { background: rgba(0, 0, 0, .28); color: #f5f5f7; box-shadow: 0 1px 0 rgba(255, 255, 255, .06);
-  --tb-seg: rgba(255, 255, 255, .1); --tb-on: rgba(255, 255, 255, .2); --tb-2: rgba(255, 255, 255, .64); }
-.tb-brand { display: inline-flex; align-items: center; gap: 10px; border: 0; background: none; cursor: pointer; font: 600 17px var(--font-d); letter-spacing: -.02em; color: inherit; justify-self: start; padding: 0; }
-.tb-brand svg { width: 26px; height: 26px; }
-.mode-switch { position: relative; display: inline-flex; padding: 3px; border-radius: 999px; background: var(--tb-seg, rgba(118, 118, 128, .12)); }
-.mode-switch button { display: inline-flex; align-items: center; gap: 7px; border: 0; background: none; cursor: pointer; padding: 6px 16px; border-radius: 999px;
-  font: 500 14px var(--font); letter-spacing: -.01em; color: var(--tb-2, var(--text-2)); transition: color .25s, background .3s var(--spring); }
-.mode-switch button .icon { width: 15px; height: 15px; }
-.mode-switch button:hover { color: inherit; }
-.mode-switch button.on { background: var(--tb-on, var(--bg-elev)); color: inherit; box-shadow: 0 1px 4px rgba(0, 0, 0, .12); }
-.topbar:not(.on-stage) .mode-switch button.on { color: var(--text); }
-.tb-actions { display: inline-flex; gap: 6px; align-items: center; justify-self: end; }
-.icon-btn { border: 0; background: transparent; width: 34px; height: 34px; border-radius: 50%; display: inline-grid; place-items: center; cursor: pointer; color: var(--tb-2, var(--text-2)); flex: none; transition: background .2s, color .2s; }
-.icon-btn:hover { background: var(--tb-seg, var(--tile)); color: inherit; }
-.usage-pill { display: inline-flex; gap: 6px; align-items: center; border: 0; cursor: pointer; font: 500 12.5px var(--font); letter-spacing: -.005em; color: var(--tb-2, var(--text-2));
-  background: var(--tb-seg, var(--tile)); border-radius: 999px; padding: 6px 12px; }
+.topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 40; height: var(--nav); display: flex; align-items: center; justify-content: space-between;
+  padding: 12px var(--gut) 0; color: #f5f5f7; pointer-events: none; }
+.topbar > * { pointer-events: auto; }
+.tb-brand { display: inline-flex; align-items: center; gap: 10px; border: 0; background: none; cursor: pointer; font: 600 17px var(--font-d); letter-spacing: -.02em; color: inherit; padding: 0; opacity: .92; transition: opacity .2s; }
+.tb-brand:hover { opacity: 1; }
+.tb-brand svg { width: 28px; height: 28px; }
+.tb-actions { display: inline-flex; gap: 8px; align-items: center; }
+.icon-btn { border: 0; width: 36px; height: 36px; border-radius: 50%; display: inline-grid; place-items: center; cursor: pointer; flex: none; color: rgba(255, 255, 255, .82);
+  background: rgba(255, 255, 255, .1); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12); transition: background .2s, color .2s; }
+.icon-btn:hover { background: rgba(255, 255, 255, .2); color: #fff; }
+.usage-pill { display: inline-flex; gap: 6px; align-items: center; border: 0; cursor: pointer; font: 500 12.5px var(--font); letter-spacing: -.005em; color: rgba(255, 255, 255, .82); height: 36px;
+  background: rgba(255, 255, 255, .1); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12); border-radius: 999px; padding: 0 14px; }
 .usage-pill .icon { width: 14px; height: 14px; color: #30d158; }
-.usage-pill:hover { color: inherit; }
+.usage-pill:hover { color: #fff; background: rgba(255, 255, 255, .2); }
 
 /* ------------------------------------------------------------------------------------------------
    Stage (black band with imagery) — shared by start, video, waiting and live pages
@@ -150,6 +143,22 @@ main { position: relative; margin-top: calc(-1 * var(--nav)); min-height: 100vh;
 .spotlight button { border: 0; background: var(--accent); color: #fff; border-radius: 999px; padding: 11px 22px; font: 600 15px var(--font); cursor: pointer; transition: filter .2s; }
 .spotlight button:hover { filter: brightness(1.12); }
 .hint { font-size: 14px; color: #ff8a80; margin-top: 12px; min-height: 20px; }
+.hint a { color: rgba(255, 255, 255, .7); } .hint a:hover { color: #fff; }
+.mode-pick { position: relative; display: inline-flex; padding: 4px; border-radius: 999px; margin-bottom: 18px;
+  background: rgba(255, 255, 255, .08); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12); }
+.mode-pick button { display: inline-flex; align-items: center; gap: 8px; border: 0; background: none; cursor: pointer; padding: 9px 20px; border-radius: 999px;
+  font: 500 15px var(--font); letter-spacing: -.015em; color: rgba(255, 255, 255, .66); transition: color .25s, background .35s var(--spring), box-shadow .35s; }
+.mode-pick button .icon { width: 16px; height: 16px; }
+.mode-pick button:hover { color: #fff; }
+.mode-pick button.on { color: #000; background: rgba(255, 255, 255, .94); box-shadow: 0 4px 16px rgba(0, 0, 0, .3); }
+.mode-panes { display: grid; grid-template-columns: minmax(0, 1fr); width: min(640px, 100%); }
+.mode-pane { grid-area: 1 / 1; min-width: 0; display: flex; flex-direction: column; align-items: center; transition: opacity .35s ease, transform .45s var(--spring), visibility 0s .35s; }
+.mode-panes[data-mode="video"] .pane-camera, .mode-panes[data-mode="camera"] .pane-video { opacity: 0; visibility: hidden; transform: translateY(8px) scale(.98); pointer-events: none; }
+.mode-panes[data-mode="video"] .pane-video, .mode-panes[data-mode="camera"] .pane-camera { transition-delay: 0s; }
+.cam-pill { justify-content: space-between; }
+.cam-pill .cp-text { flex: 1; text-align: left; color: rgba(255, 255, 255, .72); font-size: 17px; padding: 8px 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cp-btn { flex: none; background: #30d158; color: #fff; border-radius: 999px; padding: 11px 22px; font: 600 15px var(--font); text-decoration: none; transition: filter .2s; }
+.cp-btn:hover { filter: brightness(1.1); text-decoration: none; }
 .steps { list-style: none; display: flex; gap: 32px; padding: 0; margin: 14px 0 0; color: rgba(255, 255, 255, .6); font-size: 15px; flex-wrap: wrap; justify-content: center; }
 .steps li { display: inline-flex; align-items: center; gap: 9px; }
 .steps b { width: 22px; height: 22px; border-radius: 50%; display: inline-grid; place-items: center; font-size: 12px; color: #fff; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35); }
@@ -332,7 +341,9 @@ main { position: relative; margin-top: calc(-1 * var(--nav)); min-height: 100vh;
 .tip { position: fixed; z-index: 70; max-width: 300px; background: var(--sheet); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-radius: 14px; padding: 11px 13px; font-size: 13px; line-height: 1.45; box-shadow: var(--lift), inset 0 0 0 1px var(--line); pointer-events: none; }
 .tip b { display: block; margin-bottom: 2px; }
-.howto p { margin: 0 0 10px; } .howto p:last-child { margin: 0; }
+.tl-card { padding: 22px 26px 18px; }
+.tl-more { margin: 10px 0 0 162px; }
+.tl-help { margin: 14px 0 0; }
 
 /* ------------------------------------------------------------------------------------------------
    Lists, bars, sliders, media value
@@ -435,6 +446,7 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
 .live-head h1 { font: 700 clamp(32px, 4vw, 48px)/1.05 var(--font-d); letter-spacing: -.04em; margin: 0; }
 .live-head p { margin: 6px 0 0; color: var(--text-2); font-size: 19px; }
 .live-head .badge { margin-left: auto; }
+.live-head .btn.glass { align-self: flex-end; }
 .live-grid { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; }
 .stage { position: relative; background: #0d0d0f; border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 16/9; box-shadow: 0 0 0 1px rgba(255, 255, 255, .08), 0 40px 80px -20px rgba(0, 0, 0, .8); }
 .stage video, .stage > canvas#cam { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
@@ -556,9 +568,10 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
 @media (max-width: 760px) {
   :root { --nav: 48px; }
   body { font-size: 16px; }
-  .topbar { grid-template-columns: auto 1fr auto; gap: 8px; }
-  .tb-brand span, .mode-switch button span, .usage-pill span { display: none; }
-  .mode-switch { justify-self: center; } .mode-switch button { padding: 6px 14px; }
+  .tb-brand span, .usage-pill span { display: none; }
+  .mode-pick button { padding: 8px 16px; font-size: 14px; }
+  .cam-pill .cp-text { font-size: 15px; } .cp-btn { padding: 10px 16px; }
+  .tl-more { margin-left: 102px; }
   .content { padding: 28px var(--gut) 64px; }
   .start-stage { min-height: 0; padding-top: calc(var(--nav) + 48px); padding-bottom: 64px; }
   .wall { grid-template-columns: repeat(3, 1fr); inset: -10% -40%; }

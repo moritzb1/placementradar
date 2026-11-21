@@ -25,6 +25,12 @@ Final project for *MMI5190E – The New Frontiers of AI: From Perception to Agen
 
 ![Overview of "What's in my Bag?"](docs/screenshots/02_overview.png)
 
+**2b · Show tracking.** A switch under the player draws rounded boxes with the product's name over the video – brand + model and how it was recognised (logo, text, speech, design) – and they follow the product while the video plays. The positions come from Gemini (keyframes every ~2–3 s, interpolated in between); they are estimates, and boxes far from a reported position are drawn dashed.
+
+![Tracking boxes over the player (Beats headphones at 2:38)](docs/screenshots/14_tracking.jpg)
+
+**First visit.** A five-step introduction explains what the app does, the three engines, why it matters and where to start. Skippable, "Don't show again" is remembered; it can be reopened from the About sheet.
+
 **3 · Brand timeline.** One lane per brand – solid = visible, outline = mentioned in speech, dotted = on-screen text. Click a bar and the video jumps there (timestamps were accurate to ±2 s in our checks).
 
 ![Brand timeline](docs/screenshots/03_timeline.png)
@@ -72,6 +78,8 @@ PlacementRadar answers both from a single YouTube link and adds a third, newer q
 |---|---|---|
 | **Brand timeline** | one lane per brand: visible / mentioned in speech / on-screen text, click to jump in the video | done |
 | **Pause & Find** | pause the video → a panel lists the products in that frame, with the creator's link (affiliate links marked) or a neutral shopping search; soft markers show roughly where they are | done |
+| **Show tracking** | labelled boxes over the YouTube player (brand + model + recognition basis) that follow each product; positions are Gemini keyframes every ~2–3 s, interpolated; same look as the live scanner's boxes | done (21 Nov) |
+| **Introduction** | five steps on the first visit: what, how (three engines), why, what it brings, where to start; reopen via About | done (21 Nov) |
 | **Media value** | visibility score 0–100 and estimated € value per brand; transparent formula, adjustable CPM and view-through | done |
 | **Ad disclosure check** | traffic light: *Disclosure found / Check disclosure / No disclosure found / No advertising detected*, with every place that was checked | done |
 | **Authenticity score** | six sub-scores (use shown, balance, specificity, delivery, body language, sales pressure), each with timestamped evidence | done |
@@ -143,8 +151,10 @@ One JSON file per analysed video (`public/data/<video-id>.json`):
 {
   "video":   { "id", "title", "channel", "views", "duration_s", "upload_date", "description" },
   "brands":  [{ "brand", "product", "category",
-                "appearances": [{ "start_s", "end_s", "channel": "visual|audio|text", "size", "position", "in_use", "evidence" }],
-                "frames": [{ "t", "box": [ymin, xmin, ymax, xmax] }] }],      // 0–1000, for Pause & Find
+                "appearances": [{ "start_s", "end_s", "channel": "visual|audio|text", "size", "position", "in_use", "evidence",
+                                  "basis": "logo|text|speech|design", "confidence",
+                                  "track": [{ "t", "box": [ymin, xmin, ymax, xmax] }] }],   // 0–1000, keyframes every ~2–3 s (visual only)
+                "frames": [{ "t", "box" }] }],      // all positions of the brand; analyses before 21 Nov: one per appearance
   "disclosures":  [{ "time_s", "kind", "text" }],
   "paid":         { "looks_like_paid_promotion", "reasoning" },
   "authenticity": [{ "brand", "product", "overall", "verdict", "sub": { "use_shown": { "score", "time_s", "evidence" }, … } }],
@@ -198,6 +208,8 @@ public/css/app.css         design system (light/dark, Apple-like)
 public/js/app.js           views: start, waiting screen, overview, timeline, media value, disclosure,
                            authenticity, brand report
 public/js/player.js        YouTube IFrame API wrapper (muted, "nudge" against a black frame after a seek)
+public/js/tracking.js      "Show tracking": labelled boxes over the player, interpolated between Gemini's keyframes
+public/js/intro.js         five-step introduction on the first visit (reopen via About)
 public/js/value.js         media value model
 public/js/disclosure.js    ad label check
 public/js/live.js          live scanner: detector, tracking, 5-stage cascade, side panel
@@ -206,7 +218,7 @@ public/js/brandmodel.js    own brand model in the browser (MobileCLIP-S1 encoder
 public/js/wasmqueue.js     one ONNX WASM model at a time (shared queue)
 public/js/icons.js         own SVG icons (no emoji)
 public/js/shared/          prompts + data normalisation, used by Worker AND browser
-public/data/               five pre-analysed example videos (+ index.json)
+public/data/               six pre-analysed example videos (+ index.json)
 public/models/             ONNX models, brand list, trained brand head (each file < 25 MiB, Cloudflare limit)
 public/vendor/             ONNX Runtime Web
 tools/                     reproducible scripts: demo data (add_demo.py), brand list (build_brand_list.py),
@@ -219,6 +231,7 @@ EVALUATION.md              all tests, incl. what did not work
 ## 9. Limitations and ethics
 
 - Gemini can miss brands or misplace them; repeated runs differ (22 vs. 27 brands for the same video). Timestamps were accurate to ±2 s in our checks; positions in the frame are rough.
+- Tracking boxes are **Gemini's estimates, not measurements**: the browser cannot look into the YouTube player (cross-origin), so it cannot follow the product itself. Gemini samples the video at about one frame per second and returned a keyframe every ~4 s in our test; boxes lag behind fast movements and sometimes sit beside the product. The overlay assumes a 16:9 video (YouTube Shorts would be misplaced).
 - Media value depends on assumed CPM and view-through; it is an estimate for comparison, not an invoice.
 - The disclosure check and authenticity score judge *content*, not people. Wording is deliberately neutral.
 - No video is downloaded or re-hosted. The original YouTube player is embedded (privacy-enhanced mode).

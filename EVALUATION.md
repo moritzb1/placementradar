@@ -16,6 +16,7 @@ Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). 
 | Can the browser read the brand (OCR)? | 37/49 real product photos, 0 wrong brands, 125 ms | S2 |
 | Does our own trained model add anything? | OCR + own model 41/49 (84 %), 0 wrong labels from the model; 96 % of its answers right on 741 held-back products | S2b |
 | Does general CLIP work for product search? | no – 0/5 on small crops | H3 |
+| Can boxes follow a product while the video plays? | roughly: 101 Gemini keyframes for 33 appearances (~1 per 4 s), interpolated; estimates, not measurements | T |
 | Does a free fallback provider help? | Workers AI (Llama 3.2 Vision) finds main brands, reads slogans as brands → last resort only | S1 |
 
 Failures are part of the result: H3, the combined Gemini call (E), the first OCR run with 11 wrong brands (S2), the "other brand" class (S2b) and the dropped supermarket video (S3) each changed the design.
@@ -58,6 +59,14 @@ Title, channel, views, duration, description via the YouTube page (server-side).
 | gemini-3.1-flash-lite | 6/6 | 3.3 s | finds more small items (Dyson, ja!) |
 | gemini-3-flash-preview | 4/6 | 5.2 s | one 120 s timeout, one 503 |
 Boxes on single images are far more precise than positions from video analysis (test E).
+
+## T – Tracking boxes with keyframes (21 Nov, 1 Gemini request)
+Question: can Gemini give enough positions for a box that follows the product while the video plays?
+Prompt change: instead of one box per visual appearance, `track` = keyframes (time + box) about every 2–3 s, at most 12 per appearance. Test video: *Over-Ear Kopfhörer 2026* (`2CqNFIn1AEo`, 9:50), Gemini 3.6 Flash (3.8 Flash was overloaded, HTTP 503), 36 s, 58,500 tokens.
+- **101 keyframes for 33 visual appearances** (before: 1 per appearance) – on average one every ~4 s, not every 2–3 s.
+- Played back with interpolation, the boxes follow the headphones visibly (e.g. Beats at 2:33–2:38, Bose at 1:31–1:37); some sit next to the product or lag after a fast cut. Gemini often re-uses identical boxes for different products → positions are approximate.
+- Side effect: this run named **5 brands instead of 9** in the earlier run without keyframes (missing: 3DIO, Apple, Carhartt, Reddit – small mentions). Runs vary anyway (B), but a longer answer may cost coverage; keep watching on the next analyses.
+- Decision: keyframes + interpolation in the browser, honest label "Estimated, not measured", dashed boxes when > 3 s from a reported position. Raw answer: `../tests/ergebnisse/T_2CqNFIn1AEo_gemini-3.6-flash_keyframes_raw.json`.
 
 ## E – Positions, authenticity, body language
 - Positions from video analysis are **rough**: about half sit well on the product, the rest are shifted → UI uses soft markers, not frames.

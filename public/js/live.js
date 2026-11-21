@@ -255,18 +255,48 @@ async function analysePhoto(file) {
 function draw(w, h) {
   const ov = $("#ov"); if (!ov) return;
   ov.width = w; ov.height = h; const ctx = ov.getContext("2d"); ctx.clearRect(0, 0, w, h);
-  const k = Math.max(1, w / 900);
-  for (const t of S.tracks) {
-    const label = t.label ? `${t.label.brand}` : t.name;
-    ctx.lineWidth = 3 * k; ctx.strokeStyle = t.label ? "#30d158" : "rgba(255,255,255,.9)";
+  // canvas pixels per screen pixel (object-fit: contain) → labels have the same on-screen size as over the video
+  const r = ov.getBoundingClientRect();
+  const k = r.width && r.height ? Math.max(w / r.width, h / r.height) : Math.max(1, w / 900);
+  // Same look as the tracking boxes over the YouTube player (tracking.js / .tbox in app.css): rounded box,
+  // dark glass label with a coloured dot, name in bold, how it was recognised as a small caps tag.
+  const placed = []; // label rectangles already drawn – a nested box's label moves down instead of covering one
+  const hit = (q) => placed.some((o) => q.x < o.x + o.w && o.x < q.x + q.w && q.y < o.y + o.h && o.y < q.y + q.h);
+  // named and bigger boxes first, so they keep the preferred spot (inside the top edge)
+  const order = [...S.tracks].sort((a, b) => (!!b.label - !!a.label) || area(b) - area(a));
+  for (const t of order) {
+    const c = t.label ? "#30d158" : "rgba(255,255,255,.85)";
+    ctx.lineWidth = 2.5 * k; ctx.strokeStyle = c;
     ctx.setLineDash(t.textOnly ? [8 * k, 6 * k] : []); // brand text found outside any object box
     roundRect(ctx, t.x1, t.y1, t.x2 - t.x1, t.y2 - t.y1, 12 * k); ctx.stroke(); ctx.setLineDash([]);
-    ctx.font = `600 ${15 * k}px -apple-system, system-ui, sans-serif`;
+    const named = t.label && (t.label.engine === "barcode" || t.label.engine === "gemini") && t.label.product && !/^not in /.test(t.label.product)
+      ? (t.label.product.toLowerCase().startsWith(t.label.brand.toLowerCase()) ? t.label.product : `${t.label.brand} ${t.label.product}`) : t.label?.brand;
+    const tag = t.label ? TAG[t.label.engine] || "" : "";
+    const main = fit(ctx, named || t.name, Math.max(150 * k, t.x2 - t.x1 - 50 * k), k);
+    ctx.font = `500 ${10.5 * k}px -apple-system, system-ui, sans-serif`; const tagW = tag ? ctx.measureText(tag).width + 8 * k : 0;
+    ctx.font = `600 ${14 * k}px -apple-system, system-ui, sans-serif`;
     // label sits inside the top edge of its box: packages often overlap, labels above the box would pile up
-    const tw = ctx.measureText(label).width + 20 * k, th = 26 * k, y = t.y1 + 6 * k;
-    ctx.fillStyle = t.label ? "rgba(48,209,88,.92)" : "rgba(0,0,0,.6)"; roundRect(ctx, t.x1 + 6 * k, y, tw, th, th / 2); ctx.fill();
-    ctx.fillStyle = "#fff"; ctx.fillText(label, t.x1 + 16 * k, y + th * 0.68);
+    const th = 26 * k, tw = 25 * k + ctx.measureText(main).width + tagW + 11 * k, x = t.x1 + 6 * k;
+    let y = t.y1 + 6 * k;
+    for (const alt of [t.y2 - th - 6 * k, t.y2 + 6 * k]) if (hit({ x, y, w: tw, h: th })) y = alt;
+    placed.push({ x, y, w: tw, h: th });
+    ctx.fillStyle = "rgba(18,18,20,.74)"; roundRect(ctx, x, y, tw, th, th / 2); ctx.fill();
+    ctx.lineWidth = 1 * k; ctx.strokeStyle = "rgba(255,255,255,.14)"; ctx.stroke();
+    ctx.fillStyle = t.label ? "#30d158" : "rgba(255,255,255,.5)"; ctx.beginPath(); ctx.arc(x + 13 * k, y + th / 2, 4 * k, 0, 7); ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.fillText(main, x + 24 * k, y + th * 0.67);
+    if (tag) {
+      const tx = x + 24 * k + ctx.measureText(main).width + 8 * k;
+      ctx.font = `500 ${10.5 * k}px -apple-system, system-ui, sans-serif`; ctx.fillStyle = "rgba(255,255,255,.62)"; ctx.fillText(tag, tx, y + th * 0.65);
+    }
   }
+}
+const TAG = { barcode: "BARCODE", ocr: "TEXT", own: "OWN MODEL", gemini: "GEMINI" };
+/** Shorten a label with "…" so it fits into maxW (canvas has no text-overflow). */
+function fit(ctx, text, maxW, k) {
+  ctx.font = `600 ${14 * k}px -apple-system, system-ui, sans-serif`;
+  if (ctx.measureText(text).width <= maxW) return text;
+  let s = text; while (s.length > 4 && ctx.measureText(s + "…").width > maxW) s = s.slice(0, -1);
+  return s.trimEnd() + "…";
 }
 function roundRect(c, x, y, w, h, r) { c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, r) : c.rect(x, y, w, h); }
 

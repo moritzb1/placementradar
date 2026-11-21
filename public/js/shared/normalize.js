@@ -4,7 +4,8 @@
  * - "MM:SS" → seconds
  * - one canonical spelling per brand ("Tarte" / "Tarte Cosmetics" → "Tarte Cosmetics")
  * - appearances sorted, clamped to the video length
- * - frame positions kept separately as `frames` (used by "Pause & Find")
+ * - keyframe positions per visual appearance as `track` (tracking overlay, js/tracking.js); all of a brand's
+ *   positions also as `frames` (older analyses only have this, one box per appearance)
  *
  * The resulting shape is documented in README.md → "Data model".
  */
@@ -40,10 +41,13 @@ export function normalizeAnalysis({ video, timeline, authenticity, models }) {
     for (const ap of b.appearances ?? []) {
       const start = Math.min(sec(ap.start), dur);
       const end = Math.min(Math.max(sec(ap.end), start + 1), dur);
+      const track = cleanTrack(ap, start, end);
       entry.appearances.push({ start_s: start, end_s: end, channel: ap.channel || "visual", size: ap.size ?? null,
         position: ap.position ?? null, in_use: ap.in_use ?? null, evidence: ap.evidence || "",
-        ...(ap.basis ? { basis: ap.basis } : {}), ...(Number.isFinite(ap.confidence) ? { confidence: ap.confidence } : {}) });
-      if (ap.box_2d?.length === 4 && ap.frame_time) entry.frames.push({ t: sec(ap.frame_time), box: ap.box_2d });
+        ...(ap.basis ? { basis: ap.basis } : {}), ...(Number.isFinite(ap.confidence) ? { confidence: ap.confidence } : {}),
+        ...(track.length ? { track } : {}) });
+      // `frames` = all positions of the brand (older analyses had only this, one per appearance)
+      for (const k of track) entry.frames.push(k);
     }
     brands.set(key, entry);
   }
@@ -63,6 +67,26 @@ export function normalizeAnalysis({ video, timeline, authenticity, models }) {
     })),
     source: { engine: "gemini", models: models || [], analyzed_at: new Date().toISOString().slice(0, 10) },
   };
+}
+
+/**
+ * Keyframes of one visual appearance → [{t, box:[ymin,xmin,ymax,xmax]}], sorted, inside the appearance (±1 s),
+ * boxes clamped to 0-1000 with min < max. Accepts the new `track` list and the old single `frame_time` + `box_2d`.
+ */
+export function cleanTrack(ap, start, end) {
+  const raw = [...(Array.isArray(ap.track) ? ap.track.map((k) => ({ t: k.time, box: k.box_2d })) : []),
+    ...(ap.frame_time && ap.box_2d ? [{ t: ap.frame_time, box: ap.box_2d }] : [])];
+  const out = [];
+  for (const k of raw) {
+    if (!Array.isArray(k.box) || k.box.length !== 4 || !k.box.every(Number.isFinite)) continue;
+    const t = sec(k.t);
+    if (!(t >= start - 1 && t <= end + 1)) continue;
+    const c = k.box.map((v) => Math.max(0, Math.min(1000, Math.round(v))));
+    const box = [Math.min(c[0], c[2]), Math.min(c[1], c[3]), Math.max(c[0], c[2]), Math.max(c[1], c[3])];
+    if (box[2] - box[0] < 8 || box[3] - box[1] < 8) continue; // degenerate (a line or a point)
+    if (!out.some((o) => Math.abs(o.t - t) < 0.25)) out.push({ t, box });
+  }
+  return out.sort((a, b) => a.t - b.t).slice(0, 24);
 }
 
 /** Seconds a brand is on screen (visual appearances, overlaps merged). */

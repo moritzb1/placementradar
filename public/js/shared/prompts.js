@@ -21,7 +21,9 @@ export const VIDEO_MODELS = ["gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5
 export const FRAME_MODELS = ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite"];
 
 // ---------------------------------------------------------------------------------------------
-// Call 1: brand timeline + disclosures (+ rough positions for "Pause & Find")
+// Call 1: brand timeline + disclosures (+ keyframe positions for the tracking overlay)
+// Since 21 Nov: one box per appearance was too little for a box that follows the product (EVALUATION.md test T),
+// so Gemini gives keyframes every ~2-3 s; the browser interpolates between them (js/tracking.js).
 // ---------------------------------------------------------------------------------------------
 export const TIMELINE_PROMPT = `You are a brand-placement analyst. Watch the whole video (image AND audio).
 List every brand or branded product that is visible, shown as on-screen text, or mentioned in speech.
@@ -31,8 +33,11 @@ Also include products that are clearly visible and recognisable by their design 
 (e.g. a reviewer wearing the headphones being discussed) – for those set basis to "design".
 For each appearance give start and end as MM:SS timestamps of the full video.
 Rate size (small/medium/large) and position (center/edge) honestly, and say whether the product is held or used.
-For each VISUAL appearance also pick one representative moment (frame_time, MM:SS) and give the product's
-bounding box in that frame as box_2d = [ymin, xmin, ymax, xmax], normalized to 0-1000.
+For each VISUAL appearance also track where the product is in the picture: give keyframes (track) with the time
+(MM:SS) and the product's bounding box box_2d = [ymin, xmin, ymax, xmax], normalized to 0-1000 of the full video frame.
+Put the first keyframe at the start of the appearance, then one about every 2-3 seconds while it stays visible
+(more often when it moves fast, at most 12 per appearance), and the last one near the end. The box must tightly
+enclose the product itself, not the person holding it. If the product leaves the picture, end the appearance there.
 Report every advertising disclosure you notice (on-screen label such as "Werbung", "Anzeige", "paid promotion",
 "sponsored", "PR sample", or a spoken disclosure) with its MM:SS timestamp and the exact wording.
 Decide whether the video looks like paid or gifted promotion and explain why in one or two sentences.
@@ -52,8 +57,10 @@ export const TIMELINE_SCHEMA = {
         evidence: { type: "STRING" },
         basis: { type: "STRING", enum: ["logo", "text", "speech", "design"], description: "how the brand was recognised in this appearance" },
         confidence: { type: "NUMBER", description: "0-1" },
-        frame_time: { type: "STRING", description: "MM:SS" },
-        box_2d: { type: "ARRAY", items: { type: "INTEGER" } },
+        track: { type: "ARRAY", description: "visual only: keyframes about every 2-3 s, max 12", items: { type: "OBJECT", properties: {
+          time: { type: "STRING", description: "MM:SS" },
+          box_2d: { type: "ARRAY", items: { type: "INTEGER" }, description: "[ymin, xmin, ymax, xmax] 0-1000" },
+        }, required: ["time", "box_2d"] } },
       }, required: ["start", "end", "channel"] } },
     }, required: ["brand", "appearances"] } },
     disclosures: { type: "ARRAY", items: { type: "OBJECT", properties: {

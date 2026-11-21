@@ -21,6 +21,8 @@ import { checkDisclosure } from "./disclosure.js";
 import { mmss } from "./shared/normalize.js";
 import { renderLive, stopLive } from "./live.js";
 import { hydrateLogos } from "./logos.js";
+import { createTracking } from "./tracking.js";
+import { maybeShowIntro, showIntro } from "./intro.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -39,7 +41,7 @@ const state = { demos: [], recent: [], data: null, id: null, view: "overview", p
 // Preferences (Settings sheet) – stored per browser; storage may be blocked, so every access is guarded
 // ------------------------------------------------------------------------------------------------
 const PREFS_KEY = "pr:prefs";
-const prefs = { theme: "auto", usage: false, tech: false };
+const prefs = { theme: "auto", usage: false, tech: false, tracking: true };
 try { Object.assign(prefs, JSON.parse(localStorage.getItem(PREFS_KEY) || "{}")); } catch { /* private mode */ }
 const savePrefs = () => { try { localStorage.setItem(PREFS_KEY, JSON.stringify(prefs)); } catch { /* ignore */ } };
 function applyTheme() {
@@ -67,6 +69,7 @@ async function boot() {
   loadRecent(); // videos other visitors analysed (online only) – not awaited, the start screen updates when it arrives
   window.addEventListener("hashchange", route);
   route();
+  maybeShowIntro();
 }
 
 function parseHash() {
@@ -391,7 +394,7 @@ function renderResult() {
   ({ overview: viewOverview, value: viewValue, disclosure: viewDisclosure, authenticity: viewAuthenticity, report: viewReport })[state.view]();
 }
 
-function destroyPlayer() { state.player?.destroy(); state.player = null; }
+function destroyPlayer() { state.player?.destroy(); state.player = null; state.tracker?.destroy(); state.tracker = null; }
 
 /**
  * Mounts the YouTube player into #playerHost. Products at the current second are listed OUTSIDE the video
@@ -401,11 +404,14 @@ function destroyPlayer() { state.player?.destroy(); state.player = null; }
 function mountPlayer(onTime) {
   destroyPlayer();
   const host = $("#playerHost");
+  const tracker = createTracking(host, state.data, color);
   const p = new Player(host.querySelector(".yt-host"), state.id, {
-    onState: (paused) => { host.classList.toggle("paused", paused && (p.hasPlayed || p.t > 0.5)); updateNow(p.t); },
-    onTime: (t) => { onTime?.(t); updateNow(t); },
+    onState: (paused) => { host.classList.toggle("paused", paused && (p.hasPlayed || p.t > 0.5)); tracker.sync(p.t, !paused); updateNow(p.t); },
+    onTime: (t) => { onTime?.(t); tracker.sync(t, !p.paused); updateNow(t); },
   });
-  state.player = p;
+  state.player = p; state.tracker = tracker;
+  bindTrackSwitch(tracker);
+  tracker.sync(state.pendingSeek ?? 0, false);
   updateNow(state.pendingSeek ?? 0);
   if (state.pendingSeek != null) { const t = state.pendingSeek; setTimeout(() => p.seek(t), 900); state.pendingSeek = null; }
   return p;
@@ -438,6 +444,18 @@ function mountPlayer(onTime) {
       c.classList.toggle("said", said.some((b) => b.brand === c.dataset.brand));
     });
   }
+}
+
+/** "Show tracking" switch under the player: boxes on/off, remembered per browser; hint says how much is located. */
+function bindTrackSwitch(tracker) {
+  const sw = $("#trackSw"); if (!sw) return;
+  const cov = tracker.coverage();
+  sw.checked = prefs.tracking; tracker.setEnabled(prefs.tracking);
+  sw.onchange = () => { prefs.tracking = sw.checked; savePrefs(); tracker.setEnabled(sw.checked); };
+  const hint = $("#trackHint");
+  if (hint) hint.textContent = !cov.withBox ? "No positions in this analysis – boxes appear for videos analysed from 21 Nov on."
+    : cov.keys > cov.withBox * 1.5 ? `${cov.keys} positions from Gemini, interpolated in between. Estimated, not measured.`
+    : `${cov.withBox} of ${cov.all} appearances located, one position each (older analysis). Estimated, not measured.`;
 }
 
 /** Brands spoken about or shown as text around second t (±1.5 s – speech timestamps are less exact than image ones). */
@@ -480,7 +498,14 @@ function viewOverview() {
 
   $("#view").innerHTML = `
     <div class="watch">
-      <div class="player" id="playerHost"><div class="yt-host"></div></div>
+      <div class="watch-main">
+        <div class="player" id="playerHost"><div class="yt-host"></div></div>
+        <div class="player-bar">
+          <label class="track-toggle"><input type="checkbox" class="switch sm" id="trackSw"><span>Show tracking</span></label>
+          <span class="small muted" id="trackHint"></span>
+          ${info("Boxes and names over the video show where Gemini saw each product: logo, model and how it was recognised (logo, text, speech or design). The browser cannot look into the YouTube player, so every box is a position Gemini reported while watching – keyframes every 2–3 seconds, smoothly interpolated in between. Dashed, faded boxes are more than 3 seconds away from a reported position.")}
+        </div>
+      </div>
       <aside class="now card" id="now">
         <div class="now-head"><span class="pulse"></span><b>Right now</b><span class="now-time num">0:00</span>${info("In the picture: products Gemini saw at this second. Mentioned or written: brands that are spoken about or shown as on-screen text right now. Follows the video while it plays. Links: the creator's own link from the description if there is one (affiliate links are marked), otherwise a neutral shopping search.")}</div>
         <div class="now-list"></div>
@@ -920,14 +945,15 @@ function showInfo() {
       PlacementRadar answers both from a single YouTube link – and asks a third question: does the recommendation feel genuine?</p>
     <div class="engines">
       <div><span class="ic" style="background:#0a84ff">${icon("cloud")}</span><div><b>Engine 1 · Gemini in the cloud</b><span>watches the whole video with sound: every brand, when and how it appears, spoken and on-screen ad labels, authenticity cues.</span></div></div>
-      <div><span class="ic" style="background:#30d158">${icon("chip")}</span><div><b>Engine 2 · AI on your device</b><span>live scanner: YOLO26 finds objects in the camera image, barcodes give the exact product via Open Food Facts – no cloud needed.</span></div></div>
-      <div><span class="ic" style="background:#5e5ce6">${icon("sparkle")}</span><div><b>Engine 3 · our own model</b><span>a brand classifier trained on open product photos that learns from Gemini's answers – the app needs the cloud less the more it is used.</span></div></div>
+      <div><span class="ic" style="background:#30d158">${icon("chip")}</span><div><b>Engine 2 · AI on your device</b><span>live scanner: a packaging finder (YOLOE), text recognition and barcodes (exact product via Open Food Facts) run in the browser – no cloud needed.</span></div></div>
+      <div><span class="ic" style="background:#5e5ce6">${icon("sparkle")}</span><div><b>Engine 3 · our own model</b><span>Apple's MobileCLIP image encoder plus a brand head we trained on 7,400 open product photos (131 brands) – names packages whose text cannot be read.</span></div></div>
     </div>
     <p class="small">Media value = views ÷ 1000 × CPM × weighted seconds ÷ 30 × view-through. The disclosure check refers to § 5a (4) UWG and § 22 MStV; it is a screening aid, not legal advice.
       Details, formulas and all test results: README, MODELS and EVALUATION in the project repository.</p>
     <p class="small muted">Final project · MMI5190E The New Frontiers of AI · Prof. Pin Luarn · Pforzheim University · Moritz Binder</p>
-    <div class="sheet-foot"><button class="btn primary" data-close>Got it</button></div></div>`;
+    <div class="sheet-foot"><button class="btn" data-intro>${icon("play")} Show the introduction</button><button class="btn primary" data-close>Got it</button></div></div>`;
   document.body.append(scrim);
+  scrim.querySelector("[data-intro]").onclick = () => { scrim.remove(); showIntro(); };
   scrim.onclick = (e) => { if (e.target === scrim || e.target.closest("[data-close]")) scrim.remove(); };
 }
 

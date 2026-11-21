@@ -10,6 +10,8 @@
  *   POST /api/analyze {v}       → full Gemini video analysis, streamed as Server-Sent Events
  *   POST /api/identify {image}  → brands in one camera crop (live mode fallback), via the provider router
  *   POST /api/closer {v,start,end} → "Look closer": inventory of a ≤ 20 s clip at 2 frames/s (SSE, cached per clip)
+ *   GET  /api/teach[?cursor=]   → training examples kept from /api/identify ("Gemini teaches the on-device model"),
+ *   GET  /api/teach/item?k=<key>  only with the secret TEACH_TOKEN as bearer token (tools/teach_pull.py)
  *
  * Quota strategy (PROBLEME.md, point 1) – everything here is free, there is no paid fallback:
  *   1. Never pay twice: repo demos (public/data) and every finished analysis (KV, kept forever) are served
@@ -71,6 +73,7 @@ export default {
       if (url.pathname === "/api/analyze" && request.method === "POST") return await analyze(request, env, ctx);
       if (url.pathname === "/api/identify" && request.method === "POST") return await identify(request, env, ctx);
       if (url.pathname === "/api/closer" && request.method === "POST") return await closer(request, env, ctx);
+      if (url.pathname === "/api/teach" || url.pathname === "/api/teach/item") return await teachExport(request, env, url);
       if (url.pathname.startsWith("/api/")) return json({ error: "not_found" }, 404);
     } catch (e) {
       return errorJson(e);
@@ -154,6 +157,7 @@ async function config(env) {
     frame_models: frameModels(env),
     frame_providers: frameProviders(env).map((p) => p.name),
     cache: !!env.STORE,
+    teach: teachEnabled(env), // the live scanner shows "Recognised crops may be kept …" only when this is on
     // false = every video model reported its free daily quota as used up → the UI can say so before the visitor waits
     video_quota_left: env.KEY_MODE !== "own" && !!env.GEMINI_API_KEY && exhausted.length < models.length,
   };
@@ -521,12 +525,13 @@ function frameProviders(env) {
 
 async function identify(request, env, ctx) {
   // `provider` (optional) forces one enabled provider – for tests and the README comparison; same limits apply
-  const { image, provider } = await request.json().catch(() => ({}));
+  // `teach` = the visitor has not switched off "Recognised crops may be kept to improve the on-device model"
+  const { image, provider, teach } = await request.json().catch(() => ({}));
   if (!image || typeof image !== "string" || image.length > 400_000) throw new ApiError("image_invalid", 400);
 
   const key = `frame:${provider ? `${provider}:` : ""}${await sha256(image)}`;
   const hit = env.STORE && (await env.STORE.get(key, "json"));
-  if (hit) return json({ ...hit, cached: true });
+  if (hit) return json({ ...hit, cached: true, kept: teach === true && !!(await env.STORE.get(`teach:${key.split(":").pop()}`, "text")) });
 
   if (env.INVITE_TOKEN) { // invite protects all cloud providers, not only Gemini
     const token = request.headers.get("x-invite") || new URL(request.url).searchParams.get("invite");
@@ -542,7 +547,8 @@ async function identify(request, env, ctx) {
       const r = await p.run(env, image);
       const out = { items: cleanItems(r.items), model: r.model, provider: p.name, tried, ...(r.shape != null ? { input_shape: r.shape } : {}) };
       if (env.STORE) ctx.waitUntil(env.STORE.put(key, JSON.stringify(out), { expirationTtl: 60 * 60 * 24 * 30 }));
-      return json(out);
+      const kept = teach === true ? await keepForTraining(env, image, out, key.split(":").pop()) : false;
+      return json({ ...out, kept });
     } catch (e) {
       tried.push({ provider: p.name, error: e instanceof ApiError ? e.code : String(e?.message || e).slice(0, 400) });
     }
@@ -629,4 +635,51 @@ async function identifyOpenRouter(env, image) {
     last = `${model}: HTTP ${r.status}`;
   }
   throw new Error(last || "no OpenRouter model");
+}
+
+// ------------------------------------------------------------------------------------------------
+// "Gemini teaches the on-device model" (distillation, see MODELS.md): a crop that a cloud model named with a
+// confident, single answer is kept as a training example (crop + brand) in KV. tools/teach_pull.py downloads
+// them, checks them and retrains the brand head. Privacy limits (README → Privacy):
+//   - only crops the visitor sent to "Identify" on purpose, only if they did not switch keeping off,
+//   - only the crop (no full frame, no IP, no visitor id), at most TEACH_MAX_KB per crop,
+//   - at most TEACH_MAX examples in total, each deleted after TEACH_DAYS days; TEACH=off switches it off.
+// ------------------------------------------------------------------------------------------------
+const teachEnabled = (env) => !!env.STORE && env.TEACH !== "off";
+
+async function keepForTraining(env, image, out, hash) {
+  if (!teachEnabled(env)) return false;
+  const items = out.items || [];
+  const best = [...items].sort((a, b) => (b.confidence ?? 0) - (a.confidence ?? 0))[0];
+  // one clear answer only: a crop with two brands or a hesitant answer would teach the wrong thing
+  if (!best || items.length > 2 || (best.confidence ?? 0) < Number(env.TEACH_MIN_CONF || 0.7)) return false;
+  if (image.length > Number(env.TEACH_MAX_KB || 160) * 1024 * 1.37) return false; // base64 is 4/3 of the bytes
+  const max = Number(env.TEACH_MAX || 1500);
+  const n = Number(await env.STORE.get("teach-count")) || 0;
+  if (n >= max) return false;
+  const key = `teach:${hash}`;
+  if (await env.STORE.get(key, "text")) return true; // same crop already kept
+  const t = new Date().toISOString();
+  const meta = { brand: best.brand.slice(0, 80), conf: best.confidence ?? null, model: out.model, provider: out.provider, t };
+  await env.STORE.put(key, JSON.stringify({ ...meta, product: best.product || "", box_2d: best.box_2d, image }),
+    { metadata: meta, expirationTtl: 60 * 60 * 24 * Number(env.TEACH_DAYS || 90) });
+  await env.STORE.put("teach-count", String(n + 1)); // KV is not atomic – a soft cap is enough here
+  return true;
+}
+
+/** Download side for tools/teach_pull.py. Disabled (404) unless the secret TEACH_TOKEN is set. */
+async function teachExport(request, env, url) {
+  if (!env.TEACH_TOKEN || !env.STORE) throw new ApiError("not_found", 404);
+  if (request.headers.get("authorization") !== `Bearer ${env.TEACH_TOKEN}`) throw new ApiError("unauthorized", 401);
+  if (url.pathname === "/api/teach/item") {
+    const k = url.searchParams.get("k") || "";
+    if (!/^teach:[0-9a-f]{16,64}$/.test(k)) throw new ApiError("bad_key", 400);
+    const v = await env.STORE.get(k, "json");
+    if (!v) throw new ApiError("not_found", 404);
+    if (request.method === "DELETE") { await env.STORE.delete(k); return json({ deleted: k }); }
+    return json(v);
+  }
+  const r = await env.STORE.list({ prefix: "teach:", limit: 1000, cursor: url.searchParams.get("cursor") || undefined });
+  return json({ keys: r.keys.map((k) => ({ key: k.name, ...k.metadata })), cursor: r.list_complete ? null : r.cursor,
+    count: Number(await env.STORE.get("teach-count")) || 0, max: Number(env.TEACH_MAX || 1500) });
 }

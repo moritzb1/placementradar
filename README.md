@@ -86,8 +86,8 @@ PlacementRadar answers both from a single YouTube link and adds a third, newer q
 | **Media value** | visibility score 0–100 and estimated € value per brand; transparent formula, adjustable CPM and view-through | done |
 | **Ad disclosure check** | traffic light: *Disclosure found / Check disclosure / No disclosure found / No advertising detected*, with every place that was checked | done |
 | **Authenticity score** | six sub-scores (use shown, balance, specificity, delivery, body language, sales pressure), each with timestamped evidence | done |
-| **Live scanner** | webcam or photo: a packaging finder (YOLOE) boxes products on the device, **text recognition reads the brand** (37 of 49 real product photos, no API), a **barcode gives the exact product** via Open Food Facts (name, photo, Nutri-Score), tap a box to ask Gemini; the side panel shows live what each stage sees | v2 done |
-| **Own model** | brand classifier trained by us (frozen MobileCLIP encoder + our brand head, 131 brands, 7,400 Open Food Facts photos): names the packages OCR cannot read – script logos like Coca-Cola, Babybel, Oreo; OCR + own model name **41 of 49** real product photos on the device (OCR alone 36), without a wrong brand | v1 done |
+| **Live scanner** | webcam or photo: a packaging finder (YOLOE) boxes products on the device, **text recognition reads the brand** (3,599 brands; 39 of 49 real product photos, no API), a **barcode gives the exact product** via Open Food Facts (name, photo, Nutri-Score), tap a box to ask Gemini; boxes are smoothed and keep their name when a hand covers the product for a moment; the side panel shows live what each stage sees | v3 done (21 Nov) |
+| **Own model** | brand classifier trained by us (frozen MobileCLIP encoder + our brand head, **1,020 brands**, 64,000 photos from Open Food / Beauty / Products Facts, trained for webcam images): names the packages OCR cannot read – script logos like Coca-Cola, Babybel, Oreo; OCR + own model name **42 of 49** real product photos on the device, also in webcam quality, without a wrong brand from the model; learns from Gemini's confident answers (distillation) | v2 done (21 Nov) |
 | **Brand report** | one A4 page per brand (value, exposure strip, key moments with YouTube links, disclosure, authenticity, method) – "Save as PDF" via the print dialog – plus a pitch mail to the creator filled with the measured numbers (no extra API call) | done |
 | **Waiting screen** | while Gemini watches (2–5 min): video details, a text-only disclosure check of title and description, which model is working and when Google is busy; the page may be closed – the result is stored and loads instantly later | done |
 
@@ -112,7 +112,7 @@ flowchart LR
   subgraph Device["Browser · on the device (live.js)"]
     C[Camera / photo] --> Y[YOLOE packaging finder]
     Y --> B[Barcode → Open Food Facts]
-    B -->|no barcode| O[OCR → 868-brand list]
+    B -->|no barcode| O[OCR → 3,599-brand list]
     O -->|not readable| M[Engine 3 · own model<br/>MobileCLIP-S1 + our brand head]
   end
   M -->|still unsure, user taps| R
@@ -124,7 +124,7 @@ flowchart LR
 
 **Engine 2 – on-device vision (browser).** For the live scanner: a packaging finder (YOLOE – an open-vocabulary YOLO told "snack bag, jar, tub, box …" before export; YOLO26 from unit 3 as fallback), barcode scanning with a lookup in Open Food Facts, and text recognition (PaddleOCR) matched against a brand list built from Open Food Facts. Runs with ONNX Runtime Web (WebGPU, WASM fallback), costs no API quota and keeps camera images on the device.
 
-**Engine 3 – our own model.** A brand classifier trained by us on open product images (Open Food Facts): Apple's small MobileCLIP image encoder stays frozen, we train a linear head for 131 brands and combine it with what the encoder already knows about brand names. It answers only when both opinions agree (EVALUATION.md, S2b) – and then it adds exactly the brands OCR cannot read (Coca-Cola, Babybel, Oreo, Milka …).
+**Engine 3 – our own model.** A brand classifier trained by us on open product images (Open Food Facts, Open Beauty Facts, Open Products Facts): Apple's small MobileCLIP image encoder stays frozen, we train a linear head for **1,020 brands of German retail** – food, cosmetics, household and tech – on 64,000 photos, each also seen in three simulated webcam views (blur, glare, a hand in front, perspective, JPEG), and combine it with what the encoder already knows about brand names. It answers only when both opinions agree, with thresholds calibrated for at most ~2.5 % false alarms (EVALUATION.md, S2b and S4) – and then it adds exactly the brands OCR cannot read (Coca-Cola, Babybel, Oreo, Milka …). **Gemini teaches it:** a crop that Gemini names confidently after a tap can be kept (the scanner says so, one click opts out) and later becomes a training example (`tools/teach_pull.py`).
 
 Every result in the UI shows which engine produced it ("Text recognition · on device", "Own model · on device", "Gemini").
 
@@ -216,7 +216,8 @@ public/js/tracking.js      "Show tracking": labelled boxes over the player, inte
 public/js/intro.js         five-step introduction on the first visit (reopen via About)
 public/js/value.js         media value model
 public/js/disclosure.js    ad label check
-public/js/live.js          live scanner: detector, tracking, 5-stage cascade, side panel
+public/js/live.js          live scanner: detector, 5-stage cascade, drawing, side panel
+public/js/tracker.js       live scanner tracker: smoothing filter, matching by overlap + colour/fingerprint, short occlusions
 public/js/ocr.js           on-device text recognition (PaddleOCR det + rec) and brand matching
 public/js/brandmodel.js    own brand model in the browser (MobileCLIP-S1 encoder + our head, "two opinions" rule)
 public/js/wasmqueue.js     one ONNX WASM model at a time (shared queue)
@@ -226,7 +227,9 @@ public/data/               six pre-analysed example videos (+ index.json)
 public/models/             ONNX models, brand list, trained brand head (each file < 25 MiB, Cloudflare limit)
 public/vendor/             ONNX Runtime Web
 tools/                     reproducible scripts: demo data (add_demo.py), brand list (build_brand_list.py),
-                           YOLOE export (export_yoloe.py), own model (train_brand_data.py, train_brand_model.py)
+                           YOLOE export (export_yoloe.py), own model v1 (train_brand_data.py, train_brand_model.py),
+                           own model v2 (build_brand_data.py, camaug.py, train_brand_model_v2.py),
+                           distillation (teach_pull.py)
 docs/screenshots/          screenshots used in this README
 MODELS.md                  every model: source, licence, role, measured performance
 EVALUATION.md              all tests, incl. what did not work
@@ -241,9 +244,11 @@ EVALUATION.md              all tests, incl. what did not work
 - The disclosure check and authenticity score judge *content*, not people. Wording is deliberately neutral.
 - No video is downloaded or re-hosted. The original YouTube player is embedded (privacy-enhanced mode).
 - Live scanner: camera images are processed on the device; a crop is sent to the cloud only when the user taps a box.
-- Own model: knows 131 brands that are common in German supermarkets; for other brands it stays silent (false alarms on unknown brands: 7 %). Store brands without a logo (REWE Beste Wahl, Milbona) remain hard.
+- **Privacy of "Gemini teaches the on-device model":** when a cloud model names a tapped crop with one confident brand, the Worker may keep that crop (JPEG, ≤ 160 KB) with the brand name as a training example. The scanner says so under the Identify button ("Recognised crops may be kept to improve the on-device model") with a one-click opt-out that is remembered in the browser. Kept: crop, brand, model, time – no full frame, no IP address, no visitor id. At most 1,500 examples, each deleted automatically after 90 days; the export (`/api/teach`) only works with a secret token and `tools/teach_pull.py --delete-used` removes examples after training. `TEACH=off` switches the feature off. A crop can still show a face or a hand – which is why only crops the user chose to send are ever kept.
+- Own model: knows 1,020 brands that are common in German retail (food, cosmetics, household); for other brands it stays silent (false alarms on foreign packs: 3.4 %, on packs that look like a known brand: 7 %). Products without a visible logo (a smartwatch, a plain bottle) stay "unknown" on purpose; store brands without a logo (REWE Beste Wahl, Milbona) remain hard. Its training data comes from crowd-sourced open databases, so brands that are rare there are missing.
+- Live tracking: boxes are smoothed and predicted between detections; a product covered by a hand keeps its box for 1.5 s (drawn dashed) and its name for 6 s. With a slow detector (~4 frames/s) boxes still lag behind fast movements.
 - Licences: YOLOE/YOLO26 are AGPL-3.0, so the source code of this app has to be available to its users; MobileCLIP weights are under Apple's licence (fine for a course project, check before commercial use).
 
 ## 10. Credits
 
-Gemini API (Google) · YouTube IFrame Player API + YouTube Data API v3 · Cloudflare Workers, KV and Workers AI (Llama 3.2 Vision) · Open Food Facts (ODbL: product data, photos, brand list) · Apple MobileCLIP (encoder of our brand model) · OpenCLIP · Ultralytics YOLOE / YOLO26 (AGPL-3.0) · PaddleOCR via RapidOCR (Apache-2.0) · ZXing (Apache-2.0) · ONNX Runtime Web (MIT) · Marqo-Ecommerce embeddings (Apache-2.0, offline tests only) · literature as cited above.
+Gemini API (Google) · YouTube IFrame Player API + YouTube Data API v3 · Cloudflare Workers, KV and Workers AI (Llama 3.2 Vision) · Open Food Facts, Open Beauty Facts, Open Products Facts (ODbL: product data and brand lists; photos CC BY-SA by their contributors) · Apple MobileCLIP (encoder of our brand model) · OpenCLIP · Ultralytics YOLOE / YOLO26 (AGPL-3.0) · PaddleOCR via RapidOCR (Apache-2.0) · ZXing (Apache-2.0) · ONNX Runtime Web (MIT) · Marqo-Ecommerce embeddings (Apache-2.0, offline tests only) · literature as cited above.

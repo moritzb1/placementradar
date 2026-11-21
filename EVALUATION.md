@@ -1,7 +1,7 @@
 # Evaluation – feasibility tests before building
 
 Every mechanism was tested on its own before it went into the app ("small tests first, then the whole").
-Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). Dates: 19–20 Nov 2026.
+Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). Dates: 19–21 Nov 2026.
 
 ## At a glance
 | Question | Answer (measured) | Test |
@@ -15,6 +15,11 @@ Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). 
 | Does an open-vocabulary detector (YOLOE)? | 6 of 6 | S2 |
 | Can the browser read the brand (OCR)? | 37/49 real product photos, 0 wrong brands, 125 ms | S2 |
 | Does our own trained model add anything? | OCR + own model 41/49 (84 %), 0 wrong labels from the model; 96 % of its answers right on 741 held-back products | S2b |
+| Can it know many more brands? | v2: 1,020 brands (food, cosmetics, household) from the open dumps – 2,338 of 5,189 held-back products named at 96.8 % precision (v1: 399 at 68 %); 3.4 % false alarms on foreign brands (v1 2.6 %) | S4 |
+| Does webcam-like training help? | +37 % right answers on webcam views (767 vs 558), −7 % on clean photos | S4 |
+| Whole chain on the 49 photos now? | 42/49 original and 42/49 webcam quality (before 41 and 39), still 0 wrong labels from the model | S4 |
+| Can Gemini's answers train the device model? | yes: confident crops kept (with note + opt-out), checked and retrained by `tools/teach_pull.py` – tested locally | S4 |
+| Do the scanner boxes stay calm and keep their name? | simulated webcam: error 23 → 11 px, name after a hand in front 0 % → 100 %, one identity instead of 2.1 | S4 |
 | Does general CLIP work for product search? | no – 0/5 on small crops | H3 |
 | Are small worn items (a smartwatch) found? | whole-video pass: no · 20 s clip at 2 frames/s with an inventory prompt ("Look closer"): yes, brand honestly "unknown" | I |
 | Can boxes follow a product while the video plays? | roughly: 101 Gemini keyframes for 33 appearances (~1 per 4 s), interpolated; estimates, not measurements | T |
@@ -170,6 +175,98 @@ Bugs found on the way: (1) camera mode – ONNX Runtime's WASM backend runs one 
 → shared queue `public/js/wasmqueue.js`; (2) OCR read the Coca-Cola logo as "icaoc" → fuzzy match "iChoc" overwrote the
 correct label → a brand read *with a typo* now ranks below the own model. Results: `tests/ergebnisse/s2_live/S2_eigenes_modell.*`.
 
+## S4 – Brand model v2: 1,020 brands, webcam training, distillation, calmer tracking (21 Nov)
+Four changes to the live scanner, each measured before/after on the **same** test data. Scripts: `tools/build_brand_data.py`,
+`tools/camaug.py`, `tools/train_brand_model_v2.py`, `tools/eval_brand_v2_extra.py`, `tools/teach_pull.py`, `public/js/tracker.js`;
+raw results: `../tests/ergebnisse/s4_erkennung/`.
+
+**B – more brands.** Instead of the throttled search API (~10 requests/min) the full open dumps: Open Food Facts and Open
+Beauty Facts as Parquet (Hugging Face `openfoodfacts/product-database`, 7.7 GB, read column by column with Polars) and the
+Open Products Facts JSONL dump. Brands ranked by how often their products are scanned in Germany; group names (Unilever,
+Henkel, Beiersdorf …) and store chains are skipped in favour of the brand on the pack, sub-lines merged (Garnier Fructis →
+Garnier). Result: **1,020 brands – 820 food, 150 cosmetics, 50 household/tech – 28,349 products, 63,991 photos**
+(originals from the AWS bucket `openfoodfacts-images`, crops from the image servers, throttled with retries). Split by product;
+v1's 741 held-back products stay test products wherever their brand is still a class (417), v1's unknown packs and the 49 OCR
+photos are never trained on. The encoder stays the same frozen MobileCLIP-S1 → the browser keeps the 42 MB model files; only
+the head changes (binary float16, 2 MB instead of a 2.5 MB JSON for 131 brands). The OCR brand list grows from 868 to
+**3,599 brands** (60,000 most-scanned food products + cosmetics + household products sold in Germany + every model brand;
+67 misspelled duplicates such as "Grafschafer" merged, everyday package words such as "Skyr", "frisch", "Linse" excluded).
+
+**C – webcam-ready training.** Every training photo is also seen in 3 random webcam views (`tools/camaug.py`, examples in
+`docs/screenshots/camaug_examples.jpg`): loose box, perspective, tilt, a hand over one edge, glare, light and colour cast,
+motion or defocus blur, 60–230 px resolution, noise, JPEG 20–75. Hard negatives: 4,960 views of foreign packs that the head
+took for one of our brands (≥ 0.5) became an extra class "(other)" (never shown). Thresholds recalibrated on a **validation
+split** (10 % of the training products in webcam quality + 1,584 foreign packs), never on a test set: goal ≤ 2.5 % false
+alarms at ≥ 95 % precision → **head ≥ 0.95 sure AND brand among the top 50 of the text opinion** (v1: 0.9 / top 5 of 131).
+
+| Test (same fingerprints, only the head differs) | v1 (131 brands) right · wrong | **v2 (1,020 brands) right · wrong** |
+|---|---|---|
+| new held-back products, original photo (5,189) | 399 · 185 (precision 68 %) | **2,338 · 78 (96.8 %)** |
+| … clean packshot (5,687) | 438 · 216 | **2,547 · 96 (96.4 %)** |
+| … fixed webcam view (strong: 60–130 px, JPEG 20–45) | 126 · 96 | **769 · 31 (96.1 %)** |
+| v1's own 737 held-back products, original | **388 · 16 (96 %)** | 294 · 19 (94 %) |
+| … in v1's webcam quality | **229 · 7** | 205 · 14 |
+| 49 phone photos of the OCR test (Python, whole photo) | 27 · 3 | **26 · 1** |
+| false alarms, 380 packs of brands neither model knows | **2.6 %** | 3.4 % |
+| … same packs as webcam view | **0.5 %** | 1.1 % |
+| false alarms, 300 foreign packs that LOOK most like one of our brands | **4.3 %** | 7.3 % |
+
+Honest reading: v2 names **six times as many** products of the new test set at a higher precision, and in webcam quality
+six times as many as well. The price: on v1's 131 brands it answers about a quarter less often (more brands compete, the
+threshold is stricter), and it says a brand on foreign packs slightly more often (3.4 % vs 2.6 %). v1's 146 "unknown" packs,
+re-checked with their real brands (`S4_extra.json`): 54 of them belong to brands v2 now knows – v2 names 31 right and none
+wrong; of the 39 packs that are still foreign it names 5 (Naturis → Solevita, M Classic → Nutella, plus three plausible
+parent → sub-brand cases: Schwartauer → Corny, Nestlé → Nesquik, Lidl → Select & Go).
+
+Ablation C (same head, `S4_extra.json`): clean photos only → 558 right on the webcam views; **with the 3 webcam views → 767
+(+37 %)**, at the cost of 7 % fewer answers on clean photos (2,265 vs 2,423) and 3.7 % instead of 2.4 % false alarms.
+Hard negatives ("(other)" class, shipped): +3 % right answers, false alarms 3.4 % instead of 3.7 % (lookalikes 7.3 % vs 8.3 %) –
+a small but consistent gain (in v1 the same idea did not help, with 131 brands and random foreign packs).
+
+**Whole cascade in the browser, 49 phone photos** (`tests/test_s2_eigenes_modell_browser.js`, same rule as the app):
+
+| 49 real product photos | OCR only (v1 → v2) | own model "sure": right · wrong | **OCR + own model (v1 → v2)** |
+|---|---|---|---|
+| original | 36 → **39** | 27 · **0** | 41 → **42/49 (86 %)** |
+| webcam quality | 36 → **39** | 25 · **0** | 39 → **42/49 (86 %)** |
+
+The only "wrong" brand is still "Oreo" on the Philadelphia-Oreo mousse (printed on it). Grocery photo: 6/6 (Lorenz again by
+the own model, 96 %). Fixed on the way: with the larger list, "Rolle" (of "Prinzen Rolle") became "Holle" by a typo match →
+a typo match on a word that already belongs to an exactly read brand is ignored (`ocr.js`).
+
+**D – "Gemini teaches the on-device model" (distillation).** `/api/identify` keeps a crop as a training example when the
+cloud model gives one confident brand (≥ 0.7, ≤ 2 items) and the visitor did not switch it off (note + opt-out under the
+Identify button). KV `teach:<hash>` with brand, model and time, max. 1,500 examples, 90 days. `tools/teach_pull.py`
+downloads them (secret `TEACH_TOKEN`), checks them (decodes, ≥ 48 px, brand is a class, own model does not flatly contradict:
+the cloud brand must be among its top 20 unless the head is unsure) and retrains the head with the examples weighted ×3
+(3 webcam views each). Tested locally (`wrangler dev`, real Gemini key, 2 Flash-Lite requests): a Sprite crop was kept
+(`kept: true`), the same crop with keeping switched off was not, the export needs the token (401 without); Sprite is not one of
+the 1,020 brands → listed as a *candidate for a new class*; a Milka crop came back without a confidence → correctly **not**
+kept; placed by hand, it passed the check and went into a retraining run (`S4_markenmodell_v2_teach.json`). Limitation: the
+examples are as good as the cloud model's answer – hence the confidence rule, the contradiction check and the review folder.
+
+**E – calmer tracking.** The tracker moved to `public/js/tracker.js` (pure logic, testable in Node): alpha-beta filter with
+velocity on centre and size, gains that adapt to the size of the surprise (jitter is smoothed, real movement is followed at
+once), boxes predicted to the current screen frame and the detector's own delay (capture → result) predicted away; matching by
+predicted overlap + a 64-bin colour histogram; MobileCLIP fingerprints re-identify a product that vanished; short occlusions
+coast for 1.5 s (dashed, like an estimated position in the video tracking mode), names are remembered 6 s.
+Simulation with known truth (`tests/test_e_tracker_sim.mjs`, 20 seeds, package moving at up to 300 px/s, hand in front for
+0.7 s, a second package crossing; the trackers are the real code):
+
+| Detector speed | Version | error to true centre | visible shake per frame | box shown while covered | identities on one product | **name still there after the hand** | name jumps to the crossing pack |
+|---|---|---|---|---|---|---|---|
+| webcam laptop (15/s, 70 ms) | v1 | 22.6 px | 6.9 px | 63 % | 2.1 | 0 % | 0 % |
+| | **v2** | **10.9 px** | **5.1 px** | **100 %** | **1** | **100 %** | 0 % |
+| slow phone (4/s, 220 ms) | v1 | 58.3 px | 10.8 px | 45 % | 3.7 | 8 % | 0 % |
+| | **v2** | **51.0 px** | 11.0 px | **90 %** | **1.6** | **84 %** | 0 % |
+
+The same scene through the real pipeline in the browser pane (YOLOE at only 2–3 detections/s there,
+`tests/test_e_tracking_browser.js`): name after the hand 0 % → 90 %, identities 5 → 2, box shown 75 % → 90 %, error 61 → 48 px.
+Gains chosen with the simulation (`GAIN`, `JITTER` in `tracker.js`).
+
+**A – real photos (prepared, not yet measured):** `../tests/echt/LIESMICH.md` + `../tests/test_echt.py` measure OCR, own model
+and cascade before/after on Moritz' own phone photos (foto + webcam version, "unbekannt" = false-alarm test).
+
 ## S3 – New example videos, waiting screen, brand report (20 Nov, online Worker)
 | Video | Result | Models | Kept as example? |
 |---|---|---|---|
@@ -202,3 +299,8 @@ Caveat H4: query photo and gallery image come from the same original shot (galle
 6. Training a small head on a frozen encoder takes seconds on a laptop and adds the brands OCR cannot read (+5 of 49
    photos, no wrong brand) – but only with a guard: "two opinions agree" (trained head + the encoder's own knowledge of
    brand names) cut false alarms on unknown brands from 12 % to 7 %; an extra "other brand" class did not help.
+7. Coverage beats cleverness: going from 131 to 1,020 brands (open dumps instead of a throttled API) multiplied the products
+   named on the held-back set by six – the encoder did not change. A bigger dictionary needs more guards, though: ordinary
+   words ("Skyr", "Linse") and misspelled duplicates in open data produce wrong brands until they are filtered.
+8. Calibrate on a validation split and say what the threshold costs: the stricter rule (0.95) gives up ~9 % of answers for
+   half the false alarms – for a scanner that shows its answer to the user, silence is cheaper than a wrong brand.

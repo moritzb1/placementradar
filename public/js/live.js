@@ -18,6 +18,7 @@ import { icon } from "./icons.js";
 import { loadOcr, loadBrands, readText, matchBrands } from "./ocr.js";
 import { loadBrandModel, classifyBox } from "./brandmodel.js";
 import { runWasm } from "./wasmqueue.js";
+import { updateTracks, placeTracks, reidentify as reidentifyTrack, iou, HOLD_MS, COAST_MS } from "./tracker.js";
 
 const $ = (s, r = document) => r.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -75,6 +76,7 @@ export async function renderLive(main) {
           <div class="row-btns" style="margin-top:12px"><button class="btn" id="identify" disabled>${icon("cloud")} Identify largest object</button>
             <button class="btn" id="stopCam" hidden>Stop</button></div>
           <p class="small muted" id="liveMsg"></p>
+          <p class="small muted teach-note" id="teachNote" hidden></p>
         </div>
       </aside>
     </div>
@@ -86,11 +88,12 @@ export async function renderLive(main) {
   $("#photo").onchange = (e) => e.target.files[0] && analysePhoto(e.target.files[0]);
   $("#identify").onclick = () => identifyLargest();
   $("#ov").onclick = (e) => identifyAt(e);
+  teachNote();
   if (/[?&]start=1/.test(location.hash)) { history.replaceState(null, "", "#/live"); startCamera(); } // "Start camera" on the start page
   try { await loadModel(); } catch (e) { $("#lvBackend").innerHTML = `${icon("chip")} model failed: ${esc(e.message)}`; }
   // OCR models + brand list load in the background (≈ 13 MB, cached by the browser afterwards)
   Promise.all([loadOcr(), loadBrands()]).then(() => stage("ocr", "ready · Open Food Facts brand list")).catch((e) => stage("ocr", `not available (${e.message})`));
-  loadModel().then(loadBrandModel).then((m) => stage("own", `ready · ${m.head.names.length} brands · trained by us`)).catch((e) => stage("own", `not available (${esc(e.message)})`));
+  loadModel().then(loadBrandModel).then((m) => stage("own", `ready · ${m.brands.toLocaleString("en")} brands · trained by us`)).catch((e) => stage("own", `not available (${esc(e.message)})`));
 }
 
 export function stopLive() {
@@ -179,27 +182,31 @@ async function detect(src, w, h) {
   return boxes;
 }
 
-// Simple tracker: overlap → same object, so a label sticks to it while it moves. Class words may flicker between
-// synonyms ("snack bag" / "packet"), so only the position counts.
-function iou(a, b) {
-  const ix = Math.max(0, Math.min(a.x2, b.x2) - Math.max(a.x1, b.x1)), iy = Math.max(0, Math.min(a.y2, b.y2) - Math.max(a.y1, b.y1));
-  const i = ix * iy; return i / ((a.x2 - a.x1) * (a.y2 - a.y1) + (b.x2 - b.x1) * (b.y2 - b.y1) - i + 1e-6);
+// ------------------------------------------------------------------------------------------------
+// Tracking (tracker.js): smoothing, matching by overlap + appearance, short occlusions, re-identification
+// ------------------------------------------------------------------------------------------------
+/** 4×4×4 RGB histogram of a box (64 numbers, sum 1) – the cheap appearance fingerprint used every frame. */
+const hc = document.createElement("canvas"); hc.width = hc.height = 16; const hctx = hc.getContext("2d", { willReadFrequently: true });
+function histogram(src, b, k = 1) {
+  const w = (b.x2 - b.x1) * k, h = (b.y2 - b.y1) * k; if (w < 4 || h < 4) return null;
+  // inner 80 % only: the box edge often contains background
+  hctx.drawImage(src, b.x1 * k + w * 0.1, b.y1 * k + h * 0.1, w * 0.8, h * 0.8, 0, 0, 16, 16);
+  const d = hctx.getImageData(0, 0, 16, 16).data, H = new Float32Array(64);
+  for (let i = 0; i < d.length; i += 4) H[((d[i] >> 6) << 4) | ((d[i + 1] >> 6) << 2) | (d[i + 2] >> 6)] += 1 / 256;
+  return H;
 }
-function track(boxes) {
-  const now = performance.now();
-  for (const b of boxes) {
-    const t = S.tracks.filter((t) => !t.textOnly).map((t) => [t, iou(t, b)]).sort((p, q) => q[1] - p[1])[0];
-    if (t && t[1] > 0.3) { Object.assign(t[0], b, { seen: now }); continue; }
-    // New box: if a labelled object vanished here a moment ago (detector flicker, hand in front), keep its name
-    const old = S.lost.filter((l) => now - l.seen < 4000 && iou(l, b) > 0.4).sort((p, q) => iou(q, b) - iou(p, b))[0];
-    S.tracks.push({ ...b, id: S.nextId++, seen: now, ttl: 1200, label: old?.label || null });
-  }
-  for (const t of S.tracks) if (now - t.seen >= t.ttl && t.label && !t.textOnly) S.lost.push(t);
-  S.lost = S.lost.filter((l) => now - l.seen < 4000).slice(-30);
-  S.tracks = S.tracks.filter((t) => now - t.seen < t.ttl);
+function track(boxes, src, now = performance.now()) {
+  // `now` = when the frame was CAPTURED: the detector needs 50–150 ms, the filter predicts that delay away;
+  // the colour fingerprints come from the same frame (src = snapshot taken before detection)
+  S.detections = (S.detections || 0) + 1;
+  for (const b of boxes) b.hist = src ? histogram(src.canvas || src, b, src.k || 1) : null;
+  updateTracks(S, boxes, now);
+  place(now);
   const n = S.tracks.filter((t) => !t.textOnly).length;
   stage("find", n ? `<b>${n}</b> object${n > 1 ? "s" : ""} in view` : "looking for packages…");
 }
+const place = (now) => placeTracks(S, now, S.running);
+const reidentify = (t, emb) => reidentifyTrack(S, t, emb, rank, performance.now());
 
 // ------------------------------------------------------------------------------------------------
 // Sources: camera loop or a single photo
@@ -210,23 +217,48 @@ async function startCamera() {
   } catch (e) { $("#camMsg").textContent = `Camera not available (${e.name}). You can analyse a photo instead.`; return; }
   const v = $("#cam"); v.srcObject = S.stream; await v.play();
   $("#stageEmpty").hidden = true; $("#stopCam").hidden = false; $("#identify").disabled = false;
-  S.source = v; S.running = true; await loadModel(); loop();
+  S.source = v; S.running = true; await loadModel(); loop(); render();
 }
 
+/** For the tracking test (tests/test_e_tracking_browser.js): run the camera loop on any canvas or video. */
+export async function startSource(src) {
+  $("#stageEmpty").hidden = true; $("#identify").disabled = false;
+  S.source = src; S.running = true; await loadModel(); loop(); render();
+  S.view = (now) => { place(now); return S.tracks; }; // boxes as drawn at `now` (independent of animation frames)
+  return S;
+}
+
+const dims = (v) => [v.videoWidth || v.width, v.videoHeight || v.height];
+const SNAP = document.createElement("canvas"), sctx = SNAP.getContext("2d", { willReadFrequently: true });
+function snapshot(v, w, h) {
+  const k = Math.min(1, 480 / w); SNAP.width = Math.round(w * k); SNAP.height = Math.round(h * k);
+  sctx.drawImage(v, 0, 0, SNAP.width, SNAP.height);
+  return { canvas: SNAP, k };
+}
 async function loop() {
   if (!S?.running) return;
-  const v = S.source;
-  if (v.videoWidth && !S.busy) {
+  const v = S.source, [w, h] = dims(v);
+  if (w && !S.busy) {
     S.busy = true;
     try {
-      track(await detect(v, v.videoWidth, v.videoHeight));
-      draw(v.videoWidth, v.videoHeight);
-      if (performance.now() - S.lastBarcode > 700) { S.lastBarcode = performance.now(); scanBarcode(v, v.videoWidth, v.videoHeight); }
-      if (!S.ocrBusy && performance.now() - S.lastOcr > OCR_EVERY_MS) runOcr(v, v.videoWidth, v.videoHeight);
-      if (!S.ownBusy && performance.now() - S.lastOwn > OWN_EVERY_MS) runOwn(v, v.videoWidth, v.videoHeight);
+      // capture time + a small copy of THIS frame: the detector needs 50–150 ms, meanwhile the video moves on;
+      // the filter predicts the delay away, and the colour fingerprints are taken from the frame the boxes belong to
+      const at = performance.now(), snap = snapshot(v, w, h);
+      track(await detect(v, w, h), snap, at);
+      if (performance.now() - S.lastBarcode > 700) { S.lastBarcode = performance.now(); scanBarcode(v, w, h); }
+      if (!S.ocrBusy && performance.now() - S.lastOcr > OCR_EVERY_MS) runOcr(v, w, h);
+      if (!S.ownBusy && performance.now() - S.lastOwn > OWN_EVERY_MS) runOwn(v, w, h);
     } finally { S.busy = false; }
   }
-  setTimeout(() => requestAnimationFrame(loop), 60);
+  setTimeout(() => requestAnimationFrame(loop), 30);
+}
+
+/** Overlay at screen rate: boxes glide along their predicted path between two detections. */
+function render() {
+  if (!S?.running) return;
+  const [w, h] = dims(S.source);
+  if (w) { place(performance.now()); draw(w, h); }
+  requestAnimationFrame(render);
 }
 
 async function analysePhoto(file) {
@@ -238,7 +270,7 @@ async function analysePhoto(file) {
   S.source = c; $("#identify").disabled = false;
   $("#liveMsg").innerHTML = `<span class="spinner" style="display:inline-block;vertical-align:middle"></span> Looking at the photo on your device…`;
   await loadModel();
-  S.tracks = []; track(await detect(c, c.width, c.height)); draw(c.width, c.height);
+  S.tracks = []; track(await detect(c, c.width, c.height), c); draw(c.width, c.height);
   await Promise.all([scanBarcode(c, c.width, c.height), runOcr(c, c.width, c.height)]);
   await runOwn(c, c.width, c.height, true); // every box the text could not name
   for (const t of S.tracks) t.ttl = Infinity; // a photo does not move – keep every box
@@ -254,7 +286,7 @@ async function analysePhoto(file) {
 // ------------------------------------------------------------------------------------------------
 function draw(w, h) {
   const ov = $("#ov"); if (!ov) return;
-  ov.width = w; ov.height = h; const ctx = ov.getContext("2d"); ctx.clearRect(0, 0, w, h);
+  if (ov.width !== w || ov.height !== h) { ov.width = w; ov.height = h; } const ctx = ov.getContext("2d"); ctx.clearRect(0, 0, w, h);
   // canvas pixels per screen pixel (object-fit: contain) → labels have the same on-screen size as over the video
   const r = ov.getBoundingClientRect();
   const k = r.width && r.height ? Math.max(w / r.width, h / r.height) : Math.max(1, w / 900);
@@ -264,11 +296,19 @@ function draw(w, h) {
   const hit = (q) => placed.some((o) => q.x < o.x + o.w && o.x < q.x + q.w && q.y < o.y + o.h && o.y < q.y + q.h);
   // named and bigger boxes first, so they keep the preferred spot (inside the top edge)
   const order = [...S.tracks].sort((a, b) => (!!b.label - !!a.label) || area(b) - area(a));
+  const now = performance.now();
   for (const t of order) {
     const c = t.label ? "#30d158" : "rgba(255,255,255,.85)";
+    // not seen for a moment (hand in front, detector flicker): predicted position, dashed and fading – the same
+    // convention as an estimated position in the video tracking mode (.tbox.approx)
+    const missing = S.running && !t.textOnly ? now - t.seen : 0, coasting = missing > COAST_MS;
+    ctx.globalAlpha = coasting ? Math.max(0.35, 1 - (missing - COAST_MS) / (HOLD_MS - COAST_MS)) : 1;
+    roundRect(ctx, t.x1, t.y1, t.x2 - t.x1, t.y2 - t.y1, 12 * k);
+    ctx.fillStyle = t.label ? "rgba(48,209,88,.07)" : "rgba(255,255,255,.05)"; ctx.fill(); // faint tint like .tbox
+    if (!coasting && !t.textOnly) { ctx.lineWidth = 7.5 * k; ctx.strokeStyle = "rgba(0,0,0,.18)"; ctx.stroke(); } // soft dark rim
     ctx.lineWidth = 2.5 * k; ctx.strokeStyle = c;
-    ctx.setLineDash(t.textOnly ? [8 * k, 6 * k] : []); // brand text found outside any object box
-    roundRect(ctx, t.x1, t.y1, t.x2 - t.x1, t.y2 - t.y1, 12 * k); ctx.stroke(); ctx.setLineDash([]);
+    ctx.setLineDash(t.textOnly || coasting ? [8 * k, 6 * k] : []); // dashed: brand text outside any box, or predicted
+    ctx.stroke(); ctx.setLineDash([]);
     const named = t.label && (t.label.engine === "barcode" || t.label.engine === "gemini") && t.label.product && !/^not in /.test(t.label.product)
       ? (t.label.product.toLowerCase().startsWith(t.label.brand.toLowerCase()) ? t.label.product : `${t.label.brand} ${t.label.product}`) : t.label?.brand;
     const tag = t.label ? TAG[t.label.engine] || "" : "";
@@ -289,6 +329,7 @@ function draw(w, h) {
       ctx.font = `500 ${10.5 * k}px -apple-system, system-ui, sans-serif`; ctx.fillStyle = "rgba(255,255,255,.62)"; ctx.fillText(tag, tx, y + th * 0.65);
     }
   }
+  ctx.globalAlpha = 1;
 }
 const TAG = { barcode: "BARCODE", ocr: "TEXT", own: "OWN MODEL", gemini: "GEMINI" };
 /** Shorten a label with "…" so it fits into maxW (canvas has no text-overflow). */
@@ -390,11 +431,14 @@ async function runOwn(src, w, h, all = false) {
   try {
     await loadBrandModel();
     const now = performance.now();
-    const todo = S.tracks.filter((t) => !t.textOnly && (!t.label || rank(t.label) <= RANK.own) && !(now - (t.ownAt || -1e9) < OWN_RETRY_MS))
-      .sort((a, b) => (a.ownAt || 0) - (b.ownAt || 0) || area(b) - area(a));
+    // boxes without a stronger name; boxes named by text/barcode once, for their fingerprint (re-identification)
+    const todo = S.tracks.filter((t) => !t.textOnly && (!t.label || rank(t.label) <= RANK.own || (!t.emb && !all)) && !(now - (t.ownAt || -1e9) < OWN_RETRY_MS))
+      .sort((a, b) => (!!a.label - !!b.label) || (a.ownAt || 0) - (b.ownAt || 0) || area(b) - area(a));
     for (const t of all ? todo : todo.slice(0, 1)) {
       t.ownAt = performance.now();
       const r = await classifyBox(src, t, w, h); if (!r) continue;
+      reidentify(t, r.emb); // same product as one that vanished a moment ago? → its name comes back
+      if (t.label && rank(t.label) > RANK.own) continue; // already named by text/barcode/Gemini: fingerprint only
       const alt = r.top.slice(1).map(([b, p]) => `${esc(b)} ${Math.round(p * 100)} %`).join(", ");
       if (r.sure) {
         const item = { brand: r.brand, product: `recognised by its look · ${Math.round(r.conf * 100)} % sure`, engine: "own" };
@@ -424,6 +468,19 @@ function identifyLargest() {
   const t = [...S.tracks].filter((t) => !t.textOnly).sort((a, b) => area(b) - area(a))[0];
   identify(t || null);
 }
+// "Gemini teaches the on-device model": the Worker may keep a crop that a cloud model named confidently as a
+// training example (worker.js keepForTraining, tools/teach_pull.py). Visible note + opt-out, remembered per browser.
+const teachOff = () => { try { return localStorage.getItem("teach") === "off"; } catch { return false; } };
+let TEACH_ON = false;
+async function teachNote() {
+  try { TEACH_ON = !!(await (await fetch("api/config")).json()).teach; } catch { TEACH_ON = false; } // local static server: no Worker
+  const el = $("#teachNote"); if (!el) return;
+  el.hidden = !TEACH_ON;
+  el.innerHTML = `${icon("sparkle")} ${teachOff() ? "Your crops are not kept." : "Recognised crops may be kept to improve the on-device model."}
+    <button class="linklike" id="teachToggle">${teachOff() ? "Allow again" : "Don't keep mine"}</button>`;
+  $("#teachToggle").onclick = () => { try { localStorage.setItem("teach", teachOff() ? "on" : "off"); } catch { /* private mode */ } teachNote(); };
+}
+
 async function identify(t) {
   const src = S.source; const w = src.videoWidth || src.width, h = src.videoHeight || src.height;
   const box = t ? { x: Math.max(0, t.x1 - 20), y: Math.max(0, t.y1 - 20), w: Math.min(w, t.x2 + 20) - Math.max(0, t.x1 - 20), h: Math.min(h, t.y2 + 20) - Math.max(0, t.y1 - 20) } : { x: 0, y: 0, w, h };
@@ -434,7 +491,7 @@ async function identify(t) {
   stage("gem", "asking…");
   try {
     const invite = localStorage.getItem("invite") || "";
-    const r = await fetch("api/identify", { method: "POST", headers: { "content-type": "application/json", "x-invite": invite }, body: JSON.stringify({ image }) });
+    const r = await fetch("api/identify", { method: "POST", headers: { "content-type": "application/json", "x-invite": invite }, body: JSON.stringify({ image, teach: TEACH_ON && !teachOff() }) });
     const j = await r.json();
     if (!r.ok) throw new Error(j.message || { invite_required: "Identify needs an invite link.", daily_limit: "Daily limit reached.", own_key_required: "This version needs your own Gemini key." }[j.error] || j.error || `HTTP ${r.status}`);
     const best = (j.items || []).sort((a, b) => (b.confidence || 0) - (a.confidence || 0))[0];
@@ -443,7 +500,7 @@ async function identify(t) {
     if (t) t.label = item; addSeen(item); draw(w, h);
     stage("gem", `<b>${esc(best.brand)}</b> · ${esc(j.model || "")}${j.cached ? " · from cache" : ""}`);
     $("#liveMsg").textContent = j.cached ? `Already known (${j.model}) – answered from the cache, no API call.`
-      : `Identified by ${j.model}. Next time the on-device model can learn this product.`;
+      : `Identified by ${j.model}.${j.kept ? " Kept as a training example – the on-device model can learn this product." : ""}`;
   } catch (e) {
     $("#liveMsg").textContent = e instanceof TypeError ? "Gemini is only available in the online version." : e.message;
     stage("gem", "only when you tap a box");

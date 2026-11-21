@@ -170,7 +170,7 @@ const allowed = (len) => (len >= 10 ? 2 : len >= 5 ? 1 : 0);
 const COMMON = new Set(("vegan hafer protein proteine bio natur natural milch butter kase cheese joghurt jogurt yogurt quark sahne " +
   "schoko choco chocolate kakao cacao vanille vanilla erdbeere strawberry himbeere kirsche apfel banane mango zitrone lemon " +
   "orange tomate tomaten honig mandel mandeln nuss nusse nougat haselnuss erdnuss erdnusse kekse keks waffeln waffel chips " +
-  "linsen mais reis weizen dinkel roggen vollkorn brot toast salz salzig gesalzen paprika pfeffer zucker sugar original " +
+  "linse linsen bohne bohnen erbse erbsen mais reis weizen dinkel roggen vollkorn brot toast salz salzig gesalzen paprika pfeffer zucker sugar original " +
   "classic klassik light zero leicht frisch fresh extra mini maxi family familie kinder skyr tofu wasser water saft juice " +
   "goldbaren baren minis riegel creme cream mousse dessert pudding griess ohne mit und").split(" "));
 // Digits that OCR typically reads instead of letters in logo fonts ("Lolen2" for "Lorenz") – only used for the
@@ -223,5 +223,7 @@ export function matchBrands(words) {
       found.set(hit.key, { brand: hit.name, key: hit.key, read: cand.parts.map((p) => p.text).join(" "), score, exact: !dist, ...union(cand.parts) });
     }
   }
-  return [...found.values()].sort((a, b) => b.score - a.score);
+  // a typo match on a word that already belongs to an exactly read brand is noise ("Rolle" of "Prinzen Rolle" → Holle)
+  const exactWords = new Set([...found.values()].filter((f) => f.exact).flatMap((f) => f.read.split(" ")));
+  return [...found.values()].filter((f) => f.exact || !f.read.split(" ").every((w) => exactWords.has(w))).sort((a, b) => b.score - a.score);
 }

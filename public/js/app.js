@@ -1059,7 +1059,7 @@ function showInfo() {
     <div class="engines">
       <div><span class="ic" style="background:#0a84ff">${icon("cloud")}</span><div><b>Engine 1 · Gemini in the cloud</b><span>watches the whole video with sound: every brand, when and how it appears, spoken and on-screen ad labels, authenticity cues.</span></div></div>
       <div><span class="ic" style="background:#30d158">${icon("chip")}</span><div><b>Engine 2 · AI on your device</b><span>live scanner: a packaging finder (YOLOE), text recognition and barcodes (exact product via Open Food Facts) run in the browser – no cloud needed.</span></div></div>
-      <div><span class="ic" style="background:#5e5ce6">${icon("sparkle")}</span><div><b>Engine 3 · our own model</b><span>Apple's MobileCLIP image encoder plus a brand head we trained on 7,400 open product photos (131 brands) – names packages whose text cannot be read.</span></div></div>
+      <div><span class="ic" style="background:#5e5ce6">${icon("sparkle")}</span><div><b>Engine 3 · our own model</b><span>Apple's MobileCLIP image encoder plus a brand head we trained on 64,000 open product photos (1,020 brands, webcam-ready) – names packages whose text cannot be read, and learns from Gemini's confident answers.</span></div></div>
     </div>
     <p class="small">Media value = views ÷ 1000 × CPM × weighted seconds ÷ 30 × view-through. The disclosure check refers to § 5a (4) UWG and § 22 MStV; it is a screening aid, not legal advice.
       Details, formulas and all test results: README, MODELS and EVALUATION in the project repository.</p>

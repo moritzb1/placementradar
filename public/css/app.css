@@ -463,6 +463,10 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
 .live-side .row-btns { justify-content: flex-start; }
 .live-side .btn { background: rgba(255, 255, 255, .14); color: #fff; }
 .cascade { display: grid; gap: 12px; }
+.teach-note { margin: 12px 0 0; line-height: 1.45; }
+.teach-note svg { width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px; opacity: .8; }
+.teach-note .linklike { margin-left: 4px; }
+.linklike { appearance: none; border: 0; background: none; padding: 0; font: inherit; color: #2997ff; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
 .cascade > div { display: grid; grid-template-columns: 24px 1fr; column-gap: 12px; font-size: 15px; }
 .cascade > div span:last-child { grid-column: 2; font-size: 13px; color: var(--text-2); }
 .eng { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: #fff; grid-row: span 2; }

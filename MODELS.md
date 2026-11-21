@@ -1,6 +1,6 @@
 # Models – what runs where, and why
 
-Shipped in the app (as of 20 Nov 2026). Measured numbers come from EVALUATION.md; every model below the line "Not used" was tested and dropped for a stated reason.
+Shipped in the app (as of 21 Nov 2026). Measured numbers come from EVALUATION.md; every model below the line "Not used" was tested and dropped for a stated reason.
 
 | # | Model | Role in PlacementRadar | Runs on | Licence / terms | Measured (EVALUATION.md) |
 |---|---|---|---|---|---|
@@ -10,18 +10,22 @@ Shipped in the app (as of 20 Nov 2026). Measured numbers come from EVALUATION.md
 | 2c | **Qwen2.5-VL 72B** (`:free` on OpenRouter) | optional third provider, only active when the secret `OPENROUTER_API_KEY` is set | OpenRouter | provider terms; 50 free requests/day without credits | *not enabled* |
 | 3 | **YOLOE-26s "packaging finder"** (Ultralytics, open vocabulary) | live scanner: finds and tracks packages (snack bag, jar, tub, box, bottle, can …, 31 words fixed before export by `tools/export_yoloe.py`) so each product is identified only once | browser (ONNX Runtime Web, WebGPU/WASM), 19 MB float16 | AGPL-3.0 | 6/6 packages on the grocery test photo (YOLO26: 0/6) |
 | 3b | **YOLO26n** (Ultralytics, COCO) | fallback detector if YOLOE cannot load | browser | AGPL-3.0 | runs on WebGPU; finds bottles/cups, but no bags, jars or boxes |
-| 4 | **OCR** (PaddleOCR v3 det + rec, ONNX, as in RapidOCR) + **brand dictionary** (868 brands: 10,000 most-scanned products in Germany on Open Food Facts + curated non-food brands, `tools/build_brand_list.py`) | reads brand names printed on the package, matches them exactly or with 1–2 typos | browser (WASM), 13 MB | Apache-2.0 (models), ODbL (brand list) | **37/49 real product photos (76 %), 0 wrong brands, 125 ms**; 6/6 on the grocery test photo |
+| 4 | **OCR** (PaddleOCR v3 det + rec, ONNX, as in RapidOCR) + **brand dictionary** (v2, 21 Nov: **3,599 brands** – 60,000 most-scanned food products in Germany, cosmetics and household products sold in Germany, all brands of the own model, curated non-food brands; misspelled duplicates merged, everyday package words excluded; `tools/build_brand_list.py --dumps`) | reads brand names printed on the package, matches them exactly or with 1–2 typos | browser (WASM), 13 MB + 0.25 MB list | Apache-2.0 (models), ODbL (brand list) | **39/49 real product photos alone (v1 list: 36–37), 125 ms**; 6/6 on the grocery test photo |
 | 5 | **Barcode reader** (browser BarcodeDetector / ZXing) + **Open Food Facts API** | exact product (name, brand, image) from the EAN code | browser + open API | ODbL data | test EAN 3073781150780 read with ZXing (Firefox path) → "Babybel MINI Unser Würziger · 20 g", Nutri-Score D, in < 2 s |
-| 6 | **Own model: brand classifier** (MobileCLIP-S1 image encoder, Apple, frozen + **our linear brand head**) | live scanner stage 4: recognises the *look* of 131 brands (logo, colours) for boxes OCR could not name; answers only if head (≥ 0.9) and the encoder's text knowledge of brand names agree (`tools/train_brand_data.py`, `tools/train_brand_model.py`, `public/js/brandmodel.js`) | trained on Mac (MPS, seconds; fingerprints ~7 min), runs in browser (WASM), 42 MB float16 in 3 parts + 2.5 MB head | encoder: Apple's licence for the MobileCLIP weights (github.com/apple/ml-mobileclip – fine for a course project, check before commercial use); head: ours; data: ODbL | held-back products: 96 % of answers right, 7 % false alarms on unknown brands; **cascade OCR + own model 41/49 photos (OCR alone 36), 0 wrong brands from the model**, ~0.24 s per box |
+| 6 | **Own model v2: brand classifier** (MobileCLIP-S1 image encoder, Apple, frozen + **our linear brand head for 1,020 brands + class "(other)"**) | live scanner stage 4: recognises the *look* of 1,020 brands – food, cosmetics, household/tech, German retail (logo, colours) – for boxes OCR could not name; trained with 3 webcam-like views per photo and hard negatives; answers only if head (≥ 0.95) and the encoder's text knowledge of brand names (top 50) agree, thresholds calibrated on a validation split (`tools/build_brand_data.py`, `tools/camaug.py`, `tools/train_brand_model_v2.py`, `public/js/brandmodel.js`; v1 with 131 brands: `train_brand_*.py`) | trained on Mac (MPS; 190,000 fingerprints ~56 min, head seconds), runs in browser (WASM), 42 MB float16 encoder in 3 parts + **2 MB binary head** | encoder: Apple's licence for the MobileCLIP weights (github.com/apple/ml-mobileclip – fine for a course project, check before commercial use); head: ours; data: **Open Food Facts, Open Beauty Facts, Open Products Facts – ODbL (database), photos CC BY-SA** | 5,189 held-back products: **2,338 named, 96.8 % of answers right** (v1: 399, 68 %); webcam views 769 vs 126; 3.4 % false alarms on foreign brands (v1 2.6 %); **cascade OCR + own model 42/49 photos, also 42/49 in webcam quality, 0 wrong brands from the model**, ~0.24 s per box (EVALUATION.md S4) |
+| 6b | **Distillation "Gemini teaches the on-device model"** | crops that Gemini / Workers AI named confidently in the live scanner are kept (with a visible note and opt-out) and become training examples for model 6 (`worker.js` keepForTraining, `tools/teach_pull.py`: download with secret token, check, retrain the head ×3 weight) | Worker KV (≤ 1,500 crops, 90 days) + Mac | crops: kept only with the note shown, README → Privacy | pipeline tested locally end to end; grows with use |
 
 ## Decision cascade in the live scanner
 ```
 object found (YOLOE packaging finder; YOLO26 as fallback) → tracked box
   1. barcode visible?          → Open Food Facts → exact product           (certain)
   2. OCR reads a known brand?  → done (whole frame every 1.8 s, text is assigned to the box that holds it)
-  3. own model (MobileCLIP-S1 + our brand head) → accept if head ≥ 0.9 AND text opinion agrees   (on device)
+  3. own model (MobileCLIP-S1 + our 1,020-brand head) → accept if head ≥ 0.95, not "(other)", AND text opinion (top 50) agrees
      ranking of labels: brand read exactly > own model > brand read with a typo
-  4. otherwise                 → tap the box: Gemini Flash-Lite, 1 request (next: store as training example)
+  4. otherwise                 → tap the box: Gemini Flash-Lite, 1 request → a confident answer may be kept as a training
+                                  example for the own model (distillation, tools/teach_pull.py)
+tracking (tracker.js): filtered + predicted boxes, matching by overlap + colour histogram, re-identification by fingerprint,
+1.5 s coasting under a hand – a name stays on its product
 ```
 
 ## Not used, and why

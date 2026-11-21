@@ -21,7 +21,7 @@ const EDGE_S = 0.4;  // fade in/out around the appearance edges
 /** Collect the boxes to draw at time t: [{key, brand, product, basis, box, approx, fade}]. */
 export function boxesAt(data, t) {
   const out = [];
-  for (const b of data.brands) {
+  for (const b of trackables(data)) {
     b.appearances.forEach((ap, i) => {
       if (ap.channel !== "visual" || t < ap.start_s - EDGE_S || t > ap.end_s + EDGE_S) return;
       // new data: own keyframes; old data: the brand's frames that fall inside this appearance
@@ -37,10 +37,17 @@ export function boxesAt(data, t) {
         box = a.box.map((v, j) => v + (c.box[j] - v) * e); dist = Math.min(t - a.t, c.t - t);
       }
       const fade = Math.max(0, Math.min(1, (t - (ap.start_s - EDGE_S)) / EDGE_S, ((ap.end_s + EDGE_S) - t) / EDGE_S));
-      out.push({ key: `${b.brand}#${i}`, brand: b.brand, product: modelFor(b, ap), basis: ap.basis || "", box, approx: dist > NEAR_S, fade });
+      out.push({ key: `${b.brand}#${i}`, brand: b.brand, product: modelFor(b, ap), basis: b.unid ? "no brand" : ap.basis || "", box, approx: dist > NEAR_S, fade });
     });
   }
   return out;
+}
+
+/** Brands plus unidentified products (label = category, e.g. "Smartwatch · NO BRAND", grey). */
+function trackables(data) {
+  const cap = (x) => String(x || "").charAt(0).toUpperCase() + String(x || "").slice(1);
+  return [...data.brands, ...(data.unidentified || []).map((u) => ({ brand: cap(u.category), unid: true,
+    products: u.guess ? [`(possible: ${u.guess})`] : [], appearances: u.appearances, frames: [] }))];
 }
 
 /** The model shown in the label: the one named in this appearance's evidence, else the brand's first model. */
@@ -103,7 +110,7 @@ export function createTracking(host, data, color) {
     /** Number of visual appearances with at least one position (for the hint next to the switch). */
     coverage() {
       let withBox = 0, all = 0, keys = 0;
-      for (const b of data.brands) for (const ap of b.appearances) if (ap.channel === "visual") {
+      for (const b of trackables(data)) for (const ap of b.appearances) if (ap.channel === "visual") {
         all++; const k = ap.track?.length || (b.frames || []).filter((f) => f.t >= ap.start_s - 1 && f.t <= ap.end_s + 1).length;
         if (k) withBox++; keys += k;
       }

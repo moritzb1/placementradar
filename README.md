@@ -29,6 +29,8 @@ Final project for *MMI5190E – The New Frontiers of AI: From Perception to Agen
 
 ![Tracking boxes over the player (Beats headphones at 2:38)](docs/screenshots/14_tracking.jpg)
 
+**2c · Look closer and unidentified products.** Small products worn or used in passing (a smartwatch on the wrist, a case, glasses) are easy to miss in a whole-video pass. The analysis prompt now asks for a complete inventory and allows the brand "unknown" – such items appear under *Unidentified products* (category, description, jump to the moment) and never count towards media value or the disclosure check. The **Look closer** button under the player sends the current ~20 seconds to Gemini once more, at 2 frames per second with the inventory prompt (1 request, ~1 min, cached per clip on the server); what it finds is added to the product list, *Right now* and the tracking boxes.
+
 **First visit.** A five-step introduction explains what the app does, the three engines, why it matters and where to start. Skippable, "Don't show again" is remembered; it can be reopened from the About sheet.
 
 **3 · Brand timeline.** One lane per brand – solid = visible, outline = mentioned in speech, dotted = on-screen text. Click a bar and the video jumps there (timestamps were accurate to ±2 s in our checks).
@@ -79,6 +81,7 @@ PlacementRadar answers both from a single YouTube link and adds a third, newer q
 | **Brand timeline** | one lane per brand: visible / mentioned in speech / on-screen text, click to jump in the video | done |
 | **Pause & Find** | pause the video → a panel lists the products in that frame, with the creator's link (affiliate links marked) or a neutral shopping search; soft markers show roughly where they are | done |
 | **Show tracking** | labelled boxes over the YouTube player (brand + model + recognition basis) that follow each product; positions are Gemini keyframes every ~2–3 s, interpolated; same look as the live scanner's boxes | done (21 Nov) |
+| **Look closer / Unidentified products** | button under the player: inventory of the current ~20 s at 2 frames/s (`POST /api/closer`, 1 request, cached per clip, 8 per visitor and day); products without an identifiable brand are listed separately, never guessed, not counted in value or disclosure | done (21 Nov) |
 | **Introduction** | five steps on the first visit: what, how (three engines), why, what it brings, where to start; reopen via About | done (21 Nov) |
 | **Media value** | visibility score 0–100 and estimated € value per brand; transparent formula, adjustable CPM and view-through | done |
 | **Ad disclosure check** | traffic light: *Disclosure found / Check disclosure / No disclosure found / No advertising detected*, with every place that was checked | done |
@@ -155,6 +158,7 @@ One JSON file per analysed video (`public/data/<video-id>.json`):
                                   "basis": "logo|text|speech|design", "confidence",
                                   "track": [{ "t", "box": [ymin, xmin, ymax, xmax] }] }],   // 0–1000, keyframes every ~2–3 s (visual only)
                 "frames": [{ "t", "box" }] }],      // all positions of the brand; analyses before 21 Nov: one per appearance
+  "unidentified": [{ "category", "description", "guess"?, "appearances": [{ "start_s", "end_s", "track"?, "closer"? }] }],  // brand "unknown"
   "disclosures":  [{ "time_s", "kind", "text" }],
   "paid":         { "looks_like_paid_promotion", "reasoning" },
   "authenticity": [{ "brand", "product", "overall", "verdict", "sub": { "use_shown": { "score", "time_s", "evidence" }, … } }],
@@ -200,7 +204,7 @@ npx wrangler dev
 ## 8. Repository
 
 ```
-worker.js                  Cloudflare Worker: API (config, meta, recent, analyze, identify), key modes, limits,
+worker.js                  Cloudflare Worker: API (config, meta, recent, analyze, identify, closer), key modes, limits,
                            KV cache, quota tracking, Gemini model chain, single-frame provider router
 wrangler.jsonc             Worker configuration (no secrets)
 public/index.html          app shell
@@ -231,6 +235,7 @@ EVALUATION.md              all tests, incl. what did not work
 ## 9. Limitations and ethics
 
 - Gemini can miss brands or misplace them; repeated runs differ (22 vs. 27 brands for the same video). Timestamps were accurate to ±2 s in our checks; positions in the frame are rough.
+- Small worn or incidental items are found much more reliably with *Look closer* (2 frames/s on a short clip) than in the whole-video pass; without a readable logo their brand stays "unknown" on purpose.
 - Tracking boxes are **Gemini's estimates, not measurements**: the browser cannot look into the YouTube player (cross-origin), so it cannot follow the product itself. Gemini samples the video at about one frame per second and returned a keyframe every ~4 s in our test; boxes lag behind fast movements and sometimes sit beside the product. The overlay assumes a 16:9 video (YouTube Shorts would be misplaced).
 - Media value depends on assumed CPM and view-through; it is an estimate for comparison, not an invoice.
 - The disclosure check and authenticity score judge *content*, not people. Wording is deliberately neutral.

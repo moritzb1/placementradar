@@ -21,6 +21,7 @@
     "MAX_VIDEO_S": "1200",                // longest video we analyse (20 min)
     "DAILY_ANALYSES": "10",               // new video analyses per visitor and day (cached ones are unlimited)
     "DAILY_IDENTIFY": "60",               // cloud recognitions per visitor and day (live scanner fallback)
+    "DAILY_CLOSER": "8",                  // "Look closer" clips per visitor and day (cached clips are unlimited)
     "DAILY_WORKERS_AI": "250"             // safety cap for all visitors together (~40 neurons each → well below 10,000)
   },
   // Model lists are deliberately NOT set here (a value here would overwrite the dashboard on every deploy).

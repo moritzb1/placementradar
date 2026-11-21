@@ -9,6 +9,7 @@
  *   GET  /api/recent            → videos analysed by visitors so far (from the KV cache, newest first)
  *   POST /api/analyze {v}       → full Gemini video analysis, streamed as Server-Sent Events
  *   POST /api/identify {image}  → brands in one camera crop (live mode fallback), via the provider router
+ *   POST /api/closer {v,start,end} → "Look closer": inventory of a ≤ 20 s clip at 2 frames/s (SSE, cached per clip)
  *
  * Quota strategy (PROBLEME.md, point 1) – everything here is free, there is no paid fallback:
  *   1. Never pay twice: repo demos (public/data) and every finished analysis (KV, kept forever) are served
@@ -33,8 +34,8 @@
  * heartbeat is sent every 5 s, so no proxy closes the idle connection (test G, EVALUATION.md).
  */
 import { VIDEO_MODELS, FRAME_MODELS, TIMELINE_PROMPT, TIMELINE_SCHEMA, AUTHENTICITY_SCHEMA, FRAME_PROMPT, FRAME_SCHEMA,
-  authenticityPrompt, geminiBody } from "./public/js/shared/prompts.js";
-import { normalizeAnalysis, promotedCandidates } from "./public/js/shared/normalize.js";
+  CLOSER_PROMPT, CLOSER_SCHEMA, authenticityPrompt, geminiBody } from "./public/js/shared/prompts.js";
+import { normalizeAnalysis, normalizeCloser, promotedCandidates } from "./public/js/shared/normalize.js";
 
 const API = "https://generativelanguage.googleapis.com/v1beta";
 const ID_RE = /^[A-Za-z0-9_-]{11}$/;
@@ -44,6 +45,8 @@ const MESSAGES = {
   quota_exhausted: "Today's free analyses are used up – try an example, the live scanner, or come back tomorrow.",
   frame_quota_exhausted: "Today's free cloud recognitions are used up – barcode and on-device recognition still work.",
   daily_limit: "You reached today's limit for new analyses – the examples and the live scanner still work.",
+  closer_limit: "You reached today's limit for \"Look closer\" – the analysis itself and the examples still work.",
+  invalid_clip: "That part of the video cannot be analysed.",
   invite_required: "New analyses need an invite link. The examples work without one.",
   own_key_required: "This version needs your own Gemini key. The examples and the live scanner still work.",
   server_key_missing: "The server has no Gemini key configured. The examples still work.",
@@ -66,6 +69,7 @@ export default {
       if (url.pathname === "/api/usage") return json(await usage(env));
       if (url.pathname === "/api/analyze" && request.method === "POST") return await analyze(request, env, ctx);
       if (url.pathname === "/api/identify" && request.method === "POST") return await identify(request, env, ctx);
+      if (url.pathname === "/api/closer" && request.method === "POST") return await closer(request, env, ctx);
       if (url.pathname.startsWith("/api/")) return json({ error: "not_found" }, 404);
     } catch (e) {
       return errorJson(e);
@@ -434,6 +438,50 @@ async function analyze(request, env, ctx) {
     }
     await send("result", result);
   }
+}
+
+// ------------------------------------------------------------------------------------------------
+// POST /api/closer {v, start, end} → SSE: model | retry | result | error (+ ping)
+// "Look closer" at the player: one Gemini request for a short clip (≤ 20 s) at 2 frames per second with the
+// inventory prompt – finds small, worn or incidental products the whole-video call misses (test I).
+// Cached forever per clip (KV `closer:<v>:<start>-<end>`); the app snaps the clip to 5-second steps so
+// neighbouring clicks hit the same cache entry. Own daily limit per visitor (DAILY_CLOSER, default 8).
+// ------------------------------------------------------------------------------------------------
+async function closer(request, env, ctx) {
+  const body = await request.json().catch(() => ({}));
+  const v = body.v; const start = Math.max(0, Math.round(Number(body.start))); const end = Math.round(Number(body.end));
+  if (!ID_RE.test(v || "")) throw new ApiError("invalid_video", 400);
+  if (!Number.isFinite(start) || !Number.isFinite(end) || end - start < 5 || end - start > 20 || start > 7200) throw new ApiError("invalid_clip", 400);
+  const key = `closer:${v}:${start}-${end}`;
+  const cached = env.STORE && (await env.STORE.get(key, "json"));
+  if (cached) return sseResponse(ctx, (send) => send("result", { ...cached, cached: true }));
+
+  const denied = geminiDenied(request, env);
+  if (denied) throw new ApiError(denied, denied === "invite_required" ? 401 : denied === "own_key_required" ? 403 : 503);
+  const models = videoModels(env);
+  if ((await exhaustedModels(env, models)).length >= models.length) throw new ApiError("quota_exhausted", 429);
+  if (!(await withinLimit(env, request, "closer", Number(env.DAILY_CLOSER || 8)))) throw new ApiError("closer_limit", 429);
+
+  return sseResponse(ctx, async (send) => {
+    const r = await gemini(env, models, geminiBody({ video: v, prompt: CLOSER_PROMPT, schema: CLOSER_SCHEMA, clip: { start, end, fps: 2 } }),
+      (ev, data) => send(ev, data));
+    // timestamps outside the clip (Gemini sometimes counts from the clip start) are shifted into it
+    const items = (r.data?.items || []).map((it) => fixClipTimes(it, start, end));
+    const result = { v, start, end, model: r.model, usage: r.usage, analyzed_at: new Date().toISOString().slice(0, 10), ...normalizeCloser(items) };
+    if (env.STORE) await env.STORE.put(key, JSON.stringify(result));
+    await send("result", result);
+  });
+}
+
+/** If all times of an item lie before the clip, Gemini counted from the clip start → add the offset. */
+function fixClipTimes(it, start, end) {
+  const toS = (t) => String(t ?? "").split(/\s*[-–—]\s*/)[0].split(":").reduce((n, p) => n * 60 + (parseFloat(p) || 0), 0);
+  const s = toS(it.start);
+  if (start > 0 && s < start - 2 && s <= end - start + 2) {
+    const mm = (x) => `${Math.floor(x / 60)}:${String(Math.round(x % 60)).padStart(2, "0")}`;
+    return { ...it, start: mm(s + start), end: mm(toS(it.end || it.start) + start), ...(it.frame_time ? { frame_time: mm(toS(it.frame_time) + start) } : {}) };
+  }
+  return it;
 }
 
 /** Second request for a video that is being analysed right now: poll KV for the first run's result (no Gemini call). */

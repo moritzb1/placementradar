@@ -12,8 +12,19 @@
 
 export function sec(t) {
   if (typeof t === "number") return t;
-  return String(t ?? "0").split(":").reduce((n, part) => n * 60 + (parseFloat(part) || 0), 0);
+  // a range in one field ("01:30.000 - 01:40.000", seen in test I) → its start; "MM:SS.mmm" keeps the fraction
+  const first = String(t ?? "0").split(/\s*[-–—]\s*|\s+to\s+/)[0];
+  return first.split(":").reduce((n, part) => n * 60 + (parseFloat(part) || 0), 0);
 }
+/** End of a range written into one field ("01:30 - 01:40" → 100), else null. */
+export function rangeEnd(t) {
+  const parts = String(t ?? "").split(/\s*[-–—]\s*|\s+to\s+/);
+  return parts.length === 2 && parts[1].includes(":") ? sec(parts[1]) : null;
+}
+
+/** Brand names that mean "not identified" → the item goes to `unidentified`, not to `brands`. */
+const UNKNOWN = /^(unknown|unbranded|generic|none|n\/?a|no brand|unidentified|not visible|-|)$/i;
+export const isUnknownBrand = (b) => UNKNOWN.test(String(b ?? "").trim());
 
 export function mmss(s) {
   s = Math.max(0, Math.round(s || 0));
@@ -32,7 +43,13 @@ export const canon = (name) => ALIASES[String(name).trim().toLowerCase()] ?? Str
 export function normalizeAnalysis({ video, timeline, authenticity, models }) {
   const dur = video?.duration_s || Infinity;
   const brands = new Map();
+  const unidentified = [];
   for (const b of timeline?.brands ?? []) {
+    if (isUnknownBrand(b.brand)) { // worn / incidental products without an identifiable brand (inventory rule)
+      const u = unidentifiedItem(b, dur);
+      if (u) unidentified.push(u);
+      continue;
+    }
     const key = canon(b.brand);
     const entry = brands.get(key) ?? { brand: key, product: "", products: [], category: b.category || "", appearances: [], frames: [] };
     // several models of one brand (e.g. two Sony headphones) stay one card; the models are listed
@@ -40,7 +57,7 @@ export function normalizeAnalysis({ video, timeline, authenticity, models }) {
     entry.product = entry.products.slice(0, 2).join(" · ") + (entry.products.length > 2 ? ` +${entry.products.length - 2}` : "");
     for (const ap of b.appearances ?? []) {
       const start = Math.min(sec(ap.start), dur);
-      const end = Math.min(Math.max(sec(ap.end), start + 1), dur);
+      const end = Math.min(Math.max(ap.end ? sec(ap.end) : rangeEnd(ap.start) ?? start, start + 1), dur);
       const track = cleanTrack(ap, start, end);
       entry.appearances.push({ start_s: start, end_s: end, channel: ap.channel || "visual", size: ap.size ?? null,
         position: ap.position ?? null, in_use: ap.in_use ?? null, evidence: ap.evidence || "",
@@ -56,6 +73,8 @@ export function normalizeAnalysis({ video, timeline, authenticity, models }) {
   return {
     video,
     brands: list,
+    // products Gemini saw but could not assign to a brand – shown separately, never counted in value or disclosure
+    unidentified: unidentified.sort((a, b) => (a.appearances[0]?.start_s ?? 0) - (b.appearances[0]?.start_s ?? 0)),
     // drop empty or impossible entries (20 Nov: one run returned {time: 1832429, kind: "", text: ""})
     disclosures: (timeline?.disclosures ?? []).map((d) => ({ time_s: sec(d.time), kind: d.kind || "", text: d.text || "" }))
       .filter((d) => (d.kind || d.text) && d.time_s >= 0 && d.time_s <= dur),
@@ -89,6 +108,37 @@ export function cleanTrack(ap, start, end) {
   return out.sort((a, b) => a.t - b.t).slice(0, 24);
 }
 
+/** One unidentified product: category, description, optional vague guess ("possible: …"), appearances. */
+function unidentifiedItem(b, dur) {
+  const appearances = (b.appearances ?? []).map((ap) => {
+    const start = Math.min(sec(ap.start), dur);
+    const end = Math.min(Math.max(ap.end ? sec(ap.end) : rangeEnd(ap.start) ?? start, start + 1), dur);
+    const track = cleanTrack(ap, start, end);
+    return { start_s: start, end_s: end, channel: ap.channel || "visual", evidence: ap.evidence || "",
+      ...(Number.isFinite(ap.confidence) ? { confidence: ap.confidence } : {}), ...(track.length ? { track } : {}) };
+  }).sort((x, y) => x.start_s - y.start_s);
+  if (!appearances.length) return null;
+  const guess = /^possible:/i.test(b.product || "") ? b.product.replace(/^possible:\s*/i, "") : "";
+  return { category: (b.category || "product").trim(), description: b.description || appearances[0].evidence || "",
+    ...(guess ? { guess } : {}), appearances };
+}
+
+/**
+ * "Look closer" result (CLOSER_SCHEMA items) → { brands, unidentified } in the same shape as an analysis,
+ * so the app can merge it. Items get `closer: true` on each appearance.
+ */
+export function normalizeCloser(items, dur = Infinity) {
+  const timeline = { brands: (items ?? []).map((it) => ({
+    brand: it.brand, category: it.category, description: it.description || "",
+    product: isUnknownBrand(it.model) ? "" : it.model || "",
+    appearances: [{ start: it.start, end: it.end, channel: "visual", basis: it.basis === "unknown" ? undefined : it.basis,
+      confidence: it.confidence, evidence: it.description || "", frame_time: it.frame_time, box_2d: it.box_2d }],
+  })) };
+  const n = normalizeAnalysis({ video: { duration_s: Number.isFinite(dur) ? dur : 0 }, timeline });
+  for (const b of [...n.brands, ...n.unidentified]) for (const a of b.appearances) a.closer = true;
+  return { brands: n.brands, unidentified: n.unidentified };
+}
+
 /** Seconds a brand is on screen (visual appearances, overlaps merged). */
 export function screenTime(brand) {
   const iv = brand.appearances.filter((a) => a.channel === "visual").map((a) => [a.start_s, a.end_s]).sort((a, b) => a[0] - b[0]);
@@ -101,7 +151,7 @@ export function screenTime(brand) {
 
 /** Brands that look promoted → candidates for the authenticity call. */
 export function promotedCandidates(timeline, max = 4) {
-  return (timeline?.brands ?? [])
+  return (timeline?.brands ?? []).filter((b) => !isUnknownBrand(b.brand))
     .map((b) => ({ b, w: (b.appearances ?? []).reduce((n, a) => n + (sec(a.end) - sec(a.start)) * (a.in_use ? 2 : 1), 0) }))
     .sort((x, y) => y.w - x.w).slice(0, max).map(({ b }) => `${canon(b.brand)}${b.product ? " " + b.product : ""}`);
 }

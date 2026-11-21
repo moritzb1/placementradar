@@ -16,6 +16,7 @@ Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). 
 | Can the browser read the brand (OCR)? | 37/49 real product photos, 0 wrong brands, 125 ms | S2 |
 | Does our own trained model add anything? | OCR + own model 41/49 (84 %), 0 wrong labels from the model; 96 % of its answers right on 741 held-back products | S2b |
 | Does general CLIP work for product search? | no – 0/5 on small crops | H3 |
+| Are small worn items (a smartwatch) found? | whole-video pass: no · 20 s clip at 2 frames/s with an inventory prompt ("Look closer"): yes, brand honestly "unknown" | I |
 | Can boxes follow a product while the video plays? | roughly: 101 Gemini keyframes for 33 appearances (~1 per 4 s), interpolated; estimates, not measurements | T |
 | Does a free fallback provider help? | Workers AI (Llama 3.2 Vision) finds main brands, reads slogans as brands → last resort only | S1 |
 
@@ -59,6 +60,13 @@ Title, channel, views, duration, description via the YouTube page (server-side).
 | gemini-3.1-flash-lite | 6/6 | 3.3 s | finds more small items (Dyson, ja!) |
 | gemini-3-flash-preview | 4/6 | 5.2 s | one 120 s timeout, one 503 |
 Boxes on single images are far more precise than positions from video analysis (test E).
+
+## I – Small products worn in passing (21 Nov, 4 Gemini requests)
+Example: headphone review `2CqNFIn1AEo` at 1:37 – the Bose headphones were found, the smartwatch on the presenter's wrist was not.
+- **I1, clip 1:30–1:45** (`tests/test_i_kleine_produkte.py`): the usual brand prompt finds only Bose QuietComfort + Sonos Ace (9 s). An **inventory prompt** ("every manufactured product, also worn or in passing; brand "unknown" allowed") at **2 frames/s** also finds the **smartwatch (brand unknown, round, mesh band)**, the Bose case, a jacket and a sweatshirt (91 s). `mediaResolution: HIGH` made no measurable difference – the gain comes from the prompt and the frame rate. One answer wrote a time range into a single field ("01:30.000 - 01:40.000") → the normaliser now reads ranges.
+- **I2, whole video with the inventory rule in the main prompt** (1 request): Gemini 3.8 and 3.6 Flash were overloaded, 3.5 Flash answered – only 8 visual appearances (keyframe run with 3.6: 33), no unidentified items, but the Carhartt jacket and the 3DIO microphone came back. Not comparable model-for-model, but it shows: in a 10-minute pass small items stay unreliable. The example keeps the 3.6 run.
+- **I3, "Look closer" in the app** (`POST /api/closer`, clip 1:25–1:45, 2 frames/s, 1 request, Gemini 3.6 Flash, 3,600 tokens, ~1 min): Bose, Sonos and the **smartwatch (brand unknown, "gold mesh band")** with a box; the second click came from the KV cache (no request). The watch's box sits above the real position – boxes stay estimates.
+- Decision: inventory rule in the main prompt (cheap, sometimes helps), plus the **Look closer** button as the reliable way for a scene the viewer cares about; unknown brands are never guessed and never counted in value or disclosure. Raw answers: `../tests/ergebnisse/I_kleine_produkte.json`, `I2_…raw.json`, `I3_look_closer_85-105.json`.
 
 ## T – Tracking boxes with keyframes (21 Nov, 1 Gemini request)
 Question: can Gemini give enough positions for a box that follows the product while the video plays?

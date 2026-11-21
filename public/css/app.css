@@ -574,6 +574,23 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
 .tbox.low .tb-label { bottom: auto; top: 7px; left: 7px; }
 .tbox.right .tb-label { left: auto; right: -2px; } .tbox.low.right .tb-label { right: 7px; }
 
+
+/* "Look closer" (button under the player) and unidentified products */
+.closer-btn { margin-left: auto; flex: none; padding: 7px 14px; font-size: 13.5px; }
+.closer-status { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; padding: 14px 16px; border-radius: var(--r-md); background: var(--tile); font-size: 14px; }
+.closer-status b { display: block; font-size: 14.5px; } .closer-status span { color: var(--text-2); font-size: 13px; }
+.closer-status > .icon { width: 20px; height: 20px; margin-top: 1px; }
+.closer-status.ok > .icon { color: var(--green); } .closer-status.err > .icon { color: var(--orange); }
+.closer-status .spinner { margin-top: 1px; }
+.ugrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; margin-bottom: 10px; }
+.ucard { display: grid; gap: 10px; align-content: start; padding: 16px 18px; border-radius: var(--r-lg); background: var(--tile); cursor: pointer; transition: transform .25s var(--spring); }
+.ucard:hover { transform: translateY(-2px); }
+.uc-top { display: grid; grid-template-columns: 38px 1fr; gap: 12px; align-items: start; }
+.uc-top b { display: block; font-size: 15px; } .uc-top span { display: block; font-size: 13px; color: var(--text-2); line-height: 1.35; }
+.uc-ic { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: var(--tile-2); color: var(--text-2); }
+.ucard .tag { justify-self: start; }
+.now-item.unid .logo .icon { width: 18px; height: 18px; color: #fff; }
+
 /* ------------------------------------------------------------------------------------------------
    Introduction on the first visit (js/intro.js): black stage with an illustration + calm sheet
    ------------------------------------------------------------------------------------------------ */
@@ -648,7 +665,7 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
 .ia-logo { width: 72px; height: 72px; position: relative; filter: drop-shadow(0 12px 30px rgba(10, 132, 255, .5)); } .ia-logo svg { width: 100%; height: 100%; }
 
 @media (max-width: 760px) {
-  .player-bar { flex-wrap: wrap; row-gap: 4px; } .player-bar #trackHint { order: 3; flex-basis: 100%; }
+  .player-bar { flex-wrap: wrap; row-gap: 4px; } .player-bar #trackHint { order: 3; flex-basis: 100%; } .closer-btn { padding: 6px 12px; }
   .tb-label { font-size: 11.5px; padding: 4px 9px 4px 7px; gap: 5px; max-width: 62vw; } .tb-label em { font-size: 10px; }
   .tbox { border-radius: 8px; }
   .intro-scrim { padding: 0; place-items: end stretch; grid-template-columns: minmax(0, 1fr); }

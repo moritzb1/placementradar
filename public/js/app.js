@@ -99,6 +99,7 @@ async function route() {
       const data = await loadAnalysis(id);
       if (!data) return renderAnalyze(id);
       state.id = id; state.data = data; assignColors(data);
+      try { for (const r of JSON.parse(sessionStorage.getItem(`closer:${id}`) || "[]")) mergeCloser(r); } catch { /* ignore */ }
     }
     state.pendingSeek = t;
     renderSidebar(); renderResult();
@@ -428,6 +429,7 @@ function mountPlayer(onTime) {
     }
     const now = $("#now"); if (!now) return;
     const said = mentionedAt(t).filter((b) => !hits.includes(b));
+    const unid = (state.data.unidentified || []).filter((u) => u.appearances.some((a) => t >= a.start_s - 1 && t <= a.end_s + 1));
     const item = (b, how) => {
       const link = productLink(b);
       return `<div class="now-item ${how}" data-b="${esc(b.brand)}">${logoBox(b.brand, "sm")}<div class="ni-text"><b>${esc(b.brand)}</b><span>${esc(b.product || b.category || "")}</span></div>
@@ -437,7 +439,8 @@ function mountPlayer(onTime) {
     now.querySelector(".now-list").innerHTML =
       (hits.length ? `<div class="now-sub">${icon("eye")} In the picture</div>${hits.map((b) => item(b, "seen")).join("")}` : "") +
       (said.length ? `<div class="now-sub">${icon("ear")} Mentioned or written</div>${said.map((b) => item(b, "said")).join("")}` : "") +
-      (!hits.length && !said.length ? `<div class="now-empty">No product at this second.<br><span>Press play, or pick a product below to jump to it.</span></div>` : "");
+      (unid.length ? `<div class="now-sub">${icon("bag")} Unidentified</div>${unid.map((u) => `<div class="now-item said unid"><span class="logo sm" style="--c:#8e8e93">${icon("bag")}</span><div class="ni-text"><b>${esc(cap(u.category))}</b><span>${esc(u.guess ? `possible: ${u.guess}` : u.description || "brand unknown")}</span></div></div>`).join("")}` : "") +
+      (!hits.length && !said.length && !unid.length ? `<div class="now-empty">No product at this second.<br><span>Press play, or pick a product below to jump to it.</span></div>` : "");
     hydrateLogos(now);
     $("#view").querySelectorAll(".pcard").forEach((c) => {
       c.classList.toggle("live", hits.some((b) => b.brand === c.dataset.brand));
@@ -482,20 +485,12 @@ function productLink(b) {
 }
 
 // ---------- Overview ----------
+/**
+ * Products page: player + "Right now" (mounted once per visit of this tab), then stats, brand timeline, all
+ * products and unidentified products. The part below the player is drawn by drawBody(), so a "Look closer"
+ * result can be merged in without reloading the player.
+ */
 function viewOverview() {
-  const d = state.data; const v = d.video;
-  const val = videoValue(d, state.opts); const disc = checkDisclosure(d);
-  const union = brandTimeShare(d);
-  const au = d.authenticity || [];
-  const auAvg = au.length ? round5(au.reduce((n, a) => n + a.overall, 0) / au.length) : null;
-  const dur = v.duration_s || Math.max(1, ...d.brands.flatMap((b) => b.appearances.map((a) => a.end_s)));
-  const valueOf = new Map(val.rows.map((r) => [r.brand.brand, r]));
-  const promoted = new Set(au.map((a) => a.brand.toLowerCase()));
-  const firstAt = (b) => b.appearances[0]?.start_s ?? Infinity;
-  const rows = () => { const sortBy = state.sortBy || "screen"; return d.brands.filter((b) => b.appearances?.length).sort((a, b) => sortBy === "first" ? firstAt(a) - firstAt(b)
-    : sortBy === "value" ? (valueOf.get(b.brand)?.euros || 0) - (valueOf.get(a.brand)?.euros || 0)
-    : (valueOf.get(b.brand)?.raw.visual || 0) - (valueOf.get(a.brand)?.raw.visual || 0)); };
-
   $("#view").innerHTML = `
     <div class="watch">
       <div class="watch-main">
@@ -504,16 +499,38 @@ function viewOverview() {
           <label class="track-toggle"><input type="checkbox" class="switch sm" id="trackSw"><span>Show tracking</span></label>
           <span class="small muted" id="trackHint"></span>
           ${info("Boxes and names over the video show where Gemini saw each product: logo, model and how it was recognised (logo, text, speech or design). The browser cannot look into the YouTube player, so every box is a position Gemini reported while watching – keyframes every 2–3 seconds, smoothly interpolated in between. Dashed, faded boxes are more than 3 seconds away from a reported position.")}
+          <button class="btn closer-btn" id="closerBtn" title="Let Gemini look closer at the next 20 seconds">${icon("search")} Look closer</button>
         </div>
+        <div class="closer-status" id="closerStatus" hidden></div>
       </div>
       <aside class="now card" id="now">
-        <div class="now-head"><span class="pulse"></span><b>Right now</b><span class="now-time num">0:00</span>${info("In the picture: products Gemini saw at this second. Mentioned or written: brands that are spoken about or shown as on-screen text right now. Follows the video while it plays. Links: the creator's own link from the description if there is one (affiliate links are marked), otherwise a neutral shopping search.")}</div>
+        <div class="now-head"><span class="pulse"></span><b>Right now</b><span class="now-time num">0:00</span>${info("In the picture: products Gemini saw at this second. Mentioned or written: brands that are spoken about or shown as on-screen text right now. Unidentified: products without a recognisable brand. Follows the video while it plays. Links: the creator's own link from the description if there is one (affiliate links are marked), otherwise a neutral shopping search.")}</div>
         <div class="now-list"></div>
       </aside>
     </div>
+    <div id="ovBody"></div>`;
 
+  const jump = (t) => { $("#playerHost").classList.add("paused"); state.player?.seek(t); $("#playerHost").scrollIntoView({ behavior: "smooth", block: "center" }); };
+  let tl = null;
+
+  function drawBody() {
+    const d = state.data; const v = d.video;
+    const val = videoValue(d, state.opts); const disc = checkDisclosure(d);
+    const union = brandTimeShare(d);
+    const au = d.authenticity || [];
+    const auAvg = au.length ? round5(au.reduce((n, a) => n + a.overall, 0) / au.length) : null;
+    const dur = v.duration_s || Math.max(1, ...d.brands.flatMap((b) => b.appearances.map((a) => a.end_s)));
+    const valueOf = new Map(val.rows.map((r) => [r.brand.brand, r]));
+    const promoted = new Set(au.map((a) => a.brand.toLowerCase()));
+    const firstAt = (b) => b.appearances[0]?.start_s ?? Infinity;
+    const rows = () => { const sortBy = state.sortBy || "screen"; return d.brands.filter((b) => b.appearances?.length).sort((a, b) => sortBy === "first" ? firstAt(a) - firstAt(b)
+      : sortBy === "value" ? (valueOf.get(b.brand)?.euros || 0) - (valueOf.get(a.brand)?.euros || 0)
+      : (valueOf.get(b.brand)?.raw.visual || 0) - (valueOf.get(a.brand)?.raw.visual || 0)); };
+    const unid = d.unidentified || [];
+
+    $("#ovBody").innerHTML = `
     <div class="stats">
-      <button class="stat" data-scroll="tlSect"><span class="s-label">Products ${info("Distinct brands Gemini found in the picture, in on-screen text or in speech. Spelling variants are merged.")}</span><b class="num">${d.brands.length}</b><span class="s-sub">${d.brands.filter((b) => b.appearances.some((a) => a.channel === "audio")).length} also mentioned in speech</span></button>
+      <button class="stat" data-scroll="tlSect"><span class="s-label">Products ${info("Distinct brands Gemini found in the picture, in on-screen text or in speech. Spelling variants are merged. Products without a recognisable brand are listed separately under Unidentified products.")}</span><b class="num">${d.brands.length}</b><span class="s-sub">${d.brands.filter((b) => b.appearances.some((a) => a.channel === "audio")).length} also mentioned in speech${unid.length ? ` · ${unid.length} unidentified` : ""}</span></button>
       <button class="stat" data-scroll="tlSect"><span class="s-label">Brand on screen ${info("Share of the video in which at least one brand is visible. Overlapping appearances are counted once.")}</span><b class="num">${union}%</b><span class="s-sub">of ${fmtDur(v)}</span></button>
       <button class="stat" data-goto="disclosure"><span class="s-label">Ad disclosure ${info("Looks for an advertising label in title, description, on screen and in speech (§ 5a UWG, § 22 MStV). Green = clear label, orange = weak label, red = commercial signals but no label. A screening aid, not legal advice.")}</span><b class="status lvl-${disc.level}"><i class="dot"></i>${esc(disc.title)}</b><span class="s-sub">${esc(disc.sub)}</span></button>
       <button class="stat" data-goto="authenticity"><span class="s-label">Authenticity ${info("How genuine the recommendation feels: six factors rated by Gemini from image and sound (use shown, balance, specificity, delivery, body language, sales pressure). Rounded to 5 because runs vary by about ±6 points.")}</span><b class="num">${auAvg ?? "–"}</b><span class="s-sub">${auAvg != null ? band(auAvg) : "not rated"}</span></button>
@@ -529,48 +546,144 @@ function viewOverview() {
       <div class="sect-head"><h3>All products <span class="count">${rows().length}</span></h3>
         <span class="seg-ctl" id="psort">${[["screen", "Screen time"], ["first", "In order"], ["value", "Value"]].map(([k, l]) => `<button data-s="${k}" class="${(state.sortBy || "screen") === k ? "on" : ""}">${l}</button>`).join("")}</span></div>
       <div class="pgrid" id="pgrid"></div>
-    </section>`;
+    </section>
 
-  // the player is mounted once per visit of this tab – sorting and "show all" only redraw their own part
-  const jump = (t) => { $("#playerHost").classList.add("paused"); state.player?.seek(t); $("#playerHost").scrollIntoView({ behavior: "smooth", block: "center" }); };
-  let tl = null;
-  const drawTimeline = (maxRows) => {
-    tl = timeline($("#tl"), { maxRows, onJump: jump });
-    tl.setTime(state.player?.t || 0);
-    $("#tl .tl-more")?.addEventListener("click", () => drawTimeline(Infinity));
-  };
-  const drawGrid = () => {
-    $("#pgrid").innerHTML = rows().map((b) => {
-      const r = valueOf.get(b.brand) || { raw: {}, euros: 0 };
-      const vis = b.appearances.filter((a) => a.channel === "visual");
-      const spoken = b.appearances.filter((a) => a.channel === "audio").length;
-      const first = (vis[0] || b.appearances[0])?.start_s ?? 0;
-      const jumps = (vis.length ? vis : b.appearances).slice(0, 5);
-      return `<article class="pcard" data-brand="${esc(b.brand)}" data-t="${first}" tabindex="0">
-        <div class="pc-top">${logoBox(b.brand)}<div class="pc-name"><b>${esc(b.brand)}</b><span>${esc(b.product || b.category || "")}</span></div>
-          ${promoted.has(b.brand.toLowerCase()) ? `<span class="tag">promoted</span>` : b.appearances.some((a) => a.in_use) ? `<span class="tag soft">in use</span>` : ""}</div>
-        <div class="pc-lane">${b.appearances.map((a) => `<i class="${a.channel}" style="left:${Math.min(100, (100 * a.start_s) / dur)}%;width:${Math.max(0.8, (100 * (a.end_s - a.start_s)) / dur)}%;background:${color(b.brand)};color:${color(b.brand)}"></i>`).join("")}</div>
-        <div class="pc-facts"><span><b class="num">${Math.round(r.raw.visual || 0)} s</b> on screen</span><span><b class="num">${spoken}×</b> spoken</span><span><b class="num">${euro(r.euros)}</b> value</span></div>
-        <div class="pc-jumps">${jumps.map((a) => `<button class="time" data-jump="${a.start_s}">${mmss(a.start_s)}</button>`).join("")}${b.appearances.length > jumps.length ? `<span class="more">+${b.appearances.length - jumps.length}</span>` : ""}</div>
-      </article>`;
-    }).join("");
-    $("#pgrid").querySelectorAll(".pcard").forEach((c) => {
+    ${unid.length ? `<section class="sect" id="unidSect">
+      <div class="sect-head"><h3>Unidentified products <span class="count">${unid.length}</span></h3>${info("Products Gemini saw but could not assign to a brand, e.g. a smartwatch on the presenter's wrist. Gemini is told never to guess; a vague idea is shown as 'possible'. They do not count towards media value or the disclosure check.")}</div>
+      <div class="ugrid">${unid.map((u) => `<article class="ucard" data-t="${u.appearances[0]?.start_s ?? 0}" tabindex="0">
+        <div class="uc-top"><span class="uc-ic">${icon("bag")}</span><div><b>${esc(cap(u.category))}</b><span>${esc(u.description || "")}</span></div></div>
+        ${u.guess ? `<span class="tag soft">possible: ${esc(u.guess)}</span>` : ""}
+        <div class="pc-jumps">${u.appearances.slice(0, 5).map((a) => `<button class="time" data-jump="${a.start_s}">${mmss(a.start_s)}</button>`).join("")}${u.appearances.some((a) => a.closer) ? `<span class="more">found by Look closer</span>` : ""}</div>
+      </article>`).join("")}</div>
+      <p class="small muted">Not counted in media value or the disclosure check.</p>
+    </section>` : ""}`;
+
+    const drawTimeline = (maxRows) => {
+      tl = timeline($("#tl"), { maxRows, onJump: jump });
+      tl.setTime(state.player?.t || 0);
+      $("#tl .tl-more")?.addEventListener("click", () => drawTimeline(Infinity));
+    };
+    const drawGrid = () => {
+      $("#pgrid").innerHTML = rows().map((b) => {
+        const r = valueOf.get(b.brand) || { raw: {}, euros: 0 };
+        const vis = b.appearances.filter((a) => a.channel === "visual");
+        const spoken = b.appearances.filter((a) => a.channel === "audio").length;
+        const first = (vis[0] || b.appearances[0])?.start_s ?? 0;
+        const jumps = (vis.length ? vis : b.appearances).slice(0, 5);
+        return `<article class="pcard" data-brand="${esc(b.brand)}" data-t="${first}" tabindex="0">
+          <div class="pc-top">${logoBox(b.brand)}<div class="pc-name"><b>${esc(b.brand)}</b><span>${esc(b.product || b.category || "")}</span></div>
+            ${promoted.has(b.brand.toLowerCase()) ? `<span class="tag">promoted</span>` : b.appearances.every((a) => a.closer) ? `<span class="tag soft">look closer</span>` : b.appearances.some((a) => a.in_use) ? `<span class="tag soft">in use</span>` : ""}</div>
+          <div class="pc-lane">${b.appearances.map((a) => `<i class="${a.channel}" style="left:${Math.min(100, (100 * a.start_s) / dur)}%;width:${Math.max(0.8, (100 * (a.end_s - a.start_s)) / dur)}%;background:${color(b.brand)};color:${color(b.brand)}"></i>`).join("")}</div>
+          <div class="pc-facts"><span><b class="num">${Math.round(r.raw.visual || 0)} s</b> on screen</span><span><b class="num">${spoken}×</b> spoken</span><span><b class="num">${euro(r.euros)}</b> value</span></div>
+          <div class="pc-jumps">${jumps.map((a) => `<button class="time" data-jump="${a.start_s}">${mmss(a.start_s)}</button>`).join("")}${b.appearances.length > jumps.length ? `<span class="more">+${b.appearances.length - jumps.length}</span>` : ""}</div>
+        </article>`;
+      }).join("");
+      $("#pgrid").querySelectorAll(".pcard").forEach((c) => {
+        c.onclick = (e) => { const j = e.target.closest("[data-jump]"); jump(Number(j ? j.dataset.jump : c.dataset.t)); };
+        c.onkeydown = (e) => { if (e.key === "Enter") jump(Number(c.dataset.t)); };
+      });
+      hydrateLogos($("#pgrid"));
+    };
+
+    drawGrid();
+    drawTimeline(8);
+    $("#ovBody").querySelectorAll(".ucard").forEach((c) => {
       c.onclick = (e) => { const j = e.target.closest("[data-jump]"); jump(Number(j ? j.dataset.jump : c.dataset.t)); };
       c.onkeydown = (e) => { if (e.key === "Enter") jump(Number(c.dataset.t)); };
     });
-    hydrateLogos($("#pgrid"));
-  };
+    $("#ovBody").querySelectorAll("[data-goto]").forEach((el) => (el.onclick = (e) => { if (!e.target.closest(".info")) go(state.id, el.dataset.goto); }));
+    $("#ovBody").querySelectorAll("[data-scroll]").forEach((el) => (el.onclick = (e) => { if (!e.target.closest(".info")) $(`#${el.dataset.scroll}`).scrollIntoView({ behavior: "smooth", block: "start" }); }));
+    $("#psort").querySelectorAll("button").forEach((b) => (b.onclick = () => {
+      state.sortBy = b.dataset.s; $("#psort").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); drawGrid();
+    }));
+  }
 
-  drawGrid();
-  drawTimeline(8);
+  drawBody();
+  state.refreshOverview = drawBody;
   mountPlayer((t) => tl?.setTime(t));
+  $("#closerBtn").onclick = () => lookCloser();
   hydrateLogos($("#view"));
-  $("#view").querySelectorAll("[data-goto]").forEach((el) => (el.onclick = (e) => { if (!e.target.closest(".info")) go(state.id, el.dataset.goto); }));
-  $("#view").querySelectorAll("[data-scroll]").forEach((el) => (el.onclick = (e) => { if (!e.target.closest(".info")) $(`#${el.dataset.scroll}`).scrollIntoView({ behavior: "smooth", block: "start" }); }));
-  $("#psort").querySelectorAll("button").forEach((b) => (b.onclick = () => {
-    state.sortBy = b.dataset.s; $("#psort").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); drawGrid();
-  }));
   if (state.scrollTo) { const id = state.scrollTo; state.scrollTo = null; setTimeout(() => $(`#${id}`)?.scrollIntoView({ block: "start" }), 50); }
+}
+
+const cap = (s) => String(s || "").charAt(0).toUpperCase() + String(s || "").slice(1);
+
+// ---------- "Look closer" ----------
+/**
+ * Asks the Worker (POST /api/closer) to inventory ~20 s around the current second at 2 frames per second
+ * (1 Gemini request, ~1–1.5 min; cached per clip on the server). The clip is snapped to 5-second steps so
+ * neighbouring clicks share a cache entry. The result is merged into the analysis in memory (and kept for this
+ * browser session), so the product list, Right now and the tracking boxes include it.
+ */
+async function lookCloser() {
+  const btn = $("#closerBtn"), box = $("#closerStatus"); if (!btn || !box) return;
+  const id = state.id, t = state.player?.t ?? 0, dur = state.data.video.duration_s || Infinity;
+  let start = Math.max(0, Math.floor((t - 5) / 5) * 5); let end = Math.min(start + 20, Math.ceil(dur));
+  if (end - start < 5) start = Math.max(0, end - 20);
+  btn.disabled = true; box.hidden = false;
+  const t0 = Date.now();
+  const show = (html, cls = "") => { box.className = `closer-status ${cls}`; box.innerHTML = html; };
+  const elapsed = () => mmss((Date.now() - t0) / 1000);
+  let msg = "Connecting …";
+  const render = () => show(`<span class="spinner"></span><div><b>Looking closer at ${mmss(start)}–${mmss(end)}</b><span>${msg} · <span class="num">${elapsed()}</span> · usually 1–1.5 min, 2 frames per second, small and worn items included</span></div>`);
+  render(); const tick = setInterval(render, 1000);
+  const done = (html, cls) => { clearInterval(tick); btn.disabled = false; show(html, cls); };
+  try {
+    const invite = (() => { try { return new URLSearchParams(location.search).get("invite") || localStorage.getItem("invite") || ""; } catch { return ""; } })();
+    const r = await fetch("api/closer", { method: "POST", headers: { "content-type": "application/json", "x-invite": invite }, body: JSON.stringify({ v: id, start, end }) });
+    if (!r.ok) {
+      const j = await r.json().catch(() => ({}));
+      return done(`${icon("minus")}<div><b>Look closer is not available right now</b><span>${esc(j.message || (r.status === 404 ? "It runs in the online version (Cloudflare Worker); locally only the examples work." : `HTTP ${r.status}`))}</span></div>`, "err");
+    }
+    const reader = r.body.getReader(); const dec = new TextDecoder(); let buf = "";
+    for (;;) {
+      const { value, done: end_ } = await reader.read(); if (end_) break;
+      buf += dec.decode(value, { stream: true });
+      let i;
+      while ((i = buf.indexOf("\n\n")) >= 0) {
+        const chunk = buf.slice(0, i); buf = buf.slice(i + 2);
+        const ev = /event: (.+)/.exec(chunk)?.[1]; const data = JSON.parse(/data: (.+)/s.exec(chunk)?.[1] || "{}");
+        if (ev === "model") msg = `${esc(modelName(data.model))} is watching`;
+        if (ev === "retry") msg = "Google is busy – trying the next model";
+        if (ev === "error") return done(`${icon("minus")}<div><b>Look closer did not finish</b><span>${esc(data.message || data.error)}</span></div>`, "err");
+        if (ev === "result") {
+          if (state.id !== id) return done("", "");
+          const added = mergeCloser(data);
+          try { const k = `closer:${id}`; const list = JSON.parse(sessionStorage.getItem(k) || "[]").filter((x) => x.start !== data.start); list.push(data); sessionStorage.setItem(k, JSON.stringify(list)); } catch { /* ignore */ }
+          state.refreshOverview?.();
+          state.player && state.player.onTime(state.player.t);
+          const names = added.map((x) => x.label);
+          return done(`${icon("check")}<div><b>${names.length ? `${names.length} more ${names.length === 1 ? "product" : "products"} at ${mmss(start)}–${mmss(end)}` : `Nothing new at ${mmss(start)}–${mmss(end)}`}</b><span>${names.length ? esc(names.join(" · ")) : "Everything Gemini saw there was already in the list."}${data.cached ? " · saved result, no new request" : ""}</span></div>`, "ok");
+        }
+      }
+    }
+    done(`${icon("minus")}<div><b>The connection ended early</b><span>Try again in a moment – a finished result is saved on the server.</span></div>`, "err");
+  } catch {
+    done(`${icon("minus")}<div><b>Look closer runs in the online version</b><span>Locally (without the Cloudflare Worker) only the prepared examples are available.</span></div>`, "err");
+  }
+}
+
+/** Merge a /api/closer result into state.data. Returns what is new: [{label}]. Idempotent per clip. */
+function mergeCloser(res) {
+  const d = state.data; d.unidentified ||= []; const added = [];
+  const overlaps = (list, a) => list.some((x) => x.channel === "visual" && a.start_s < x.end_s + 1 && a.end_s > x.start_s - 1);
+  for (const nb of res.brands || []) {
+    let b = d.brands.find((x) => x.brand.toLowerCase() === nb.brand.toLowerCase());
+    if (!b) {
+      b = { ...nb, appearances: [], frames: [], products: [...(nb.products || [])] }; d.brands.push(b);
+      state.colors.set(b.brand, PALETTE[(d.brands.length - 1) % PALETTE.length]);
+      added.push({ label: [nb.brand, nb.product].filter(Boolean).join(" ") });
+    } else for (const p of nb.products || []) if (!b.products?.includes(p)) { (b.products ||= []).push(p); if (!b.product) b.product = p; }
+    for (const a of nb.appearances) if (!overlaps(b.appearances, a)) { b.appearances.push(a); (a.track || []).forEach((k) => b.frames.push(k)); }
+    b.appearances.sort((x, y) => x.start_s - y.start_s);
+  }
+  for (const nu of res.unidentified || []) {
+    const same = d.unidentified.find((u) => u.category.toLowerCase() === nu.category.toLowerCase() && nu.appearances.some((a) => overlaps(u.appearances, a)));
+    if (same) continue;
+    d.unidentified.push(nu); added.push({ label: `${cap(nu.category)} (brand unknown)` });
+  }
+  d.unidentified.sort((a, b) => (a.appearances[0]?.start_s ?? 0) - (b.appearances[0]?.start_s ?? 0));
+  return added;
 }
 
 function brandTimeShare(d) {

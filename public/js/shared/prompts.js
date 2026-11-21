@@ -31,6 +31,11 @@ Name the MOST SPECIFIC product you can: brand + product line + model (e.g. "Bose
 Use speech and on-screen text to identify the model, and link what is said to what is shown.
 Also include products that are clearly visible and recognisable by their design even without a readable logo
 (e.g. a reviewer wearing the headphones being discussed) – for those set basis to "design".
+Make it a complete INVENTORY: list every manufactured product that is visible, not only the main topic – also things
+worn or used in passing (watches and smartwatches, jewellery, glasses, clothing, phones, cases, cups, furniture).
+Never guess a brand: if you cannot identify it, set brand to "unknown", still list the item with its category and
+a short visual description (e.g. "round smartwatch with metal mesh band"). If you have only a vague idea, put it in
+product as "possible: <brand model>" and give a confidence of 0.4 or lower.
 For each appearance give start and end as MM:SS timestamps of the full video.
 Rate size (small/medium/large) and position (center/edge) honestly, and say whether the product is held or used.
 For each VISUAL appearance also track where the product is in the picture: give keyframes (track) with the time
@@ -47,7 +52,8 @@ export const TIMELINE_SCHEMA = {
   type: "OBJECT",
   properties: {
     brands: { type: "ARRAY", items: { type: "OBJECT", properties: {
-      brand: { type: "STRING" }, product: { type: "STRING" }, category: { type: "STRING" },
+      brand: { type: "STRING", description: "\"unknown\" if it cannot be identified" }, product: { type: "STRING" }, category: { type: "STRING" },
+      description: { type: "STRING", description: "short visual description, needed for unknown brands" },
       appearances: { type: "ARRAY", items: { type: "OBJECT", properties: {
         start: { type: "STRING", description: "MM:SS" }, end: { type: "STRING", description: "MM:SS" },
         channel: { type: "STRING", enum: ["visual", "audio", "text"] },
@@ -69,6 +75,31 @@ export const TIMELINE_SCHEMA = {
     reasoning: { type: "STRING" },
   },
   required: ["brands", "disclosures", "looks_like_paid_promotion"],
+};
+
+// ---------------------------------------------------------------------------------------------
+// Call 1b, "Look closer" (button at the player): a 20-second clip at 2 frames per second, inventory only.
+// Test I (EVALUATION.md, 21 Nov): the whole-video call missed a smartwatch on the presenter's wrist; this clip
+// prompt found it (brand unknown), plus the headphone case and clothing. ~1-1.5 min, 1 request.
+// ---------------------------------------------------------------------------------------------
+export const CLOSER_PROMPT = `Make a complete INVENTORY of every manufactured product that appears in this clip – not only the main topic.
+Include things that are worn or used in passing: watches and smartwatches, jewellery, glasses, clothing, phones, cases, cups, furniture.
+For each item give start and end as MM:SS timestamps of the FULL video (separate fields, no ranges), its category,
+brand and model if you can identify them (from a logo, on-screen text, speech or a distinctive design), basis, confidence 0-1,
+a short visual description, and its bounding box box_2d = [ymin, xmin, ymax, xmax] (0-1000) at one moment (frame_time, MM:SS).
+Never guess a brand: if it cannot be identified, set brand to "unknown" and still list the item with its category.
+If you have only a vague idea, write model as "possible: <brand model>" with a confidence of 0.4 or lower. JSON only.`;
+
+export const CLOSER_SCHEMA = {
+  type: "OBJECT",
+  properties: { items: { type: "ARRAY", items: { type: "OBJECT", properties: {
+    start: { type: "STRING", description: "MM:SS" }, end: { type: "STRING", description: "MM:SS" },
+    category: { type: "STRING" }, brand: { type: "STRING" }, model: { type: "STRING" },
+    basis: { type: "STRING", enum: ["logo", "text", "speech", "design", "unknown"] }, confidence: { type: "NUMBER" },
+    description: { type: "STRING" }, frame_time: { type: "STRING", description: "MM:SS" },
+    box_2d: { type: "ARRAY", items: { type: "INTEGER" } },
+  }, required: ["start", "end", "category", "brand", "basis"] } } },
+  required: ["items"],
 };
 
 // ---------------------------------------------------------------------------------------------
@@ -114,10 +145,15 @@ export const FRAME_SCHEMA = {
   required: ["items"],
 };
 
-/** Request body for generateContent. `video` = YouTube id, `image` = base64 JPEG. */
-export function geminiBody({ video, image, prompt, schema, lowThinking = true }) {
+/**
+ * Request body for generateContent. `video` = YouTube id, `image` = base64 JPEG.
+ * `clip` = {start, end, fps} in seconds → only that part of the video, sampled at `fps` frames per second
+ * (default sampling is 1 frame/s; small items such as a watch need 2, test I).
+ */
+export function geminiBody({ video, image, prompt, schema, lowThinking = true, clip = null }) {
   const parts = [];
-  if (video) parts.push({ file_data: { file_uri: `https://www.youtube.com/watch?v=${video}` } });
+  if (video) parts.push({ file_data: { file_uri: `https://www.youtube.com/watch?v=${video}` },
+    ...(clip ? { video_metadata: { start_offset: `${Math.round(clip.start)}s`, end_offset: `${Math.round(clip.end)}s`, ...(clip.fps ? { fps: clip.fps } : {}) } } : {}) });
   if (image) parts.push({ inline_data: { mime_type: "image/jpeg", data: image } });
   parts.push({ text: prompt });
   const generationConfig = { responseMimeType: "application/json", responseSchema: schema, temperature: 0.2 };

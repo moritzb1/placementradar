@@ -54,6 +54,14 @@ export function normalizeAnalysis({ video, timeline, authenticity, models }) {
     const entry = brands.get(key) ?? { brand: key, product: "", products: [], category: b.category || "", appearances: [], frames: [] };
     // several models of one brand (e.g. two Sony headphones) stay one card; the models are listed
     if (b.product && !entry.products.includes(b.product)) entry.products.push(b.product);
+    // product link from the video description – kept only if that exact URL is really in the description
+    const link = cleanLink(b.link, video?.description);
+    if (link) {
+      entry.links = entry.links ?? [];
+      if (!entry.links.some((l) => l.url === link)) entry.links.push({ product: b.product || "", url: link });
+      entry.link = entry.links[0].url;
+    }
+    if (b.model_from_description) entry.model_from_description = true;
     entry.product = entry.products.slice(0, 2).join(" · ") + (entry.products.length > 2 ? ` +${entry.products.length - 2}` : "");
     for (const ap of b.appearances ?? []) {
       const start = Math.min(sec(ap.start), dur);
@@ -86,6 +94,16 @@ export function normalizeAnalysis({ video, timeline, authenticity, models }) {
     })),
     source: { engine: "gemini", models: models || [], analyzed_at: new Date().toISOString().slice(0, 10) },
   };
+}
+
+/**
+ * A link Gemini copied from the description. Accepted only when the same URL occurs in the description text, so a
+ * hallucinated or injected URL can never reach a product card. Trailing punctuation from the sentence is removed.
+ */
+export function cleanLink(link, description) {
+  const url = String(link ?? "").trim().replace(/[).,;:!?'"\]>]+$/, "");
+  if (!/^https?:\/\/[^\s<>"']{4,}$/i.test(url) || url.length > 400) return "";
+  return String(description ?? "").includes(url) ? url : "";
 }
 
 /**

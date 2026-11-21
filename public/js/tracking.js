@@ -5,7 +5,8 @@
  * is a position Gemini reported while watching the video. Since 21 Nov the prompt asks for keyframes about every
  * 2–3 s per visual appearance (`appearance.track`, see shared/prompts.js); older analyses only have one box per
  * appearance (`brand.frames`). Between two keyframes the box is interpolated, before the first / after the last
- * it is held. Boxes far from any keyframe (> 3 s) are drawn dashed and faded: the position is an estimate.
+ * it is held. Since 21 Nov each box has an honesty level (see boxesAt): solid only near a reported position, dashed
+ * "approx. position" up to 3 s away, otherwise just a point; no gliding across the picture between distant keyframes.
  *
  * Timing: the player reports its time only every 250 ms, so while it plays the overlay extrapolates the clock
  * per animation frame (requestAnimationFrame) and re-syncs on every report.
@@ -15,32 +16,58 @@
  */
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const BASIS = { logo: "logo", text: "text", speech: "speech", design: "design" };
-const NEAR_S = 3;    // within this distance of a keyframe the box counts as "located"
-const EDGE_S = 0.4;  // fade in/out around the appearance edges
+// Honesty levels (21 Nov, after boxes were seen next to the product): Gemini's positions in a video are approximate
+// (it samples 1 frame/s and reports ~every 4 s), so a box is only drawn as "located" where a reported position is close.
+const LOCATED_S = 1.5;     // within this distance of a keyframe → solid box
+const NEAR_S = 3;          // within this distance → dashed box, label "approx. position"
+const GLIDE_MAX_S = 5;     // interpolate (glide) only between keyframes at most this far apart …
+const GLIDE_MIN_IOU = 0.3; // … whose boxes overlap this much (the product barely moved) – otherwise hold the nearest one
+const MIN_CONF = 0.6;      // below this confidence Gemini's position is never drawn as a box, only as a point
+const EDGE_S = 0.4;        // fade in/out around the appearance edges
+const RANK = { box: 2, approx: 1, point: 0 };
 
-/** Collect the boxes to draw at time t: [{key, brand, product, basis, box, approx, fade}]. */
+const iou = (a, b) => {
+  const h = Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])), w = Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
+  const u = (a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - h * w;
+  return u > 0 ? (h * w) / u : 0;
+};
+
+/**
+ * Collect what to draw at time t: [{key, brand, product, basis, box, level, fade}], level = box | approx | point.
+ *   box    – a reported position within 1.5 s, or a glide between two close, overlapping keyframes
+ *   approx – within 3 s of a reported position (dashed, "approx. position")
+ *   point  – further away or low confidence: only a dot at the last known centre, no box
+ * One entry per product: if a "Look closer" appearance and the main analysis both cover t, the better level wins.
+ */
 export function boxesAt(data, t) {
-  const out = [];
+  const best = new Map();
   for (const b of trackables(data)) {
     b.appearances.forEach((ap, i) => {
       if (ap.channel !== "visual" || t < ap.start_s - EDGE_S || t > ap.end_s + EDGE_S) return;
       // new data: own keyframes; old data: the brand's frames that fall inside this appearance
       const keys = ap.track?.length ? ap.track : (b.frames || []).filter((f) => f.t >= ap.start_s - 1 && f.t <= ap.end_s + 1).sort((x, y) => x.t - y.t);
       if (!keys.length) return;
-      let box, dist;
+      let box, dist, glide = false;
       const n = keys.findIndex((k) => k.t > t);
       if (n === 0) { box = keys[0].box; dist = keys[0].t - t; }
       else if (n === -1) { const k = keys[keys.length - 1]; box = k.box; dist = t - k.t; }
       else {
-        const a = keys[n - 1], c = keys[n], f = (t - a.t) / Math.max(0.01, c.t - a.t);
-        const e = f * f * (3 - 2 * f); // smoothstep: no jerk at the keyframes
-        box = a.box.map((v, j) => v + (c.box[j] - v) * e); dist = Math.min(t - a.t, c.t - t);
+        const a = keys[n - 1], c = keys[n];
+        dist = Math.min(t - a.t, c.t - t);
+        if (c.t - a.t <= GLIDE_MAX_S && iou(a.box, c.box) >= GLIDE_MIN_IOU) {
+          const f = (t - a.t) / Math.max(0.01, c.t - a.t), e = f * f * (3 - 2 * f); // smoothstep: no jerk at the keyframes
+          box = a.box.map((v, j) => v + (c.box[j] - v) * e); glide = true;
+        } else box = (t - a.t <= c.t - t ? a : c).box; // a jump (cut, product moved): no slide across the picture
       }
+      const conf = Number.isFinite(ap.confidence) ? ap.confidence : 1;
+      const level = conf < MIN_CONF ? "point" : dist <= LOCATED_S || glide ? "box" : dist <= NEAR_S ? "approx" : "point";
       const fade = Math.max(0, Math.min(1, (t - (ap.start_s - EDGE_S)) / EDGE_S, ((ap.end_s + EDGE_S) - t) / EDGE_S));
-      out.push({ key: `${b.brand}#${i}`, brand: b.brand, product: modelFor(b, ap), basis: b.unid ? "no brand" : ap.basis || "", box, approx: dist > NEAR_S, fade });
+      const item = { key: `${b.brand}#${i}`, brand: b.brand, product: modelFor(b, ap), basis: b.unid ? "no brand" : ap.basis || "", box, level, approx: level !== "box", fade, closer: !!ap.closer };
+      const id = `${b.unid ? "u:" : ""}${b.brand}`, prev = best.get(id);
+      if (!prev || RANK[level] > RANK[prev.level] || (RANK[level] === RANK[prev.level] && item.closer && !prev.closer)) best.set(id, item);
     });
   }
-  return out;
+  return [...best.values()];
 }
 
 /** Brands plus unidentified products (label = category, e.g. "Smartwatch · NO BRAND", grey). */
@@ -83,17 +110,19 @@ export function createTracking(host, data, color) {
       if (!el) {
         el = document.createElement("div"); el.className = "tbox";
         el.style.setProperty("--c", color(x.brand));
-        el.innerHTML = `<span class="tb-label"><i></i><b>${esc(labelText(x.brand, x.product))}</b>${x.basis ? `<em>${esc(BASIS[x.basis] || x.basis)}</em>` : ""}</span>`;
+        el.innerHTML = `<span class="tb-label"><i></i><b>${esc(labelText(x.brand, x.product))}</b><em class="tb-basis">${esc(BASIS[x.basis] || x.basis || "")}</em><em class="tb-approx">approx. position</em></span>`;
         layer.append(el); els.set(x.key, el);
       }
-      const [y0, x0, y1, x1] = x.box;
+      let [y0, x0, y1, x1] = x.box;
+      if (x.level === "point") { const cy = (y0 + y1) / 2, cx = (x0 + x1) / 2; y0 = y1 = cy; x0 = x1 = cx; } // only where it roughly is
       el.style.left = `${x0 / 10}%`; el.style.top = `${y0 / 10}%`;
       el.style.width = `${(x1 - x0) / 10}%`; el.style.height = `${(y1 - y0) / 10}%`;
-      el.style.opacity = String(x.fade * (x.approx ? 0.6 : 1));
-      el.classList.toggle("approx", x.approx);
+      el.style.opacity = String(x.fade * (x.level === "box" ? 1 : x.level === "approx" ? 0.75 : 0.85));
+      el.classList.toggle("approx", x.level === "approx");
+      el.classList.toggle("point", x.level === "point");
       el.classList.toggle("low", y0 < 90); // no room above the box → label goes inside
       // label grows to the left when it would run out of the picture on the right
-      const lw = el.firstChild.offsetWidth, W = layer.clientWidth;
+      const lw = el.firstChild.offsetWidth + (x.level === "point" ? 16 : 0), W = layer.clientWidth; // a point's label starts 12 px right of the dot
       el.classList.toggle("right", W > 0 && (x0 / 1000) * W + lw > W - 6 && (x1 / 1000) * W - lw >= 6);
     }
     for (const [k, el] of els) if (!seen.has(k)) { el.remove(); els.delete(k); }
@@ -107,6 +136,11 @@ export function createTracking(host, data, color) {
       if (!raf) render();
     },
     setEnabled(v) { on = !!v; host.classList.toggle("tracking", on); cancelAnimationFrame(raf); raf = 0; render(); },
+    /** How well the boxes at the current second are located (for the "Look closer" hint): box | approx | point | none. */
+    levelAt(t = now()) {
+      const xs = boxesAt(data, t); if (!xs.length) return "none";
+      return xs.some((x) => x.level === "box") ? "box" : xs.some((x) => x.level === "approx") ? "approx" : "point";
+    },
     /** Number of visual appearances with at least one position (for the hint next to the switch). */
     coverage() {
       let withBox = 0, all = 0, keys = 0;

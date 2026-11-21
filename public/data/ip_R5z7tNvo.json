@@ -1,0 +1,993 @@
+{
+ "video": {
+  "id": "ip_R5z7tNvo",
+  "title": "BIKE TEST: mein neues E Bike! Das Rose FILE PLUS",
+  "channel": "Lukas Knopf",
+  "views": 56517,
+  "duration_s": 1036,
+  "upload_date": "2025-10-09",
+  "description": "Wir machen den Bike Test! Was kann mein neues Light Assist E-Bike? Das Rose Bikes File Plus X0! (Werbung | Zum Bike: https://tidd.ly/4q2NHmE ) Passend zu den kalten und dunklen Tagen, also der Hometrail-Zeit, kommt das Bike, wie gerufen.\nDen vollen test gibt es hier im Video, nach einer kleinen Umbau-Aktion. Getestet wird im urbanen Bereich und auf den Trails.\n\nMehr E BIKE / E MTB Videos von mir: https://www.youtube.com/playlist?list=PL3IpTWCQYXU7dvwPG3Xa74cYAmiKaHdfZ\n\n#LifesShortStuntIt\nLukas Knopf\n\nWerbung | \n► MERCH-STORE 'The Motion Brand': https://www.themotionbrand.com/shop/\n\n► Mein Helm: https://amzn.to/4c8HM7m\n\n► Ausgewählte Biketeile & Zubehör: https://tidd.ly/3nIQoc0\n\n► Hier Abonnieren / Subscribe for more of my videos: https://www.youtube.com/c/lukasknopf\n\n►Mein Instagram / My Instagram:\nhttp://www.instagram.com/lukasknopf\n\n►My Enduro Bike: https://tidd.ly/3nQsI65\n\n►My Downhill Bike: https://tidd.ly/3OAGZmU\n   \n►My Dirtjump Bike: http://tidd.ly/5c2079ea\n\n►My E-Bike: https://tidd.ly/3KO0gA6\n\n►My Freeride Bike: https://tidd.ly/3OAGZmU\n\n►Alle Meine Bikeparts, Protektoren und mein Kamera-Equipment findet Ihr hier: / Find all my bike parts, protection and camera equipment here:  http://bit.ly/2lZy5on\n\nIntro-Song: https://youtu.be/nLru93KPMjc\nUnknown Brain - Waiting\n#mtb #mountainbike #biketricks \n\n0:00 - 6:51 Bike-Vorstellung und kleiner Umbau\n6:52 - 17:15 Urbaner- & Trails-Test\n\nWillkommen zu unserem neuesten Bike-Test: Heute gibt’s den kompletten Eindruck vom ROSE Bikes FILE PLUS E-Bike – vom Auspacken über die Technik bis zur ersten Ausfahrt! Ob auf Trail, Straße oder im Alltag: Ich teste, wie performant, komfortabel und vielseitig dieses E-Bike wirklich ist.\nInhalt des Videos:\nAuspacken & Montage des ROSE Bikes FILE PLUS: Alle Komponenten im Überblick.\nTechnische Daten: Motor, Akku, Rahmen, Ausstattung – worauf es bei einem modernen E-Bike ankommt.\nErste Fahrt: Meine Eindrücke auf Trail, Asphalt & Alltag – wie verhält sich das Bike bei Steigungen, in Kurven und im Alltag.\nPluspunkte & mögliche Schwächen: Für wen eignet sich das ROSE FILE PLUS? Wo liegt das Preis-Leistungs-Verhältnis?\nTipps für dich: Wichtige Entscheidungskriterien beim E-Bike-Kauf, welche Features lohnen sich und worauf solltest du achten.\nFazit: Mein persönliches Urteil nach den ersten Kilometern mit dem ROSE FILE PLUS.\n---------------------------------------------------------------\nWillkommen auf meinem YouTube Channel! Ich bin ein professioneller Freeride Mountainbiker, der seine Sessions, Contest - Erlebnisse und Reisen mit seinem Bike filmt und mit euch teilt! Sprich Dirtjump, Slopestyle, Downhill, Freeride, Enduro, Tipps und Tricks rund um's Rad fahren. Aber auch Hacks und How -To Videos findet Ihr auf diesem Kanal.",
+  "source": "watch:200:OK:views+duration_s+description"
+ },
+ "brands": [
+  {
+   "brand": "ROSE",
+   "product": "File Plus X0",
+   "products": [
+    "File Plus X0"
+   ],
+   "category": "Bicycles & Accessories",
+   "appearances": [
+    {
+     "start_s": 3,
+     "end_s": 8,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Rose File Plus e-bike shown in action",
+     "basis": "design",
+     "confidence": 0.95,
+     "track": [
+      {
+       "t": 3,
+       "box": [
+        245,
+        0,
+        1000,
+        1000
+       ]
+      },
+      {
+       "t": 5,
+       "box": [
+        0,
+        0,
+        1000,
+        1000
+       ]
+      },
+      {
+       "t": 7,
+       "box": [
+        201,
+        0,
+        1000,
+        1000
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 31,
+     "end_s": 36,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "ROSE File Plus e-bike shown on path",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 33,
+       "box": [
+        204,
+        219,
+        878,
+        868
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 34,
+     "end_s": 36,
+     "channel": "audio",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Rose File Plus mentioned in speech",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 66,
+     "end_s": 85,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "ROSE File Plus e-bike on repair stand",
+     "basis": "design",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 66,
+       "box": [
+        188,
+        381,
+        986,
+        737
+       ]
+      },
+      {
+       "t": 70,
+       "box": [
+        188,
+        381,
+        986,
+        737
+       ]
+      },
+      {
+       "t": 75,
+       "box": [
+        188,
+        381,
+        986,
+        737
+       ]
+      },
+      {
+       "t": 80,
+       "box": [
+        188,
+        381,
+        986,
+        737
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 134,
+     "end_s": 148,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "ROSE logo ('R') on frame head tube and 'FILE PLUS' text",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 134,
+       "box": [
+        422,
+        169,
+        888,
+        776
+       ]
+      },
+      {
+       "t": 141,
+       "box": [
+        211,
+        222,
+        884,
+        663
+       ]
+      },
+      {
+       "t": 146,
+       "box": [
+        277,
+        237,
+        856,
+        762
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 414,
+     "end_s": 441,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "ROSE File Plus e-bike showcase footage",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 414,
+       "box": [
+        453,
+        237,
+        891,
+        747
+       ]
+      },
+      {
+       "t": 427,
+       "box": [
+        515,
+        608,
+        987,
+        729
+       ]
+      },
+      {
+       "t": 433,
+       "box": [
+        239,
+        219,
+        878,
+        742
+       ]
+      }
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "t": 3,
+     "box": [
+      245,
+      0,
+      1000,
+      1000
+     ]
+    },
+    {
+     "t": 5,
+     "box": [
+      0,
+      0,
+      1000,
+      1000
+     ]
+    },
+    {
+     "t": 7,
+     "box": [
+      201,
+      0,
+      1000,
+      1000
+     ]
+    },
+    {
+     "t": 33,
+     "box": [
+      204,
+      219,
+      878,
+      868
+     ]
+    },
+    {
+     "t": 66,
+     "box": [
+      188,
+      381,
+      986,
+      737
+     ]
+    },
+    {
+     "t": 70,
+     "box": [
+      188,
+      381,
+      986,
+      737
+     ]
+    },
+    {
+     "t": 75,
+     "box": [
+      188,
+      381,
+      986,
+      737
+     ]
+    },
+    {
+     "t": 80,
+     "box": [
+      188,
+      381,
+      986,
+      737
+     ]
+    },
+    {
+     "t": 134,
+     "box": [
+      422,
+      169,
+      888,
+      776
+     ]
+    },
+    {
+     "t": 141,
+     "box": [
+      211,
+      222,
+      884,
+      663
+     ]
+    },
+    {
+     "t": 146,
+     "box": [
+      277,
+      237,
+      856,
+      762
+     ]
+    },
+    {
+     "t": 414,
+     "box": [
+      453,
+      237,
+      891,
+      747
+     ]
+    },
+    {
+     "t": 427,
+     "box": [
+      515,
+      608,
+      987,
+      729
+     ]
+    },
+    {
+     "t": 433,
+     "box": [
+      239,
+      219,
+      878,
+      742
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "File Plus X0",
+     "url": "https://tidd.ly/4q2NHmE"
+    }
+   ],
+   "link": "https://tidd.ly/4q2NHmE",
+   "model_from_description": true
+  },
+  {
+   "brand": "The Motion Brand",
+   "product": "MTN Components MTB Lenker",
+   "products": [
+    "MTN Components MTB Lenker"
+   ],
+   "category": "Apparel & Accessories",
+   "appearances": [
+    {
+     "start_s": 0,
+     "end_s": 3,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "MOTION text on hoodie sleeve",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 0,
+       "box": [
+        223,
+        319,
+        706,
+        529
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 24,
+     "end_s": 26,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "LUKAS KNOPF - founder of the motion brand title screen",
+     "basis": "text",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 24,
+       "box": [
+        0,
+        0,
+        1000,
+        1000
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 96,
+     "end_s": 100,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "MTN logo on handlebar",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 98,
+       "box": [
+        334,
+        182,
+        702,
+        856
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 315,
+     "end_s": 331,
+     "channel": "visual",
+     "size": "medium",
+     "position": "edge",
+     "in_use": true,
+     "evidence": "The Motion Brand website shown on phone screen",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 315,
+       "box": [
+        289,
+        4,
+        982,
+        276
+       ]
+      },
+      {
+       "t": 322,
+       "box": [
+        289,
+        4,
+        982,
+        276
+       ]
+      }
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "t": 0,
+     "box": [
+      223,
+      319,
+      706,
+      529
+     ]
+    },
+    {
+     "t": 24,
+     "box": [
+      0,
+      0,
+      1000,
+      1000
+     ]
+    },
+    {
+     "t": 98,
+     "box": [
+      334,
+      182,
+      702,
+      856
+     ]
+    },
+    {
+     "t": 315,
+     "box": [
+      289,
+      4,
+      982,
+      276
+     ]
+    },
+    {
+     "t": 322,
+     "box": [
+      289,
+      4,
+      982,
+      276
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "MTN Components MTB Lenker",
+     "url": "https://www.themotionbrand.com/shop/"
+    }
+   ],
+   "link": "https://www.themotionbrand.com/shop/"
+  },
+  {
+   "brand": "ALPINA",
+   "product": "MTB Helmet",
+   "products": [
+    "MTB Helmet"
+   ],
+   "category": "Sports Equipment",
+   "appearances": [
+    {
+     "start_s": 524,
+     "end_s": 537,
+     "channel": "visual",
+     "size": "small",
+     "position": "edge",
+     "in_use": true,
+     "evidence": "ALPINA logo on full-face helmet side",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 525,
+       "box": [
+        638,
+        381,
+        767,
+        461
+       ]
+      },
+      {
+       "t": 533,
+       "box": [
+        629,
+        368,
+        773,
+        447
+       ]
+      }
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "t": 525,
+     "box": [
+      638,
+      381,
+      767,
+      461
+     ]
+    },
+    {
+     "t": 533,
+     "box": [
+      629,
+      368,
+      773,
+      447
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "MTB Helmet",
+     "url": "https://amzn.to/4c8HM7m"
+    }
+   ],
+   "link": "https://amzn.to/4c8HM7m"
+  },
+  {
+   "brand": "SRAM",
+   "product": "Eagle Transmission",
+   "products": [
+    "Eagle Transmission"
+   ],
+   "category": "Bicycles & Accessories",
+   "appearances": [
+    {
+     "start_s": 106,
+     "end_s": 113,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "SRAM Eagle Transmission and SRAM Maven brakes shown on bike",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 106,
+       "box": [
+        257,
+        439,
+        938,
+        772
+       ]
+      },
+      {
+       "t": 112,
+       "box": [
+        390,
+        693,
+        738,
+        934
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 107,
+     "end_s": 113,
+     "channel": "audio",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "SRAM Eagle Transmission and SRAM Maven mentioned in speech",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": [
+    {
+     "t": 106,
+     "box": [
+      257,
+      439,
+      938,
+      772
+     ]
+    },
+    {
+     "t": 112,
+     "box": [
+      390,
+      693,
+      738,
+      934
+     ]
+    }
+   ]
+  },
+  {
+   "brand": "RockShox",
+   "product": "Lyrik Ultimate",
+   "products": [
+    "Lyrik Ultimate"
+   ],
+   "category": "Bicycles & Accessories",
+   "appearances": [
+    {
+     "start_s": 115,
+     "end_s": 122,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "RockShox Super Deluxe Ultimate shock and Lyrik Ultimate fork logo",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 116,
+       "box": [
+        360,
+        563,
+        762,
+        856
+       ]
+      },
+      {
+       "t": 120,
+       "box": [
+        267,
+        477,
+        769,
+        755
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 115,
+     "end_s": 120,
+     "channel": "audio",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "RockShox Super Deluxe Ultimate and Lyrik Ultimate mentioned in speech",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": [
+    {
+     "t": 116,
+     "box": [
+      360,
+      563,
+      762,
+      856
+     ]
+    },
+    {
+     "t": 120,
+     "box": [
+      267,
+      477,
+      769,
+      755
+     ]
+    }
+   ]
+  },
+  {
+   "brand": "Continental",
+   "product": "Kryptotal",
+   "products": [
+    "Kryptotal"
+   ],
+   "category": "Bicycles & Accessories",
+   "appearances": [
+    {
+     "start_s": 423,
+     "end_s": 425,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Continental Kryptotal tire logo shown close up",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 423,
+       "box": [
+        465,
+        203,
+        911,
+        753
+       ]
+      }
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "t": 423,
+     "box": [
+      465,
+      203,
+      911,
+      753
+     ]
+    }
+   ]
+  },
+  {
+   "brand": "DJI",
+   "product": "Mic",
+   "products": [
+    "Mic"
+   ],
+   "category": "Cameras & Optics",
+   "appearances": [
+    {
+     "start_s": 522,
+     "end_s": 525,
+     "channel": "audio",
+     "size": "small",
+     "position": "center",
+     "in_use": false,
+     "evidence": "DJI wireless mic mentioned in speech",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": []
+  }
+ ],
+ "unidentified": [],
+ "disclosures": [
+  {
+   "time_s": 0,
+   "kind": "text",
+   "text": "Werbung | Zum Bike: https://tidd.ly/4q2NHmE"
+  }
+ ],
+ "paid": {
+  "looks_like_paid_promotion": true,
+  "reasoning": "The video features a clear product presentation/test of the Rose File Plus e-bike, which was gifted by Rose Bikes (as stated by the creator), and includes affiliate/sponsorship tracking links in the description marked with 'Werbung'."
+ },
+ "authenticity": [
+  {
+   "brand": "ROSE",
+   "product": "ROSE File Plus X0",
+   "overall": 85,
+   "verdict": "Lukas Knopf is a professional mountain biker and long-term partner of ROSE, making his review highly credible and based on extensive real-world testing.",
+   "sub": {
+    "use_shown": {
+     "score": 100,
+     "time_s": 584,
+     "evidence": "Lukas shows the bike in action on various trails and even climbs stairs with it."
+    },
+    "balance": {
+     "score": 70,
+     "time_s": 394,
+     "evidence": "He mentions that the bike has a 'stately price' but justifies it with its high-end components."
+    },
+    "specificity": {
+     "score": 95,
+     "time_s": 78,
+     "evidence": "He provides detailed information about the motor, weight, and handling based on his personal experience."
+    },
+    "delivery": {
+     "score": 90,
+     "time_s": 202,
+     "evidence": "Lukas speaks freely and enthusiastically about the bike, showing his genuine passion for the sport."
+    },
+    "body_language": {
+     "score": 95,
+     "time_s": 26,
+     "evidence": "He maintains good eye contact and uses open gestures while explaining the bike's features."
+    },
+    "sales_pressure": {
+     "score": 100,
+     "time_s": 399,
+     "evidence": "There are no discount codes or urgent calls to action; he simply shares his experience and provides a link for more information."
+    }
+   }
+  },
+  {
+   "brand": "The Motion Brand",
+   "product": "The Motion Brand MTN Components MTB Lenker",
+   "overall": 90,
+   "verdict": "As the founder of The Motion Brand, Lukas's recommendation is naturally biased, but his technical explanation for the product's design makes it feel authentic.",
+   "sub": {
+    "use_shown": {
+     "score": 100,
+     "time_s": 93,
+     "evidence": "He is shown installing the handlebars and using them throughout the video."
+    },
+    "balance": {
+     "score": 60,
+     "time_s": 278,
+     "evidence": "He compares his brand's handlebars to the stock ones, highlighting the benefits of his own design."
+    },
+    "specificity": {
+     "score": 95,
+     "time_s": 286,
+     "evidence": "He explains the specific dimensions (800mm width, 25mm rise) and why he prefers them for better control."
+    },
+    "delivery": {
+     "score": 90,
+     "time_s": 311,
+     "evidence": "He speaks with authority and personal conviction about the product he designed."
+    },
+    "body_language": {
+     "score": 95,
+     "time_s": 93,
+     "evidence": "He shows the product clearly and demonstrates its use with confident gestures."
+    },
+    "sales_pressure": {
+     "score": 80,
+     "time_s": 315,
+     "evidence": "He mentions that the product is available in his shop and shows a screen recording of the website."
+    }
+   }
+  },
+  {
+   "brand": "ALPINA",
+   "product": "ALPINA MTB Helmet",
+   "overall": 85,
+   "verdict": "Lukas wears the helmet throughout his rides, demonstrating its practical use and his trust in the brand.",
+   "sub": {
+    "use_shown": {
+     "score": 100,
+     "time_s": 475,
+     "evidence": "The helmet is worn during all riding segments, showing it in a real-use scenario."
+    },
+    "balance": {
+     "score": 50,
+     "time_s": 519,
+     "evidence": "The helmet is not explicitly discussed or compared to others; it's just part of his standard gear."
+    },
+    "specificity": {
+     "score": 60,
+     "time_s": 573,
+     "evidence": "While not detailed in speech, the visual evidence of it being his choice for challenging rides is specific."
+    },
+    "delivery": {
+     "score": 90,
+     "time_s": 624,
+     "evidence": "His delivery is natural as the helmet is just a part of his professional attire."
+    },
+    "body_language": {
+     "score": 90,
+     "time_s": 672,
+     "evidence": "He seems comfortable and confident while wearing the helmet during his stunts."
+    },
+    "sales_pressure": {
+     "score": 100,
+     "time_s": 694,
+     "evidence": "There is no mention of buying the helmet or any sales-related information."
+    }
+   }
+  },
+  {
+   "brand": "SRAM",
+   "product": "SRAM Eagle Transmission",
+   "overall": 90,
+   "verdict": "Lukas provides a technical and practical endorsement of the SRAM components, highlighting their performance during his rigorous testing.",
+   "sub": {
+    "use_shown": {
+     "score": 100,
+     "time_s": 106,
+     "evidence": "The transmission is shown in detail and used during the trail rides."
+    },
+    "balance": {
+     "score": 70,
+     "time_s": 106,
+     "evidence": "He mentions the specific model (X0) and how it integrates with the bike's overall performance."
+    },
+    "specificity": {
+     "score": 90,
+     "time_s": 110,
+     "evidence": "He points out the Eagle Transmission and SRAM Maven brakes as key high-end components."
+    },
+    "delivery": {
+     "score": 90,
+     "time_s": 106,
+     "evidence": "He speaks knowledgeably about the components, reflecting his professional background."
+    },
+    "body_language": {
+     "score": 95,
+     "time_s": 106,
+     "evidence": "He points directly to the components on the bike while explaining their features."
+    },
+    "sales_pressure": {
+     "score": 100,
+     "time_s": 106,
+     "evidence": "No sales pressure is applied; the components are discussed as part of the bike's high-quality build."
+    }
+   }
+  }
+ ],
+ "source": {
+  "engine": "gemini",
+  "models": [
+   "gemini-3.5-flash",
+   "gemini-3-flash-preview"
+  ],
+  "analyzed_at": "2026-11-21",
+  "usage": [
+   {
+    "call": "timeline",
+    "model": "gemini-3.5-flash",
+    "prompt": 95839,
+    "output": 3444,
+    "thoughts": 0,
+    "total": 99283
+   },
+   {
+    "call": "authenticity",
+    "model": "gemini-3-flash-preview",
+    "prompt": 94511,
+    "output": 1609,
+    "thoughts": 0,
+    "total": 96120
+   }
+  ],
+  "note": "Sport: e-bike test, 'Werbung' at the top of the description -> clear disclosure"
+ }
+}

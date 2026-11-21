@@ -16,7 +16,7 @@
  */
 import { icon, LOGO } from "./icons.js";
 import { Player } from "./player.js";
-import { videoValue, brandValue, euro, WEIGHTS, DEFAULTS } from "./value.js";
+import { videoValue, brandValue, euro, euroRange, scenarioParams, retention, WEIGHTS, DEFAULTS, SCENARIOS, VALUE_WHAT } from "./value.js";
 import { checkDisclosure } from "./disclosure.js";
 import { mmss } from "./shared/normalize.js";
 import { renderLive, stopLive } from "./live.js";
@@ -417,7 +417,7 @@ function mountPlayer(onTime) {
   const tracker = createTracking(host, state.data, color);
   const p = new Player(host.querySelector(".yt-host"), state.id, {
     onState: (paused) => { host.classList.toggle("paused", paused && (p.hasPlayed || p.t > 0.5)); tracker.sync(p.t, !paused); updateNow(p.t); },
-    onTime: (t) => { onTime?.(t); tracker.sync(t, !p.paused); updateNow(t); },
+    onTime: (t) => { onTime?.(t); tracker.sync(t, !p.paused); updateNow(t); suggestCloser(tracker, t); },
   });
   state.player = p; state.tracker = tracker;
   bindTrackSwitch(tracker);
@@ -465,9 +465,23 @@ function bindTrackSwitch(tracker) {
   sw.checked = prefs.tracking; tracker.setEnabled(prefs.tracking);
   sw.onchange = () => { prefs.tracking = sw.checked; savePrefs(); tracker.setEnabled(sw.checked); };
   const hint = $("#trackHint");
-  if (hint) hint.textContent = !cov.withBox ? "No positions in this analysis – boxes appear for videos analysed from 21 Nov on."
-    : cov.keys > cov.withBox * 1.5 ? `${cov.keys} positions from Gemini, interpolated in between. Estimated, not measured.`
-    : `${cov.withBox} of ${cov.all} appearances located, one position each (older analysis). Estimated, not measured.`;
+  if (hint) hint.dataset.base = hint.textContent = !cov.withBox ? "No positions in this analysis – boxes appear for videos analysed from 21 Nov on."
+    : cov.keys > cov.withBox * 1.5 ? `${cov.keys} approximate positions from Gemini. Solid = close to a reported position, dashed or dot = rough.`
+    : `${cov.withBox} of ${cov.all} appearances located, one position each (older analysis) – mostly shown as dots.`;
+}
+
+/**
+ * While tracking is on and the products at this second are only roughly located (dashed box or dot), the hint
+ * suggests "Look closer" (2 frames per second → tighter boxes). Not shown where a Look closer result exists already.
+ */
+function suggestCloser(tracker, t) {
+  const hint = $("#trackHint"), btn = $("#closerBtn"); if (!hint || !btn) return;
+  const level = prefs.tracking ? tracker.levelAt(t) : "none";
+  const done = (state.closerDone || []).some((c) => c.id === state.id && t >= c.start && t <= c.end);
+  const rough = (level === "approx" || level === "point") && !done;
+  if (rough === btn.classList.contains("suggest")) return;
+  btn.classList.toggle("suggest", rough);
+  hint.textContent = rough ? "Positions are rough here – Look closer checks 2 frames per second for tighter boxes." : hint.dataset.base || "";
 }
 
 /** Brands spoken about or shown as text around second t (±1.5 s – speech timestamps are less exact than image ones). */
@@ -476,8 +490,29 @@ const productsAt = (t) => state.data.brands.filter((b) => b.appearances.some((a)
 /** Logo tile: coloured initial first, replaced by the official logo once Wikidata answers (logos.js). */
 const logoBox = (brand, size = "") => `<span class="logo ${size}" data-logo="${esc(brand)}" style="--c:${color(brand)}">${esc(brand.replace(/^the /i, "").charAt(0).toUpperCase())}</span>`;
 
-/** Creator's own link from the description if the brand is mentioned next to a URL, else a neutral shopping search. */
-function productLink(b) {
+/**
+ * Link for a product card / Right now:
+ *   1. the link Gemini matched to this product in the description (since 21 Nov; only kept if the exact URL is in
+ *      the description, normalize.js cleanLink) – for a brand with several models the one for `model`,
+ *   2. else a line of the description that names the brand next to a URL,
+ *   3. else a neutral shopping search.
+ * Affiliate links (amzn.to, tag=, geni.us …) are always marked as such.
+ */
+const AFFILIATE_URL = /amzn\.to|amazon\.[a-z.]+\/[^\s]*(tag=|\/shop\/)|link\.amazon|geni\.us|howl\.me|shopmy\.us|go\.magik\.ly|rstyle\.me|ltk\.app|liketk\.it|awin1\.com|tidd\.ly|ebay\.us|[?&](ref|tag|aff|affiliate)=|coupon/i;
+// "*Affiliate links …" / "¹) … Affiliate Links" in the description: lines marked with * or ¹ are affiliate links too
+const AFFILIATE_NOTE = /affiliate|commission|provision|amazon associate|partnerlink|werbelink/i;
+const linkInfo = (url) => {
+  const desc = state.data?.video?.description || "";
+  const line = desc.split("\n").find((l) => l.includes(url)) || "";
+  const aff = AFFILIATE_URL.test(url) || (AFFILIATE_NOTE.test(desc) && /[*¹]/.test(line));
+  return { url, label: aff ? "Affiliate" : "Creator link", title: aff ? "Affiliate link from the video description – the creator may earn a commission" : "Link from the video description" };
+};
+function productLink(b, model = "") {
+  if (b.links?.length) {
+    const m = model.toLowerCase();
+    const hit = (m && b.links.find((l) => l.product && (l.product.toLowerCase() === m || m.includes(l.product.toLowerCase())))) || b.links[0];
+    return linkInfo(hit.url);
+  }
   const lines = (state.data.video.description || "").split("\n");
   // match the brand's first word or its initials ("Louis Vuitton" → "lv") next to a URL
   const words = b.brand.toLowerCase().split(/\s+/);
@@ -485,13 +520,19 @@ function productLink(b) {
   for (const line of lines) {
     const url = line.match(/https?:\/\/\S+/)?.[0];
     const low = line.toLowerCase();
-    if (url && keys.some((k) => new RegExp(`(^|[^a-z])${k}([^a-z]|$)`).test(low))) {
-      const aff = /amzn|amazon|bit\.ly|ref=|tag=|coupon|link\./i.test(url);
-      return { url, label: aff ? "Affiliate" : "Creator link", title: "Link from the video description" };
-    }
+    if (url && keys.some((k) => new RegExp(`(^|[^a-z])${k}([^a-z]|$)`).test(low))) return linkInfo(url.replace(/[).,;:!?'"\]>]+$/, ""));
   }
   return { url: `https://www.google.com/search?tbm=shop&q=${encodeURIComponent(`${b.brand} ${b.product || ""}`.trim())}`, label: "Search", title: "Neutral shopping search" };
 }
+
+/** Link row of a product card: one link per model from the description (max. 3), else the fallback link. */
+function cardLinks(b) {
+  const links = b.links?.length ? b.links.slice(0, 3).map((l) => ({ ...linkInfo(l.url), model: l.product })) : [{ ...productLink(b), model: "" }];
+  const short = (m) => (m.toLowerCase().startsWith(b.brand.toLowerCase()) ? m.slice(b.brand.length).trim() : m) || m;
+  const text = (l) => (l.model ? short(l.model) : l.label === "Search" ? "Shopping search" : b.products?.[0] ? short(b.products[0]) : hostOf(l.url));
+  return `<div class="pc-links">${links.map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener${l.label === "Affiliate" ? " sponsored" : ""}" title="${esc(l.title)}"><span class="pl-kind ${l.label === "Affiliate" ? "aff" : l.label === "Search" ? "search" : ""}">${esc(l.label)}</span>${esc(text(l))}</a>`).join("")}${b.links?.length ? `<span class="more" title="Gemini matched this product to a link in the video description">from description</span>` : ""}</div>`;
+}
+const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return u; } };
 
 // ---------- Overview ----------
 /**
@@ -507,7 +548,7 @@ function viewOverview() {
         <div class="player-bar">
           <label class="track-toggle"><input type="checkbox" class="switch sm" id="trackSw"><span>Show tracking</span></label>
           <span class="small muted" id="trackHint"></span>
-          ${info("Boxes and names over the video show where Gemini saw each product: logo, model and how it was recognised (logo, text, speech or design). The browser cannot look into the YouTube player, so every box is a position Gemini reported while watching – keyframes every 2–3 seconds, smoothly interpolated in between. Dashed, faded boxes are more than 3 seconds away from a reported position.")}
+          ${info("Boxes and names over the video show where Gemini saw each product: model and how it was recognised (logo, text, speech or design). The browser cannot look into the YouTube player, so every box is a position Gemini reported while watching – roughly every 2–4 seconds, and only approximate. Solid box: within 1.5 s of a reported position (or the product stays put in between). Dashed box, 'approx. position': up to 3 s away. Dot: further away or Gemini was unsure – only where it roughly is. Look closer re-checks 20 seconds at 2 frames per second and gives tighter boxes.")}
           <button class="btn closer-btn" id="closerBtn" title="Let Gemini look closer at the next 20 seconds">${icon("search")} Look closer</button>
         </div>
         <div class="closer-status" id="closerStatus" hidden></div>
@@ -543,7 +584,7 @@ function viewOverview() {
       <button class="stat" data-scroll="tlSect"><span class="s-label">Brand on screen ${info("Share of the video in which at least one brand is visible. Overlapping appearances are counted once.")}</span><b class="num">${union}%</b><span class="s-sub">of ${fmtDur(v)}</span></button>
       <button class="stat" data-goto="disclosure"><span class="s-label">Ad disclosure ${info("Looks for an advertising label in title, description, on screen and in speech (§ 5a UWG, § 22 MStV). Green = clear label, orange = weak label, red = commercial signals but no label. A screening aid, not legal advice.")}</span><b class="status lvl-${disc.level}"><i class="dot"></i>${esc(disc.title)}</b><span class="s-sub">${esc(disc.sub)}</span></button>
       <button class="stat" data-goto="authenticity"><span class="s-label">Authenticity ${info("How genuine the recommendation feels: six factors rated by Gemini from image and sound (use shown, balance, specificity, delivery, body language, sales pressure). Rounded to 5 because runs vary by about ±6 points.")}</span><b class="num">${auAvg ?? "–"}</b><span class="s-sub">${auAvg != null ? band(auAvg) : "not rated"}</span></button>
-      <button class="stat" data-goto="value"><span class="s-label">Media value ${info(`What the same exposure would cost as 30-second video ads: views ÷ 1000 × CPM (€${state.opts.cpm}) × weighted seconds ÷ 30 × share watched (${Math.round(state.opts.viewThrough * 100)}%). Weighted seconds count large, central, in-use appearances more. Adjustable under Media value.`)}</span><b class="num">${euro(val.total)}</b><span class="s-sub">${fmtViews(v.views)} views</span></button>
+      <button class="stat" data-goto="value"><span class="s-label">Media value ${info(`${VALUE_WHAT} What comparable reach would cost as 30-second video ads: views ÷ 1000 × CPM × weighted seconds ÷ 30, counting only viewers still watching at that point (audience drop-off) and discounted because a product in the picture gets less attention than an ad spot (${Math.round(state.opts.attention * 100)}%). Low / high = cautious / generous assumptions. Details under Media value.`)}</span><b class="num range">${euroRange(val.range)}</b><span class="s-sub">mid ${euro(val.range.mid)} · ${fmtViews(v.views)} views</span></button>
     </div>
 
     <section class="sect" id="tlSect">
@@ -583,12 +624,13 @@ function viewOverview() {
           <div class="pc-top">${logoBox(b.brand)}<div class="pc-name"><b>${esc(b.brand)}</b><span>${esc(b.product || b.category || "")}</span></div>
             ${promoted.has(b.brand.toLowerCase()) ? `<span class="tag">promoted</span>` : b.appearances.every((a) => a.closer) ? `<span class="tag soft">look closer</span>` : b.appearances.some((a) => a.in_use) ? `<span class="tag soft">in use</span>` : ""}</div>
           <div class="pc-lane">${b.appearances.map((a) => `<i class="${a.channel}" style="left:${Math.min(100, (100 * a.start_s) / dur)}%;width:${Math.max(0.8, (100 * (a.end_s - a.start_s)) / dur)}%;background:${color(b.brand)};color:${color(b.brand)}"></i>`).join("")}</div>
-          <div class="pc-facts"><span><b class="num">${Math.round(r.raw.visual || 0)} s</b> on screen</span><span><b class="num">${spoken}×</b> spoken</span><span><b class="num">${euro(r.euros)}</b> value</span></div>
+          <div class="pc-facts"><span><b class="num">${Math.round(r.raw.visual || 0)} s</b> on screen</span><span><b class="num">${spoken}×</b> spoken</span><span title="${esc(VALUE_WHAT)}"><b class="num">${euroRange(r.range)}</b> ad cost eq.</span></div>
           <div class="pc-jumps">${jumps.map((a) => `<button class="time" data-jump="${a.start_s}">${mmss(a.start_s)}</button>`).join("")}${b.appearances.length > jumps.length ? `<span class="more">+${b.appearances.length - jumps.length}</span>` : ""}</div>
+          ${cardLinks(b)}
         </article>`;
       }).join("");
       $("#pgrid").querySelectorAll(".pcard").forEach((c) => {
-        c.onclick = (e) => { const j = e.target.closest("[data-jump]"); jump(Number(j ? j.dataset.jump : c.dataset.t)); };
+        c.onclick = (e) => { if (e.target.closest("a")) return; const j = e.target.closest("[data-jump]"); jump(Number(j ? j.dataset.jump : c.dataset.t)); };
         c.onkeydown = (e) => { if (e.key === "Enter") jump(Number(c.dataset.t)); };
       });
       hydrateLogos($("#pgrid"));
@@ -675,6 +717,7 @@ async function lookCloser() {
 /** Merge a /api/closer result into state.data. Returns what is new: [{label}]. Idempotent per clip. */
 function mergeCloser(res) {
   const d = state.data; d.unidentified ||= []; const added = [];
+  (state.closerDone ||= []).push({ id: state.id, start: res.start, end: res.end }); // no more "Look closer" hint for this clip
   const overlaps = (list, a) => list.some((x) => x.channel === "visual" && a.start_s < x.end_s + 1 && a.end_s > x.start_s - 1);
   for (const nb of res.brands || []) {
     let b = d.brands.find((x) => x.brand.toLowerCase() === nb.brand.toLowerCase());
@@ -683,7 +726,14 @@ function mergeCloser(res) {
       state.colors.set(b.brand, PALETTE[(d.brands.length - 1) % PALETTE.length]);
       added.push({ label: [nb.brand, nb.product].filter(Boolean).join(" ") });
     } else for (const p of nb.products || []) if (!b.products?.includes(p)) { (b.products ||= []).push(p); if (!b.product) b.product = p; }
-    for (const a of nb.appearances) if (!overlaps(b.appearances, a)) { b.appearances.push(a); (a.track || []).forEach((k) => b.frames.push(k)); }
+    for (const a of nb.appearances) {
+      if (!overlaps(b.appearances, a)) { b.appearances.push(a); (a.track || []).forEach((k) => b.frames.push(k)); continue; }
+      // already known here: do not count it twice, but its tighter 2-frames/s position refines the tracking boxes
+      for (const k of a.track || []) for (const x of b.appearances) {
+        if (x.channel !== "visual" || k.t < x.start_s - 1 || k.t > x.end_s + 1 || !x.track) continue;
+        x.track = [...x.track.filter((o) => Math.abs(o.t - k.t) >= 0.5), { ...k, closer: true }].sort((p, q) => p.t - q.t);
+      }
+    }
     b.appearances.sort((x, y) => x.start_s - y.start_s);
   }
   for (const nu of res.unidentified || []) {
@@ -762,36 +812,60 @@ function valueRows(rows) {
   return rows.map((r) => `<div class="row" data-brand="${esc(r.brand.brand)}">${logoBox(r.brand.brand, "sm")}
     <div style="min-width:0"><div class="t">${esc(r.brand.brand)}</div><div class="p">${esc(r.brand.product || "")} · score ${r.score}</div></div>
     <div class="barcell"><div class="bar"><i style="width:${(100 * r.euros) / max}%;background:${color(r.brand.brand)}"></i></div></div>
-    <div class="eur num">${euro(r.euros)}</div><span class="chev">${icon("chevron")}</span></div>`).join("") || `<div class="empty-state">No brands found.</div>`;
+    <div class="eur num">${euroRange(r.range)}</div><span class="chev">${icon("chevron")}</span></div>`).join("") || `<div class="empty-state">No brands found.</div>`;
+}
+/** Mid-scenario formula with this brand's numbers, plus the low and high results. */
+function valueFormula(r, v) {
+  const p = scenarioParams(state.opts).mid;
+  return `<div class="formula">${Math.round(v.views || 0).toLocaleString("en")} views / 1000 × €${p.cpmEur} CPM × (${r.retained.mid.toFixed(1)} retained s / 30) × ${Math.round(100 * p.att)}% attention = ${euro(r.range.mid)} (mid)<br>
+    low ${euro(r.range.low)} · high ${euro(r.range.high)} · ${r.weighted.total.toFixed(1)} weighted s before audience drop-off</div>`;
 }
 function bindRows() { document.querySelectorAll(".row[data-brand]").forEach((r) => (r.onclick = () => brandSheet(r.dataset.brand))); }
 
 function viewValue() {
   const d = state.data;
+  const dur = d.video.duration_s || Math.max(1, ...d.brands.flatMap((b) => b.appearances.map((a) => a.end_s)));
   const draw = () => {
-    const val = videoValue(d, state.opts);
-    $("#vtotal").textContent = euro(val.total);
+    const val = videoValue(d, state.opts); const p = scenarioParams(state.opts);
+    $("#vtotal").textContent = euroRange(val.range);
+    $("#vmid").textContent = euro(val.range.mid);
     $("#vlist").innerHTML = valueRows(val.rows); bindRows(); hydrateLogos($("#vlist"));
-    $("#cpmv").textContent = `€${state.opts.cpm}`; $("#vtv").textContent = `${Math.round(state.opts.viewThrough * 100)}%`;
+    $("#cpmv").textContent = `€${state.opts.cpm}`; $("#attv").textContent = `${Math.round(state.opts.attention * 100)}%`;
+    $("#vscen").innerHTML = ["low", "mid", "high"].map((k) => `<tr><th>${k}</th><td class="num">€${p[k].cpmEur.toFixed(0)}</td><td class="num">${Math.round(100 * SCENARIOS[k].retStart)} → ${Math.round(100 * SCENARIOS[k].retEnd)}%</td><td class="num">${Math.round(100 * p[k].att)}%</td><td class="num"><b>${euro(val.range[k])}</b></td></tr>`).join("");
   };
   $("#view").innerHTML = `
     <div class="cols-2" style="grid-template-columns:1fr 1.3fr;align-items:start">
       <div class="stack">
-        <div class="kpi"><div class="label">Estimated media value of all brands</div><div class="value num" id="vtotal"></div>
-          <div class="foot">What the same exposure would cost as 30-second video ads.</div></div>
+        <div class="kpi"><div class="label">Equivalent ad cost of all brands ${info(`${VALUE_WHAT} A brand would pay roughly this for the same reach as regular 30-second video ads. A creator is paid per deal – often much less, or nothing for an organic mention.`)}</div><div class="value num" id="vtotal"></div>
+          <div class="foot">Earned media value, mid estimate <b class="num" id="vmid"></b>. Not what the creator earned.</div></div>
         <div class="card"><h3>Assumptions</h3>
-          <div class="slider"><span>CPM (€ / 1000 views)</span><input type="range" id="cpm" min="5" max="40" step="1" value="${state.opts.cpm}"><b class="num" id="cpmv"></b></div>
-          <div class="slider" style="margin-top:16px"><span>View-through</span><input type="range" id="vt" min="10" max="100" step="5" value="${state.opts.viewThrough * 100}"><b class="num" id="vtv"></b></div>
-          <div class="formula">value = views / 1000 × CPM × (weighted seconds / 30) × view-through<br>
-            weighted seconds = Σ visible × size × position × (in use ? ${WEIGHTS.inUse} : 1) + spoken × ${WEIGHTS.audio} + text × ${WEIGHTS.text}</div>
-          <p class="small muted" style="margin-bottom:0">Weights: size small ${WEIGHTS.size.small} · medium ${WEIGHTS.size.medium} · large ${WEIGHTS.size.large}; position center ${WEIGHTS.position.center} · edge ${WEIGHTS.position.edge}. Assumptions, adjustable – the method follows sponsorship measurement in sports media.</p>
+          <div class="slider"><span>CPM (€ / 1000 views, mid)</span><input type="range" id="cpm" min="5" max="40" step="1" value="${state.opts.cpm}"><b class="num" id="cpmv"></b></div>
+          <div class="slider" style="margin-top:16px"><span>Attention vs. an ad spot (mid)</span><input type="range" id="att" min="10" max="80" step="5" value="${Math.round(state.opts.attention * 100)}"><b class="num" id="attv"></b></div>
+          <div class="ret-chart">${retentionChart(dur)}</div>
+          <table class="scen"><thead><tr><th></th><th>CPM</th><th>Audience start → end</th><th>Attention</th><th>Value</th></tr></thead><tbody id="vscen"></tbody></table>
+          <div class="formula">value = views / 1000 × CPM × (retained seconds / 30) × attention<br>
+            retained seconds = Σ weighted seconds × audience share at that moment<br>
+            weighted seconds = visible × size × position × (in use ? ${WEIGHTS.inUse} : 1) + spoken × ${WEIGHTS.audio} + text × ${WEIGHTS.text}</div>
+          <p class="small muted" style="margin-bottom:0">Audience share falls linearly while the video runs (later moments are seen by fewer people). Attention: a product in the picture is not a 30-second ad spot. Weights: size small ${WEIGHTS.size.small} · medium ${WEIGHTS.size.medium} · large ${WEIGHTS.size.large}; position center ${WEIGHTS.position.center} · edge ${WEIGHTS.position.edge}. All assumptions, adjustable – the method follows sponsorship measurement in sports media.</p>
         </div>
       </div>
-      <div><div class="nav-label">Brands, by value. Click one for the breakdown.</div><div class="list" id="vlist"></div></div>
+      <div><div class="nav-label">Brands, by mid value. Click one for the breakdown.</div><div class="list" id="vlist"></div></div>
     </div>`;
   $("#cpm").oninput = (e) => { state.opts.cpm = Number(e.target.value); draw(); };
-  $("#vt").oninput = (e) => { state.opts.viewThrough = Number(e.target.value) / 100; draw(); };
+  $("#att").oninput = (e) => { state.opts.attention = Number(e.target.value) / 100; draw(); };
   draw();
+}
+
+/** Small SVG: audience share over the video for low / mid / high, with this video's appearances as ticks. */
+function retentionChart(dur) {
+  const W = 300, H = 92, x = (t) => 28 + (W - 36) * (t / dur), y = (r) => 8 + (H - 30) * (1 - r);
+  const line = (k) => `<path d="M${x(0)} ${y(retention(0, dur, SCENARIOS[k]))} L${x(dur)} ${y(retention(dur, dur, SCENARIOS[k]))}" class="rl ${k}"/>`;
+  const ticks = state.data.brands.flatMap((b) => b.appearances.filter((a) => a.channel === "visual").map((a) => `<rect x="${x(a.start_s)}" y="${H - 18}" width="${Math.max(1.5, x(a.end_s) - x(a.start_s))}" height="5" rx="1" fill="${color(b.brand)}"/>`)).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Audience share over the video">
+    ${[1, 0.5, 0].map((r) => `<line x1="28" x2="${W - 8}" y1="${y(r)}" y2="${y(r)}" class="rg"/><text x="22" y="${y(r) + 3.5}" text-anchor="end">${r * 100}%</text>`).join("")}
+    ${line("high")}${line("mid")}${line("low")}${ticks}
+    <text x="28" y="${H - 2}">0:00</text><text x="${W - 8}" y="${H - 2}" text-anchor="end">${mmss(dur)}</text>
+    <text x="${x(dur * 0.5)}" y="${H - 2}" text-anchor="middle">audience still watching · products on screen</text></svg>`;
 }
 
 function brandSheet(name) {
@@ -801,12 +875,13 @@ function brandSheet(name) {
   const scrim = document.createElement("div"); scrim.className = "scrim";
   scrim.innerHTML = `<div class="sheet">
     <div class="sheet-head">${logoBox(b.brand)}<div style="min-width:0"><h2>${esc(b.brand)}</h2><div class="muted small">${esc(b.product || b.category || "")}</div></div>
-      <div class="amount"><b class="num">${euro(r.euros)}</b><span class="small muted">visibility score ${r.score}/100</span></div></div>
+      <div class="amount"><b class="num">${euroRange(r.range)}</b><span class="small muted">equivalent ad cost · visibility score ${r.score}/100</span></div></div>
     <div class="nav-label">Exposure</div>
     ${factor(`${icon("eye")} Visible`, w.visual, r.raw.visual || 0)}${factor(`${icon("ear")} Spoken`, w.audio, r.raw.audio || 0)}${factor(`${icon("text")} On-screen text`, w.text, r.raw.text || 0)}
     <div class="nav-label">Appearances</div>
     ${b.appearances.slice(0, 12).map((a) => `<div class="finding"><button class="time" data-t="${a.start_s}">${mmss(a.start_s)}</button><span class="small">${esc(a.channel)}${a.size ? " · " + a.size : ""}${a.position ? " · " + a.position : ""}${a.in_use ? " · in use" : ""} — ${esc(a.evidence)}</span></div>`).join("")}
-    <div class="formula">${Math.round(state.data.video.views || 0).toLocaleString("en")} / 1000 × €${state.opts.cpm} × (${w.total.toFixed(1)} s / 30) × ${state.opts.viewThrough} = ${euro(r.euros)}</div>
+    ${valueFormula(r, state.data.video)}
+    <p class="small muted">${esc(VALUE_WHAT)}</p>
     <div class="sheet-foot"><button class="btn primary" data-close>Done</button></div></div>`;
   document.body.append(scrim); hydrateLogos(scrim);
   const close = () => scrim.remove();
@@ -910,7 +985,7 @@ function viewReport() {
           <div><b>${esc(v.title)}</b><div class="small muted">${esc(v.channel || "")} · ${fmtViews(v.views)} views · ${fmtDur(v)}${v.upload_date ? ` · uploaded ${esc(fmtDate(v.upload_date))}` : ""}</div>
           <a class="small" href="https://www.youtube.com/watch?v=${esc(v.id)}" target="_blank" rel="noopener">youtube.com/watch?v=${esc(v.id)}</a></div></div>
         <div class="rp-kpis">
-          <div><span>Media value</span><b class="num">${euro(r.euros)}</b><i>CPM €${state.opts.cpm} · ${Math.round(state.opts.viewThrough * 100)}% view-through</i></div>
+          <div><span>Equivalent ad cost</span><b class="num">${euroRange(r.range)}</b><i>mid ${euro(r.range.mid)} · not the creator's fee</i></div>
           <div><span>Visibility score</span><b class="num">${r.score}<small>/100</small></b><i>${r.inUse ? "shown in use" : "not shown in use"}</i></div>
           <div><span>On screen</span><b class="num">${Math.round(r.raw.visual || 0)} s</b><i>${Math.round(r.raw.text || 0)} s as on-screen text</i></div>
           <div><span>Mentioned</span><b class="num">${mentions}×</b><i>${Math.round(r.raw.audio || 0)} s in speech</i></div>
@@ -929,15 +1004,15 @@ function viewReport() {
             : `<p class="small muted">Not rated – ${esc(b.brand)} was not identified as a promoted product in this video.</p>`}</div>
         </div>
         <h4>Method</h4>
-        <div class="formula">${Math.round(v.views || 0).toLocaleString("en")} views / 1000 × €${state.opts.cpm} CPM × (${r.weighted.total.toFixed(1)} weighted s / 30) × ${state.opts.viewThrough} = ${euro(r.euros)}</div>
-        <p class="legal">Weighted seconds: on screen × size × position (× ${WEIGHTS.inUse} when in use) + spoken × ${WEIGHTS.audio} + on-screen text × ${WEIGHTS.text}. Appearances detected by ${esc([...new Set(d.source?.models || [])].map(modelName).join(" + ") || "Gemini")} from image and audio (analysed ${esc(d.source?.analyzed_at || "")}); times are approximate (±3 s).
+        ${valueFormula(r, v)}
+        <p class="legal">Equivalent ad cost (earned media value): what comparable reach would cost as 30-second video ads – not what the creator earned. Weighted seconds: on screen × size × position (× ${WEIGHTS.inUse} when in use) + spoken × ${WEIGHTS.audio} + on-screen text × ${WEIGHTS.text}; each moment counts only the audience still watching (linear drop-off, low ${Math.round(100 * SCENARIOS.low.retStart)} → ${Math.round(100 * SCENARIOS.low.retEnd)}%, high ${Math.round(100 * SCENARIOS.high.retStart)} → ${Math.round(100 * SCENARIOS.high.retEnd)}%) and an attention factor for "product in the picture" instead of an ad spot. Appearances detected by ${esc([...new Set(d.source?.models || [])].map(modelName).join(" + ") || "Gemini")} from image and audio (analysed ${esc(d.source?.analyzed_at || "")}); times are approximate (±3 s).
           The disclosure check refers to § 5a (4) UWG and § 22 MStV and is a screening aid, not legal advice. All values are estimates.</p>
       </article>
       <aside class="report-side">
         <div class="card"><h3>Brand</h3>
           <select id="rbrand" class="select">${val.rows.map((x) => `<option ${x.brand.brand === b.brand ? "selected" : ""}>${esc(x.brand.brand)}</option>`).join("")}</select>
           <button class="btn primary" id="rprint" style="margin-top:12px;width:100%;justify-content:center">${icon("doc")} Save as PDF</button>
-          <p class="small muted" style="margin:8px 0 0">Opens the print dialog – choose "Save as PDF". CPM and view-through come from the Media value view.</p></div>
+          <p class="small muted" style="margin:8px 0 0">Opens the print dialog – choose "Save as PDF". CPM and attention come from the Media value view.</p></div>
         <div class="card"><h3>Pitch mail to the creator</h3>
           <textarea id="rmail" class="mail" rows="14" spellcheck="false">${esc(pitchMail(b, r, mentions, disc))}</textarea>
           <button class="btn" id="rcopy" style="margin-top:10px">${icon("check")} <span>Copy text</span></button></div>
@@ -960,7 +1035,7 @@ function pitchMail(b, r, mentions, disc) {
     "",
     `we came across your video "${v.title}"${v.views ? ` (${fmtViews(v.views)} views)` : ""}.`,
     `${b.brand}${b.product ? ` (${b.product})` : ""} is on screen for about ${seen} seconds${mentions ? ` and you mention it ${mentions === 1 ? "once" : `${mentions} times`}` : ""}${r.inUse ? " – and you actually use it, which is exactly what we like to see" : ""}.`,
-    `By our estimate that exposure equals roughly ${euro(r.euros)} in video advertising.`,
+    `By our estimate, comparable reach would cost roughly ${euroRange(r.range)} as regular video ads.`,
     "",
     "We would love to talk about a paid collaboration for an upcoming video. Of course any partnership would be clearly labelled as advertising from the start (§ 5a UWG, § 22 MStV)" +
       (disc.level === "red" || disc.level === "orange" ? " – we provide the wording and are happy to help with the disclosure." : "."),
@@ -1070,7 +1145,7 @@ function showInfo() {
       <div><span class="ic" style="background:#30d158">${icon("chip")}</span><div><b>Engine 2 · AI on your device</b><span>live scanner: a packaging finder (YOLOE), text recognition and barcodes (exact product via Open Food Facts) run in the browser – no cloud needed.</span></div></div>
       <div><span class="ic" style="background:#5e5ce6">${icon("sparkle")}</span><div><b>Engine 3 · our own model</b><span>Apple's MobileCLIP image encoder plus a brand head we trained on 64,000 open product photos (1,020 brands, webcam-ready) – names packages whose text cannot be read, and learns from Gemini's confident answers.</span></div></div>
     </div>
-    <p class="small">Media value = views ÷ 1000 × CPM × weighted seconds ÷ 30 × view-through. The disclosure check refers to § 5a (4) UWG and § 22 MStV; it is a screening aid, not legal advice.
+    <p class="small">Media value = equivalent ad cost (earned media value), not what the creator earned: views ÷ 1000 × CPM × weighted seconds ÷ 30, counting only the audience still watching at each moment and an attention factor; shown as a low – high range. The disclosure check refers to § 5a (4) UWG and § 22 MStV; it is a screening aid, not legal advice.
       Details, formulas and all test results: README, MODELS and EVALUATION in the project repository.</p>
     <p class="small muted">Final project · MMI5190E The New Frontiers of AI · Prof. Pin Luarn · Pforzheim University · Moritz Binder</p>
     <div class="sheet-foot"><button class="btn" data-intro>${icon("play")} Show the introduction</button><button class="btn primary" data-close>Got it</button></div></div>`;

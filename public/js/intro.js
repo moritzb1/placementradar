@@ -43,7 +43,7 @@ const STEPS = [
       <p><b>Viewers</b> have a right to know when something is advertising: § 5a (4) UWG and § 22 MStV require a clear label, yet many videos have none.</p>
       <p>And a recommendation only works if it feels <b>genuine</b> – so PlacementRadar also rates how authentic it comes across.</p>`,
     art: () => `<div class="ia-tiles">
-      <div><small>Media value</small><b class="num">€ 1,240</b><span>what the same exposure would cost as ads</span></div>
+      <div><small>Media value</small><b class="num">€0.9k – €3.4k</b><span>equivalent ad cost, not the creator's fee</span></div>
       <div><small>Ad disclosure</small><b class="ia-lvl"><i></i>No label</b><span>§ 5a UWG · § 22 MStV</span></div>
       <div><small>Authenticity</small><b class="num">75</b><span>feels genuine</span></div></div>`,
   },

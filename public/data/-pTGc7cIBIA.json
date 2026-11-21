@@ -1,0 +1,748 @@
+{
+ "video": {
+  "id": "-pTGc7cIBIA",
+  "title": "My Everyday Tech: 2022!",
+  "channel": "Marques Brownlee",
+  "views": 5706365,
+  "duration_s": 859,
+  "upload_date": "2022-01-07",
+  "description": "What’s in my bag and on my phones RIGHT NOW.\nAll links below v\n\nPeak Design V2 Everyday 20L: https://amzn.to/3qWv0nc\nMacBook Pro 16: https://amzn.to/3HIIwRT\nAirPods Max: https://amzn.to/3JPxNHi\nOpal C1 webcam: https://opalcamera.com\nCanon R5: https://amzn.to/3F8gePb\nCanon 15-35 RF: https://amzn.to/3q3b9n1\nUSB-C cable with display: https://amzn.to/3f5kXqc\n\nTrove slim wallet: https://www.trove.cc\niPhone 13 Pro: https://amzn.to/3F4lO5e\nPixel 6 Pro: https://amzn.to/31AC7Ja\nTickTick: https://ticktick.com\nAgenda Calendar Widget: https://play.google.com/store/apps/details?id=com.candl.auge&hl=en_US&gl=US\nOsmos game: https://apps.apple.com/us/developer/hemisphere-games/id379323385\n\nTech I'm using right now: https://www.amazon.com/shop/MKBHD\n\nIntro Track: http://youtube.com/20syl\nPlaylist of MKBHD Intro music: https://goo.gl/B3AWV5\n\n~\nhttp://twitter.com/MKBHD\nhttp://instagram.com/MKBHD\nhttp://facebook.com/MKBHD",
+  "source": "watch:200:OK:views+duration_s+description"
+ },
+ "brands": [
+  {
+   "brand": "Peak Design",
+   "product": "V2 Everyday Backpack 20L",
+   "products": [
+    "V2 Everyday Backpack 20L"
+   ],
+   "category": "Bags & Luggage",
+   "appearances": [
+    {
+     "start_s": 3,
+     "end_s": 38,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Peak Design 20L backpack shown",
+     "basis": "design",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 3,
+       "box": [
+        189,
+        79,
+        786,
+        335
+       ]
+      },
+      {
+       "t": 5,
+       "box": [
+        214,
+        82,
+        792,
+        332
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 39,
+     "end_s": 49,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Peak Design logo and text on screen",
+     "basis": "text",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 39,
+       "box": [
+        257,
+        180,
+        770,
+        319
+       ]
+      },
+      {
+       "t": 42,
+       "box": [
+        277,
+        608,
+        410,
+        895
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 39,
+     "end_s": 54,
+     "channel": "audio",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Host mentions 'Peak Design everyday carry 20 Liter'",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": [
+    {
+     "t": 3,
+     "box": [
+      189,
+      79,
+      786,
+      335
+     ]
+    },
+    {
+     "t": 5,
+     "box": [
+      214,
+      82,
+      792,
+      332
+     ]
+    },
+    {
+     "t": 39,
+     "box": [
+      257,
+      180,
+      770,
+      319
+     ]
+    },
+    {
+     "t": 42,
+     "box": [
+      277,
+      608,
+      410,
+      895
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "V2 Everyday Backpack 20L",
+     "url": "https://amzn.to/3qWv0nc"
+    }
+   ],
+   "link": "https://amzn.to/3qWv0nc",
+   "model_from_description": true
+  },
+  {
+   "brand": "Apple",
+   "product": "MacBook Pro 16\" M1 Max",
+   "products": [
+    "MacBook Pro 16\" M1 Max"
+   ],
+   "category": "Electronics",
+   "appearances": [
+    {
+     "start_s": 99,
+     "end_s": 107,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "MacBook Pro 16 inch held and shown",
+     "basis": "design",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 99,
+       "box": [
+        631,
+        235,
+        936,
+        439
+       ]
+      },
+      {
+       "t": 102,
+       "box": [
+        664,
+        495,
+        966,
+        755
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 101,
+     "end_s": 106,
+     "channel": "audio",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Host says '16 inch M1 Max MacBook Pro'",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 162,
+     "end_s": 178,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "AirPods Max shown and worn",
+     "basis": "design",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 164,
+       "box": [
+        538,
+        622,
+        762,
+        737
+       ]
+      },
+      {
+       "t": 171,
+       "box": [
+        239,
+        613,
+        629,
+        770
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 164,
+     "end_s": 173,
+     "channel": "audio",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Host mentions AirPods Max",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 476,
+     "end_s": 494,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Apple logo on back of iPhone 13 Pro",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 476,
+       "box": [
+        587,
+        245,
+        977,
+        545
+       ]
+      },
+      {
+       "t": 491,
+       "box": [
+        521,
+        226,
+        963,
+        584
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 477,
+     "end_s": 482,
+     "channel": "audio",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Host mentions iPhone 13 Pro",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": [
+    {
+     "t": 99,
+     "box": [
+      631,
+      235,
+      936,
+      439
+     ]
+    },
+    {
+     "t": 102,
+     "box": [
+      664,
+      495,
+      966,
+      755
+     ]
+    },
+    {
+     "t": 164,
+     "box": [
+      538,
+      622,
+      762,
+      737
+     ]
+    },
+    {
+     "t": 171,
+     "box": [
+      239,
+      613,
+      629,
+      770
+     ]
+    },
+    {
+     "t": 476,
+     "box": [
+      587,
+      245,
+      977,
+      545
+     ]
+    },
+    {
+     "t": 491,
+     "box": [
+      521,
+      226,
+      963,
+      584
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "MacBook Pro 16\" M1 Max",
+     "url": "https://amzn.to/3HIIwRT"
+    }
+   ],
+   "link": "https://amzn.to/3HIIwRT",
+   "model_from_description": true
+  },
+  {
+   "brand": "Canon",
+   "product": "EOS R5",
+   "products": [
+    "EOS R5"
+   ],
+   "category": "Cameras & Optics",
+   "appearances": [
+    {
+     "start_s": 228,
+     "end_s": 253,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Canon logo on camera lens hood",
+     "basis": "text",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 229,
+       "box": [
+        512,
+        237,
+        786,
+        508
+       ]
+      },
+      {
+       "t": 246,
+       "box": [
+        504,
+        237,
+        788,
+        513
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 232,
+     "end_s": 235,
+     "channel": "audio",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Host says 'Canon R5'",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": [
+    {
+     "t": 229,
+     "box": [
+      512,
+      237,
+      786,
+      508
+     ]
+    },
+    {
+     "t": 246,
+     "box": [
+      504,
+      237,
+      788,
+      513
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "EOS R5",
+     "url": "https://amzn.to/3F8gePb"
+    }
+   ],
+   "link": "https://amzn.to/3F8gePb",
+   "model_from_description": true
+  },
+  {
+   "brand": "Trove",
+   "product": "Slim Wallet",
+   "products": [
+    "Slim Wallet"
+   ],
+   "category": "Wallets & Card Cases",
+   "appearances": [
+    {
+     "start_s": 401,
+     "end_s": 425,
+     "channel": "visual",
+     "size": "small",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Trove logo on wallet",
+     "basis": "text",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 401,
+       "box": [
+        504,
+        245,
+        804,
+        532
+       ]
+      },
+      {
+       "t": 421,
+       "box": [
+        512,
+        237,
+        808,
+        532
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 407,
+     "end_s": 410,
+     "channel": "audio",
+     "size": "small",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Host calls it a 'Trove wallet'",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": [
+    {
+     "t": 401,
+     "box": [
+      504,
+      245,
+      804,
+      532
+     ]
+    },
+    {
+     "t": 421,
+     "box": [
+      512,
+      237,
+      808,
+      532
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "Slim Wallet",
+     "url": "https://www.trove.cc"
+    }
+   ],
+   "link": "https://www.trove.cc",
+   "model_from_description": true
+  },
+  {
+   "brand": "Realme",
+   "product": "Mini SuperDart (50W)",
+   "products": [
+    "Mini SuperDart (50W)"
+   ],
+   "category": "Electronics Accessories",
+   "appearances": [
+    {
+     "start_s": 305,
+     "end_s": 323,
+     "channel": "visual",
+     "size": "small",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Realme mini charger shown in hand",
+     "basis": "design",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 305,
+       "box": [
+        504,
+        222,
+        691,
+        332
+       ]
+      },
+      {
+       "t": 313,
+       "box": [
+        272,
+        236,
+        762,
+        755
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 306,
+     "end_s": 315,
+     "channel": "audio",
+     "size": "small",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Host mentions Realme 50W slim charger",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": [
+    {
+     "t": 305,
+     "box": [
+      504,
+      222,
+      691,
+      332
+     ]
+    },
+    {
+     "t": 313,
+     "box": [
+      272,
+      236,
+      762,
+      755
+     ]
+    }
+   ]
+  },
+  {
+   "brand": "Opal",
+   "product": "C1 Webcam",
+   "products": [
+    "C1 Webcam"
+   ],
+   "category": "Electronics",
+   "appearances": [
+    {
+     "start_s": 193,
+     "end_s": 209,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Opal C1 written on webcam device",
+     "basis": "text",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 195,
+       "box": [
+        538,
+        629,
+        680,
+        725
+       ]
+      },
+      {
+       "t": 204,
+       "box": [
+        207,
+        206,
+        608,
+        804
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 194,
+     "end_s": 200,
+     "channel": "audio",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Host says 'Opal C1'",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": [
+    {
+     "t": 195,
+     "box": [
+      538,
+      629,
+      680,
+      725
+     ]
+    },
+    {
+     "t": 204,
+     "box": [
+      207,
+      206,
+      608,
+      804
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "C1 Webcam",
+     "url": "https://opalcamera.com"
+    }
+   ],
+   "link": "https://opalcamera.com",
+   "model_from_description": true
+  },
+  {
+   "brand": "Google",
+   "product": "Pixel 6 Pro",
+   "products": [
+    "Pixel 6 Pro"
+   ],
+   "category": "Smartphones",
+   "appearances": [
+    {
+     "start_s": 496,
+     "end_s": 500,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Google G logo on Pixel 6 Pro back",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 496,
+       "box": [
+        538,
+        280,
+        940,
+        570
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 497,
+     "end_s": 500,
+     "channel": "audio",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Host mentions Pixel 6 Pro",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": [
+    {
+     "t": 496,
+     "box": [
+      538,
+      280,
+      940,
+      570
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "Pixel 6 Pro",
+     "url": "https://amzn.to/31AC7Ja"
+    }
+   ],
+   "link": "https://amzn.to/31AC7Ja",
+   "model_from_description": true
+  }
+ ],
+ "unidentified": [],
+ "disclosures": [
+  {
+   "time_s": 196,
+   "kind": "verbal_investor_disclosure",
+   "text": "Disclaimer, I'm an investor in this company"
+  }
+ ],
+ "paid": {
+  "looks_like_paid_promotion": false,
+  "reasoning": "The creator reviews his own personal everyday carry tech items. While affiliate links are provided in the description, the video itself presents an unsponsored showcase of his real setup, including a personal investor disclosure for one item."
+ },
+ "authenticity": [],
+ "source": {
+  "engine": "gemini",
+  "models": [
+   "gemini-3.6-flash"
+  ],
+  "analyzed_at": "2026-11-21",
+  "usage": [
+   {
+    "call": "timeline",
+    "model": "gemini-3.6-flash",
+    "prompt": 69840,
+    "output": 3359,
+    "thoughts": 0,
+    "total": 73199
+   }
+  ],
+  "note": "MKBHD-style: every product shown, spoken about and listed with model + link in the description; re-analysed 21 Nov with the description as evidence"
+ }
+}

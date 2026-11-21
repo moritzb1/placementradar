@@ -35,8 +35,8 @@
  * Long requests: a video analysis takes 1.5–5 min. The response is opened immediately as an SSE stream and a
  * heartbeat is sent every 5 s, so no proxy closes the idle connection (test G, EVALUATION.md).
  */
-import { VIDEO_MODELS, FRAME_MODELS, TIMELINE_PROMPT, TIMELINE_SCHEMA, AUTHENTICITY_SCHEMA, FRAME_PROMPT, FRAME_SCHEMA,
-  CLOSER_PROMPT, CLOSER_SCHEMA, authenticityPrompt, geminiBody } from "./public/js/shared/prompts.js";
+import { VIDEO_MODELS, FRAME_MODELS, TIMELINE_SCHEMA, AUTHENTICITY_SCHEMA, FRAME_PROMPT, FRAME_SCHEMA,
+  CLOSER_PROMPT, CLOSER_SCHEMA, authenticityPrompt, timelinePrompt, geminiBody } from "./public/js/shared/prompts.js";
 import { normalizeAnalysis, normalizeCloser, promotedCandidates } from "./public/js/shared/normalize.js";
 
 const API = "https://generativelanguage.googleapis.com/v1beta";
@@ -423,7 +423,8 @@ async function analyze(request, env, ctx) {
     if (meta.duration_s && meta.duration_s > Number(env.MAX_VIDEO_S || 1200)) throw new ApiError("video_too_long");
 
     await send("stage", { id: "timeline" });
-    const tl = await gemini(env, models, geminiBody({ video: v, prompt: TIMELINE_PROMPT, schema: TIMELINE_SCHEMA }),
+    // title + description go into the same request as marked data (exact models, product links; prompts.js timelinePrompt)
+    const tl = await gemini(env, models, geminiBody({ video: v, prompt: timelinePrompt(meta), schema: TIMELINE_SCHEMA }),
       (ev, data) => send(ev, data));
 
     await send("stage", { id: "authenticity" });

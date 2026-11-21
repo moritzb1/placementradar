@@ -1,0 +1,1357 @@
+{
+ "video": {
+  "id": "y1LUkfpTtu0",
+  "title": "The Best Cheap Espresso Setup (£250 Budget)",
+  "channel": "James Hoffmann",
+  "views": 3644684,
+  "duration_s": 1151,
+  "upload_date": "2021-03-09",
+  "description": "Become smarter in 5 minutes by signing up for free today: http://cen.yt/mbjameshoffmann3 - Thanks to Morning Brew for sponsoring today’s video.\nCoffee Giveaway has now ended.\n\nLinks to kit: \nShades of Coffee OPV Kit: http://bit.ly/30sVf7H\neBay affiliate links:\nGaggia Classic*: http://ebay.us/IonSTx\nIberital MC-2*: https://ebay.us/VY9Aqf\nSage Grinder*: https://ebay.us/J35d96\n58mm Tamper*: https://ebay.us/RIsanW\n\nCoffee Scales: https://geni.us/cheapcoffeescales\n\nLinks:\n\nJoin my newsletter The Drip Feed here: https://thedripfeed.coffee/\n\nPatreon: https://www.patreon.com/jameshoffmann\nLimited Edition Merch: https://geni.us/TensHundredsThousands\nInstagram: https://www.instagram.com/jimseven\nTwitter: https://www.twitter.com/jimseven\n\nMy Books:\nHow to Make The Best Coffee At Home*: https://geni.us/howtomakethebestcoffee\nThe World Atlas of Coffee*: http://geni.us/atlasofcoffee\nThe World Atlas of Coffee Audiobook*: https://bit.ly/worldatlasofcoffeeaudio\nThe Best of Jimseven: https://geni.us/bestofjimseven\n\nThings I use and like:\nMy glasses: http://bit.ly/boldlondon\nMy hair product of choice*: https://geni.us/forthehair\n(*Affiliate links which may earn us a commission)",
+  "source": "watch:200:OK:views+duration_s+description"
+ },
+ "brands": [
+  {
+   "brand": "Gaggia",
+   "product": "Gaggia Classic",
+   "products": [
+    "Gaggia Classic"
+   ],
+   "category": "appliances",
+   "appearances": [
+    {
+     "start_s": 81,
+     "end_s": 85,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "Mentions Gaggia Classic",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 189,
+     "end_s": 193,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "Mentions Gaggia Classic",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 214,
+     "end_s": 218,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Gaggia espresso machine",
+     "basis": "design",
+     "confidence": 0.95,
+     "track": [
+      {
+       "t": 214,
+       "box": [
+        662,
+        33,
+        999,
+        321
+       ]
+      },
+      {
+       "t": 216,
+       "box": [
+        662,
+        33,
+        999,
+        321
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 249,
+     "end_s": 254,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Gaggia logo on machine",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 249,
+       "box": [
+        384,
+        178,
+        978,
+        513
+       ]
+      },
+      {
+       "t": 251,
+       "box": [
+        384,
+        178,
+        978,
+        513
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 287,
+     "end_s": 292,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Gaggia logo on machine",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 287,
+       "box": [
+        471,
+        237,
+        988,
+        521
+       ]
+      },
+      {
+       "t": 290,
+       "box": [
+        471,
+        237,
+        988,
+        521
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 423,
+     "end_s": 453,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Gaggia Classic espresso machine on desk",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 423,
+       "box": [
+        474,
+        219,
+        988,
+        522
+       ]
+      },
+      {
+       "t": 426,
+       "box": [
+        474,
+        219,
+        988,
+        522
+       ]
+      },
+      {
+       "t": 429,
+       "box": [
+        474,
+        219,
+        988,
+        522
+       ]
+      },
+      {
+       "t": 432,
+       "box": [
+        474,
+        219,
+        988,
+        522
+       ]
+      },
+      {
+       "t": 436,
+       "box": [
+        474,
+        219,
+        988,
+        522
+       ]
+      },
+      {
+       "t": 439,
+       "box": [
+        474,
+        219,
+        988,
+        522
+       ]
+      },
+      {
+       "t": 443,
+       "box": [
+        474,
+        219,
+        988,
+        522
+       ]
+      },
+      {
+       "t": 447,
+       "box": [
+        474,
+        219,
+        988,
+        522
+       ]
+      },
+      {
+       "t": 450,
+       "box": [
+        474,
+        219,
+        988,
+        522
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 456,
+     "end_s": 534,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Gaggia machine next to speaker",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 456,
+       "box": [
+        468,
+        239,
+        988,
+        526
+       ]
+      },
+      {
+       "t": 460,
+       "box": [
+        468,
+        239,
+        988,
+        526
+       ]
+      },
+      {
+       "t": 465,
+       "box": [
+        468,
+        239,
+        988,
+        526
+       ]
+      },
+      {
+       "t": 470,
+       "box": [
+        468,
+        239,
+        988,
+        526
+       ]
+      },
+      {
+       "t": 475,
+       "box": [
+        468,
+        239,
+        988,
+        526
+       ]
+      },
+      {
+       "t": 480,
+       "box": [
+        468,
+        239,
+        988,
+        526
+       ]
+      },
+      {
+       "t": 485,
+       "box": [
+        468,
+        239,
+        988,
+        526
+       ]
+      },
+      {
+       "t": 490,
+       "box": [
+        468,
+        239,
+        988,
+        526
+       ]
+      },
+      {
+       "t": 495,
+       "box": [
+        468,
+        239,
+        988,
+        526
+       ]
+      },
+      {
+       "t": 500,
+       "box": [
+        468,
+        239,
+        988,
+        526
+       ]
+      },
+      {
+       "t": 505,
+       "box": [
+        468,
+        239,
+        988,
+        526
+       ]
+      },
+      {
+       "t": 510,
+       "box": [
+        468,
+        239,
+        988,
+        526
+       ]
+      }
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "t": 214,
+     "box": [
+      662,
+      33,
+      999,
+      321
+     ]
+    },
+    {
+     "t": 216,
+     "box": [
+      662,
+      33,
+      999,
+      321
+     ]
+    },
+    {
+     "t": 249,
+     "box": [
+      384,
+      178,
+      978,
+      513
+     ]
+    },
+    {
+     "t": 251,
+     "box": [
+      384,
+      178,
+      978,
+      513
+     ]
+    },
+    {
+     "t": 287,
+     "box": [
+      471,
+      237,
+      988,
+      521
+     ]
+    },
+    {
+     "t": 290,
+     "box": [
+      471,
+      237,
+      988,
+      521
+     ]
+    },
+    {
+     "t": 423,
+     "box": [
+      474,
+      219,
+      988,
+      522
+     ]
+    },
+    {
+     "t": 426,
+     "box": [
+      474,
+      219,
+      988,
+      522
+     ]
+    },
+    {
+     "t": 429,
+     "box": [
+      474,
+      219,
+      988,
+      522
+     ]
+    },
+    {
+     "t": 432,
+     "box": [
+      474,
+      219,
+      988,
+      522
+     ]
+    },
+    {
+     "t": 436,
+     "box": [
+      474,
+      219,
+      988,
+      522
+     ]
+    },
+    {
+     "t": 439,
+     "box": [
+      474,
+      219,
+      988,
+      522
+     ]
+    },
+    {
+     "t": 443,
+     "box": [
+      474,
+      219,
+      988,
+      522
+     ]
+    },
+    {
+     "t": 447,
+     "box": [
+      474,
+      219,
+      988,
+      522
+     ]
+    },
+    {
+     "t": 450,
+     "box": [
+      474,
+      219,
+      988,
+      522
+     ]
+    },
+    {
+     "t": 456,
+     "box": [
+      468,
+      239,
+      988,
+      526
+     ]
+    },
+    {
+     "t": 460,
+     "box": [
+      468,
+      239,
+      988,
+      526
+     ]
+    },
+    {
+     "t": 465,
+     "box": [
+      468,
+      239,
+      988,
+      526
+     ]
+    },
+    {
+     "t": 470,
+     "box": [
+      468,
+      239,
+      988,
+      526
+     ]
+    },
+    {
+     "t": 475,
+     "box": [
+      468,
+      239,
+      988,
+      526
+     ]
+    },
+    {
+     "t": 480,
+     "box": [
+      468,
+      239,
+      988,
+      526
+     ]
+    },
+    {
+     "t": 485,
+     "box": [
+      468,
+      239,
+      988,
+      526
+     ]
+    },
+    {
+     "t": 490,
+     "box": [
+      468,
+      239,
+      988,
+      526
+     ]
+    },
+    {
+     "t": 495,
+     "box": [
+      468,
+      239,
+      988,
+      526
+     ]
+    },
+    {
+     "t": 500,
+     "box": [
+      468,
+      239,
+      988,
+      526
+     ]
+    },
+    {
+     "t": 505,
+     "box": [
+      468,
+      239,
+      988,
+      526
+     ]
+    },
+    {
+     "t": 510,
+     "box": [
+      468,
+      239,
+      988,
+      526
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "Gaggia Classic",
+     "url": "http://ebay.us/IonSTx"
+    }
+   ],
+   "link": "http://ebay.us/IonSTx",
+   "model_from_description": true
+  },
+  {
+   "brand": "Iberital",
+   "product": "Iberital MC-2",
+   "products": [
+    "Iberital MC-2"
+   ],
+   "category": "appliances",
+   "appearances": [
+    {
+     "start_s": 164,
+     "end_s": 167,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "Mentions Iberital MC2",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 552,
+     "end_s": 573,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Iberital MC2 coffee grinder",
+     "basis": "design",
+     "confidence": 0.98,
+     "track": [
+      {
+       "t": 553,
+       "box": [
+        447,
+        198,
+        994,
+        451
+       ]
+      },
+      {
+       "t": 556,
+       "box": [
+        447,
+        198,
+        994,
+        451
+       ]
+      },
+      {
+       "t": 559,
+       "box": [
+        447,
+        198,
+        994,
+        451
+       ]
+      },
+      {
+       "t": 563,
+       "box": [
+        447,
+        198,
+        994,
+        451
+       ]
+      },
+      {
+       "t": 567,
+       "box": [
+        447,
+        198,
+        994,
+        451
+       ]
+      },
+      {
+       "t": 570,
+       "box": [
+        447,
+        198,
+        994,
+        451
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 685,
+     "end_s": 696,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Iberital MC2 grinder body",
+     "basis": "design",
+     "confidence": 0.95,
+     "track": [
+      {
+       "t": 685,
+       "box": [
+        448,
+        203,
+        990,
+        461
+       ]
+      },
+      {
+       "t": 688,
+       "box": [
+        448,
+        203,
+        990,
+        461
+       ]
+      },
+      {
+       "t": 692,
+       "box": [
+        448,
+        203,
+        990,
+        461
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 860,
+     "end_s": 864,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "Mentions Iberital MC2",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": [
+    {
+     "t": 553,
+     "box": [
+      447,
+      198,
+      994,
+      451
+     ]
+    },
+    {
+     "t": 556,
+     "box": [
+      447,
+      198,
+      994,
+      451
+     ]
+    },
+    {
+     "t": 559,
+     "box": [
+      447,
+      198,
+      994,
+      451
+     ]
+    },
+    {
+     "t": 563,
+     "box": [
+      447,
+      198,
+      994,
+      451
+     ]
+    },
+    {
+     "t": 567,
+     "box": [
+      447,
+      198,
+      994,
+      451
+     ]
+    },
+    {
+     "t": 570,
+     "box": [
+      447,
+      198,
+      994,
+      451
+     ]
+    },
+    {
+     "t": 685,
+     "box": [
+      448,
+      203,
+      990,
+      461
+     ]
+    },
+    {
+     "t": 688,
+     "box": [
+      448,
+      203,
+      990,
+      461
+     ]
+    },
+    {
+     "t": 692,
+     "box": [
+      448,
+      203,
+      990,
+      461
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "Iberital MC-2",
+     "url": "https://ebay.us/VY9Aqf"
+    }
+   ],
+   "link": "https://ebay.us/VY9Aqf",
+   "model_from_description": true
+  },
+  {
+   "brand": "Pullman",
+   "product": "Pullman Basket",
+   "products": [
+    "Pullman Basket"
+   ],
+   "category": "tableware",
+   "appearances": [
+    {
+     "start_s": 602,
+     "end_s": 615,
+     "channel": "visual",
+     "size": "small",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Pullman box held by speaker",
+     "basis": "logo",
+     "confidence": 0.95,
+     "track": [
+      {
+       "t": 602,
+       "box": [
+        662,
+        574,
+        829,
+        663
+       ]
+      },
+      {
+       "t": 605,
+       "box": [
+        662,
+        574,
+        829,
+        663
+       ]
+      },
+      {
+       "t": 608,
+       "box": [
+        662,
+        574,
+        829,
+        663
+       ]
+      },
+      {
+       "t": 612,
+       "box": [
+        662,
+        574,
+        829,
+        663
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 613,
+     "end_s": 616,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "Mentions Pullman basket",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": [
+    {
+     "t": 602,
+     "box": [
+      662,
+      574,
+      829,
+      663
+     ]
+    },
+    {
+     "t": 605,
+     "box": [
+      662,
+      574,
+      829,
+      663
+     ]
+    },
+    {
+     "t": 608,
+     "box": [
+      662,
+      574,
+      829,
+      663
+     ]
+    },
+    {
+     "t": 612,
+     "box": [
+      662,
+      574,
+      829,
+      663
+     ]
+    }
+   ]
+  },
+  {
+   "brand": "Morning Brew",
+   "product": "Morning Brew Newsletter",
+   "products": [
+    "Morning Brew Newsletter"
+   ],
+   "category": "publication",
+   "appearances": [
+    {
+     "start_s": 774,
+     "end_s": 777,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Morning Brew sponsor title card",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 774,
+       "box": [
+        390,
+        0,
+        775,
+        781
+       ]
+      },
+      {
+       "t": 776,
+       "box": [
+        390,
+        0,
+        775,
+        781
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 775,
+     "end_s": 778,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "Mentions Morning Brew sponsorship",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 792,
+     "end_s": 800,
+     "channel": "visual",
+     "size": "large",
+     "position": "edge",
+     "in_use": false,
+     "evidence": "Morning Brew newsletter screenshot",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 792,
+       "box": [
+        201,
+        80,
+        810,
+        482
+       ]
+      },
+      {
+       "t": 796,
+       "box": [
+        201,
+        80,
+        810,
+        482
+       ]
+      }
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "t": 774,
+     "box": [
+      390,
+      0,
+      775,
+      781
+     ]
+    },
+    {
+     "t": 776,
+     "box": [
+      390,
+      0,
+      775,
+      781
+     ]
+    },
+    {
+     "t": 792,
+     "box": [
+      201,
+      80,
+      810,
+      482
+     ]
+    },
+    {
+     "t": 796,
+     "box": [
+      201,
+      80,
+      810,
+      482
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "Morning Brew Newsletter",
+     "url": "http://cen.yt/mbjameshoffmann3"
+    }
+   ],
+   "link": "http://cen.yt/mbjameshoffmann3"
+  },
+  {
+   "brand": "Sage",
+   "product": "Sage Grinder",
+   "products": [
+    "Sage Grinder"
+   ],
+   "category": "appliances",
+   "appearances": [
+    {
+     "start_s": 139,
+     "end_s": 142,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "Mentions Sage or Breville grinders",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 833,
+     "end_s": 836,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "Mentions Sage knock box",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 844,
+     "end_s": 854,
+     "channel": "visual",
+     "size": "medium",
+     "position": "edge",
+     "in_use": true,
+     "evidence": "Sage/Breville Smart Grinder Pro next to other grinder",
+     "basis": "design",
+     "confidence": 0.95,
+     "track": [
+      {
+       "t": 845,
+       "box": [
+        643,
+        764,
+        997,
+        953
+       ]
+      },
+      {
+       "t": 849,
+       "box": [
+        643,
+        764,
+        997,
+        953
+       ]
+      }
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "t": 845,
+     "box": [
+      643,
+      764,
+      997,
+      953
+     ]
+    },
+    {
+     "t": 849,
+     "box": [
+      643,
+      764,
+      997,
+      953
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "Sage Grinder",
+     "url": "https://ebay.us/J35d96"
+    }
+   ],
+   "link": "https://ebay.us/J35d96",
+   "model_from_description": true
+  }
+ ],
+ "unidentified": [],
+ "disclosures": [
+  {
+   "time_s": 820,
+   "kind": "sponsor",
+   "text": "Thanks to Morning Brew for sponsoring this video"
+  }
+ ],
+ "paid": {
+  "looks_like_paid_promotion": true,
+  "reasoning": "The video includes a designated sponsor segment for the newsletter Morning Brew, explicitly stated by the creator."
+ },
+ "authenticity": [
+  {
+   "brand": "Gaggia",
+   "product": "Gaggia Classic",
+   "overall": 90,
+   "verdict": "An incredibly detailed and hands-on review where the host buys, disassembles, repairs, and tests the machine transparently.",
+   "sub": {
+    "use_shown": {
+     "score": 95,
+     "time_s": 308,
+     "evidence": "Host disassembles the unit, changes the OPV spring, descales, and pulls a live shot on camera."
+    },
+    "balance": {
+     "score": 88,
+     "time_s": 498,
+     "evidence": "Highlights missing parts from the secondhand purchase, missing 3-way valve in later models, and hard space constraints under the drip tray."
+    },
+    "specificity": {
+     "score": 92,
+     "time_s": 348,
+     "evidence": "Explains internal component differences, 3-way solenoid valve mechanics, and OPV spring pressure adjustments in detail."
+    },
+    "delivery": {
+     "score": 95,
+     "time_s": 456,
+     "evidence": "Speaks entirely unscripted, natural problem-solving process throughout the video."
+    },
+    "body_language": {
+     "score": 90,
+     "time_s": 336,
+     "evidence": "Very hands-on camera interactions, holding up components and showing exact internal defects directly."
+    },
+    "sales_pressure": {
+     "score": 100,
+     "time_s": 192,
+     "evidence": "No sales pitch; bought secondhand on eBay with his own money."
+    }
+   }
+  },
+  {
+   "brand": "Iberital",
+   "product": "Iberital MC-2",
+   "overall": 85,
+   "verdict": "Honest assessment of a budget espresso grinder, weighing its great grind quality against usability and messiness flaws.",
+   "sub": {
+    "use_shown": {
+     "score": 90,
+     "time_s": 718,
+     "evidence": "Unboxes, takes apart burrs to inspect cleanliness/sharpness, and grinds espresso live on camera."
+    },
+    "balance": {
+     "score": 92,
+     "time_s": 907,
+     "evidence": "Notes major downsides including clumping, retention, messy output, and clunky timer adjustment screw."
+    },
+    "specificity": {
+     "score": 88,
+     "time_s": 702,
+     "evidence": "Discusses worm gear stepless adjustment mechanism, small conical burr set performance, and reverse-thread nut details."
+    },
+    "delivery": {
+     "score": 90,
+     "time_s": 907,
+     "evidence": "Extremely conversational tone, candid reaction to clumping and usability quirks."
+    },
+    "body_language": {
+     "score": 88,
+     "time_s": 719,
+     "evidence": "Shows close-ups of burrs and sweeper unit directly to camera."
+    },
+    "sales_pressure": {
+     "score": 100,
+     "time_s": 555,
+     "evidence": "Not sponsored or affiliated; purchased used to test a budget constraint."
+    }
+   }
+  },
+  {
+   "brand": "Pullman",
+   "product": "Pullman Basket",
+   "overall": 82,
+   "verdict": "Clear explanation of why an upgraded basket was chosen and how it affects extraction performance.",
+   "sub": {
+    "use_shown": {
+     "score": 85,
+     "time_s": 932,
+     "evidence": "Installs into portafilter and pulls shot with it."
+    },
+    "balance": {
+     "score": 80,
+     "time_s": 604,
+     "evidence": "Questions whether spending money on an upgraded basket fits a strict budget, but notes benefits over stock."
+    },
+    "specificity": {
+     "score": 85,
+     "time_s": 615,
+     "evidence": "Specifies exact capacity (17-19g) and diameter (58mm) vs VST alternatives."
+    },
+    "delivery": {
+     "score": 90,
+     "time_s": 607,
+     "evidence": "Spoken naturally as part of setup breakdown."
+    },
+    "body_language": {
+     "score": 85,
+     "time_s": 622,
+     "evidence": "Unwraps and displays product directly to camera."
+    },
+    "sales_pressure": {
+     "score": 100,
+     "time_s": 615,
+     "evidence": "No link push or promo code; self-purchased accessory."
+    }
+   }
+  },
+  {
+   "brand": "Sage",
+   "product": "Sage Grinder",
+   "overall": 80,
+   "verdict": "Fair comparison pointing out that while it exceeded the budget, it offers superior usability over cheaper alternatives.",
+   "sub": {
+    "use_shown": {
+     "score": 70,
+     "time_s": 846,
+     "evidence": "Shown on counter next to setup as comparison item."
+    },
+    "balance": {
+     "score": 90,
+     "time_s": 1035,
+     "evidence": "Admits it went over budget (£135 vs £100), but admits it is more intuitive and user-friendly than the Iberital."
+    },
+    "specificity": {
+     "score": 80,
+     "time_s": 852,
+     "evidence": "Compares pricing (£135 secondhand vs £230 RRP) and feature set to Iberital."
+    },
+    "delivery": {
+     "score": 88,
+     "time_s": 1048,
+     "evidence": "Authentic opinion on preference between the two options."
+    },
+    "body_language": {
+     "score": 82,
+     "time_s": 846,
+     "evidence": "Gestures towards the machine on the counter during comparative breakdown."
+    },
+    "sales_pressure": {
+     "score": 100,
+     "time_s": 849,
+     "evidence": "No pressure or affiliate promotion."
+    }
+   }
+  }
+ ],
+ "source": {
+  "engine": "gemini",
+  "models": [
+   "gemini-3.8-flash",
+   "gemini-3.5-flash"
+  ],
+  "analyzed_at": "2026-11-21",
+  "usage": [
+   {
+    "call": "timeline",
+    "model": "gemini-3.8-flash",
+    "prompt": 105858,
+    "output": 3272,
+    "thoughts": 0,
+    "total": 109130
+   },
+   {
+    "call": "authenticity",
+    "model": "gemini-3.5-flash",
+    "prompt": 104993,
+    "output": 1558,
+    "thoughts": 0,
+    "total": 106551
+   }
+  ],
+  "note": "Food: espresso kit with eBay affiliate links; sponsor (Morning Brew) only named at 13:40 -> weak disclosure"
+ }
+}

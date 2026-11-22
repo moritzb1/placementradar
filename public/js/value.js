@@ -10,9 +10,15 @@
  *   - a product in the picture is not a 30-second ad spot (the viewer watches the video, not the brand).
  *
  * 1) Weighted exposure seconds per appearance
- *      visual:  duration × size weight × position weight × use bonus
+ *      visual:  duration × size weight × position weight × use bonus × background factor
  *      text:    duration × 0.6           (on-screen text / caption)
  *      audio:   duration × 0.5           (brand is mentioned in speech)
+ *
+ *    Background factor (since 22 Nov, EVALUATION.md test W): a product that only lies or stands in the picture
+ *    (desk, shelf – `background: true`) counts 0.5×. Size and position already discount small items at the edge, but
+ *    they describe where the product is, not whether anyone looks at it: a phone lying in the centre of the desk for
+ *    3 minutes is "medium, center" and would otherwise count like a phone being shown. Without the factor, counting
+ *    desk products for their whole time in the picture (the re-check) would inflate the value of desk-setup videos.
  *
  * 2) Audience retention: share of the counted viewers still watching at time t (simple linear curve)
  *      retention(t) = start − (start − end) × t / duration
@@ -37,6 +43,7 @@ export const WEIGHTS = {
   size: { small: 0.4, medium: 0.7, large: 1.0, null: 0.6 },
   position: { center: 1.0, edge: 0.6, null: 0.8 },
   inUse: 1.25,
+  background: 0.5, // lying / standing in the picture, not the focus
   text: 0.6,
   audio: 0.5,
 };
@@ -59,7 +66,7 @@ export function retention(t, duration, sc = SCENARIOS.mid) {
 /** Weighted seconds of one appearance (before retention and attention). */
 export function appearanceWeight(a) {
   const d = Math.max(0, a.end_s - a.start_s);
-  if (a.channel === "visual") return d * (WEIGHTS.size[a.size] ?? WEIGHTS.size.null) * (WEIGHTS.position[a.position] ?? WEIGHTS.position.null) * (a.in_use ? WEIGHTS.inUse : 1);
+  if (a.channel === "visual") return d * (WEIGHTS.size[a.size] ?? WEIGHTS.size.null) * (WEIGHTS.position[a.position] ?? WEIGHTS.position.null) * (a.in_use ? WEIGHTS.inUse : 1) * (a.background ? WEIGHTS.background : 1);
   return d * (a.channel === "text" ? WEIGHTS.text : WEIGHTS.audio);
 }
 

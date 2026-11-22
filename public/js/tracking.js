@@ -77,8 +77,10 @@ function trackables(data) {
     products: u.guess ? [`(possible: ${u.guess})`] : [], appearances: u.appearances, frames: [] }))];
 }
 
-/** The model shown in the label: the one named in this appearance's evidence, else the brand's first model. */
+/** The model shown in the label: the appearance's own product (analyses since 22 Nov), else the one named in its
+ *  evidence, else the brand's first model. */
 function modelFor(b, ap) {
+  if (ap.product) return ap.product;
   const list = b.products?.length ? b.products : b.product ? [b.product] : [];
   const ev = (ap.evidence || "").toLowerCase();
   const hit = list.find((p) => ev.includes(p.toLowerCase()) || ev.includes(p.toLowerCase().replace(b.brand.toLowerCase(), "").trim()));

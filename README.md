@@ -110,7 +110,7 @@ flowchart LR
   end
   U[YouTube link] --> W
   W -->|metadata| YT[(YouTube Data API<br/>title, views, length, description)]
-  W -->|1 · brand timeline<br/>2 · authenticity| G
+  W -->|1 · brand timeline<br/>1a · re-check positions<br/>2 · authenticity| G
   G --> N[normalize.js<br/>data model]
   YT --> N
   N --> V[value.js · media value]
@@ -128,7 +128,7 @@ flowchart LR
   R --> UI2
 ```
 
-**Engine 1 – Gemini (cloud).** Understands the whole video, image *and* audio, directly from the YouTube URL (no download). Two calls per video: (1) brand timeline incl. disclosures and rough positions – with the video's title and description as marked data, (2) authenticity of the promoted products. Splitting the calls was necessary: one combined call made smaller models drop most brands (EVALUATION.md, test E). A model chain (3.8 Flash → 3.6 → 3.5 → 3 Flash Preview) carries an analysis through Google's frequent "high demand" errors.
+**Engine 1 – Gemini (cloud).** Understands the whole video, image *and* audio, directly from the YouTube URL (no download). Up to three calls per video: (1) brand timeline incl. disclosures and rough positions – with the video's title and description as marked data, (1a, since 22 Nov) a "re-check" that gets the list of found products and asks only *where* each one is visible, also while it just lies on the desk (optional – if the quota is used up, call 1 stands alone), (2) authenticity of the promoted products. Visual appearances of the same product that overlap or are at most 5 s apart are then joined into one (`normalize.js joinAppearances`). Splitting the calls was necessary: one combined call made smaller models drop most brands (EVALUATION.md, test E). A model chain (3.8 Flash → 3.6 → 3.5 → 3 Flash Preview) carries an analysis through Google's frequent "high demand" errors.
 
 **Engine 2 – on-device vision (browser).** For the live scanner: a packaging finder (YOLOE – an open-vocabulary YOLO told "snack bag, jar, tub, box …" before export; YOLO26 from unit 3 as fallback), barcode scanning with a lookup in Open Food Facts, and text recognition (PaddleOCR) matched against a brand list built from Open Food Facts. Runs with ONNX Runtime Web (WebGPU, WASM fallback), costs no API quota and keeps camera images on the device.
 
@@ -137,14 +137,14 @@ flowchart LR
 Every result in the UI shows which engine produced it ("Text recognition · on device", "Own model · on device", "Gemini").
 
 ### Why not just Gemini for everything?
-The free Gemini tier allows ~20 requests per day per model family (test results in EVALUATION.md). That is plenty for analysing videos (2 requests each, results cached for every visitor), but far too little for a live camera (1 frame every 2 s would exhaust it in 40 seconds). Hence the on-device engines for live recognition – and Gemini only as the last resort.
+The free Gemini tier allows ~20 requests per day per model family (test results in EVALUATION.md). That is plenty for analysing videos (up to 3 requests each – timeline, re-check, authenticity – results cached for every visitor), but far too little for a live camera (1 frame every 2 s would exhaust it in 40 seconds). Hence the on-device engines for live recognition – and Gemini only as the last resort.
 
 ## 4. How the numbers are calculated
 
 **Media value = equivalent ad cost (earned media value)** (`public/js/value.js`) – *what a brand would pay for comparable reach as regular video ads, not what the creator earned.* It follows sponsorship measurement in sports media: exposure is weighted, not just counted, and the result is a range.
 
 ```
-weighted seconds  = Σ visible × size weight × position weight × (in use ? 1.25 : 1)
+weighted seconds  = Σ visible × size weight × position weight × (in use ? 1.25 : 1) × (only lying in the picture ? 0.5 : 1)
                   + spoken seconds × 0.5 + on-screen-text seconds × 0.6
 audience(t)       = start − (start − end) × t / video length         (share of viewers still watching)
 retained seconds  = Σ weighted seconds of each appearance × audience(middle of the appearance)
@@ -176,13 +176,15 @@ One JSON file per analysed video (`public/data/<video-id>.json`):
                 "links": [{ "product", "url" }], "link", "model_from_description",   // from the description (since 21 Nov)
                 "appearances": [{ "start_s", "end_s", "channel": "visual|audio|text", "size", "position", "in_use", "evidence",
                                   "basis": "logo|text|speech|design", "confidence",
+                                  "product", "background"?, "recheck"?, "parts"?,   // since 22 Nov: model, lying in the picture, from call 1a, joined pieces
                                   "track": [{ "t", "box": [ymin, xmin, ymax, xmax] }] }],   // 0–1000, keyframes every ~2–3 s (visual only)
                 "frames": [{ "t", "box" }] }],      // all positions of the brand; analyses before 21 Nov: one per appearance
   "unidentified": [{ "category", "description", "guess"?, "appearances": [{ "start_s", "end_s", "track"?, "closer"? }] }],  // brand "unknown"
   "disclosures":  [{ "time_s", "kind", "text" }],
   "paid":         { "looks_like_paid_promotion", "reasoning" },
   "authenticity": [{ "brand", "product", "overall", "verdict", "sub": { "use_shown": { "score", "time_s", "evidence" }, … } }],
-  "source":       { "engine": "gemini", "models": [], "analyzed_at", "usage": [{ "call", "model", "prompt", "output", "total" }] }
+  "source":       { "engine": "gemini", "models": [], "analyzed_at", "usage": [{ "call", "model", "prompt", "output", "total" }],
+                    "recheck": { "model", "products", "spans", "visual_raw", "visual_before", "visual_after", "seconds_before", "seconds_after" } | { "skipped": true } }
 }
 ```
 

@@ -257,6 +257,7 @@ export function parseYouTubeId(s) {
 const STAGES = [
   { id: "meta", label: "Reading video details" },
   { id: "timeline", label: "Watching the video – brands, speech, on-screen text" },
+  { id: "recheck", label: "Re-checking where each product appears" }, // call 1a (since 22 Nov): products lying on the desk
   { id: "authenticity", label: "Rating how genuine the recommendations feel" },
   { id: "done", label: "Calculating media value and disclosure check" },
 ];
@@ -310,7 +311,7 @@ async function renderAnalyze(id) {
       el.className = `step ${s.id === sid ? "on" : done ? "done" : ""}`;
       el.firstElementChild.outerHTML = s.id === sid ? `<span class="spinner"></span>` : done ? icon("check") : `<span class="icon"></span>`;
     }
-    const msg = { meta: "Reading title, views and description …", timeline: "Gemini is watching the video …", authenticity: "Gemini is rating the recommendations …", done: "Putting the dashboard together …" }[sid];
+    const msg = { meta: "Reading title, views and description …", timeline: "Gemini is watching the video …", recheck: "Gemini is looking for every product again, also where it only lies in the picture …", authenticity: "Gemini is rating the recommendations …", done: "Putting the dashboard together …" }[sid];
     if (msg) status(msg);
   };
   const fail = (msg) => {
@@ -356,6 +357,7 @@ async function renderAnalyze(id) {
           status(`Google is busy – switching to the next model …`);
           log(`${esc(modelName(data.model))} ${HTTP_WHY[data.status] || `answered HTTP ${data.status}`} after ${data.after_s} s`);
         }
+        if (ev === "note") log(esc(data.text)); // e.g. "re-check skipped" – information, not an error
         if (ev === "joined") { status("This video is already being analysed – waiting for that result …"); log("joined a running analysis (no extra API request)"); }
         if (ev === "error") return fail(data.message || data.error); // worker sends a visitor-friendly message
         if (ev === "result") {
@@ -440,8 +442,10 @@ function mountPlayer(onTime) {
     const said = mentionedAt(t).filter((b) => !hits.includes(b));
     const unid = (state.data.unidentified || []).filter((u) => u.appearances.some((a) => t >= a.start_s - 1 && t <= a.end_s + 1));
     const item = (b, how) => {
-      const link = productLink(b);
-      return `<div class="now-item ${how}" data-b="${esc(b.brand)}">${logoBox(b.brand, "sm")}<div class="ni-text"><b>${esc(b.brand)}</b><span>${esc(b.product || b.category || "")}</span></div>
+      // since 22 Nov each appearance knows its product → name the model(s) that are in the picture at this second
+      const seenNow = how === "seen" ? [...new Set(b.appearances.filter((a) => a.channel === "visual" && a.product && t >= a.start_s - 1 && t <= a.end_s + 1).map((a) => a.product))] : [];
+      const link = productLink(b, seenNow[0] || "");
+      return `<div class="now-item ${how}" data-b="${esc(b.brand)}">${logoBox(b.brand, "sm")}<div class="ni-text"><b>${esc(b.brand)}</b><span>${esc(seenNow.join(" · ") || b.product || b.category || "")}</span></div>
         <a href="${esc(link.url)}" target="_blank" rel="noopener" title="${esc(link.title)}">${link.label}</a></div>`;
     };
     now.querySelector(".now-time").textContent = mmss(t);
@@ -847,7 +851,7 @@ function viewValue() {
           <table class="scen"><thead><tr><th></th><th>CPM</th><th>Audience start → end</th><th>Attention</th><th>Value</th></tr></thead><tbody id="vscen"></tbody></table>
           <div class="formula">value = views / 1000 × CPM × (retained seconds / 30) × attention<br>
             retained seconds = Σ weighted seconds × audience share at that moment<br>
-            weighted seconds = visible × size × position × (in use ? ${WEIGHTS.inUse} : 1) + spoken × ${WEIGHTS.audio} + text × ${WEIGHTS.text}</div>
+            weighted seconds = visible × size × position × (in use ? ${WEIGHTS.inUse} : 1) × (only lying in the picture ? ${WEIGHTS.background} : 1) + spoken × ${WEIGHTS.audio} + text × ${WEIGHTS.text}</div>
           <p class="small muted" style="margin-bottom:0">Audience share falls linearly while the video runs (later moments are seen by fewer people). Attention: a product in the picture is not a 30-second ad spot. Weights: size small ${WEIGHTS.size.small} · medium ${WEIGHTS.size.medium} · large ${WEIGHTS.size.large}; position center ${WEIGHTS.position.center} · edge ${WEIGHTS.position.edge}. All assumptions, adjustable – the method follows sponsorship measurement in sports media.</p>
         </div>
       </div>
@@ -1007,7 +1011,7 @@ function viewReport() {
         </div>
         <h4>Method</h4>
         ${valueFormula(r, v)}
-        <p class="legal">Equivalent ad cost (earned media value): what comparable reach would cost as 30-second video ads – not what the creator earned. Weighted seconds: on screen × size × position (× ${WEIGHTS.inUse} when in use) + spoken × ${WEIGHTS.audio} + on-screen text × ${WEIGHTS.text}; each moment counts only the audience still watching (linear drop-off, low ${Math.round(100 * SCENARIOS.low.retStart)} → ${Math.round(100 * SCENARIOS.low.retEnd)}%, high ${Math.round(100 * SCENARIOS.high.retStart)} → ${Math.round(100 * SCENARIOS.high.retEnd)}%) and an attention factor for "product in the picture" instead of an ad spot. Appearances detected by ${esc([...new Set(d.source?.models || [])].map(modelName).join(" + ") || "Gemini")} from image and audio (analysed ${esc(d.source?.analyzed_at || "")}); times are approximate (±3 s).
+        <p class="legal">Equivalent ad cost (earned media value): what comparable reach would cost as 30-second video ads – not what the creator earned. Weighted seconds: on screen × size × position (× ${WEIGHTS.inUse} when in use, × ${WEIGHTS.background} when it only lies or stands in the picture) + spoken × ${WEIGHTS.audio} + on-screen text × ${WEIGHTS.text}; each moment counts only the audience still watching (linear drop-off, low ${Math.round(100 * SCENARIOS.low.retStart)} → ${Math.round(100 * SCENARIOS.low.retEnd)}%, high ${Math.round(100 * SCENARIOS.high.retStart)} → ${Math.round(100 * SCENARIOS.high.retEnd)}%) and an attention factor for "product in the picture" instead of an ad spot. Appearances detected by ${esc([...new Set(d.source?.models || [])].map(modelName).join(" + ") || "Gemini")} from image and audio (analysed ${esc(d.source?.analyzed_at || "")}); times are approximate (±3 s).
           The disclosure check refers to § 5a (4) UWG and § 22 MStV and is a screening aid, not legal advice. All values are estimates.</p>
       </article>
       <aside class="report-side">

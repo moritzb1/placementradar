@@ -1,7 +1,7 @@
 # Evaluation – feasibility tests before building
 
 Every mechanism was tested on its own before it went into the app ("small tests first, then the whole").
-Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). Dates: 19–21 Nov 2026.
+Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). Dates: 19–22 Nov 2026.
 
 ## At a glance
 | Question | Answer (measured) | Test |
@@ -26,6 +26,7 @@ Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). 
 | Does the video description help? | yes: MKBHD re-analysed with title + description → exact models ("Canon EOS R5", "MacBook Pro 16\" M1 Max") and the right shop link for 6 of 7 brands; 3 new videos: 11 of 17 brands with a matching link (the rest have none in the description), 0 links not in the description | P |
 | Is €176k for MKBHD what he earned? | no – it was an equivalent ad cost and ignored drop-off and attention; now a range €38k – €141k (mid €75k) on the same data; the re-run shown in the app finds more product time (~179 weighted s): €55k – €206k (mid €110k) | P |
 | Do the tracking boxes sit on the product? | not always; Gemini's confidence was 1.0 everywhere, so the app grades boxes by time distance: keyframe video 87 % solid, old one-box analysis 70 % dots | P |
+| Are products lying on the desk found (re-check call + joining)? | partly: MKBHD visual product time 185 → 546 s (run 1) and 71 → 245 s (run 2), 0 false hits in 8 spot checks; but the two runs differ a lot, `background` was never set, run 1 rated every span "large" (value ×2.8) → example data not replaced | W |
 | Does a fresh analysis work online, end to end? | yes: 13-min desk tour, 18 brands, 15 shop links – all verbatim from the description, 0 invented; 14 of 18 exact models from the description; disclosure green; but only ~1 tracking position per appearance | Q |
 | Does a free fallback provider help? | Workers AI (Llama 3.2 Vision) finds main brands, reads slogans as brands → last resort only | S1 |
 
@@ -117,6 +118,38 @@ Checked `/api/usage` first (2 requests used that day). Video: *The ULTIMATE PC G
 | App, online | result page loads from the KV cache (no request), no console errors except the expected 404 of the example lookup (`data/<id>.json`) before the cache |
 
 Reading: the description as evidence works – exact models and links are right and nothing is invented. Keyframe density varies a lot between runs (short appearances, 18 brands in 13 min); boxes stay estimates, Look closer is the way to more positions.
+
+## W – Products lying in the picture: re-check call + joining (22 Nov, local Worker via `wrangler dev`, 4 successful Gemini requests)
+Problem: in the analysis, a product disappeared from "Right now", the boxes and the timeline as soon as it was put down – e.g. MKBHD's backpack stands on the table from 2:00 to 6:30, but the example data has it only for 45 s; at 6:10 the app said "No product at this second" with the backpack filling half the picture (checked in the browser). Cause: the prompt said "if the product leaves the picture, end the appearance there", and Gemini treats a product nobody talks about as background.
+
+Three changes (all in `prompts.js`, `normalize.js`, `worker.js`, `value.js`):
+1. **Prompt rule:** a product lying or standing in the picture is a visual appearance for as long as it is in the picture; new field `background: true`, counted **0.5×** in the media value (size and position say *where* it is, not whether anyone looks at it).
+2. **Joining:** visual appearances of the same product that overlap or are ≤ **5 s** apart become one (Gemini samples 1 frame/s and reports a position every ~4 s, so a shorter gap cannot be told from a missing report). Size, position, use and background come from the longest piece, so a close-up does not upgrade a long background shot.
+3. **Re-check call (1a):** after the timeline, the list of found products goes back to Gemini: "where is each of these visible – also lying on the desk?" Answers refer to the list number (no new brands, no renamed products). Runs through the same model chain, exhausted flags, usage meter and KV cache; if it fails, call 1 stands and the waiting screen only notes "Re-check skipped". +1 request per new video.
+
+Test video: MKBHD *My Everyday Tech: 2022!* (`-pTGc7cIBIA`, 14:19, desk with gadgets). Raw streams and results: `../tests/ergebnisse/w_wiederfinden/`.
+
+| | Example in the app (21 Nov, call 1 only) | Run 1 (new prompt + re-check) | Run 2 (re-check with all ratings required) |
+|---|---|---|---|
+| Models | 3.6 Flash | timeline 3.6 Flash (3.8: 503), re-check 3.6 Flash (3.8: 503) | the same; 3.8 Flash hung 210 s before its 503 |
+| Run time | – | **75 s** (re-check 49 s; authenticity skipped: "not paid") | **263 s** (re-check 30 s) |
+| Tokens | 73k | 73k + 81k | 74k + 73k |
+| Visual appearances (call 1 raw → after joining → after re-check) | 10 | 9 → 8 → **25** | 2 → 2 → **8** |
+| Visual product time (all brands, overlaps once) | 174 s | 185 s → **546 s** | 71 s → **245 s** |
+| Backpack (Peak Design) | 45 s | 315 s (re-check: 7 spans 2:09–6:33) | 51 s (re-check found it nowhere else) |
+| Google Pixel 6 Pro | 4 s | 96 s (10 re-check spans 4:42–14:07) | 3 s |
+| Media value, all brands | €55k – €206k | **€152k – €576k** | €93k – €341k (an Under Armour sweatshirt, 116 s, came from call 1) |
+| `background: true` | – | 0 | 0 |
+| False hits (spot checks in the player) | – | **0 of 8**: backpack at 2:30, 4:30, 6:10; Pixel at 4:44, 9:22, 10:06, 11:15, 13:44 – all really in the picture | not checked (spans sit on the title cards) |
+| Missed | – | the iPhone lying on the desk at 9:22 (call 1 listed Apple only as "MacBook Pro", so the re-check never asked for it) | the backpack on the table, the Pixel in the hand |
+
+Joining alone, on stored data (no request): MKBHD example 10 → 9 visual appearances, 174 → 175 s, value €55k – €206k → €57k – €212k; headphones example `2CqNFIn1AEo` 33 → 32. Small effect – the gaps in old data are long, not short.
+
+Reading:
+- **The re-check finds what call 1 misses** – in run 1 it tripled the product time, and every spot check was a real sighting. Right now now shows the backpack at 6:10 (screenshot check with run 1's data).
+- **But the answers are not stable.** Run 1 left out every optional field: no position, no background, no confidence, everything "large" → the value almost tripled, mostly from "large" ratings that are too high. Fix after run 1: all ratings are required in the re-check schema, plus "a product on a desk in a wide shot is small" and "another model of a listed brand may be named" (for the iPhone case). Run 2 then gave honest sizes (medium/small) but far fewer spans – whether that is the stricter schema or normal run variance (test B: 22 vs. 27 brands) cannot be told from two runs, and the free quota does not allow a series.
+- Gemini never set `background` in 4 requests – the 0.5× factor exists, but has no data yet.
+- Decision: the code goes in (it only adds information, and fails silently); **the example JSON is not replaced** – run 1 would put the MKBHD value at €152k – €576k, with sizes we know are too high, and contradict the slides. A new analysis online uses the re-check from now on.
 
 ## T – Tracking boxes with keyframes (21 Nov, 1 Gemini request)
 Question: can Gemini give enough positions for a box that follows the product while the video plays?

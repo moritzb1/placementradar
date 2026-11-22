@@ -25,6 +25,10 @@ export const FRAME_MODELS = ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite"];
 // Call 1: brand timeline + disclosures (+ keyframe positions for the tracking overlay)
 // Since 21 Nov: one box per appearance was too little for a box that follows the product (EVALUATION.md test T),
 // so Gemini gives keyframes every ~2-3 s; the browser interpolates between them (js/tracking.js).
+// Since 22 Nov: products lying or standing in the picture (desk, shelf) count as visible (EVALUATION.md test W).
+// Before, the prompt said "if the product leaves the picture, end the appearance there", and Gemini treated a phone
+// put down on the desk as "gone" – Right now and the boxes then lost it although it was still in the picture. Such
+// appearances get `background: true`; value.js weights them lower, so a desk full of gadgets does not inflate the value.
 // ---------------------------------------------------------------------------------------------
 export const TIMELINE_PROMPT = `You are a brand-placement analyst. Watch the whole video (image AND audio).
 List every brand or branded product that is visible, shown as on-screen text, or mentioned in speech.
@@ -43,7 +47,12 @@ For each VISUAL appearance also track where the product is in the picture: give 
 (MM:SS) and the product's bounding box box_2d = [ymin, xmin, ymax, xmax], normalized to 0-1000 of the full video frame.
 Put the first keyframe at the start of the appearance, then one about every 2-3 seconds while it stays visible
 (more often when it moves fast, at most 12 per appearance), and the last one near the end. The box must tightly
-enclose the product itself, not the person holding it. If the product leaves the picture, end the appearance there.
+enclose the product itself, not the person holding it.
+A product that is visibly lying or standing in the picture (on a desk or table, on a shelf, in the background) IS a visual
+appearance for as long as it stays in the picture, even if nobody touches, uses or mentions it: list it, set background to
+true and in_use to false, and rate size and position honestly (usually small and/or edge). End an appearance only when the
+product really leaves the picture (camera turns away, cut to another scene, product covered or put away) - not because the
+person stops talking about it or puts it down.
 Report every advertising disclosure you notice (on-screen label such as "Werbung", "Anzeige", "paid promotion",
 "sponsored", "PR sample", or a spoken disclosure) with its MM:SS timestamp and the exact wording.
 Decide whether the video looks like paid or gifted promotion and explain why in one or two sentences.
@@ -95,6 +104,7 @@ export const TIMELINE_SCHEMA = {
         size: { type: "STRING", enum: ["small", "medium", "large"] },
         position: { type: "STRING", enum: ["center", "edge"] },
         in_use: { type: "BOOLEAN" },
+        background: { type: "BOOLEAN", description: "true if the product only lies or stands in the picture (desk, shelf, background) and is not the focus" },
         evidence: { type: "STRING" },
         basis: { type: "STRING", enum: ["logo", "text", "speech", "design"], description: "how the brand was recognised in this appearance" },
         confidence: { type: "NUMBER", description: "0-1" },
@@ -110,6 +120,60 @@ export const TIMELINE_SCHEMA = {
     reasoning: { type: "STRING" },
   },
   required: ["brands", "disclosures", "looks_like_paid_promotion"],
+};
+
+// ---------------------------------------------------------------------------------------------
+// Call 1a, "re-check" (since 22 Nov, worker.js runAnalysis, right after call 1): the whole-video call lists the
+// products well but its appearances have gaps – it reports a product while it is used or talked about and forgets it
+// while it lies on the desk. A second request gets the list of products found in call 1 and asks only WHERE each of
+// them is visible. It may not add brands (the inventory stays the job of call 1), it answers with the list number,
+// so brand names cannot drift; only another model of a listed brand may be named (`model`, e.g. Apple's iPhone lying
+// next to the MacBook that call 1 listed – seen in test W). normalize.js mixes the answer into the timeline and then joins overlapping / close
+// appearances. Costs 1 request per new video; if it fails (quota, overload) the analysis keeps the result of call 1.
+// ---------------------------------------------------------------------------------------------
+export const MAX_RECHECK_ITEMS = 30;
+
+/** items = [{brand, product, category}] in list order; the answer refers to them by `index` (1-based). */
+export const recheckPrompt = (items) => `You are checking a brand-placement analysis of this video. Watch the whole video.
+These products were already found in it:
+${items.map((it, i) => `${i + 1}. ${it.brand}${it.product ? " - " + it.product : ""}${it.category ? " (" + it.category + ")" : ""}`).join("\n")}
+For EACH listed product, find every time span in which it is VISIBLE in the picture - also when it only lies or stands
+somewhere (on a desk or table, on a shelf, in the background), is partly visible, small, at the edge, or not in use.
+A product that stays in the picture is ONE span from the moment it appears until it really leaves the picture
+(camera turns away, cut to another scene, covered or put away); a pause in talking about it does not end the span.
+Do not add brands that are not in the list, and leave out a product you cannot see anywhere. Exception: if you see a
+DIFFERENT model of a listed brand (e.g. the list has the brand's laptop, but its phone lies on the desk), report it under
+that brand's number and write the model in model; otherwise leave model empty.
+For each span give start and end as MM:SS of the full video, size (small/medium/large: how much of the picture the
+product fills - a product lying on a desk in a wide shot is small), position (center/edge), in_use, background (true if
+it only lies or stands there and is not what the video is showing at that moment), basis (logo/text/design),
+confidence 0-1, a short evidence note (what is seen),
+and keyframes (track): time MM:SS and box_2d = [ymin, xmin, ymax, xmax] normalized 0-1000, the first at the start of the
+span, then about every 3 seconds (at most 12 per span), the last near the end. Refer to each product by its list number
+(index). Answer with JSON only.`;
+
+export const RECHECK_SCHEMA = {
+  type: "OBJECT",
+  properties: { items: { type: "ARRAY", items: { type: "OBJECT", properties: {
+    index: { type: "INTEGER", description: "number of the product in the list" },
+    appearances: { type: "ARRAY", items: { type: "OBJECT", properties: {
+      start: { type: "STRING", description: "MM:SS" }, end: { type: "STRING", description: "MM:SS" },
+      size: { type: "STRING", enum: ["small", "medium", "large"] },
+      position: { type: "STRING", enum: ["center", "edge"] },
+      in_use: { type: "BOOLEAN" }, background: { type: "BOOLEAN" },
+      basis: { type: "STRING", enum: ["logo", "text", "design"] },
+      confidence: { type: "NUMBER", description: "0-1" },
+      evidence: { type: "STRING" },
+      model: { type: "STRING", description: "only for a different model of the same brand, else empty" },
+      track: { type: "ARRAY", items: { type: "OBJECT", properties: {
+        time: { type: "STRING", description: "MM:SS" },
+        box_2d: { type: "ARRAY", items: { type: "INTEGER" }, description: "[ymin, xmin, ymax, xmax] 0-1000" },
+      }, required: ["time", "box_2d"] } },
+    // all ratings required: in the first test run (22 Nov) optional fields were simply left out – every span came back
+    // without position, background or confidence and as "large", which tripled the media value (EVALUATION.md test W)
+    }, required: ["start", "end", "size", "position", "in_use", "background", "confidence", "evidence"] } },
+  }, required: ["index", "appearances"] } } },
+  required: ["items"],
 };
 
 // ---------------------------------------------------------------------------------------------

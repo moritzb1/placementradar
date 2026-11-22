@@ -36,8 +36,9 @@
  * heartbeat is sent every 5 s, so no proxy closes the idle connection (test G, EVALUATION.md).
  */
 import { VIDEO_MODELS, FRAME_MODELS, TIMELINE_SCHEMA, AUTHENTICITY_SCHEMA, FRAME_PROMPT, FRAME_SCHEMA,
-  CLOSER_PROMPT, CLOSER_SCHEMA, authenticityPrompt, timelinePrompt, geminiBody } from "./public/js/shared/prompts.js";
-import { normalizeAnalysis, normalizeCloser, promotedCandidates } from "./public/js/shared/normalize.js";
+  CLOSER_PROMPT, CLOSER_SCHEMA, RECHECK_SCHEMA, MAX_RECHECK_ITEMS, authenticityPrompt, timelinePrompt, recheckPrompt,
+  geminiBody } from "./public/js/shared/prompts.js";
+import { normalizeAnalysis, normalizeCloser, promotedCandidates, recheckItems, mergeRecheck, screenTime } from "./public/js/shared/normalize.js";
 
 const API = "https://generativelanguage.googleapis.com/v1beta";
 const ID_RE = /^[A-Za-z0-9_-]{11}$/;
@@ -361,7 +362,8 @@ export async function gemini(env, models, body, onEvent = () => {}) {
 }
 
 // ------------------------------------------------------------------------------------------------
-// POST /api/analyze  → SSE stream: stage | meta | model | retry | joined | result | error  (+ ping every 5 s)
+// POST /api/analyze  → SSE stream: stage | meta | model | retry | note | joined | result | error  (+ ping every 5 s)
+// Gemini calls per new video: 1 timeline + 1 re-check (since 22 Nov, optional) + 1 authenticity (optional) = up to 3.
 // Order: repo demo → KV cache → access check → quota check → already running? (wait for it) → Gemini.
 // ------------------------------------------------------------------------------------------------
 async function cachedAnalysis(request, env, v) {
@@ -427,6 +429,25 @@ async function analyze(request, env, ctx) {
     const tl = await gemini(env, models, geminiBody({ video: v, prompt: timelinePrompt(meta), schema: TIMELINE_SCHEMA }),
       (ev, data) => send(ev, data));
 
+    // Call 1a, re-check (since 22 Nov, prompts.js): where is each found product visible – also lying on the desk?
+    // Same model chain, exhausted flags and usage meter as every call (gemini()). Optional: if it fails (quota used up,
+    // Google overloaded, unreadable answer) the analysis simply keeps the timeline of call 1 – no error for the visitor.
+    await send("stage", { id: "recheck" });
+    let timeline = tl.data, rc = null, recheckInfo = null;
+    const items = recheckItems(tl.data, MAX_RECHECK_ITEMS);
+    if (items.length) {
+      const t0 = Date.now();
+      rc = await gemini(env, models, geminiBody({ video: v, prompt: recheckPrompt(items), schema: RECHECK_SCHEMA, maxTokens: 24000 }),
+        (ev, data) => send(ev, data)).catch((e) => { console.log(`recheck skipped: ${e?.code || e?.message || e}`); return null; });
+      if (rc) {
+        timeline = mergeRecheck(tl.data, items, rc.data);
+        recheckInfo = { model: rc.model, products: items.length, spans: (rc.data?.items || []).reduce((n, it) => n + (it.appearances?.length || 0), 0), seconds: Math.round((Date.now() - t0) / 1000) };
+      } else {
+        recheckInfo = { skipped: true };
+        await send("note", { text: "Re-check skipped (Google busy or quota used up) – keeping the first result" });
+      }
+    }
+
     await send("stage", { id: "authenticity" });
     let au = null;
     const products = promotedCandidates(tl.data);
@@ -436,9 +457,18 @@ async function analyze(request, env, ctx) {
     }
 
     await send("stage", { id: "done" });
-    const result = normalizeAnalysis({ video: meta, timeline: tl.data, authenticity: au?.data, models: [tl.model, au?.model].filter(Boolean) });
+    const result = normalizeAnalysis({ video: meta, timeline, authenticity: au?.data, models: [tl.model, rc?.model, au?.model].filter(Boolean) });
     // tokens per call, shown in the app's usage meter ("this analysis cost …")
-    result.source.usage = [{ call: "timeline", model: tl.model, ...tl.usage }, ...(au ? [{ call: "authenticity", model: au.model, ...au.usage }] : [])];
+    result.source.usage = [{ call: "timeline", model: tl.model, ...tl.usage }, ...(rc ? [{ call: "recheck", model: rc.model, ...rc.usage }] : []),
+      ...(au ? [{ call: "authenticity", model: au.model, ...au.usage }] : [])];
+    if (recheckInfo) {
+      // before/after numbers for transparency (EVALUATION.md test W): what call 1 alone would have shown
+      const before = normalizeAnalysis({ video: meta, timeline: tl.data });
+      const count = (r) => r.brands.reduce((n, b) => n + b.appearances.filter((a) => a.channel === "visual").length, 0);
+      const secs = (r) => Math.round(r.brands.reduce((n, b) => n + screenTime(b), 0));
+      const raw = (tl.data?.brands || []).reduce((n, b) => n + (b.appearances || []).filter((a) => (a.channel || "visual") === "visual").length, 0);
+      result.source.recheck = { ...recheckInfo, visual_raw: raw, visual_before: count(before), visual_after: count(result), seconds_before: secs(before), seconds_after: secs(result) };
+    }
     if (!result.video.duration_s) { // YouTube withheld the length (bot check) → last brand appearance as lower bound
       const ends = (result.brands || []).flatMap((b) => (b.appearances || []).map((x) => x.end_s || 0));
       if (ends.length) { result.video.duration_s = Math.max(...ends); result.video.duration_estimated = true; }

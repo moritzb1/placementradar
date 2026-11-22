@@ -6,6 +6,9 @@
  * - appearances sorted, clamped to the video length
  * - keyframe positions per visual appearance as `track` (tracking overlay, js/tracking.js); all of a brand's
  *   positions also as `frames` (older analyses only have this, one box per appearance)
+ * - since 22 Nov: each appearance remembers its `product`; the "re-check" answer (prompts.js call 1a) is mixed in
+ *   (mergeRecheck), and visual appearances of the same product that overlap or are at most JOIN_GAP_S apart are
+ *   joined into one (joinAppearances) – see the comment there for the rule
  *
  * The resulting shape is documented in README.md → "Data model".
  */
@@ -69,14 +72,17 @@ export function normalizeAnalysis({ video, timeline, authenticity, models }) {
       const track = cleanTrack(ap, start, end);
       entry.appearances.push({ start_s: start, end_s: end, channel: ap.channel || "visual", size: ap.size ?? null,
         position: ap.position ?? null, in_use: ap.in_use ?? null, evidence: ap.evidence || "",
+        ...(b.product ? { product: b.product } : {}), ...(ap.background ? { background: true } : {}),
         ...(ap.basis ? { basis: ap.basis } : {}), ...(Number.isFinite(ap.confidence) ? { confidence: ap.confidence } : {}),
-        ...(track.length ? { track } : {}) });
-      // `frames` = all positions of the brand (older analyses had only this, one per appearance)
-      for (const k of track) entry.frames.push(k);
+        ...(ap.recheck ? { recheck: true } : {}), ...(track.length ? { track } : {}) });
     }
     brands.set(key, entry);
   }
-  const list = [...brands.values()].map((b) => ({ ...b, appearances: b.appearances.sort((x, y) => x.start_s - y.start_s) }));
+  const list = [...brands.values()].map((b) => {
+    const appearances = joinAppearances(b.appearances);
+    // `frames` = all positions of the brand (older analyses had only this, one per appearance) – rebuilt after joining
+    return { ...b, appearances, frames: appearances.flatMap((a) => a.track ?? []) };
+  });
   list.sort((a, b) => screenTime(b) - screenTime(a));
   return {
     video,
@@ -94,6 +100,99 @@ export function normalizeAnalysis({ video, timeline, authenticity, models }) {
     })),
     source: { engine: "gemini", models: models || [], analyzed_at: new Date().toISOString().slice(0, 10) },
   };
+}
+
+/**
+ * Joining appearances (since 22 Nov). Gemini often splits one continuous sighting into pieces – e.g. a phone on the desk
+ * is reported at 1:02–1:10 and again at 1:13–1:40, because it was out of focus for a moment or the keyframes had a gap –
+ * and the re-check (call 1a) reports spans that overlap call 1. Without joining, "Right now" and the tracking boxes
+ * flicker off in the gaps and the same seconds would be counted twice.
+ *
+ * Rule: two VISUAL appearances of the same product (same brand and the same product name) are joined into one when they
+ * overlap or the gap between them is at most JOIN_GAP_S = 5 s. 5 s because Gemini samples 1 frame per second and
+ * reports a position only every ~4 s (test T), so a gap shorter than that cannot be told apart from a missing report;
+ * a longer gap is usually a real cut. The joined appearance
+ *   - runs from the earliest start to the latest end (the gap counts as visible),
+ *   - keeps size, position, use, background, basis and confidence of its LONGEST part, so a short close-up does not
+ *     upgrade a long background shot in the media value,
+ *   - keeps all keyframes of its parts (sorted, duplicates < 0.25 s removed, thinned to at most 36),
+ *   - records how many pieces it was made of (`parts`), and `recheck: true` only if every piece came from the re-check.
+ * Spoken mentions and on-screen text are never joined (each one is a separate event). Different products of one brand
+ * (two Sony headphones) stay separate.
+ */
+export const JOIN_GAP_S = 5;
+const MAX_JOINED_KEYS = 36;
+
+export function joinAppearances(appearances) {
+  const visual = appearances.filter((a) => a.channel === "visual").sort((x, y) => x.start_s - y.start_s);
+  const other = appearances.filter((a) => a.channel !== "visual");
+  const groups = new Map(); // product name → joined appearances so far
+  for (const a of visual) {
+    const key = String(a.product || "").trim().toLowerCase();
+    const list = groups.get(key) ?? [];
+    const last = list[list.length - 1];
+    if (last && a.start_s <= last.end_s + JOIN_GAP_S) last.pieces.push(a), (last.end_s = Math.max(last.end_s, a.end_s));
+    else list.push({ start_s: a.start_s, end_s: a.end_s, pieces: [a] });
+    groups.set(key, list);
+  }
+  const joined = [...groups.values()].flat().map(({ start_s, end_s, pieces }) => {
+    if (pieces.length === 1) return pieces[0];
+    const longest = pieces.reduce((m, p) => (p.end_s - p.start_s > m.end_s - m.start_s ? p : m));
+    const keys = [];
+    for (const k of pieces.flatMap((p) => p.track ?? []).sort((x, y) => x.t - y.t)) if (!keys.some((o) => Math.abs(o.t - k.t) < 0.25)) keys.push(k);
+    // thin out evenly (first and last kept) so a long desk shot does not carry hundreds of boxes
+    const track = keys.length <= MAX_JOINED_KEYS ? keys : Array.from({ length: MAX_JOINED_KEYS }, (_, i) => keys[Math.round((i * (keys.length - 1)) / (MAX_JOINED_KEYS - 1))]);
+    const evidence = [...new Set(pieces.map((p) => p.evidence).filter(Boolean))].join(" · ").slice(0, 300);
+    const { track: _t, recheck: _r, ...attrs } = longest;
+    return { ...attrs, start_s, end_s, evidence, parts: pieces.length,
+      ...(pieces.every((p) => p.recheck) ? { recheck: true } : {}), ...(track.length ? { track } : {}) };
+  });
+  return [...joined, ...other].sort((x, y) => x.start_s - y.start_s);
+}
+
+/**
+ * Re-check (call 1a): the list of products sent to Gemini – identified brands from call 1, one entry per brand + product,
+ * at most MAX items, in the order of call 1. Names are cleaned (one line, 80 characters), because a product name may
+ * come from the video description, i.e. from a stranger.
+ */
+export function recheckItems(timeline, max = 30) {
+  const clean = (x, n = 80) => String(x ?? "").replace(/[\u0000-\u001f<>]/g, " ").replace(/\s+/g, " ").trim().slice(0, n);
+  const seen = new Set(), out = [];
+  for (const b of timeline?.brands ?? []) {
+    if (isUnknownBrand(b.brand) || !(b.appearances ?? []).length) continue;
+    const key = `${canon(b.brand).toLowerCase()}|${String(b.product || "").trim().toLowerCase()}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({ brand: clean(canon(b.brand)), product: clean(b.product), category: clean(b.category, 40), raw: b });
+    if (out.length >= max) break;
+  }
+  return out;
+}
+
+/**
+ * Mix the re-check answer into the raw timeline of call 1: each answered list number becomes an extra raw brand entry
+ * with the ORIGINAL brand, product and category (Gemini cannot rename or add brands this way) and visual appearances
+ * marked `recheck: true`. Only exception: a span may name another model of the same brand (`model`) – it is kept as
+ * a separate product of that brand (e.g. the iPhone lying next to the listed MacBook). normalizeAnalysis then joins them with the appearances of call 1 (joinAppearances).
+ * Unknown list numbers and appearances without a start are ignored. Returns a new timeline object.
+ */
+export function mergeRecheck(timeline, items, answer) {
+  const extra = [];
+  for (const it of answer?.items ?? []) {
+    const src = items[Math.round(Number(it.index)) - 1];
+    if (!src) continue;
+    // a span may name another model of the same brand (`model`) → it becomes its own product of that brand
+    const byModel = new Map();
+    for (const ap of it.appearances ?? []) {
+      if (!ap.start) continue;
+      const model = String(ap.model ?? "").replace(/[\u0000-\u001f<>]/g, " ").replace(/\s+/g, " ").trim().slice(0, 80);
+      const product = model && !isUnknownBrand(model) && model.toLowerCase() !== String(src.raw.product || "").toLowerCase() ? model : src.raw.product;
+      const { model: _m, ...rest } = ap;
+      byModel.set(product, [...(byModel.get(product) ?? []), { ...rest, channel: "visual", recheck: true }]);
+    }
+    for (const [product, appearances] of byModel) extra.push({ brand: src.raw.brand, product, category: src.raw.category, appearances });
+  }
+  return { ...timeline, brands: [...(timeline?.brands ?? []), ...extra] };
 }
 
 /**

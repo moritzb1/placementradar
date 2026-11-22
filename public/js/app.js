@@ -439,6 +439,11 @@ function mountPlayer(onTime) {
       host.append(g);
     }
     const now = $("#now"); if (!now) return;
+    // "In the background": brands seen at this second only in re-check spans without a checked position (`no_box`) –
+    // Gemini says they are in the picture, but we draw no box and list them apart (normalize.js filterRecheckSpans)
+    const covering = (b) => b.appearances.filter((a) => a.channel === "visual" && t >= a.start_s - 1 && t <= a.end_s + 1);
+    const back = hits.filter((b) => covering(b).every((a) => a.no_box));
+    const seen = hits.filter((b) => !back.includes(b));
     const said = mentionedAt(t).filter((b) => !hits.includes(b));
     const unid = (state.data.unidentified || []).filter((u) => u.appearances.some((a) => t >= a.start_s - 1 && t <= a.end_s + 1));
     const item = (b, how) => {
@@ -450,7 +455,8 @@ function mountPlayer(onTime) {
     };
     now.querySelector(".now-time").textContent = mmss(t);
     now.querySelector(".now-list").innerHTML =
-      (hits.length ? `<div class="now-sub">${icon("eye")} In the picture</div>${hits.map((b) => item(b, "seen")).join("")}` : "") +
+      (seen.length ? `<div class="now-sub">${icon("eye")} In the picture</div>${seen.map((b) => item(b, "seen")).join("")}` : "") +
+      (back.length ? `<div class="now-sub">${icon("overview")} In the background <span class="muted">· position not checked</span></div>${back.map((b) => item(b, "seen")).join("")}` : "") +
       (said.length ? `<div class="now-sub">${icon("ear")} Mentioned or written</div>${said.map((b) => item(b, "said")).join("")}` : "") +
       (unid.length ? `<div class="now-sub">${icon("bag")} Unidentified</div>${unid.map((u) => `<div class="now-item said unid"><span class="logo sm" style="--c:#8e8e93">${icon("bag")}</span><div class="ni-text"><b>${esc(cap(u.category))}</b><span>${esc(u.guess ? `possible: ${u.guess}` : u.description || "brand unknown")}</span></div></div>`).join("")}` : "") +
       (!hits.length && !said.length && !unid.length ? `<div class="now-empty">No product at this second.<br><span>Press play, or pick a product below to jump to it.</span></div>` : "");
@@ -560,7 +566,7 @@ function viewOverview() {
         <div class="closer-status" id="closerStatus" hidden></div>
       </div>
       <aside class="now card" id="now">
-        <div class="now-head"><span class="pulse"></span><b>Right now</b><span class="now-time num">0:00</span>${info("In the picture: products Gemini saw at this second. Mentioned or written: brands that are spoken about or shown as on-screen text right now. Unidentified: products without a recognisable brand. Follows the video while it plays. Links: the creator's own link from the description if there is one (affiliate links are marked), otherwise a neutral shopping search.")}</div>
+        <div class="now-head"><span class="pulse"></span><b>Right now</b><span class="now-time num">0:00</span>${info("In the picture: products Gemini saw at this second. In the background: products Gemini reports in the picture whose position could not be checked – listed, but no box is drawn. Mentioned or written: brands that are spoken about or shown as on-screen text right now. Unidentified: products without a recognisable brand. Follows the video while it plays. Links: the creator's own link from the description if there is one (affiliate links are marked), otherwise a neutral shopping search.")}</div>
         <div class="now-list"></div>
       </aside>
     </div>

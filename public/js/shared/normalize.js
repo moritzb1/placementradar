@@ -9,6 +9,7 @@
  * - since 22 Nov: each appearance remembers its `product`; the "re-check" answer (prompts.js call 1a) is mixed in
  *   (mergeRecheck), and visual appearances of the same product that overlap or are at most JOIN_GAP_S apart are
  *   joined into one (joinAppearances) – see the comment there for the rule
+ * - re-check spans pass a plausibility filter first (filterRecheckSpans): copied spans, template and stacked boxes
  *
  * The resulting shape is documented in README.md → "Data model".
  */
@@ -74,7 +75,8 @@ export function normalizeAnalysis({ video, timeline, authenticity, models }) {
         position: ap.position ?? null, in_use: ap.in_use ?? null, evidence: ap.evidence || "",
         ...(b.product ? { product: b.product } : {}), ...(ap.background ? { background: true } : {}),
         ...(ap.basis ? { basis: ap.basis } : {}), ...(Number.isFinite(ap.confidence) ? { confidence: ap.confidence } : {}),
-        ...(ap.recheck ? { recheck: true } : {}), ...(track.length ? { track } : {}) });
+        ...(ap.recheck ? { recheck: true } : {}), ...(ap.no_box ? { no_box: true } : {}),
+        ...(track.length && !ap.no_box ? { track } : {}) });
     }
     brands.set(key, entry);
   }
@@ -143,9 +145,11 @@ export function joinAppearances(appearances) {
     // thin out evenly (first and last kept) so a long desk shot does not carry hundreds of boxes
     const track = keys.length <= MAX_JOINED_KEYS ? keys : Array.from({ length: MAX_JOINED_KEYS }, (_, i) => keys[Math.round((i * (keys.length - 1)) / (MAX_JOINED_KEYS - 1))]);
     const evidence = [...new Set(pieces.map((p) => p.evidence).filter(Boolean))].join(" · ").slice(0, 300);
-    const { track: _t, recheck: _r, ...attrs } = longest;
+    const { track: _t, recheck: _r, no_box: _n, ...attrs } = longest;
     return { ...attrs, start_s, end_s, evidence, parts: pieces.length,
-      ...(pieces.every((p) => p.recheck) ? { recheck: true } : {}), ...(track.length ? { track } : {}) };
+      ...(pieces.every((p) => p.recheck) ? { recheck: true } : {}),
+      // a box is drawn where any piece has a checked position; "no box" only if no piece has one
+      ...(pieces.every((p) => p.no_box) ? { no_box: true } : {}), ...(track.length ? { track } : {}) };
   });
   return [...joined, ...other].sort((x, y) => x.start_s - y.start_s);
 }
@@ -173,26 +177,125 @@ export function recheckItems(timeline, max = 30) {
  * Mix the re-check answer into the raw timeline of call 1: each answered list number becomes an extra raw brand entry
  * with the ORIGINAL brand, product and category (Gemini cannot rename or add brands this way) and visual appearances
  * marked `recheck: true`. Only exception: a span may name another model of the same brand (`model`) – it is kept as
- * a separate product of that brand (e.g. the iPhone lying next to the listed MacBook). normalizeAnalysis then joins them with the appearances of call 1 (joinAppearances).
+ * a separate product of that brand (e.g. the iPhone lying next to the listed MacBook). Before that, all spans pass the
+ * plausibility filter (filterRecheckSpans below); its counts are returned as `recheck_filter`. normalizeAnalysis then
+ * joins the spans with the appearances of call 1 (joinAppearances).
  * Unknown list numbers and appearances without a start are ignored. Returns a new timeline object.
  */
 export function mergeRecheck(timeline, items, answer) {
-  const extra = [];
+  // 1. every span of the answer, with its product (a span may name another model of the same brand → own product)
+  const spans = [];
   for (const it of answer?.items ?? []) {
     const src = items[Math.round(Number(it.index)) - 1];
     if (!src) continue;
-    // a span may name another model of the same brand (`model`) → it becomes its own product of that brand
-    const byModel = new Map();
     for (const ap of it.appearances ?? []) {
       if (!ap.start) continue;
       const model = String(ap.model ?? "").replace(/[\u0000-\u001f<>]/g, " ").replace(/\s+/g, " ").trim().slice(0, 80);
       const product = model && !isUnknownBrand(model) && model.toLowerCase() !== String(src.raw.product || "").toLowerCase() ? model : src.raw.product;
-      const { model: _m, ...rest } = ap;
-      byModel.set(product, [...(byModel.get(product) ?? []), { ...rest, channel: "visual", recheck: true }]);
+      const { model: _m, track: _t, ...rest } = ap;
+      const start_s = sec(ap.start), end_s = Math.max(sec(ap.end || ap.start), start_s + 1);
+      spans.push({ ...rest, src, product, key: `${src.brand}|${product}`.toLowerCase(), start_s, end_s,
+        track: cleanTrack(ap, start_s, end_s) });
     }
-    for (const [product, appearances] of byModel) extra.push({ brand: src.raw.brand, product, category: src.raw.category, appearances });
   }
-  return { ...timeline, brands: [...(timeline?.brands ?? []), ...extra] };
+  // 2. the plausibility filter (see filterRecheckSpans) – drops spans and positions Gemini cannot have checked
+  const { kept, stats } = filterRecheckSpans(spans, items.length);
+  // 3. back into raw timeline entries with the ORIGINAL brand and category; times are already seconds (sec() keeps numbers)
+  const byProduct = new Map();
+  for (const sp of kept) {
+    const { src, key, product, start_s, end_s, track, ...rest } = sp;
+    const ap = { ...rest, start: start_s, end: end_s, channel: "visual", recheck: true,
+      ...(track?.length ? { track: track.map((k) => ({ time: k.t, box_2d: k.box })) } : {}) };
+    const e = byProduct.get(key) ?? { brand: src.raw.brand, product, category: src.raw.category, appearances: [] };
+    e.appearances.push(ap);
+    byProduct.set(key, e);
+  }
+  return { ...timeline, brands: [...(timeline?.brands ?? []), ...byProduct.values()], recheck_filter: stats };
+}
+
+/**
+ * Plausibility filter for re-check spans (since 22 Nov, after the online test with "What's on My Desk 2025", EVALUATION.md W).
+ * There Gemini gave almost all 7 desk products the SAME time spans (0:25–0:28, 0:48–1:04, 3:20–3:30 …) and re-used
+ * one fixed box per product in every span: "desk visible = everything visible". In the wide shot at 0:55 that was right,
+ * in the close-up at 3:25 only the monitor was in the picture and the boxes sat on the speaker's face. Its `confidence`
+ * was 1.0 everywhere. So the filter does not trust the model's word alone but looks for patterns that cannot come
+ * from really looking at each shot:
+ *
+ *   A  low confidence:  confidence < RECHECK_MIN_CONF (0.6) → span dropped.
+ *   B  copied spans:    a span that ≥ copyMin products have with the same start and end (±1 s) – copyMin = 4, or 60 % of
+ *                       the list for short lists, at least 3 – is a scene, not a sighting. It is kept only with
+ *                       confidence ≥ RECHECK_COPY_CONF (0.8), and then without a box (position not checked).
+ *                       Exception – "rubber-stamp" confidence: if ≥ 90 % of at least 10 spans say ≥ 0.95 (online test:
+ *                       72 of 72 said 1.0), the number carries no information and copied spans are dropped entirely.
+ *                       This also drops copied spans that were right (the wide shot at 0:55) – fewer, but honest hits.
+ *   C  template boxes:  the same box (all four values within ±10 of 1000) for one product in ≥ 3 separate spans = a
+ *                       position copied from one shot into others (cuts and close-ups move things) → those keyframes go.
+ *   D  stacked boxes:   keyframes of two different products within ±1 s whose boxes overlap with IoU ≥ 0.5 → both go
+ *                       (two products rarely fill the same place; in the test the boxes were piled on the speaker).
+ *   E  no confidence:   older answers without confidence keep their spans but get no box (position never confirmed).
+ *
+ * A span that loses all keyframes keeps its time (timeline, "Right now" → "In the background", media value with its
+ * size, position and background factor) but gets `no_box: true` – the tracking overlay draws nothing for it.
+ * Not done: "box sits on the person" – we have no person position (the browser cannot see into the YouTube player),
+ * so rule C/D stand in for it. Only re-check spans are filtered; call 1 stays as it is.
+ *
+ * spans: [{ key, start_s, end_s, confidence?, track: [{t, box}] }]  →  { kept, stats }
+ */
+export const RECHECK_MIN_CONF = 0.6;
+export const RECHECK_COPY_CONF = 0.8;
+const COPY_TOL_S = 1, TEMPLATE_TOL = 10, TEMPLATE_MIN_SPANS = 3, STACK_IOU = 0.5;
+
+export function boxIou(a, b) {
+  const h = Math.max(0, Math.min(a[2], b[2]) - Math.max(a[0], b[0])), w = Math.max(0, Math.min(a[3], b[3]) - Math.max(a[1], b[1]));
+  const u = (a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - h * w;
+  return u > 0 ? (h * w) / u : 0;
+}
+
+export function filterRecheckSpans(spans, listSize) {
+  const stats = { spans_in: spans.length, rubber_stamp: false, low_conf: 0, copied_dropped: 0, copied_kept_no_box: 0, template_keys: 0, stacked_keys: 0, no_conf: 0, no_box: 0, spans_out: 0 };
+  const conf = (sp) => (Number.isFinite(sp.confidence) ? sp.confidence : null);
+  const copyMin = Math.max(3, Math.min(4, Math.ceil(0.6 * listSize)));
+  // A – low confidence
+  let list = spans.filter((sp) => { const c = conf(sp); if (c != null && c < RECHECK_MIN_CONF) { stats.low_conf++; return false; } return true; })
+    .map((sp) => ({ ...sp, track: [...(sp.track ?? [])] }));
+  // B – copied spans: how many different products share this span (±1 s at both ends)?
+  const sharers = (sp) => new Set(list.filter((o) => Math.abs(o.start_s - sp.start_s) <= COPY_TOL_S && Math.abs(o.end_s - sp.end_s) <= COPY_TOL_S).map((o) => o.key)).size;
+  const copied = new Set(list.filter((sp) => sharers(sp) >= copyMin));
+  const rated = list.filter((sp) => conf(sp) != null);
+  stats.rubber_stamp = rated.length >= 10 && rated.filter((sp) => conf(sp) >= 0.95).length >= 0.9 * rated.length;
+  list = list.filter((sp) => {
+    if (!copied.has(sp)) return true;
+    if (!stats.rubber_stamp && (conf(sp) ?? 0) >= RECHECK_COPY_CONF) { sp.no_box = true; stats.copied_kept_no_box++; return true; }
+    stats.copied_dropped++; return false;
+  });
+  // C – template boxes: one product, the same box in ≥ 3 separate spans
+  const same = (a, b) => a.every((v, i) => Math.abs(v - b[i]) <= TEMPLATE_TOL);
+  for (const key of new Set(list.map((sp) => sp.key))) {
+    const own = list.filter((sp) => sp.key === key);
+    const boxes = own.flatMap((sp, i) => sp.track.map((k) => ({ i, box: k.box })));
+    const template = (box) => new Set(boxes.filter((b) => same(b.box, box)).map((b) => b.i)).size >= TEMPLATE_MIN_SPANS;
+    for (const sp of own) {
+      const before = sp.track.length;
+      sp.track = sp.track.filter((k) => !template(k.box));
+      stats.template_keys += before - sp.track.length;
+    }
+  }
+  // D – stacked boxes of different products at the same moment
+  const all = list.flatMap((sp) => sp.track.map((k) => ({ sp, k })));
+  const stacked = new Set();
+  for (let i = 0; i < all.length; i++) for (let j = i + 1; j < all.length; j++) {
+    const a = all[i], b = all[j];
+    if (a.sp.key !== b.sp.key && Math.abs(a.k.t - b.k.t) <= 1 && boxIou(a.k.box, b.k.box) >= STACK_IOU) { stacked.add(a.k); stacked.add(b.k); }
+  }
+  for (const sp of list) { const before = sp.track.length; sp.track = sp.track.filter((k) => !stacked.has(k)); stats.stacked_keys += before - sp.track.length; }
+  // E + result: no confidence or no keyframes left → no box
+  for (const sp of list) {
+    if (conf(sp) == null) { stats.no_conf++; sp.no_box = true; }
+    if (!sp.track.length) sp.no_box = true;
+    if (sp.no_box) { sp.track = []; stats.no_box++; }
+  }
+  stats.spans_out = list.length;
+  return { kept: list, stats };
 }
 
 /**

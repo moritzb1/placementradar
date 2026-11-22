@@ -128,7 +128,7 @@ flowchart LR
   R --> UI2
 ```
 
-**Engine 1 – Gemini (cloud).** Understands the whole video, image *and* audio, directly from the YouTube URL (no download). Up to three calls per video: (1) brand timeline incl. disclosures and rough positions – with the video's title and description as marked data, (1a, since 22 Nov) a "re-check" that gets the list of found products and asks only *where* each one is visible, also while it just lies on the desk (optional – if the quota is used up, call 1 stands alone), (2) authenticity of the promoted products. Visual appearances of the same product that overlap or are at most 5 s apart are then joined into one (`normalize.js joinAppearances`). Splitting the calls was necessary: one combined call made smaller models drop most brands (EVALUATION.md, test E). A model chain (3.8 Flash → 3.6 → 3.5 → 3 Flash Preview) carries an analysis through Google's frequent "high demand" errors.
+**Engine 1 – Gemini (cloud).** Understands the whole video, image *and* audio, directly from the YouTube URL (no download). Up to three calls per video: (1) brand timeline incl. disclosures and rough positions – with the video's title and description as marked data, (1a, since 22 Nov) a "re-check" that gets the list of found products and asks only *where* each one is visible, also while it just lies on the desk (optional – if the quota is used up, call 1 stands alone), (2) authenticity of the promoted products. The re-check's spans first pass a plausibility filter (`normalize.js filterRecheckSpans`: low confidence, spans copied to many products, template and stacked boxes – EVALUATION.md W2); a span without a checked position stays in the timeline and in "Right now" ("In the background") but gets no tracking box. Visual appearances of the same product that overlap or are at most 5 s apart are then joined into one (`normalize.js joinAppearances`). Splitting the calls was necessary: one combined call made smaller models drop most brands (EVALUATION.md, test E). A model chain (3.8 Flash → 3.6 → 3.5 → 3 Flash Preview) carries an analysis through Google's frequent "high demand" errors.
 
 **Engine 2 – on-device vision (browser).** For the live scanner: a packaging finder (YOLOE – an open-vocabulary YOLO told "snack bag, jar, tub, box …" before export; YOLO26 from unit 3 as fallback), barcode scanning with a lookup in Open Food Facts, and text recognition (PaddleOCR) matched against a brand list built from Open Food Facts. Runs with ONNX Runtime Web (WebGPU, WASM fallback), costs no API quota and keeps camera images on the device.
 
@@ -176,7 +176,7 @@ One JSON file per analysed video (`public/data/<video-id>.json`):
                 "links": [{ "product", "url" }], "link", "model_from_description",   // from the description (since 21 Nov)
                 "appearances": [{ "start_s", "end_s", "channel": "visual|audio|text", "size", "position", "in_use", "evidence",
                                   "basis": "logo|text|speech|design", "confidence",
-                                  "product", "background"?, "recheck"?, "parts"?,   // since 22 Nov: model, lying in the picture, from call 1a, joined pieces
+                                  "product", "background"?, "recheck"?, "parts"?, "no_box"?,   // since 22 Nov: model, lying in the picture, from call 1a, joined pieces, position not checked (no box)
                                   "track": [{ "t", "box": [ymin, xmin, ymax, xmax] }] }],   // 0–1000, keyframes every ~2–3 s (visual only)
                 "frames": [{ "t", "box" }] }],      // all positions of the brand; analyses before 21 Nov: one per appearance
   "unidentified": [{ "category", "description", "guess"?, "appearances": [{ "start_s", "end_s", "track"?, "closer"? }] }],  // brand "unknown"
@@ -184,7 +184,7 @@ One JSON file per analysed video (`public/data/<video-id>.json`):
   "paid":         { "looks_like_paid_promotion", "reasoning" },
   "authenticity": [{ "brand", "product", "overall", "verdict", "sub": { "use_shown": { "score", "time_s", "evidence" }, … } }],
   "source":       { "engine": "gemini", "models": [], "analyzed_at", "usage": [{ "call", "model", "prompt", "output", "total" }],
-                    "recheck": { "model", "products", "spans", "visual_raw", "visual_before", "visual_after", "seconds_before", "seconds_after" } | { "skipped": true } }
+                    "recheck": { "model", "products", "spans", "filter": { … counts of filterRecheckSpans }, "visual_raw", "visual_before", "visual_after", "seconds_before", "seconds_after" } | { "skipped": true } }
 }
 ```
 

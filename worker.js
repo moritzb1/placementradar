@@ -441,7 +441,8 @@ async function analyze(request, env, ctx) {
         (ev, data) => send(ev, data)).catch((e) => { console.log(`recheck skipped: ${e?.code || e?.message || e}`); return null; });
       if (rc) {
         timeline = mergeRecheck(tl.data, items, rc.data);
-        recheckInfo = { model: rc.model, products: items.length, spans: (rc.data?.items || []).reduce((n, it) => n + (it.appearances?.length || 0), 0), seconds: Math.round((Date.now() - t0) / 1000) };
+        recheckInfo = { model: rc.model, products: items.length, spans: (rc.data?.items || []).reduce((n, it) => n + (it.appearances?.length || 0), 0), seconds: Math.round((Date.now() - t0) / 1000),
+          filter: timeline.recheck_filter }; // what the plausibility filter removed (normalize.js filterRecheckSpans)
       } else {
         recheckInfo = { skipped: true };
         await send("note", { text: "Re-check skipped (Google busy or quota used up) – keeping the first result" });

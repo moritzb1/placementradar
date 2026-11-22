@@ -44,6 +44,8 @@ export function boxesAt(data, t) {
   for (const b of trackables(data)) {
     b.appearances.forEach((ap, i) => {
       if (ap.channel !== "visual" || t < ap.start_s - EDGE_S || t > ap.end_s + EDGE_S) return;
+      // re-check span whose position did not pass the plausibility filter (normalize.js filterRecheckSpans): no box at all
+      if (ap.no_box) return;
       // new data: own keyframes; old data: the brand's frames that fall inside this appearance
       const keys = ap.track?.length ? ap.track : (b.frames || []).filter((f) => f.t >= ap.start_s - 1 && f.t <= ap.end_s + 1).sort((x, y) => x.t - y.t);
       if (!keys.length) return;
@@ -147,7 +149,7 @@ export function createTracking(host, data, color) {
     coverage() {
       let withBox = 0, all = 0, keys = 0;
       for (const b of trackables(data)) for (const ap of b.appearances) if (ap.channel === "visual") {
-        all++; const k = ap.track?.length || (b.frames || []).filter((f) => f.t >= ap.start_s - 1 && f.t <= ap.end_s + 1).length;
+        all++; const k = ap.no_box ? 0 : ap.track?.length || (b.frames || []).filter((f) => f.t >= ap.start_s - 1 && f.t <= ap.end_s + 1).length;
         if (k) withBox++; keys += k;
       }
       return { withBox, all, keys };

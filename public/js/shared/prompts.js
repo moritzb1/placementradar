@@ -141,13 +141,17 @@ For EACH listed product, find every time span in which it is VISIBLE in the pict
 somewhere (on a desk or table, on a shelf, in the background), is partly visible, small, at the edge, or not in use.
 A product that stays in the picture is ONE span from the moment it appears until it really leaves the picture
 (camera turns away, cut to another scene, covered or put away); a pause in talking about it does not end the span.
+Look at each shot separately: in a close-up of the person, only list products you can actually see in that shot - do not
+assume the whole desk is visible because it was visible in another shot. Never copy one time span or one box to all
+products; every span and every box must come from what you see for that product.
 Do not add brands that are not in the list, and leave out a product you cannot see anywhere. Exception: if you see a
 DIFFERENT model of a listed brand (e.g. the list has the brand's laptop, but its phone lies on the desk), report it under
 that brand's number and write the model in model; otherwise leave model empty.
 For each span give start and end as MM:SS of the full video, size (small/medium/large: how much of the picture the
 product fills - a product lying on a desk in a wide shot is small), position (center/edge), in_use, background (true if
 it only lies or stands there and is not what the video is showing at that moment), basis (logo/text/design),
-confidence 0-1, a short evidence note (what is seen),
+confidence 0-1 (how sure you are that THIS product is visible in THIS span; below 0.6 leave the span out), a short
+evidence note saying where in the frame it is (e.g. "left edge of the desk, behind the keyboard"),
 and keyframes (track): time MM:SS and box_2d = [ymin, xmin, ymax, xmax] normalized 0-1000, the first at the start of the
 span, then about every 3 seconds (at most 12 per span), the last near the end. Refer to each product by its list number
 (index). Answer with JSON only.`;
@@ -162,8 +166,8 @@ export const RECHECK_SCHEMA = {
       position: { type: "STRING", enum: ["center", "edge"] },
       in_use: { type: "BOOLEAN" }, background: { type: "BOOLEAN" },
       basis: { type: "STRING", enum: ["logo", "text", "design"] },
-      confidence: { type: "NUMBER", description: "0-1" },
-      evidence: { type: "STRING" },
+      confidence: { type: "NUMBER", description: "0-1: sure that this product is visible in this span" },
+      evidence: { type: "STRING", description: "where in the frame the product is" },
       model: { type: "STRING", description: "only for a different model of the same brand, else empty" },
       track: { type: "ARRAY", items: { type: "OBJECT", properties: {
         time: { type: "STRING", description: "MM:SS" },

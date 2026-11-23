@@ -59,6 +59,7 @@ export class Player {
     this.t = t; this.onTime(t);
     if (!this.yt?.seekTo) return;
     this.yt.seekTo(t, true);
+    this.yt.mute?.(); // always silent before anything plays (project rule: tests and demos never make a sound)
     if (play) { this.nudgeTo = null; this.yt.playVideo(); }
     else if (!this.hasPlayed) { this.nudgeTo = t; this.yt.playVideo(); setTimeout(() => { if (this.nudgeTo != null) { this.nudgeTo = null; this.yt.pauseVideo?.(); } }, 4000); }
     else this.yt.pauseVideo();

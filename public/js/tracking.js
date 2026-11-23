@@ -11,6 +11,9 @@
  * Timing: the player reports its time only every 250 ms, so while it plays the overlay extrapolates the clock
  * per animation frame (requestAnimationFrame) and re-syncs on every report.
  *
+ * Measured boxes (23 Nov, verify.js "Verify on screen"): where our own detectors found the product on the real frames,
+ * drawn solid with the tag MEASURED; Gemini's box for the same product is then shown thin and dashed as "Gemini estimate".
+ *
  * Used by app.js (Products view). Visual style shared with the live scanner (live.js `draw`): rounded box,
  * dark glass label with a coloured dot, name in bold, model and recognition basis after it.
  */
@@ -102,19 +105,40 @@ export function createTracking(host, data, color) {
   layer.className = "track-layer"; layer.setAttribute("aria-hidden", "true");
   host.append(layer);
   const els = new Map();
-  let on = false, baseT = 0, baseWall = performance.now(), playing = false, raf = 0;
+  let on = false, baseT = 0, baseWall = performance.now(), playing = false, raf = 0, measured = null, verdict = null, hidden = false;
 
   const now = () => playing ? baseT + Math.min(0.6, (performance.now() - baseWall) / 1000) : baseT;
 
   function render() {
     const t = now(); const seen = new Set();
-    if (on) for (const x of boxesAt(data, t)) {
+    // measured boxes first (verify.js); their brands' Gemini boxes become "estimate"
+    const meas = on && !hidden && measured ? measured(t) : [];
+    const measBrands = new Set(meas.filter((m) => !m.only).map((m) => m.brand));
+    for (const m of meas) {
+      const key = `m:${m.key}`; seen.add(key);
+      let el = els.get(key);
+      if (!el) {
+        // "on screen only": our detector sees a product type of this video where Gemini lists nothing (grey, dashed)
+        el = document.createElement("div"); el.className = `tbox measured${m.only ? " only" : ""}`;
+        el.style.setProperty("--c", m.only ? "#8e8e93" : color(m.brand));
+        el.innerHTML = m.only ? `<span class="tb-label"><i></i><b>${esc(m.label)}</b><em class="tb-meas">on screen only</em></span>`
+          : `<span class="tb-label"><i></i><b>${esc(labelText(m.brand, m.product))}</b><em class="tb-meas">measured</em></span>`;
+        layer.append(el); els.set(key, el);
+      }
+      const [y0, x0, y1, x1] = m.box;
+      el.style.left = `${x0 / 10}%`; el.style.top = `${y0 / 10}%`; el.style.width = `${(x1 - x0) / 10}%`; el.style.height = `${(y1 - y0) / 10}%`;
+      el.classList.toggle("low", y0 < 90);
+      el.classList.toggle("replay", !m.live);
+      const lw = el.firstChild.offsetWidth, W = layer.clientWidth; // label grows to the left at the right edge
+      el.classList.toggle("right", W > 0 && (x0 / 1000) * W + lw > W - 6 && (x1 / 1000) * W - lw >= 6);
+    }
+    if (on && !hidden) for (const x of boxesAt(data, t)) {
       seen.add(x.key);
       let el = els.get(x.key);
       if (!el) {
         el = document.createElement("div"); el.className = "tbox";
         el.style.setProperty("--c", color(x.brand));
-        el.innerHTML = `<span class="tb-label"><i></i><b>${esc(labelText(x.brand, x.product))}</b><em class="tb-basis">${esc(BASIS[x.basis] || x.basis || "")}</em><em class="tb-approx">approx. position</em></span>`;
+        el.innerHTML = `<span class="tb-label"><i></i><b>${esc(labelText(x.brand, x.product))}</b><em class="tb-basis">${esc(BASIS[x.basis] || x.basis || "")}</em><em class="tb-approx">approx. position</em><em class="tb-est">Gemini estimate</em><em class="tb-unseen">not seen on screen</em></span>`;
         layer.append(el); els.set(x.key, el);
       }
       let [y0, x0, y1, x1] = x.box;
@@ -124,13 +148,15 @@ export function createTracking(host, data, color) {
       el.style.opacity = String(x.fade * (x.level === "box" ? 1 : x.level === "approx" ? 0.75 : 0.85));
       el.classList.toggle("approx", x.level === "approx");
       el.classList.toggle("point", x.level === "point");
+      el.classList.toggle("est", measBrands.has(x.brand)); // a measured box exists → this one is only Gemini's estimate
+      el.classList.toggle("unseen", !measBrands.has(x.brand) && verdict?.(x.brand, t) === "not_seen"); // our models did not find it
       el.classList.toggle("low", y0 < 90); // no room above the box → label goes inside
       // label grows to the left when it would run out of the picture on the right
       const lw = el.firstChild.offsetWidth + (x.level === "point" ? 16 : 0), W = layer.clientWidth; // a point's label starts 12 px right of the dot
       el.classList.toggle("right", W > 0 && (x0 / 1000) * W + lw > W - 6 && (x1 / 1000) * W - lw >= 6);
     }
     for (const [k, el] of els) if (!seen.has(k)) { el.remove(); els.delete(k); }
-    raf = on && playing ? requestAnimationFrame(render) : 0;
+    raf = on && (playing || (measured && meas.some((m) => m.live))) ? requestAnimationFrame(render) : 0;
   }
 
   return {
@@ -154,6 +180,11 @@ export function createTracking(host, data, color) {
       }
       return { withBox, all, keys };
     },
+    /** verify.js: fn(t) → measured boxes [{key, brand, product, box, live}] (null = none). */
+    setMeasured(fn, verdictFn = null) { measured = fn; verdict = verdictFn; cancelAnimationFrame(raf); raf = 0; render(); },
+    /** Hide all boxes while a capture would see them (Region Capture / whole tab – the models must not read our labels). */
+    setHidden(v) { hidden = !!v; cancelAnimationFrame(raf); raf = 0; render(); },
+    refresh() { if (!raf) render(); },
     destroy() { cancelAnimationFrame(raf); layer.remove(); },
   };
 }

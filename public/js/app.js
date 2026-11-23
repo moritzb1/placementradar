@@ -22,6 +22,7 @@ import { mmss } from "./shared/normalize.js";
 import { renderLive, stopLive } from "./live.js";
 import { hydrateLogos } from "./logos.js";
 import { createTracking } from "./tracking.js";
+import { createVerifier } from "./verify.js";
 import { maybeShowIntro, showIntro } from "./intro.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -36,6 +37,7 @@ const info = (text) => `<span class="info" tabindex="0" role="note" aria-label="
 const PALETTE = ["#0a84ff", "#ff9f0a", "#30d158", "#bf5af2", "#ff375f", "#64d2ff", "#ffd60a", "#ac8e68", "#5e5ce6", "#66d4cf"];
 
 const state = { demos: [], recent: [], data: null, id: null, view: "overview", player: null, colors: new Map(), opts: { ...DEFAULTS }, pendingSeek: null };
+if (/[?&]vtest\b/.test(location.search)) window.__pr = state; // test hook for tests/test_v_verify.mjs (reads the verifier and player)
 
 // ------------------------------------------------------------------------------------------------
 // Preferences (Settings sheet) – stored per browser; storage may be blocked, so every access is guarded
@@ -406,7 +408,7 @@ function renderResult() {
   ({ overview: viewOverview, value: viewValue, disclosure: viewDisclosure, authenticity: viewAuthenticity, report: viewReport })[state.view]();
 }
 
-function destroyPlayer() { state.player?.destroy(); state.player = null; state.tracker?.destroy(); state.tracker = null; }
+function destroyPlayer() { state.player?.destroy(); state.player = null; state.tracker?.destroy(); state.tracker = null; state.verifier?.destroy(); state.verifier = null; }
 
 /**
  * Mounts the YouTube player into #playerHost. Products at the current second are listed OUTSIDE the video
@@ -422,11 +424,30 @@ function mountPlayer(onTime) {
     onTime: (t) => { onTime?.(t); tracker.sync(t, !p.paused); updateNow(t); suggestCloser(tracker, t); },
   });
   state.player = p; state.tracker = tracker;
+  // "Verify on screen" (verify.js): own models check Gemini on the real frames once the user shares this tab
+  const verifier = createVerifier({
+    id: state.id, data: state.data, iframe: () => host.querySelector("iframe"),
+    time: () => { const x = p.yt?.getCurrentTime?.(); return typeof x === "number" ? x : p.t; },
+    playing: () => !p.paused, onChange: onVerify,
+  });
+  state.verifier = verifier;
+  tracker.setMeasured((t) => verifier.measuredAt(t), (brand, t) => verifier.statusOf(brand, t));
   bindTrackSwitch(tracker);
   tracker.sync(state.pendingSeek ?? 0, false);
   updateNow(state.pendingSeek ?? 0);
   if (state.pendingSeek != null) { const t = state.pendingSeek; setTimeout(() => p.seek(t), 900); state.pendingSeek = null; }
   return p;
+
+  /** After every checked frame: Right now, product cards, boxes, status line (at most ~5× per second). */
+  function onVerify(v) {
+    tracker.setHidden(v.running && v.mode !== "element"); // Region Capture / whole tab would see our own boxes
+    host.classList.toggle("verify-raw", v.running && v.mode !== "element");
+    if (state.vTimer) return;
+    state.vTimer = setTimeout(() => {
+      state.vTimer = 0; if (state.verifier !== v) return;
+      updateNow(p.t); tracker.refresh(); renderVerifyStatus(v); state.refreshVerifyCards?.();
+    }, 200);
+  }
 
   function updateNow(t) {
     const hits = productsAt(t);
@@ -444,13 +465,18 @@ function mountPlayer(onTime) {
     const covering = (b) => b.appearances.filter((a) => a.channel === "visual" && t >= a.start_s - 1 && t <= a.end_s + 1);
     const back = hits.filter((b) => covering(b).every((a) => a.no_box));
     const seen = hits.filter((b) => !back.includes(b));
+    // after Verify on screen: confirmed first, "not seen" last
+    const vOrder = { confirmed: 0, checking: 1, not_checkable: 1, unchecked: 1, not_seen: 2 };
+    if (state.verifier?.hasResults) seen.sort((x, y) => (vOrder[state.verifier.statusOf(x.brand, t)] ?? 1) - (vOrder[state.verifier.statusOf(y.brand, t)] ?? 1));
     const said = mentionedAt(t).filter((b) => !hits.includes(b));
     const unid = (state.data.unidentified || []).filter((u) => u.appearances.some((a) => t >= a.start_s - 1 && t <= a.end_s + 1));
+    const onlyScreen = state.verifier?.unclaimedAt() || [];
     const item = (b, how) => {
       // since 22 Nov each appearance knows its product → name the model(s) that are in the picture at this second
       const seenNow = how === "seen" ? [...new Set(b.appearances.filter((a) => a.channel === "visual" && a.product && t >= a.start_s - 1 && t <= a.end_s + 1).map((a) => a.product))] : [];
       const link = productLink(b, seenNow[0] || "");
-      return `<div class="now-item ${how}" data-b="${esc(b.brand)}">${logoBox(b.brand, "sm")}<div class="ni-text"><b>${esc(b.brand)}</b><span>${esc(seenNow.join(" · ") || b.product || b.category || "")}</span></div>
+      const vs = how === "seen" ? verifyPill(state.verifier?.statusAt(b.brand, t)) : "";
+      return `<div class="now-item ${how}" data-b="${esc(b.brand)}">${logoBox(b.brand, "sm")}<div class="ni-text"><b>${esc(b.brand)}</b><span>${esc(seenNow.join(" · ") || b.product || b.category || "")}</span>${vs}</div>
         <a href="${esc(link.url)}" target="_blank" rel="noopener" title="${esc(link.title)}">${link.label}</a></div>`;
     };
     now.querySelector(".now-time").textContent = mmss(t);
@@ -458,8 +484,9 @@ function mountPlayer(onTime) {
       (seen.length ? `<div class="now-sub">${icon("eye")} In the picture</div>${seen.map((b) => item(b, "seen")).join("")}` : "") +
       (back.length ? `<div class="now-sub">${icon("overview")} In the background <span class="muted">· position not checked</span></div>${back.map((b) => item(b, "seen")).join("")}` : "") +
       (said.length ? `<div class="now-sub">${icon("ear")} Mentioned or written</div>${said.map((b) => item(b, "said")).join("")}` : "") +
+      (onlyScreen.length ? `<div class="now-sub">${icon("search")} On screen only <span class="muted">· not in the analysis here</span></div>${onlyScreen.map((u) => `<div class="now-item said vonly"><span class="logo sm" style="--c:#8e8e93">${icon("eye")}</span><div class="ni-text"><b>${esc(cap(u.label))}</b><span>could be ${esc(u.brands.map((x) => labelOf(x.brand, x.product)).join(" or "))} · listed at ${u.brands[0].at.slice(0, 3).map(mmss).join(", ")}</span></div></div>`).join("")}` : "") +
       (unid.length ? `<div class="now-sub">${icon("bag")} Unidentified</div>${unid.map((u) => `<div class="now-item said unid"><span class="logo sm" style="--c:#8e8e93">${icon("bag")}</span><div class="ni-text"><b>${esc(cap(u.category))}</b><span>${esc(u.guess ? `possible: ${u.guess}` : u.description || "brand unknown")}</span></div></div>`).join("")}` : "") +
-      (!hits.length && !said.length && !unid.length ? `<div class="now-empty">No product at this second.<br><span>Press play, or pick a product below to jump to it.</span></div>` : "");
+      (!hits.length && !said.length && !unid.length && !onlyScreen.length ? `<div class="now-empty">No product at this second.<br><span>Press play, or pick a product below to jump to it.</span></div>` : "");
     hydrateLogos(now);
     $("#view").querySelectorAll(".pcard").forEach((c) => {
       c.classList.toggle("live", hits.some((b) => b.brand === c.dataset.brand));
@@ -560,13 +587,15 @@ function viewOverview() {
         <div class="player-bar">
           <label class="track-toggle"><input type="checkbox" class="switch sm" id="trackSw"><span>Show tracking</span></label>
           <span class="small muted" id="trackHint"></span>
-          ${info("Boxes and names over the video show where Gemini saw each product: model and how it was recognised (logo, text, speech or design). The browser cannot look into the YouTube player, so every box is a position Gemini reported while watching – roughly every 2–4 seconds, and only approximate. Solid box: within 1.5 s of a reported position (or the product stays put in between). Dashed box, 'approx. position': up to 3 s away. Dot: further away or Gemini was unsure – only where it roughly is. Look closer re-checks 20 seconds at 2 frames per second and gives tighter boxes.")}
+          ${info("Boxes and names over the video show where Gemini saw each product: model and how it was recognised (logo, text, speech or design). The browser cannot look into the YouTube player, so every box is a position Gemini reported while watching – roughly every 2–4 seconds, and only approximate. Solid box: within 1.5 s of a reported position (or the product stays put in between). Dashed box, 'approx. position': up to 3 s away. Dot: further away or Gemini was unsure – only where it roughly is. Look closer re-checks 20 seconds at 2 frames per second and gives tighter boxes. Verify on screen: after you share this tab, models on your device look at the real frames. A box marked MEASURED is where our detector found the product – it follows the product; Gemini's own box then becomes a thin dashed 'Gemini estimate'. Boxes of products our models could not find are dimmed ('not seen on screen'). Grey dashed 'on screen only': a product type of this video that the device sees where Gemini lists nothing.")}
+          <button class="btn verify-btn" id="verifyBtn" title="Check Gemini's findings on the real video frames, on your device">${icon("eye")} <span>Verify on screen</span></button>
           <button class="btn closer-btn" id="closerBtn" title="Let Gemini look closer at the next 20 seconds">${icon("search")} Look closer</button>
         </div>
+        <div class="verify-status" id="verifyStatus" hidden></div>
         <div class="closer-status" id="closerStatus" hidden></div>
       </div>
       <aside class="now card" id="now">
-        <div class="now-head"><span class="pulse"></span><b>Right now</b><span class="now-time num">0:00</span>${info("In the picture: products Gemini saw at this second. In the background: products Gemini reports in the picture whose position could not be checked – listed, but no box is drawn. Mentioned or written: brands that are spoken about or shown as on-screen text right now. Unidentified: products without a recognisable brand. Follows the video while it plays. Links: the creator's own link from the description if there is one (affiliate links are marked), otherwise a neutral shopping search.")}</div>
+        <div class="now-head"><span class="pulse"></span><b>Right now</b><span class="now-time num">0:00</span>${info("In the picture: products Gemini saw at this second. In the background: products Gemini reports in the picture whose position could not be checked – listed, but no box is drawn. Mentioned or written: brands that are spoken about or shown as on-screen text right now. Unidentified: products without a recognisable brand. Follows the video while it plays. Links: the creator's own link from the description if there is one (affiliate links are marked), otherwise a neutral shopping search. After Verify on screen each product shows what the models on your device found on the real frames: confirmed (brand read, brand recognised by its look, object found by a detector, or only the object type matches), not seen (checked on several frames, nothing found) or not checkable (none of our models knows this kind of product). Hover a label for the numbers.")}</div>
         <div class="now-list"></div>
       </aside>
     </div>
@@ -638,6 +667,7 @@ function viewOverview() {
           <div class="pc-lane">${b.appearances.map((a) => `<i class="${a.channel}" style="left:${Math.min(100, (100 * a.start_s) / dur)}%;width:${Math.max(0.8, (100 * (a.end_s - a.start_s)) / dur)}%;background:${color(b.brand)};color:${color(b.brand)}"></i>`).join("")}</div>
           <div class="pc-facts"><span><b class="num">${Math.round(r.raw.visual || 0)} s</b> on screen</span><span><b class="num">${spoken}×</b> spoken</span><span title="${esc(VALUE_WHAT)}"><b class="num">${euroRange(r.range)}</b> ad cost eq.</span></div>
           <div class="pc-jumps">${jumps.map((a) => `<button class="time" data-jump="${a.start_s}">${mmss(a.start_s)}</button>`).join("")}${b.appearances.length > jumps.length ? `<span class="more">+${b.appearances.length - jumps.length}</span>` : ""}</div>
+          <div class="pc-verify" data-vb="${esc(b.brand)}"></div>
           ${cardLinks(b)}
         </article>`;
       }).join("");
@@ -646,6 +676,7 @@ function viewOverview() {
         c.onkeydown = (e) => { if (e.key === "Enter") jump(Number(c.dataset.t)); };
       });
       hydrateLogos($("#pgrid"));
+      refreshVerifyCards();
     };
 
     drawGrid();
@@ -663,13 +694,84 @@ function viewOverview() {
 
   drawBody();
   state.refreshOverview = drawBody;
+  state.refreshVerifyCards = refreshVerifyCards;
   mountPlayer((t) => tl?.setTime(t));
   $("#closerBtn").onclick = () => lookCloser();
+  $("#verifyBtn").onclick = () => (state.verifier?.running ? state.verifier.stop("Stopped.") : verifyDialog());
+  renderVerifyStatus(state.verifier);
+  refreshVerifyCards();
   hydrateLogos($("#view"));
   if (state.scrollTo) { const id = state.scrollTo; state.scrollTo = null; setTimeout(() => $(`#${id}`)?.scrollIntoView({ block: "start" }), 50); }
 }
 
 const cap = (s) => String(s || "").charAt(0).toUpperCase() + String(s || "").slice(1);
+const labelOf = (brand, product) => !product ? brand : product.toLowerCase().startsWith(brand.toLowerCase()) ? product : `${brand} ${product}`;
+
+// ---------- "Verify on screen" (verify.js) ----------
+const V_KIND = { text: "brand read on screen", look: "brand recognised by its look", object: "object found by the detector", type: "object type matches (not the brand)" };
+const V_LABEL = { confirmed: "confirmed", not_seen: "not seen", not_checkable: "not checkable", checking: "checking…" };
+/** Small status pill for Right now. s = verifier.statusAt(); nothing before the first check. */
+function verifyPill(s) {
+  if (!s || s.status === "unchecked") return "";
+  const why = s.status === "confirmed" ? `Seen on ${s.hits} of ${s.checks} checked frames · ${V_KIND[s.kind] || ""}${s.read?.length ? ` (“${s.read.join("”, “")}”)` : ""}`
+    : s.status === "not_seen" ? `Checked on ${s.checks} frames – none of our models found it${s.hits ? ` (only ${s.hits}×)` : ""}`
+    : s.status === "not_checkable" ? "None of the models on your device knows this kind of product – Gemini's finding stays unchecked"
+    : `${s.checks} frame${s.checks === 1 ? "" : "s"} checked so far`;
+  // while verifying: was it found in the frame just checked? (a confirmed appearance can span a cut to a close-up)
+  const now = s.now == null ? "" : s.now ? `<em>in this frame</em>` : s.status === "confirmed" ? `<em>not in this frame</em>` : "";
+  return `<span class="vpill v-${s.status}" title="${esc(why)}">${s.status === "confirmed" ? icon("check") : s.status === "not_seen" ? icon("minus") : ""}${V_LABEL[s.status]}${s.status === "confirmed" && s.kind === "type" ? " · type" : ""}${now}</span>`;
+}
+
+/** One line per product card: what the device saw for all appearances of the brand. */
+function refreshVerifyCards() {
+  const v = state.verifier;
+  document.querySelectorAll(".pc-verify[data-vb]").forEach((el) => {
+    const s = v?.brandSummary(el.dataset.vb);
+    const done = s ? s.total - s.unchecked : 0;
+    if (!s || !done) { el.hidden = true; return; }
+    el.hidden = false;
+    const kinds = [...s.kinds].map((k) => ({ text: "brand read", look: "brand by look", object: "object found", type: "type only" }[k])).join(", ");
+    const head = s.confirmed ? `<b class="v-confirmed">${icon("check")} Confirmed on screen</b>` : s.not_seen ? `<b class="v-not_seen">${icon("minus")} Not seen on screen</b>`
+      : s.not_checkable ? `<b class="v-not_checkable">Not checkable on this device</b>` : `<b class="v-checking">Checking…</b>`;
+    const parts = [s.confirmed && `${s.confirmed} confirmed`, s.not_seen && `${s.not_seen} not seen`, s.not_checkable && `${s.not_checkable} not checkable`, s.checking && `${s.checking} checking`].filter(Boolean);
+    el.innerHTML = `${head}<span>${parts.join(" · ")} of ${s.total} appearance${s.total === 1 ? "" : "s"} · ${s.hits}/${s.frames} frames${kinds ? ` · ${kinds}` : ""}${s.read.size ? ` · read “${esc([...s.read].slice(0, 2).join("”, “"))}”` : ""}</span>`;
+  });
+}
+
+/** Status line under the player while / after verifying. */
+function renderVerifyStatus(v) {
+  const box = $("#verifyStatus"), btn = $("#verifyBtn"); if (!box || !btn) return;
+  btn.classList.toggle("on", !!v?.running);
+  btn.querySelector("span").textContent = v?.running ? "Stop verifying" : "Verify on screen";
+  if (!v || (v.phase === "idle" && !v.hasResults)) { box.hidden = true; return; }
+  const s = v.summary(), dev = s.dev.n ? ` · measured vs. Gemini's boxes: median overlap ${Math.round(s.dev.iou * 100)} %, centre ${s.dev.dist.toFixed(0)} % of the picture apart (${s.dev.n} frames)` : "";
+  const counts = `${s.confirmed} confirmed · ${s.not_seen} not seen · ${s.not_checkable} not checkable${s.checking ? ` · ${s.checking} checking` : ""}`;
+  const how = { element: "only the player is shared", region: "player area of this tab", tab: "this tab, cut to the player" }[v.mode] || "";
+  box.hidden = false;
+  box.className = `verify-status ${v.running ? "run" : ""}`;
+  box.innerHTML = v.phase === "asking" ? `<span class="spinner"></span><div><b>Waiting for your choice</b><span>${esc(v.message)}</span></div>`
+    : v.phase === "loading" ? `<span class="spinner"></span><div><b>Loading the models on your device</b><span>First time about 110 MB, then from the browser cache.</span></div>`
+    : v.running ? `<span class="rec"></span><div><b>Verifying on your device · <span class="num">${s.frames}</span> frames checked</b><span>${v.message ? esc(v.message) : `Play the video or jump to a scene. ${counts} · ${how}${v.msPerFrame ? ` · ${(v.msPerFrame / 1000).toFixed(1)} s per frame` : ""}`}${dev}</span></div>`
+    : `${icon("eye")}<div><b>Verified on screen · ${s.frames} frames</b><span>${counts}${dev}${v.message ? ` · ${esc(v.message)}` : ""}. Nothing was uploaded.</span></div>`;
+}
+
+/** Permission sheet before the browser's own "share this tab" dialog – what happens, and that nothing leaves the device. */
+function verifyDialog() {
+  const supported = !!navigator.mediaDevices?.getDisplayMedia;
+  const el = sheet(`<h2>${icon("eye")} Verify on screen</h2>
+    <p>PlacementRadar cannot look into the YouTube player by itself, so everything so far comes from Gemini. If you share this tab, models <b>on your device</b> look at the real video frames and check each finding:</p>
+    <ul class="v-list"><li><b>Brand text</b> – text recognition reads brand and model names</li><li><b>Brand look</b> – our own model, 1,020 brands</li>
+      <li><b>Objects</b> – two object finders (YOLOE, YOLO26) give measured boxes that follow the product</li><li><b>Product type</b> – MobileCLIP compares the picture with about 90 product types</li></ul>
+    <div class="v-privacy">${icon("shield")}<div><b>Stays on your device</b><span>Frames are analysed only in this browser. Nothing is uploaded, recorded or sent to our server or to Gemini; the results are kept in this tab until you close it. In Chrome only the video player is shared, not the rest of the tab.</span></div></div>
+    <p class="small muted">Next, your browser asks what to share: choose <b>This tab</b>. First use loads about 110 MB of models (then cached). Works best in Chrome or Edge on a computer.</p>
+    ${supported ? "" : `<p class="small" style="color:var(--orange)">This browser cannot share a tab.</p>`}
+    <div class="row-btns" style="justify-content:flex-end;margin-top:14px"><button class="btn" data-close>Cancel</button><button class="btn primary" id="vGo" ${supported ? "" : "disabled"}>${icon("eye")} Share this tab</button></div>`);
+  el.querySelector("#vGo").onclick = async () => {
+    el.remove();
+    const v = state.verifier; if (!v) return;
+    try { await v.start(); } catch (e) { v.stop(e.name === "NotAllowedError" ? "Sharing was not allowed." : e.message); }
+  };
+}
 
 // ---------- "Look closer" ----------
 /**

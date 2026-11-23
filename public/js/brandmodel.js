@@ -60,11 +60,13 @@ function halfToFloat(h) {
 
 const cv = document.createElement("canvas"); const cx = cv.getContext("2d", { willReadFrequently: true });
 
-/** Recognise the brand of one box. Returns { brand, conf, sure, top: [[brand, p]…], ms } or null if not loaded.
- *  sure = both opinions agree (see top of file); only then the scanner shows the brand. */
-export async function classifyBox(src, box, fw, fh) {
+/**
+ * MobileCLIP fingerprint (512 numbers, unit length) of one box: a little context around it, padded to a square with
+ * grey 128 like the training. Used by classifyBox and by Verify on screen (verify.js: type check). null if too small.
+ */
+export async function embedBox(src, box, fw, fh) {
   if (!M) return null;
-  const t0 = performance.now(), N = M.N;
+  const N = M.N;
   // a little context around the box (detector boxes are tight), clamped to the frame
   const pw = (box.x2 - box.x1) * 0.04, ph = (box.y2 - box.y1) * 0.04;
   const x1 = Math.max(0, box.x1 - pw), y1 = Math.max(0, box.y1 - ph), x2 = Math.min(fw, box.x2 + pw), y2 = Math.min(fh, box.y2 + ph);
@@ -77,7 +79,23 @@ export async function classifyBox(src, box, fw, fh) {
   const d = cx.getImageData(0, 0, N, N).data, n = N * N, x = new Float32Array(3 * n);
   for (let i = 0; i < n; i++) { x[i] = d[i * 4] / 255; x[n + i] = d[i * 4 + 1] / 255; x[2 * n + i] = d[i * 4 + 2] / 255; }
   const out = await runWasm(M.s, { [M.s.inputNames[0]]: new window.ort.Tensor("float32", x, [1, 3, N, N]) });
-  const e = out[M.s.outputNames[0]].data;
+  return Float32Array.from(out[M.s.outputNames[0]].data);
+}
+
+/** Does the own model know this brand? (Verify on screen: only then can "not recognised by its look" mean anything.) */
+export function knowsBrand(name) {
+  if (!M) return false;
+  M.keys ??= new Set(M.head.names.filter((n) => n !== M.head.other).map(key));
+  return M.keys.has(key(name));
+}
+const key = (s) => String(s).toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+
+/** Recognise the brand of one box. Returns { brand, conf, sure, top: [[brand, p]…], ms } or null if not loaded.
+ *  sure = both opinions agree (see top of file); only then the scanner shows the brand. */
+export async function classifyBox(src, box, fw, fh) {
+  if (!M) return null;
+  const t0 = performance.now();
+  const e = await embedBox(src, box, fw, fh); if (!e) return null;
   // brand head: logits = W·e + b → softmax
   const logits = M.W.map((row, i) => M.b[i] + dot(row, e));
   const mx = Math.max(...logits), ex = logits.map((v) => Math.exp(v - mx)), sum = ex.reduce((a, b) => a + b, 0);
@@ -90,7 +108,29 @@ export async function classifyBox(src, box, fw, fh) {
   const sure = !isOther && conf >= M.rule.min_conf && better < M.rule.zero_shot_top;
   const top = order.filter(([i]) => i !== M.other).slice(0, 3).map(([i, p]) => [M.head.names[i], p]);
   // emb: the fingerprint itself – live.js uses it to recognise the same product again after it was hidden
-  return { brand: isOther ? "(other brand)" : top[0][0], conf, sure, textRank: better + 1, top, emb: Float32Array.from(e), ms: Math.round(performance.now() - t0) };
+  return { brand: isOther ? "(other brand)" : top[0][0], conf, sure, textRank: better + 1, top, emb: e, ms: Math.round(performance.now() - t0) };
 }
 
 function dot(a, b) { let v = 0; for (let j = 0; j < a.length; j++) v += a[j] * b[j]; return v; }
+
+// ------------------------------------------------------------------------------------------------
+// Product TYPES for Verify on screen (23 Nov): the text fingerprints of ~90 types ("computer monitor", "backpack" …
+// plus distractors like "person", "wall") were computed once with MobileCLIP-S1's text encoder on the Mac
+// (tools/build_category_bank.py, 93 KB). The text encoder itself is not shipped (~127 MB) – see MODELS.md.
+// ------------------------------------------------------------------------------------------------
+let TYPES_P = null;
+export function loadTypeBank() {
+  TYPES_P ??= (async () => {
+    const meta = await (await fetch("models/category_text.json")).json();
+    const b = new Uint8Array(await (await fetch(`models/${meta.file}`)).arrayBuffer());
+    const f = halfToFloat(new Uint16Array(b.buffer, b.byteOffset, b.byteLength / 2)), D = meta.dim;
+    return { names: meta.names, rows: meta.names.map((_, i) => f.subarray(i * D, (i + 1) * D)) };
+  })().catch((e) => { TYPES_P = null; throw e; });
+  return TYPES_P;
+}
+
+/** Rank product types for one fingerprint: [[type, cosine]…] best first (cosine of unit vectors). */
+export async function rankTypes(emb) {
+  const bank = await loadTypeBank();
+  return bank.names.map((n, i) => [n, dot(bank.rows[i], emb)]).sort((a, b) => b[1] - a[1]);
+}

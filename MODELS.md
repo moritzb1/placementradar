@@ -9,10 +9,11 @@ Shipped in the app (as of 21 Nov 2026). Measured numbers come from EVALUATION.md
 | 2b | **Llama 3.2 11B Vision** (Meta) on **Cloudflare Workers AI** | second provider for a camera crop when Gemini's free quota is used up; runs inside the same Worker, no API key | Cloudflare, via Worker | Llama 3.2 Community Licence; free daily allowance of 10,000 neurons (≈ 40 neurons per crop by token price → ~250 crops/day, capped by `DAILY_WORKERS_AI`) | online: main brands found (REWE, Lidl, Volvo XC90), but slogans read as brands and no usable boxes → fallback only |
 | 2c | **Qwen2.5-VL 72B** (`:free` on OpenRouter) | optional third provider, only active when the secret `OPENROUTER_API_KEY` is set | OpenRouter | provider terms; 50 free requests/day without credits | *not enabled* |
 | 3 | **YOLOE-26s "packaging finder"** (Ultralytics, open vocabulary) | live scanner: finds and tracks packages (snack bag, jar, tub, box, bottle, can …, 31 words fixed before export by `tools/export_yoloe.py`) so each product is identified only once | browser (ONNX Runtime Web, WebGPU/WASM), 19 MB float16 | AGPL-3.0 | 6/6 packages on the grocery test photo (YOLO26: 0/6) |
-| 3b | **YOLO26n** (Ultralytics, COCO) | fallback detector if YOLOE cannot load | browser | AGPL-3.0 | runs on WebGPU; finds bottles/cups, but no bags, jars or boxes |
+| 3b | **YOLO26n** (Ultralytics, COCO) | fallback detector if YOLOE cannot load; in **Verify on screen** it runs next to YOLOE, because COCO knows the non-packaging products of tech videos (tv/monitor, keyboard, mouse, laptop, phone, backpack, camera via YOLOE) | browser, 9.4 MB | AGPL-3.0 | runs on WebGPU; finds bottles/cups, but no bags, jars or boxes; test V: found the LG monitor in the close-up and the backpack + camera at MKBHD 6:10 |
 | 4 | **OCR** (PaddleOCR v3 det + rec, ONNX, as in RapidOCR) + **brand dictionary** (v2, 21 Nov: **3,599 brands** – 60,000 most-scanned food products in Germany, cosmetics and household products sold in Germany, all brands of the own model, curated non-food brands; misspelled duplicates merged, everyday package words excluded; `tools/build_brand_list.py --dumps`) | reads brand names printed on the package, matches them exactly or with 1–2 typos | browser (WASM), 13 MB + 0.25 MB list | Apache-2.0 (models), ODbL (brand list) | **39/49 real product photos alone (v1 list: 36–37), 125 ms**; 6/6 on the grocery test photo |
 | 5 | **Barcode reader** (browser BarcodeDetector / ZXing) + **Open Food Facts API** | exact product (name, brand, image) from the EAN code | browser + open API | ODbL data | test EAN 3073781150780 read with ZXing (Firefox path) → "Babybel MINI Unser Würziger · 20 g", Nutri-Score D, in < 2 s |
 | 6 | **Own model v2: brand classifier** (MobileCLIP-S1 image encoder, Apple, frozen + **our linear brand head for 1,020 brands + class "(other)"**) | live scanner stage 4: recognises the *look* of 1,020 brands – food, cosmetics, household/tech, German retail (logo, colours) – for boxes OCR could not name; trained with 3 webcam-like views per photo and hard negatives; answers only if head (≥ 0.95) and the encoder's text knowledge of brand names (top 50) agree, thresholds calibrated on a validation split (`tools/build_brand_data.py`, `tools/camaug.py`, `tools/train_brand_model_v2.py`, `public/js/brandmodel.js`; v1 with 131 brands: `train_brand_*.py`) | trained on Mac (MPS; 190,000 fingerprints ~56 min, head seconds), runs in browser (WASM), 42 MB float16 encoder in 3 parts + **2 MB binary head** | encoder: Apple's licence for the MobileCLIP weights (github.com/apple/ml-mobileclip – fine for a course project, check before commercial use); head: ours; data: **Open Food Facts, Open Beauty Facts, Open Products Facts – ODbL (database), photos CC BY-SA** | 5,189 held-back products: **2,338 named, 96.8 % of answers right** (v1: 399, 68 %); webcam views 769 vs 126; 3.4 % false alarms on foreign brands (v1 2.6 %); **cascade OCR + own model 42/49 photos, also 42/49 in webcam quality, 0 wrong brands from the model**, ~0.24 s per box (EVALUATION.md S4) |
+| 6c | **Product-type check** for Verify on screen (MobileCLIP-S1 *text* encoder, run once offline → 93 fixed product types incl. distractors like "person", "wall"; image side = the encoder of model 6) | is the expected *type* ("computer monitor", "speaker") among the best 3 of 93 types for a box or Gemini's position? Confirms the kind of object, never the brand; also double-checks detector boxes far from Gemini's estimate (best 5) | text side offline on the Mac (`tools/build_category_bank.py`), 93 KB float16 in the browser | Apple's MobileCLIP licence (as model 6) | test V: cosines only 0.20–0.27, so ranks decide; JB 0:55 Sonos speaker confirmed (rank 2), crops on the presenter rank "person"/"face"/"hoodie" first |
 | 6b | **Distillation "Gemini teaches the on-device model"** | crops that Gemini / Workers AI named confidently in the live scanner are kept (with a visible note and opt-out) and become training examples for model 6 (`worker.js` keepForTraining, `tools/teach_pull.py`: download with secret token, check, retrain the head ×3 weight) | Worker KV (≤ 1,500 crops, 90 days) + Mac | crops: kept only with the note shown, README → Privacy | pipeline tested locally end to end; grows with use |
 
 ## Prompt-injection guard for the video description (21 Nov)
@@ -35,11 +36,29 @@ tracking (tracker.js): filtered + predicted boxes, matching by overlap + colour 
 1.5 s coasting under a hand – a name stays on its product
 ```
 
+## Verify on screen – how a Gemini appearance is checked (23 Nov, `public/js/verify.js`)
+```
+user shares the tab → Chrome: Element Capture on the YouTube iframe (only its pixels; fallbacks: Region Capture / whole tab)
+every checked frame (~0.6–2.5 s on a MacBook, once per frame while paused):
+  boxes: YOLOE packaging finder + YOLO26n COCO, merged, tracked (tracker.js)
+  for every Gemini appearance covering this second:
+    text    OCR finds the brand or a distinctive word of the model name anywhere in the frame       → brand read
+    look    own model (1,020 brands) is sure about a box and names this brand                     → brand by look
+    object  a box of the expected class (monitor → tv, keyboard, backpack …); far from Gemini's box only if
+            the type check on the box agrees too                                                  → measured box
+    type    MobileCLIP fingerprint of a nearby box, else of Gemini's position, vs. 93 product types:
+            expected type in the best 3                                                             → type only
+status: confirmed = evidence on ≥ 2 frames and ≥ 15 % · not seen = ≥ 4 frames, < 15 %, and a detector class / the own
+model (packages) / OCR could have found it · not checkable = only the type check covers it (Mac mini, speaker …) ·
+measured boxes follow the tracked detector box and are stored as keyframes (replay after the capture)
+```
+
 ## Not used, and why
 | Candidate | Reason |
 |---|---|
 | Open Food Facts universal-logo-detector (YOLO, AGPL-3.0) | planned as a logo finder; became unnecessary once YOLOE (packaging) + OCR + own model covered the cases – one model less to load |
 | Marqo-Ecommerce-B (Apache-2.0) | best product-search embedding in our offline test H4 (brand 100 %, exact product 89.8 % on 49 photos, easier setup), but the image part is ~350 MB – too large for a web page and above Cloudflare's 25 MiB per file → MobileCLIP-S1 + our head instead |
+| MobileCLIP-S1 **text encoder in the browser** (for a real zero-shot check of each analysis' product *names*) | 63.4 M parameters = ~127 MB as float16 (~63 MB as int8): 3–6 files above Cloudflare's 25 MiB limit, more than the whole live scanner downloads today, plus a CLIP tokenizer in JavaScript – too heavy for an optional check. Replaced by 93 product types embedded once offline (93 KB, model 6c); the licence (Apple's MobileCLIP terms, as for the image encoder) would have allowed it |
 | CLIP ViT-B/32 zero-shot | 6/6 correct above confidence 0.75 (H2), but only 7/21 overall; its idea lives on inside our own model ("text opinion" of MobileCLIP) |
 | Gemma 4 (API) | overloaded during tests, no audio → cannot watch YouTube videos |
 | Gemma 4 12B local (Ollama) | 12–30 s per frame, invents brands |

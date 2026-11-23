@@ -157,7 +157,7 @@ export async function readText(src, w, h) {
 // ------------------------------------------------------------------------------------------------
 export const brandKey = (s) => String(s).toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, "");
 
-function lev(a, b, max) {
+export function lev(a, b, max) {
   if (Math.abs(a.length - b.length) > max) return max + 1;
   let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
   for (let i = 1; i <= a.length; i++) {

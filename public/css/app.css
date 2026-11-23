@@ -587,8 +587,8 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
    rounded box in the brand colour, dark glass label with a coloured dot, name bold, basis after it
    ------------------------------------------------------------------------------------------------ */
 .watch-main { display: grid; gap: 12px; min-width: 0; align-content: start; }
-.player-bar { display: flex; align-items: center; gap: 12px; padding: 0 4px; min-height: 30px; }
-.player-bar #trackHint { flex: 1; min-width: 0; }
+.player-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 0 4px; min-height: 30px; }
+.player-bar #trackHint { flex: 1 1 220px; min-width: 0; }
 .track-toggle { display: inline-flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 500; cursor: pointer; flex: none; }
 .switch.sm { width: 40px; height: 24px; border-radius: 12px; } .switch.sm::after { width: 20px; height: 20px; } .switch.sm:checked::after { transform: translateX(16px); }
 .track-layer { position: absolute; inset: 0; pointer-events: none; z-index: 3; overflow: hidden; }
@@ -615,6 +615,48 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
 .tbox.point.right .tb-label { left: auto; right: 12px; }
 .tbox.point.low .tb-label { top: 10px; bottom: auto; left: 12px; }
 
+
+/* "Verify on screen" (verify.js): measured boxes, status pills, status line, permission sheet */
+.player iframe { isolation: isolate; } /* Element Capture (track.restrictTo) needs the iframe to form its own stacking context */
+.player.verify-raw .glow { display: none; }
+.tbox.measured { box-shadow: 0 0 0 3px var(--c), 0 0 0 6px rgba(255, 255, 255, .55), 0 0 0 8px rgba(0, 0, 0, .2); background: color-mix(in srgb, var(--c) 10%, transparent); transition: none; }
+.tbox.measured.replay { box-shadow: 0 0 0 3px var(--c), 0 0 0 6px rgba(255, 255, 255, .35); }
+.tb-meas { color: #30d158 !important; }
+.tb-est { display: none; }
+.tbox.est { box-shadow: none; outline: 1.5px dashed color-mix(in srgb, var(--c) 80%, white); background: none; opacity: .55 !important; }
+.tbox.est .tb-est { display: inline; color: rgba(255, 255, 255, .8); } .tbox.est .tb-basis, .tbox.est .tb-approx { display: none !important; }
+.tbox.est .tb-label { opacity: .85; transform: scale(.9); transform-origin: left bottom; }
+.tbox.measured.only { box-shadow: none; outline: 2px dashed rgba(255, 255, 255, .85); background: rgba(255, 255, 255, .06); }
+.tbox.measured.only .tb-meas { color: rgba(255, 255, 255, .8) !important; }
+.tb-unseen { display: none; }
+.tbox.unseen { opacity: .4 !important; box-shadow: none; outline: 1.5px dashed var(--c); background: none; }
+.tbox.unseen .tb-unseen { display: inline; color: #ff9f0a; } .tbox.unseen .tb-basis, .tbox.unseen .tb-approx { display: none !important; }
+.verify-btn { flex: none; padding: 7px 14px; font-size: 13.5px; }
+.verify-btn.on { box-shadow: 0 0 0 2px var(--green); color: var(--green); }
+.player-bar .verify-btn + .closer-btn { margin-left: 0; }
+.player-bar #trackHint + .info + .verify-btn { margin-left: auto; }
+.verify-status { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; padding: 14px 16px; border-radius: var(--r-md); background: var(--tile); font-size: 14px; }
+.verify-status b { display: block; font-size: 14.5px; } .verify-status span { color: var(--text-2); font-size: 13px; }
+.verify-status > .icon { width: 20px; height: 20px; margin-top: 1px; color: var(--green); }
+.verify-status .spinner { margin-top: 1px; }
+.verify-status .rec { width: 12px; height: 12px; margin: 4px; border-radius: 50%; background: #ff3b30; box-shadow: 0 0 0 4px rgba(255, 59, 48, .2); animation: blink 1.6s ease-in-out infinite; }
+.vpill { display: inline-flex; align-items: center; gap: 4px; width: fit-content; margin-top: 4px; padding: 2px 8px 2px 6px; border-radius: 999px; font-size: 11.5px; font-weight: 600; letter-spacing: -.005em; white-space: nowrap; }
+.vpill .icon { width: 12px; height: 12px; }
+.vpill em { font-style: normal; font-weight: 500; opacity: .75; margin-left: 4px; }
+.vpill.v-confirmed { color: var(--green); background: color-mix(in srgb, var(--green) 14%, transparent); }
+.vpill.v-not_seen { color: var(--orange); background: color-mix(in srgb, var(--orange) 14%, transparent); }
+.vpill.v-not_checkable, .vpill.v-checking { color: var(--text-2); background: var(--tile); }
+.ni-text .vpill { display: inline-flex; }
+.pc-verify { display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 10px; background: var(--tile); font-size: 12.5px; }
+.pc-verify[hidden] { display: none; }
+.pc-verify b { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; } .pc-verify b .icon { width: 14px; height: 14px; }
+.pc-verify span { color: var(--text-2); }
+.pc-verify .v-confirmed { color: var(--green); } .pc-verify .v-not_seen { color: var(--orange); } .pc-verify .v-not_checkable, .pc-verify .v-checking { color: var(--text-2); }
+.v-list { margin: 0 0 14px; padding-left: 20px; display: grid; gap: 4px; } .v-list li { font-size: 14.5px; }
+.v-privacy { display: grid; grid-template-columns: 24px 1fr; gap: 12px; padding: 14px 16px; border-radius: 14px; background: color-mix(in srgb, var(--green) 10%, var(--bg-sunken)); margin-bottom: 12px; }
+.v-privacy > .icon { width: 22px; height: 22px; color: var(--green); }
+.v-privacy b { display: block; } .v-privacy span { font-size: 13.5px; color: var(--text-2); }
+.sheet h2 .icon { width: 26px; height: 26px; vertical-align: -3px; }
 
 /* "Look closer" (button under the player) and unidentified products */
 .closer-btn { margin-left: auto; flex: none; padding: 7px 14px; font-size: 13.5px; }

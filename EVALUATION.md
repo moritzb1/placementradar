@@ -1,7 +1,7 @@
 # Evaluation – feasibility tests before building
 
 Every mechanism was tested on its own before it went into the app ("small tests first, then the whole").
-Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). Dates: 19–22 Nov 2026.
+Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). Dates: 19–23 Nov 2026.
 
 ## At a glance
 | Question | Answer (measured) | Test |
@@ -28,6 +28,10 @@ Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). 
 | Do the tracking boxes sit on the product? | not always; Gemini's confidence was 1.0 everywhere, so the app grades boxes by time distance: keyframe video 87 % solid, old one-box analysis 70 % dots | P |
 | Are products lying on the desk found (re-check call + joining)? | partly: MKBHD visual product time 185 → 546 s (run 1) and 71 → 245 s (run 2), 0 false hits in 8 spot checks; but the two runs differ a lot, `background` was never set, run 1 rated every span "large" (value ×2.8) → example data not replaced | W |
 | Can copied re-check spans be filtered out? | yes, mostly: online desk video 84 → 31 visual appearances, 752 → 370 s; no more boxes on the speaker's face at 3:25 – but right hits in wide shots go too; Gemini's confidence stays 0.95–1.0 and does not help | W2 |
+| Measured against hand-marked frames: when the app shows a product, is it there? | mostly: precision 71–92 % (3 videos, every 2 s; ground truth still a proposal, see M) | M |
+| … and how much of the time a product is in the picture does it show? | little: recall 9–32 %; with the re-check up to 62 % on the desk video; products lying or worn in the background are missed | M |
+| Do two runs agree? | on the brands mostly (Jaccard 0.61, same settings 0.79), on the seconds only half (0.55, same settings 0.32) → screen time ±50 % | M |
+| Does SponsorBlock confirm the disclosure check? | where it has data, yes (1 of 1, same time) – but only 4 of 14 videos have any entry | M |
 | Does a fresh analysis work online, end to end? | yes: 13-min desk tour, 18 brands, 15 shop links – all verbatim from the description, 0 invented; 14 of 18 exact models from the description; disclosure green; but only ~1 tracking position per appearance | Q |
 | Does a free fallback provider help? | Workers AI (Llama 3.2 Vision) finds main brands, reads slogans as brands → last resort only | S1 |
 
@@ -169,6 +173,66 @@ Reading:
 **One new run with the filter** (local Worker, no cache, `eLAVGYQCkQI`): timeline 3.5 Flash (3.8 and 3.6: 503), re-check **3.8 Flash**, 271 s. With the new prompt Gemini wrote real locations into evidence ("under monitor behind the presenter", "microphone body on left edge"), but **confidence was again 0.95–0.99 for every span** → rubber stamp; 71 spans → 15 copied dropped, 12 template keyframes, 5 spans without box, 56 kept. Result: 16 → 35 visual appearances, 102 → **361 s** (online without filter: 752 s), €115 – €454. Checked in the player (sound off): **3:25 only "LG 43" Smart Monitor", box on the monitor at the right, not on the face** (right); 0:55 LG with box (right; plant, speakers, light bar are missing); 3:03 LG under "In the background · position not checked", no box (monitor really visible; other desk items missing). No console errors.
 
 Reading: the filter removes the copied "whole desk" spans and the boxes on the person, at the price of missing right hits in wide shots. Gemini's `confidence` does not separate good from bad spans (also test P3: 1.0 everywhere), so the filter has to rely on patterns (copied spans, template boxes). The stored online result for `eLAVGYQCkQI` in KV was made before the filter and stays as it is until it is analysed again.
+
+## M – Measured instead of spot checks (23 Nov, 0 Gemini requests)
+Until now, quality was judged from a few spot checks in the player (B: 9 checks, W: 8). Test M measures it against hand-marked ground truth for three whole videos, re-using only stored results. Scripts in `../tests/`, raw numbers in `../tests/ergebnisse/m_messen/`.
+
+> **Status of the ground truth: PROPOSAL.** The labels below were made by Claude from 200-px frames; Moritz's correction on the marking page (`../tests/markieren/`) is still outstanding. 129 of 957 frames are flagged "unsure" (mostly wide shots of the desk and which white headphone is which). All numbers in M1–M2 are therefore preliminary and will be re-run with `node tests/test_wahrheit.mjs` once the truth is checked. M3 and M4 do not depend on it.
+
+**M1 – Ground truth.** Three videos with different kinds of placement: MKBHD *My Everyday Tech 2022* (`-pTGc7cIBIA`, 14:19, products shown one after another), JB *What's on My Desk 2025* (`eLAVGYQCkQI`, 7:42, everything on one desk) and iKnowReview *Over-Ear Kopfhörer 2026* (`2CqNFIn1AEo`, 9:50, five similar headphones). Frames every 2 s were taken in the built-in browser from the paused YouTube player (sound off) as 4 × 4 contact sheets (`markieren/bilder_schneiden.py`), 957 frames in all. For each frame: which of the products (the union of everything any run named, 24 products) is *recognisable in the picture* – in the hand, worn, on the desk, in the background or in a wide shot; size does not matter. Format: `tests/wahrheit/<id>.json` (one label list per sampled second, unsure frames listed). The marking page shows all frames of a video as a grid with the proposed labels; number keys toggle a product for a frame or a selected range, unsure frames have an orange frame, a button opens the real video at that second. Planned effort: 15–20 min per video.
+
+**M2 – Recall and precision per product-second** (`test_wahrheit.mjs`). A product counts as predicted at second *t* if the analysis has a visual appearance of it with start − 1 s ≤ *t* ≤ end + 1 s (half the 2-s grid). Products the app names that are not in the truth count as wrong. Timestamp error = median |start| and |end| difference between a true span and the best-overlapping appearance, over all spans that were hit (the truth itself is only accurate to ±1 s).
+
+| Video · stored run | Variant | Recall | Precision | True spans hit | Start / end error (median) |
+|---|---|---|---|---|---|
+| MKBHD · first run 19 Nov (call 1) | stored | 9 % | 62 % | 12 / 84 | 2 s / 8.5 s |
+| MKBHD · re-run 21 Nov = **example in the app** | stored | **9 %** | **76 %** | 9 / 84 | 2 s / 15 s |
+| MKBHD · W run 1 (+ re-check) | stored | **29 %** | **86 %** | 21 / 84 | 2 s / 2 s |
+| | call 1 only | 13 % | 80 % | 9 / 84 | 3 s / 8 s |
+| | + filter afterwards | 29 % | 86 % | unchanged (no confidence → spans stay, only boxes go) | |
+| MKBHD · W run 2 (+ re-check, ratings required) | stored | 14 % | 92 % | 10 / 84 | 1.5 s / 10.5 s |
+| | call 1 only | 9 % | 95 % | 3 / 84 | 1 s / 66 s |
+| JB · online 22 Nov (+ re-check, no filter) | stored | **62 %** | **71 %** | 109 / 129 | 2 s / 1 s |
+| | call 1 only | 12 % | 61 % | 25 / 129 | 10 s / 6 s |
+| | + filter afterwards | 26 % | 65 % | 53 / 129 | 3 s / 5 s |
+| JB · local run with filter (other model) | stored | 30 % | 73 % | 41 / 129 | 3 s / 2 s |
+| | call 1 only | 11 % | 57 % | 23 / 129 | 2 s / 4 s |
+| Headphones · older example 20 Nov | stored | 31 % | 66 % (+ Carhartt, Apple, 3DIO, Reddit not in the truth) | 35 / 91 | 2 s / 1 s |
+| Headphones · **example in the app** (keyframes) | stored | **32 %** | **86 %** | 31 / 91 | 1 s / 1 s |
+| Headphones · inventory prompt, whole video (I2) | stored | 9 % | 81 % | 5 / 91 | 1 s / 1 s |
+
+Per product (examples in the app): MKBHD backpack recall 14 % / precision 96 % (in W run 1 with the re-check: **94 % / 95 %**), Opal webcam 100 % / 90 %, Realme charger 90 % / 82 %, Trove wallet 57 % / 93 %, Canon R5 19 % / 71 % (it lies on the table for 2 min after it was shown), MacBook 11 % / 40 %, Pixel 6 Pro 2 % / 100 % (in the hand for 5 min of the phone part), iPhone and the worn sweatshirt 0 %. Headphones: every model 29–36 % recall at 74–94 % precision – the five lie on the table in front of the speaker for long stretches, and Gemini never lists that. JB online: LG monitor 27 % recall (it is behind the speaker in every talking-head shot, Gemini names it only in desk shots) at 98 % precision; small desk items 66–95 % recall at 58–75 % precision. A version without the unsure frames changes JB a lot (online 62 % → 38 % recall): the wide shots are exactly where the proposal and Gemini's copied spans agree – Moritz's check decides this one.
+
+Reading:
+- **When the app shows a product, it is usually there** (precision 71–92 % for the runs the app shows), **but it shows only a fraction of the time the product is in the picture** (recall 9–32 % for call 1 + re-check in normal runs). The gap is products lying, standing or worn in the background – exactly the problem of test W.
+- **The re-check (W) is what lifts recall:** call 1 alone reaches 9–13 %, with the re-check 14–62 %, at equal or better precision on MKBHD. On JB the unfiltered re-check gave the best recall (62 %) at 71 % precision – the copied "whole desk" spans were mostly right in wide shots and wrong in close-ups.
+- **The W2 filter costs more than it gains on this measure:** applied to the JB online run, recall 62 % → 26 % and precision 71 % → 65 %. It removed many right wide-shot spans and kept wrong ones. Its real gain – no boxes on the speaker's face – is a box-position question that this test does not measure. Keep the filter for the boxes, but do not let it drop spans: a follow-up worth testing is "copied span → keep, but without box" also for rubber-stamp confidence.
+- **Timestamps are good where a product is found:** median start error 1–3 s (B: ±2 s). End errors are larger (up to 15 s) when one appearance runs on after the product left the picture.
+- **The same run can differ in which products it sees:** MKBHD W run 1 found the Pixel for 43 % of its time, W run 2 for 2 % (see M4).
+
+**M3 – SponsorBlock vs. the app's disclosure check** (`test_sponsorblock.mjs`; data: [SponsorBlock](https://sponsor.ajay.app), community-marked, CC BY-NC-SA 4.0, only video IDs were sent). 14 videos: the 10 examples + 4 more from the online gallery (`/api/recent`, results taken from the KV cache – no request).
+
+| | Result |
+|---|---|
+| Videos with any SponsorBlock entry | **4 of 14** (all others: no entry) |
+| Sponsor segments | 1 – espresso video `y1LUkfpTtu0`, 12:56–13:42; the app has the spoken "Thanks to Morning Brew for sponsoring this video" at **13:40, inside the segment**, verdict orange (sponsor named only at the end) – agrees |
+| Self-promotion segments | 4 (MKBHD 13:58, headphones 5:28, car gadgets 1:41, espresso 12:44) – the app does not count the creator's own merch as advertising, by design |
+| Missing in SponsorBlock | the desk tour `6DMUMgQyVtc` says "This video is sponsored by Vernal" at 0:16 (app: green) – no SponsorBlock entry; gifted PR boxes (`WK5s-gDideg`, `VnBZfauMR5M`) and affiliate links are not a SponsorBlock category at all |
+| App says commercial, SponsorBlock has no sponsor | 12 of 14 (gifts, affiliate links, investor note) |
+
+Reading: where both have data they agree (1 of 1, also on the time), but SponsorBlock covers mostly large channels and only paid read-outs – for the mid-sized and German creators of this project it is too sparse to serve as a reference or as a second signal in the app. Not added to the app.
+
+**M4 – How much do runs differ?** (`test_stabilitaet.mjs`; call 1 only, 6 videos with 2–7 stored runs each, 33 pairs; demo files that merge two runs are left out). Jaccard = overlap / union.
+
+| | All 33 pairs | 2 "clean" pairs (same model, same prompt: MKBHD W run 1 vs 2, bag E run 2 vs 3) |
+|---|---|---|
+| Same brands? (brand sets) | **0.61** | 0.79 |
+| Same brand at the same second? (brand × second) | **0.55** | 0.32 |
+| … only over the brands both runs found | 0.63 | 0.35 |
+
+Per video: crash test 1.00 / 0.95 (two cars, easy) · bag video 0.19–0.92 brands, 0.36–0.90 seconds (prompt versions differ) · MKBHD 0.75–1.00 brands but 0.13–0.59 seconds · JB 1.00 brands, 0.48 seconds · pillow 0.25–0.75 brands, 0.00–0.79 seconds. Visual product time of the same video differs by up to a factor of 2 (MKBHD call 1: 141 / 174 / 285 / 167 s; bag: 277–536 s).
+
+Reading: **which brands are in a video is fairly stable** (6 of 10 brands agree between two runs, 8 of 10 with the same model and prompt), **when and how long they are visible is not** – two runs agree on about half of the brand-seconds, and even with identical settings only on a third. Screen time and media value of a single run therefore carry an uncertainty of about ±50 %. Merging two runs (as the demos do) or the re-check reduce it but cost requests; the honest consequence for the UI is to present screen time as a range as well, not only the media value.
 
 ## T – Tracking boxes with keyframes (21 Nov, 1 Gemini request)
 Question: can Gemini give enough positions for a box that follows the product while the video plays?

@@ -11,7 +11,7 @@ Final project for *MMI5190E – The New Frontiers of AI: From Perception to Agen
 |---|---|
 | this README | 3-minute tour, architecture, formulas, hosting |
 | [MODELS.md](MODELS.md) | every model: source, licence, size, role, measured performance |
-| [EVALUATION.md](EVALUATION.md) | every test we ran – including what failed and what we changed because of it |
+| [EVALUATION.md](EVALUATION.md) | every test we ran – including what failed and what we changed because of it; measured accuracy: [How good is it?](#how-good-is-it-measured-test-m-in-evaluationmd) |
 
 ---
 
@@ -275,7 +275,20 @@ EVALUATION.md              all tests, incl. what did not work
 
 ## 9. Limitations and ethics
 
-- Gemini can miss brands or misplace them; repeated runs differ (22 vs. 27 brands for the same video). Timestamps were accurate to ±2 s in our checks; positions in the frame are rough.
+### How good is it? (measured, test M in EVALUATION.md)
+Three videos were marked by hand every 2 seconds (957 frames, 24 products: which product is recognisable in the picture) and compared with the stored analyses – no new Gemini request. *The hand-marked truth is still a first proposal awaiting a human check; the numbers can move.*
+
+| Question | MKBHD (products one by one) | JB desk tour (all on one desk) | Five headphones |
+|---|---|---|---|
+| When the app shows a product, is it in the picture? (precision) | 76 % (with re-check 86–92 %) | 71 % | 86 % |
+| Of the time a product is in the picture, how much does the app show? (recall) | 9 % (with re-check 14–29 %) | 62 % with re-check, 12 % without | 32 % |
+| Products found at least once | 7 of 10 | 9 of 9 | 5 of 5 |
+| Timestamp of a found appearance (median start error) | 2 s | 2 s | 1 s |
+| Two runs of the same video agree on … | brands 0.75–1.0 · seconds 0.13–0.59 (Jaccard) | brands 1.0 · seconds 0.48 | brands 0.56 · seconds 0.59 |
+
+In short: **what the app shows is mostly right, but it misses much of the time a product lies, stands or is worn in the background**, and a second run can give a quite different screen time (two runs share about half of their brand-seconds, see M4) – read screen time and media value as estimates with roughly ±50 %. The ad-disclosure check agreed with the community database SponsorBlock where SponsorBlock had a sponsor segment (1 of 1, same moment), but only 4 of 14 videos have any SponsorBlock entry.
+
+- Gemini can miss brands or misplace them; repeated runs differ (22 vs. 27 brands for the same video; across 33 pairs of runs the brand sets overlap by 0.61, the brand-seconds by 0.55). Timestamps were accurate to ±2 s in our checks; positions in the frame are rough.
 - Small worn or incidental items are found much more reliably with *Look closer* (2 frames/s on a short clip) than in the whole-video pass; without a readable logo their brand stays "unknown" on purpose.
 - Tracking boxes are **Gemini's estimates, not measurements**: the browser cannot look into the YouTube player (cross-origin), so it cannot follow the product itself. Gemini samples the video at about one frame per second and returned a keyframe every ~4 s in our test; Gemini's own confidence was 1.0 for every appearance, so it cannot tell good from bad positions – the app therefore grades each box by its distance in time to a reported position (solid / dashed / dot). Boxes still lag behind fast movements. The overlay assumes a 16:9 video (YouTube Shorts would be misplaced).
 - Media value is an *equivalent ad cost*, not the creator's income, and depends on assumed CPM, audience drop-off and attention; it is shown as a range for comparison, not as an invoice.

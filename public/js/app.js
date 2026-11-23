@@ -30,6 +30,15 @@ const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "
 const fmtViews = (n) => n == null ? "–" : n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}k` : String(n);
 /** Video length; "≈" when YouTube withheld it and the Worker estimated it from the last brand appearance. */
 const fmtDur = (v) => (v?.duration_estimated ? "≈ " : "") + mmss(v?.duration_s || 0);
+/**
+ * Screen time as a range (since 23 Nov, EVALUATION.md test M4): two Gemini runs of the same video agree on only about
+ * half of the brand-seconds (Jaccard 0.55 over 33 pairs) and the visual product time of one video differed by up to a
+ * factor of 2 between runs (MKBHD 141–285 s). One run's seconds are therefore shown as ±50 %, like the media value.
+ */
+const SCREEN_SPREAD = 0.5;
+const SCREEN_INFO = "Shown as a range of ±50 %: two analyses of the same video agree on only about half of the seconds a brand is on screen (test M4 in EVALUATION.md).";
+const secRange = (s) => `${Math.round(s * (1 - SCREEN_SPREAD))}–${Math.round(s * (1 + SCREEN_SPREAD))} s`;
+const pctRange = (p) => `${Math.round(p * (1 - SCREEN_SPREAD))}–${Math.min(100, Math.round(p * (1 + SCREEN_SPREAD)))}%`;
 /** "20261117" (yt-dlp style) or "2026-11-17" → "2026-11-17". */
 const fmtDate = (d) => String(d || "").replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3");
 /** Small (i) with an explanation on hover/focus – used next to every number. */
@@ -622,7 +631,7 @@ function viewOverview() {
     $("#ovBody").innerHTML = `
     <div class="stats">
       <button class="stat" data-scroll="tlSect"><span class="s-label">Products ${info("Distinct brands Gemini found in the picture, in on-screen text or in speech. Spelling variants are merged. Products without a recognisable brand are listed separately under Unidentified products.")}</span><b class="num">${d.brands.length}</b><span class="s-sub">${d.brands.filter((b) => b.appearances.some((a) => a.channel === "audio")).length} also mentioned in speech${unid.length ? ` · ${unid.length} unidentified` : ""}</span></button>
-      <button class="stat" data-scroll="tlSect"><span class="s-label">Brand on screen ${info("Share of the video in which at least one brand is visible. Overlapping appearances are counted once.")}</span><b class="num">${union}%</b><span class="s-sub">of ${fmtDur(v)}</span></button>
+      <button class="stat" data-scroll="tlSect"><span class="s-label">Brand on screen ${info("Share of the video in which at least one brand is visible. Overlapping appearances are counted once. " + SCREEN_INFO)}</span><b class="num range">${pctRange(union)}</b><span class="s-sub">of ${fmtDur(v)}</span></button>
       <button class="stat" data-goto="disclosure"><span class="s-label">Ad disclosure ${info("Looks for an advertising label in title, description, on screen and in speech (§ 5a UWG, § 22 MStV). Green = clear label, orange = weak label, red = commercial signals but no label. A screening aid, not legal advice.")}</span><b class="status lvl-${disc.level}"><i class="dot"></i>${esc(disc.title)}</b><span class="s-sub">${esc(disc.sub)}</span></button>
       <button class="stat" data-goto="authenticity"><span class="s-label">Authenticity ${info("How genuine the recommendation feels: six factors rated by Gemini from image and sound (use shown, balance, specificity, delivery, body language, sales pressure). Rounded to 5 because runs vary by about ±6 points.")}</span><b class="num">${auAvg ?? "–"}</b><span class="s-sub">${auAvg != null ? band(auAvg) : "not rated"}</span></button>
       <button class="stat" data-goto="value"><span class="s-label">Media value ${info(`${VALUE_WHAT} What comparable reach would cost as 30-second video ads: views ÷ 1000 × CPM × weighted seconds ÷ 30, counting only viewers still watching at that point (audience drop-off) and discounted because a product in the picture gets less attention than an ad spot (${Math.round(state.opts.attention * 100)}%). Low / high = cautious / generous assumptions. Details under Media value.`)}</span><b class="num range">${euroRange(val.range)}</b><span class="s-sub">mid ${euro(val.range.mid)} · ${fmtViews(v.views)} views</span></button>
@@ -665,7 +674,7 @@ function viewOverview() {
           <div class="pc-top">${logoBox(b.brand)}<div class="pc-name"><b>${esc(b.brand)}</b><span>${esc(b.product || b.category || "")}</span></div>
             ${promoted.has(b.brand.toLowerCase()) ? `<span class="tag">promoted</span>` : b.appearances.every((a) => a.closer) ? `<span class="tag soft">look closer</span>` : b.appearances.some((a) => a.in_use) ? `<span class="tag soft">in use</span>` : ""}</div>
           <div class="pc-lane">${b.appearances.map((a) => `<i class="${a.channel}" style="left:${Math.min(100, (100 * a.start_s) / dur)}%;width:${Math.max(0.8, (100 * (a.end_s - a.start_s)) / dur)}%;background:${color(b.brand)};color:${color(b.brand)}"></i>`).join("")}</div>
-          <div class="pc-facts"><span><b class="num">${Math.round(r.raw.visual || 0)} s</b> on screen</span><span><b class="num">${spoken}×</b> spoken</span><span title="${esc(VALUE_WHAT)}"><b class="num">${euroRange(r.range)}</b> ad cost eq.</span></div>
+          <div class="pc-facts"><span title="${esc(SCREEN_INFO)}"><b class="num">${secRange(r.raw.visual || 0)}</b> on screen</span><span><b class="num">${spoken}×</b> spoken</span><span title="${esc(VALUE_WHAT)}"><b class="num">${euroRange(r.range)}</b> ad cost eq.</span></div>
           <div class="pc-jumps">${jumps.map((a) => `<button class="time" data-jump="${a.start_s}">${mmss(a.start_s)}</button>`).join("")}${b.appearances.length > jumps.length ? `<span class="more">+${b.appearances.length - jumps.length}</span>` : ""}</div>
           <div class="pc-verify" data-vb="${esc(b.brand)}"></div>
           ${cardLinks(b)}

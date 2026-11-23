@@ -223,11 +223,14 @@ export function mergeRecheck(timeline, items, answer) {
  *
  *   A  low confidence:  confidence < RECHECK_MIN_CONF (0.6) → span dropped.
  *   B  copied spans:    a span that ≥ copyMin products have with the same start and end (±1 s) – copyMin = 4, or 60 % of
- *                       the list for short lists, at least 3 – is a scene, not a sighting. It is kept only with
- *                       confidence ≥ RECHECK_COPY_CONF (0.8), and then without a box (position not checked).
- *                       Exception – "rubber-stamp" confidence: if ≥ 90 % of at least 10 spans say ≥ 0.95 (online test:
- *                       72 of 72 said 1.0), the number carries no information and copied spans are dropped entirely.
- *                       This also drops copied spans that were right (the wide shot at 0:55) – fewer, but honest hits.
+ *                       the list for short lists, at least 3 – is a scene, not a sighting: the TIME is kept, the box is
+ *                       not (position not checked → `no_box`, "In the background" in Right now).
+ *                       Until 23 Nov copied spans were dropped entirely when the confidence was a "rubber stamp" (≥ 90 %
+ *                       of at least 10 spans at ≥ 0.95) or below a confidence of 0.8. Test M (EVALUATION.md M2/M5) measured
+ *                       that against hand-marked frames: on the desk video most copied spans were right (wide shots), and
+ *                       dropping them cut recall from 62 % to 26 % without raising precision. The wrong boxes on the
+ *                       speaker's face – the original reason – are already gone because the box is dropped.
+ *                       `rubber_stamp` is still reported in the stats (it says the confidence carries no information).
  *   C  template boxes:  the same box (all four values within ±10 of 1000) for one product in ≥ 3 separate spans = a
  *                       position copied from one shot into others (cuts and close-ups move things) → those keyframes go.
  *   D  stacked boxes:   keyframes of two different products within ±1 s whose boxes overlap with IoU ≥ 0.5 → both go
@@ -242,7 +245,7 @@ export function mergeRecheck(timeline, items, answer) {
  * spans: [{ key, start_s, end_s, confidence?, track: [{t, box}] }]  →  { kept, stats }
  */
 export const RECHECK_MIN_CONF = 0.6;
-export const RECHECK_COPY_CONF = 0.8;
+
 const COPY_TOL_S = 1, TEMPLATE_TOL = 10, TEMPLATE_MIN_SPANS = 3, STACK_IOU = 0.5;
 
 export function boxIou(a, b) {
@@ -263,11 +266,8 @@ export function filterRecheckSpans(spans, listSize) {
   const copied = new Set(list.filter((sp) => sharers(sp) >= copyMin));
   const rated = list.filter((sp) => conf(sp) != null);
   stats.rubber_stamp = rated.length >= 10 && rated.filter((sp) => conf(sp) >= 0.95).length >= 0.9 * rated.length;
-  list = list.filter((sp) => {
-    if (!copied.has(sp)) return true;
-    if (!stats.rubber_stamp && (conf(sp) ?? 0) >= RECHECK_COPY_CONF) { sp.no_box = true; stats.copied_kept_no_box++; return true; }
-    stats.copied_dropped++; return false;
-  });
+  // since 23 Nov (test M5): copied spans always stay, without a box – see rule B above
+  for (const sp of copied) { sp.no_box = true; stats.copied_kept_no_box++; }
   // C – template boxes: one product, the same box in ≥ 3 separate spans
   const same = (a, b) => a.every((v, i) => Math.abs(v - b[i]) <= TEMPLATE_TOL);
   for (const key of new Set(list.map((sp) => sp.key))) {

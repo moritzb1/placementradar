@@ -203,6 +203,6 @@ export function findings(s, match) {
   if (s.not_found?.length) f.push({ kind: "note", id: "not_found", title: `${s.not_found.length} analysed video${s.not_found.length === 1 ? "" : "s"} without ${name}`,
     text: "The search suggested them, but Gemini found no such brand in image, speech or text – left out of every total.", videos: list(s.not_found) });
   f.push({ kind: "note", id: "spread", title: "Screen time and value are ranges",
-    text: `Two analyses of the same video agree on only about half of the on-screen seconds (test M4), so one run's numbers carry about ±${Math.round(100 * SPREAD)} %. Totals are shown with that range; video counts and disclosure verdicts are more stable.`, videos: [] });
+    text: `Two analyses of the same video agree on only about half of the on-screen seconds (test M4), so screen time is shown ±${Math.round(100 * SPREAD)} %. The value range (cautious to generous scenario, as in each video's Media value view) is about as wide. Video counts and disclosure verdicts are more stable.`, videos: [] });
   return f;
 }

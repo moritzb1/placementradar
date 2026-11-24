@@ -99,6 +99,9 @@ async function route() {
   const pageKey = parts[0] === "v" ? `v/${parts[1]}` : parts[0] || "start";
   if (pageKey !== lastPage) { window.scrollTo(0, 0); lastPage = pageKey; }
   stopLive(); stopAgent();
+  // an open sheet (Verify on screen, Settings, …) belongs to the page it was opened on – close it on navigation
+  // (night check 24 Nov: the Verify sheet stayed on top of the brand agent after the browser's back button)
+  document.querySelectorAll(".scrim").forEach((s) => s.remove());
   if (parts[0] === "agent") {
     state.id = null; state.data = null; state.page = "agent"; state.renderedId = null;
     renderSidebar(); destroyPlayer();

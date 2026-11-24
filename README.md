@@ -85,6 +85,8 @@ The app is responsive (phone screenshots: `docs/screenshots/10_mobile_*.png`) an
 
 **2f · Audience.** What do viewers say about each product? The *Audience* tab reads the video's top ~100 comments (YouTube's own comment endpoint, or the Data API if a key is set) and sorts them by fixed English and German rules – no AI request, no quota: which product a comment names, and whether it shows **purchase intent** ("where can I get it", "link?"), a **question**, **praise**, **criticism** or **ad suspicion** ("is this sponsored?"). Per product: number of comments, the reactions as pills and up to three excerpts; the product cards show the count once the tab was opened. Only counts and excerpts of ≤ 100 characters are kept, never names. Measured on 50 held-back comments (test K): questions and praise are recognised well, the rare reactions less reliably – shown as a first impression, not a survey.
 
+![Audience: top comments of an espresso video per product – reactions and excerpts](docs/screenshots/19_audience.jpg)
+
 ## 1. Why this project
 
 Influencer marketing is a multi-billion market, but two questions are hard to answer at scale:

@@ -15,8 +15,8 @@
  * brand is on screen. One run's screen time and media value therefore carry roughly ±50 %. Every total here comes
  * as a range:
  *   screen time   = seconds × (1 ± SPREAD)
- *   media value   = value.js low scenario × (1 − SPREAD) … high scenario × (1 + SPREAD)
- *                   (value.js already spreads CPM, attention and audience drop-off; SPREAD adds the detection noise)
+ *   media value   = value.js low … high scenario, exactly as in each video's Media value view (CPM, attention and
+ *                   audience drop-off already span about −50 % … +80 % around mid, which covers the detection noise)
  * Counts of videos and the disclosure verdicts are not spread – they depend on whether a brand is found at all,
  * which is far more stable between runs (brand Jaccard 0.61–0.79, test M4).
  */
@@ -81,7 +81,9 @@ export function videoRow(analysis, brands, opts = DEFAULTS) {
     spoken_s: Math.round(spoken), text_s: Math.round(text), mentions,
     shown, in_use: inUse, background_only: shown && background,
     value: { low: value.low, mid: value.mid, high: value.high },          // value.js scenarios (one run)
-    value_range: { low: value.low * (1 - SPREAD), mid: value.mid, high: value.high * (1 + SPREAD) }, // + detection noise
+    // same range as the video's Media value view, so one video never shows two different values (night check 24 Nov);
+    // value.js's cautious/generous scenarios already span about −50 % … +80 % around mid, the size of the detection noise
+    value_range: { low: value.low, mid: value.mid, high: value.high },
     paid: !!analysis.paid?.looks_like_paid_promotion,
     disclosure: { level: disc.level, label: DISCLOSURE_LABEL[disc.level], title: disc.title, signals: disc.signals },
     others: others.slice(0, 30),

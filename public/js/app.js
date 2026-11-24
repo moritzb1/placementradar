@@ -1121,7 +1121,7 @@ function viewReport() {
         <div class="rp-kpis">
           <div><span>Equivalent ad cost</span><b class="num">${euroRange(r.range)}</b><i>mid ${euro(r.range.mid)} · not the creator's fee</i></div>
           <div><span>Visibility score</span><b class="num">${r.score}<small>/100</small></b><i>${r.inUse ? "shown in use" : "not shown in use"}</i></div>
-          <div><span>On screen</span><b class="num">${Math.round(r.raw.visual || 0)} s</b><i>${Math.round(r.raw.text || 0)} s as on-screen text</i></div>
+          <div title="${esc(SCREEN_INFO)}"><span>On screen</span><b class="num">${secRange(r.raw.visual || 0)}</b><i>${Math.round(r.raw.text || 0)} s as on-screen text</i></div>
           <div><span>Mentioned</span><b class="num">${mentions}×</b><i>${Math.round(r.raw.audio || 0)} s in speech</i></div>
         </div>
         <h4>Exposure over the video</h4>
@@ -1168,7 +1168,7 @@ function pitchMail(b, r, mentions, disc) {
     `Hi ${v.channel || "there"},`,
     "",
     `we came across your video "${v.title}"${v.views ? ` (${fmtViews(v.views)} views)` : ""}.`,
-    `${b.brand}${b.product ? ` (${b.product})` : ""} is on screen for about ${seen} seconds${mentions ? ` and you mention it ${mentions === 1 ? "once" : `${mentions} times`}` : ""}${r.inUse ? " – and you actually use it, which is exactly what we like to see" : ""}.`,
+    `${b.brand}${b.product ? ` (${b.product})` : ""} is on screen for roughly ${secRange(seen).replace(" s", " seconds")}${mentions ? ` and you mention it ${mentions === 1 ? "once" : `${mentions} times`}` : ""}${r.inUse ? " – and you actually use it, which is exactly what we like to see" : ""}.`,
     `By our estimate, comparable reach would cost roughly ${euroRange(r.range)} as regular video ads.`,
     "",
     "We would love to talk about a paid collaboration for an upcoming video. Of course any partnership would be clearly labelled as advertising from the start (§ 5a UWG, § 22 MStV)" +

@@ -306,7 +306,7 @@ the agent used its second search path, YouTube's public search page.
   (2) DJI "Mini 5 Pro" approved via the script → all four video models answered **503** (10–42 s each), the chain started a second round and the
   run did not finish before the session ended. So test G shows the agent with cached analyses only; the "new" path is the unchanged
   `/api/analyze` pipeline (now `analyzeVideo` in worker.js), tested in S1, P, W and Q.
-- **Report:** KPIs as ranges (±50 % on screen time, value = low scenario × 0.5 … high × 1.5, test M4), disclosure bar, videos with source
+- **Report:** KPIs as ranges (±50 % on screen time, value = the low … high scenario of each video's Media value view, so a video shows the same value in both places – changed in the night check of 24 Nov, before that low × 0.5 … high × 1.5), disclosure bar, videos with source
   (Example / Cached / New), top creators, "seen next to" (Sonos: LG, Nothing, Apple, Beats, Bose …), findings. "Save as PDF" prints only the
   report (Sonos: 2 A4 pages). Bug found and fixed: finding rows used the class `info`, which is the (i) tooltip's class – the text collapsed into a 16 px circle.
 - **Matching:** "AirPods" finds Apple in the bag video (product line); "Anastasia" finds Anastasia Beverly Hills in 3 examples; "Apple" does not match

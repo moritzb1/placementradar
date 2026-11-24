@@ -226,10 +226,10 @@ export function renderBrandReport(s, o = {}) {
           <div class="muted">${t.videos} video${t.videos === 1 ? "" : "s"} by ${s.creators.length} creator${s.creators.length === 1 ? "" : "s"} · ${fmtViews(t.views)} views together</div></div>
           <div class="rp-rank"><b>${t.in_use}</b> of ${t.videos}<br><span class="muted small">shown in use</span></div></div>
         <div class="rp-kpis">
-          ${kpi("Equivalent ad cost", euroRange(t.value), `mid ${euro(t.value.mid)} · not the creators' fees`, `Sum over all videos. Low = cautious scenario × (1 − ${spreadPct} %), high = generous scenario × (1 + ${spreadPct} %): value.js already spreads CPM, attention and audience drop-off; the extra ±${spreadPct} % is the run-to-run noise of the detection (test M4).`)}
+          ${kpi("Equivalent ad cost", euroRange(t.value), `mid ${euro(t.value.mid)} · not the creators' fees`, `Sum over all videos – the same cautious and generous scenarios as in each video's Media value view (CPM, attention, audience drop-off). The range is about as wide as the run-to-run noise of the detection (±${spreadPct} %, test M4).`)}
           ${kpi("On screen", secsRange(t.screen_range), `${fmtTime(t.screen_s)} in one run each`, `Seconds the brand is visible, summed over all videos. Two analyses of the same video agree on only about half of these seconds, so ±${spreadPct} %.`)}
           ${kpi("Mentioned", `${t.mentions}×`, `${t.spoken_s} s in speech`, "How often the brand is named in speech (Gemini listens to the audio).")}
-          ${kpi("Ad disclosure", `${t.commercial}<small>/${t.videos}</small>`, `with ad signals · ${t.labelled} labelled · ${t.unlabelled} not`, "Per video: paid or gifted (Gemini), shop/affiliate links in the description, and whether an ad label appears in title, description, image or speech (§ 5a (4) UWG, § 22 MStV – screening aid, not legal advice).")}
+          ${kpi("Ad disclosure", `${t.commercial}<small>/${t.videos}</small>`, `with ad signals · ${t.labelled} labelled${t.weak ? ` · ${t.weak} weak` : ""} · ${t.unlabelled} not`, "Per video: paid or gifted (Gemini), shop/affiliate links in the description, and whether an ad label appears in title, description, image or speech (§ 5a (4) UWG, § 22 MStV – screening aid, not legal advice).")}
         </div>
         <div class="ag-disc">${disc.map(([lvl, n]) => `<div class="lvl-${lvl}" style="flex:${n}"><span class="dot"></span>${n} ${esc(LEVEL_TEXT[lvl])}</div>`).join("")}</div>
         <h4>Videos</h4>

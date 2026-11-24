@@ -964,3 +964,13 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
 .aud-quotes q { quotes: "\201C" "\201D"; overflow-wrap: anywhere; }
 .aud-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--c); transform: translateY(-1px); }
 .aud-silent { margin: 16px 2px 0; }
+
+/* c) Gemini + own models (24 Nov): brands found on screen by the device, not by Gemini – teal, dashed like "on screen only" */
+.vpill.v-found { color: var(--teal, #30b0c7); background: color-mix(in srgb, var(--teal, #30b0c7) 14%, transparent); }
+.tag.found { background: color-mix(in srgb, var(--teal, #30b0c7) 16%, transparent); color: var(--teal, #30b0c7); }
+.pcard.vfound { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--teal, #30b0c7) 40%, transparent); }
+.now-item.vfound .logo { outline: 1.5px dashed color-mix(in srgb, var(--teal, #30b0c7) 70%, transparent); outline-offset: 1px; }
+.rp-verify { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.rp-verify .vpill { margin: 0; }
+.row .t .tag.found { font-size: 10.5px; padding: 1px 7px; margin-left: 6px; vertical-align: 1px; }
+.verify-status .vs-chips .info { align-self: center; }

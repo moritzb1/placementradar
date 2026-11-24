@@ -121,7 +121,7 @@ export function createTracking(host, data, color) {
         // "on screen only": our detector sees a product type of this video where Gemini lists nothing (grey, dashed)
         el = document.createElement("div"); el.className = `tbox measured${m.only ? " only" : ""}`;
         el.style.setProperty("--c", m.only ? "#8e8e93" : color(m.brand));
-        el.innerHTML = m.only ? `<span class="tb-label"><i></i><b>${esc(m.label)}</b><em class="tb-meas">on screen only</em></span>`
+        el.innerHTML = m.only ? `<span class="tb-label"><i></i><b>${esc(m.label)}</b><em class="tb-meas">${m.found ? "found on screen" : "on screen only"}</em></span>`
           : `<span class="tb-label"><i></i><b>${esc(labelText(m.brand, m.product))}</b><em class="tb-meas">measured</em></span>`;
         layer.append(el); els.set(key, el);
       }

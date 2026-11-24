@@ -36,7 +36,7 @@
  * Used by app.js (button, dialog, Right now, Products) and tracking.js (draws measured boxes).
  */
 import { ensureOrt, loadFinder, loadCoco, detect } from "./detector.js";
-import { loadOcr, readText, brandKey, lev } from "./ocr.js";
+import { loadOcr, loadBrands, readText, matchBrands, brandKey, lev } from "./ocr.js";
 import { loadBrandModel, classifyBox, embedBox, knowsBrand, rankTypes, loadTypeBank } from "./brandmodel.js";
 import { updateTracks, placeTracks, iou } from "./tracker.js";
 
@@ -91,6 +91,14 @@ const OCR_EVERY_MS = 1200;  // OCR while the video plays (≈ 0.3–1 s each); o
 const OWN_PER_FRAME = 2, ZS_PER_FRAME = 4, ZOOM_PER_FRAME = 2; // MobileCLIP runs per frame (≈ 0.1–0.25 s each): own brand model / type check
 const PAUSED_FACTOR = 3;    // a paused frame is checked only once → it may use more runs
 const STORE_MAX = 600;      // measured keyframes kept per appearance
+// b) small things (24 Nov): the detectors see the whole frame at only 320 (COCO) / 512 px (YOLOE) – a keyboard in a wide
+// shot is a few pixels tall. TILES: the frame cut into 2×2 overlapping tiles, each tile through both detectors, i.e.
+// ~2× the resolution. Time budget: while paused all 4 tiles once per frame; while playing ONE tile per checked frame
+// (round robin), and only while a frame takes less than TILE_MAX_MS – so a MacBook stays smooth (EVALUATION V2).
+const TILE_GRID = 2, TILE_OVERLAP = 0.18, TILE_MAX_MS = 1600;
+// c) found on screen: a brand our own models are SURE about (brand read by OCR, or the own brand model sure about a box)
+// at a second where Gemini lists no such brand. Shown once it was found on ≥ FOUND_MIN frames.
+const FOUND_MIN = 2, OWN_SCAN = 1;  // own-model runs per frame on boxes no Gemini product claimed (×3 while paused)
 
 /** Gemini box [y0,x0,y1,x1] (0–1000) ↔ pixel box {x1,y1,x2,y2} of a W×H frame. */
 const toPx = (b, W, H) => ({ x1: (b[1] / 1000) * W, y1: (b[0] / 1000) * H, x2: (b[3] / 1000) * W, y2: (b[2] / 1000) * H });
@@ -133,9 +141,10 @@ export function createVerifier({ id, data, iframe, time, playing, onChange = () 
     apps.push({ key: `${b.brand}|${a.start_s}|${a.end_s}`, brand: b.brand, product: a.product || b.product || (b.products || [])[0] || "", a, b, type, keys: [...keys].filter(Boolean), basis: a.basis || "" });
   });
   const R = load() || { v: 1, frames: 0, apps: {}, mode: null, at: null };
+  R.found ||= {}; // c) brands found by our own models that Gemini does not list at that second
   const rec = (k) => (R.apps[k] ||= { checks: 0, hits: 0, how: {}, read: [], meas: [], dev: [] });
 
-  const st = { log: [], running: false, phase: "idle", msg: "", mode: R.mode, stream: null, video: null, links: new Map(), lastOcr: 0, lastFrameKey: null, ms: 0, live: new Map(), unclaimed: new Map() };
+  const st = { tile: 0, log: [], running: false, phase: "idle", msg: "", mode: R.mode, stream: null, video: null, links: new Map(), lastOcr: 0, lastFrameKey: null, ms: 0, live: new Map(), unclaimed: new Map(), found: new Map() };
   const TS = { tracks: [], lost: [], nextId: 1 }; // tracker.js state (frame pixels)
   let W = 0, H = 0, saveTimer = 0;
   const frame = document.createElement("canvas"), fctx = frame.getContext("2d", { willReadFrequently: true });
@@ -186,7 +195,7 @@ export function createVerifier({ id, data, iframe, time, playing, onChange = () 
       // moment fail with "multiple calls to initWasm()" (seen in test V on a fresh page)
       await ensureOrt();
       const finder = await loadFinder(), coco = await loadCoco();
-      await loadOcr(); await loadBrandModel(); await loadTypeBank();
+      await loadOcr(); await loadBrands(); await loadBrandModel(); await loadTypeBank();
       st.models = { finder, coco };
     } catch (e) { stop(`Models could not be loaded (${e.message}).`); return; }
     if (!st.running) return;
@@ -198,7 +207,7 @@ export function createVerifier({ id, data, iframe, time, playing, onChange = () 
   function stop(msg = "") {
     const was = st.running; st.running = false; stopStream();
     if (st.video) { st.video.srcObject = null; st.video = null; }
-    st.live.clear(); st.unclaimed.clear(); TS.tracks = []; TS.lost = []; st.links.clear();
+    st.live.clear(); st.unclaimed.clear(); st.found.clear(); TS.tracks = []; TS.lost = []; st.links.clear();
     setPhase(was || msg ? "done" : "idle", msg); save();
   }
   function setPhase(phase, msg) { st.phase = phase; st.msg = msg; onChange(api); }
@@ -253,6 +262,24 @@ export function createVerifier({ id, data, iframe, time, playing, onChange = () 
       const same = boxes.find((k) => iou(k, b) > 0.6);
       if (same) { if (!same.name.split("|").includes(b.name)) same.name += `|${b.name}`; } else boxes.push({ ...b });
     }
+    // b) tiled pass for small things (see TILE_* above); a box cut by an inner tile edge is dropped (the neighbour tile
+    //    sees that object whole), a tile box that the full-frame pass already has is merged into it
+    const tiles = tileRects(W, H), paused = !playing();
+    const todo = paused ? tiles.map((_, i) => i) : st.ms < TILE_MAX_MS ? [st.tile++ % tiles.length] : [];
+    const tt0 = performance.now();
+    for (const i of todo) {
+      const r = tiles[i];
+      zc.width = r.w; zc.height = r.h; zctx.drawImage(frame, r.x, r.y, r.w, r.h, 0, 0, r.w, r.h);
+      const got = [...await detect(finder, zc, r.w, r.h), ...await detect(coco, zc, r.w, r.h, { keep: (n) => n !== "person", minE2e: 0.3 })];
+      for (const q of got) {
+        const e = 3; // px from an inner tile edge = cut
+        if ((q.x1 < e && r.x > 0) || (q.y1 < e && r.y > 0) || (q.x2 > r.w - e && r.x + r.w < W) || (q.y2 > r.h - e && r.y + r.h < H)) continue;
+        const b = { ...q, x1: q.x1 + r.x, x2: q.x2 + r.x, y1: q.y1 + r.y, y2: q.y2 + r.y, tile: true };
+        const same = boxes.find((k) => iou(k, b) > 0.5);
+        if (same) { if (!same.name.split("|").includes(b.name)) same.name += `|${b.name}`; } else boxes.push(b);
+      }
+    }
+    if (todo.length) { st.tileMs = Math.round(performance.now() - tt0); st.tilesRun = (st.tilesRun || 0) + todo.length; st.tileBoxes = boxes.filter((b) => b.tile).length; }
     for (const b of boxes) b.hist = histogram(frame, b);
     updateTracks(TS, boxes, now); placeTracks(TS, now, true);
     const fresh = TS.tracks.filter((x) => x.seen === now);
@@ -370,6 +397,37 @@ export function createVerifier({ id, data, iframe, time, playing, onChange = () 
         st.unclaimed.set(`${label}`, { label, box: toK(x, W, H), brands: brands.map((p) => ({ brand: p.brand, product: p.product, at: apps.filter((q) => q.brand === p.brand).map((q) => q.a.start_s) })) });
       }
     }
+
+    // 4. c) found on screen: brands our models are sure about where Gemini lists no such brand at this second
+    //    (any channel). Evidence: OCR reads a brand of the brand list (exact spelling, ≥ 4 letters), or the own brand
+    //    model is sure about a box no Gemini product claimed. Counted per frame; shown from FOUND_MIN frames on.
+    const listedNow = new Set((data.brands || []).filter((b) => (b.appearances || []).some((a) => t >= a.start_s - 1.5 && t <= a.end_s + 1.5)).map((b) => brandKey(b.brand)));
+    const listedAll = new Set((data.brands || []).map((b) => brandKey(b.brand)));
+    const finds = new Map();
+    if (cands && words) for (const m of matchBrands(words)) {
+      if (!m.exact || m.key.length < 4 || m.score < 0.8 || listedNow.has(m.key)) continue;
+      finds.set(m.key, { brand: m.brand, how: "text", read: m.read, box: { x1: m.x1, y1: m.y1, x2: m.x2, y2: m.y2 } });
+    }
+    let scans = 0;
+    for (const x of fresh.filter((x) => !linked.has(x.id) && (!x.ownAt || now - x.ownAt > 1500)).sort((m, n) => area(n) - area(m))) {
+      if (scans >= OWN_SCAN * k3) break;
+      scans++; x.ownAt = now;
+      const res = await classifyBox(frame, x, W, H);
+      if (res) { x.emb = res.emb; x.own = res.sure ? res.brand : null; }
+    }
+    for (const x of fresh) {
+      if (!x.own || linked.has(x.id)) continue;
+      const k = brandKey(x.own); if (listedNow.has(k)) continue;
+      if (!finds.has(k)) finds.set(k, { brand: x.own, how: "look", box: x, trackId: x.id });
+    }
+    st.found.clear();
+    for (const [k, f] of finds) {
+      const g = (R.found[k] ||= { brand: f.brand, ts: [], how: {}, read: [], listed: listedAll.has(k) });
+      if (newFrame && !g.ts.includes(fk)) { g.ts.push(fk); g.how[f.how] = (g.how[f.how] || 0) + 1; if (g.ts.length > STORE_MAX) g.ts.shift(); }
+      if (f.read && !g.read.includes(f.read) && g.read.length < 5) g.read.push(f.read);
+      g.box = toK(f.box, W, H); g.boxT = fk;
+      st.found.set(k, { ...f, box: toK(f.box, W, H) });
+    }
     save();
   }
 
@@ -414,6 +472,8 @@ export function createVerifier({ id, data, iframe, time, playing, onChange = () 
     /** Measured boxes at t: live (tracker, follows the product) while verifying, else the stored keyframes. */
     measuredAt(t) {
       const out = st.running ? [...st.unclaimed.values()].map((u) => ({ key: `only:${u.label}`, brand: u.brands[0].brand, label: u.label.charAt(0).toUpperCase() + u.label.slice(1), box: u.box, live: true, only: true })) : [];
+      // c) brands found on screen by our models where Gemini lists none (grey dashed like "on screen only", labelled with the brand)
+      if (st.running) for (const [k, f] of st.found) out.push({ key: `found:${k}`, brand: f.brand, label: f.brand, box: f.box, live: true, only: true, found: true });
       for (const p of covering(t)) {
         const live = st.running ? st.live.get(p.key) : null;
         if (live?.trackId != null) {
@@ -439,6 +499,15 @@ export function createVerifier({ id, data, iframe, time, playing, onChange = () 
     },
     /** Products on screen that the analysis does not list at this second (only while verifying). */
     unclaimedAt() { return st.running ? [...st.unclaimed.values()] : []; },
+    /** c) Brands found on screen by our models at t that Gemini does not list then (≥ FOUND_MIN frames in total). */
+    foundAt(t) {
+      return foundList(R).filter((f) => f.spans.some(([a, b]) => t >= a - 0.75 && t <= b + 0.75))
+        .map((f) => ({ ...f, now: st.running ? st.found.has(brandKey(f.brand)) : null, box: st.found.get(brandKey(f.brand))?.box || (Math.abs((R.found[brandKey(f.brand)]?.boxT ?? -99) - t) < 1 ? R.found[brandKey(f.brand)].box : null) }));
+    },
+    /** c) All brands found on screen (Products, Media value, Brand report). */
+    found: () => foundList(R),
+    /** b) tile pass numbers (status line, tests) */
+    tileStats: () => ({ tilesRun: st.tilesRun || 0, lastMs: st.tileMs || 0, boxes: st.tileBoxes || 0 }),
     /** Totals for the status line and EVALUATION.md: statuses, deviation measured vs. estimated. */
     summary() {
       const s = { confirmed: 0, not_seen: 0, not_checkable: 0, checking: 0, unchecked: 0, frames: R.frames };
@@ -449,7 +518,7 @@ export function createVerifier({ id, data, iframe, time, playing, onChange = () 
       return s;
     },
     /** Raw results (tests). */
-    results: () => ({ R, log: st.log, apps: apps.map((p) => ({ key: p.key, brand: p.brand, product: p.product, type: p.type?.label || null, ...statusOfRec(p), zs: st.live.get(p.key)?.zs || null })) }),
+    results: () => ({ R, found: foundList(R), tiles: { tilesRun: st.tilesRun || 0, lastMs: st.tileMs || 0 }, log: st.log, apps: apps.map((p) => ({ key: p.key, brand: p.brand, product: p.product, type: p.type?.label || null, ...statusOfRec(p), zs: st.live.get(p.key)?.zs || null })) }),
     /** Status of the appearance of a brand at t only (tracking.js dims Gemini's box when it is "not seen"). */
     statusOf(brand, t) { return api.statusAt(brand, t)?.status || null; },
     /** The last captured frame as JPEG (tests: what the models saw, without any overlay). */
@@ -496,4 +565,33 @@ function textCandidates(words) {
     }
   }
   return out.filter((w) => w.key.length >= 2);
+}
+
+// ------------------------------------------------------------------------------------------------
+// b) tiles · c) found on screen
+// ------------------------------------------------------------------------------------------------
+/** TILE_GRID × TILE_GRID overlapping tiles covering the frame. */
+function tileRects(W, H) {
+  const n = TILE_GRID, tw = Math.round(W / (n - (n - 1) * TILE_OVERLAP)), th = Math.round(H / (n - (n - 1) * TILE_OVERLAP)), out = [];
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) out.push({ x: Math.min(W - tw, Math.round(c * tw * (1 - TILE_OVERLAP))), y: Math.min(H - th, Math.round(r * th * (1 - TILE_OVERLAP))), w: tw, h: th });
+  return out;
+}
+
+/**
+ * Stored finds → [{brand, frames, spans: [[start, end]…] (s), seconds, how: {text, look}, read, listed}], only brands found
+ * on ≥ FOUND_MIN frames. Frames ≤ 3 s apart form one span (a frame is checked every ~0.5–2.5 s); a lone frame counts ±0.5 s.
+ * `listed`: Gemini names this brand elsewhere in the video (then it is NOT added to the media value – no double count).
+ */
+function foundList(R) {
+  return Object.values(R.found || {}).filter((g) => g.ts.length >= FOUND_MIN).map((g) => {
+    const ts = [...g.ts].sort((a, b) => a - b), spans = [];
+    for (const t of ts) { const l = spans[spans.length - 1]; if (l && t - l[1] <= 3) l[1] = t; else spans.push([t, t]); }
+    const sp = spans.map(([a, b]) => [Math.max(0, a - 0.5), b + 0.5]);
+    return { brand: g.brand, frames: ts.length, spans: sp, seconds: sp.reduce((n, [a, b]) => n + b - a, 0), how: g.how, read: g.read, listed: g.listed };
+  }).sort((a, b) => b.frames - a.frames);
+}
+
+/** Read-only results of an earlier Verify on screen in this tab (Media value, Brand report: no player there). */
+export function storedVerify(id) {
+  try { const R = JSON.parse(sessionStorage.getItem(`verify:${id}`) || "null"); return R ? { R, found: foundList(R) } : null; } catch { return null; }
 }

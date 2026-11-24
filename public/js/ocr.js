@@ -218,7 +218,7 @@ export function matchBrands(words) {
     if (!hit && cand.key.length >= 4 && !COMMON.has(cand.key)) {
       const look = lookalike(cand.key);
       for (const b of BRANDS.list) {
-        const max = allowed(b.key.length); if (!max) continue;
+        const max = b.exact ? 0 : allowed(b.key.length); if (!max) continue; // v3 additions (tech, fashion …): exact spelling only
         const d = lev(look, b.key, max);
         if (d <= max && (!hit || d < dist || (d === dist && b.products > hit.products))) { hit = b; dist = d; }
       }

@@ -526,7 +526,7 @@ function bindTrackSwitch(tracker) {
   sw.onchange = () => { prefs.tracking = sw.checked; savePrefs(); tracker.setEnabled(sw.checked); };
   const hint = $("#trackHint");
   if (hint) hint.dataset.base = hint.textContent = !cov.withBox ? "No positions in this analysis – boxes appear for videos analysed from 21 Nov on."
-    : cov.keys > cov.withBox * 1.5 ? `${cov.keys} approximate positions from Gemini. Solid = close to a reported position, dashed or dot = rough.`
+    : cov.keys > cov.withBox * 1.5 ? `${cov.keys} positions from Gemini · approximate`  // solid / dashed / dot is explained in the (i) next to it
     // one position per appearance: either an analysis from before the keyframe prompt, or Gemini gave only one keyframe
     // (seen 21 Nov on a 13-min desk tour: 23 keyframes for 21 appearances) – so no "(older analysis)" claim here
     : `${cov.withBox} of ${cov.all} appearances located, about one position each – mostly shown as dots. Look closer adds more.`;
@@ -767,15 +767,19 @@ function renderVerifyStatus(v) {
   btn.classList.toggle("on", !!v?.running);
   btn.querySelector("span").textContent = v?.running ? "Stop verifying" : "Verify on screen";
   if (!v || (v.phase === "idle" && !v.hasResults)) { box.hidden = true; return; }
-  const s = v.summary(), dev = s.dev.n ? ` · measured vs. Gemini's boxes: median overlap ${Math.round(s.dev.iou * 100)} %, centre ${s.dev.dist.toFixed(0)} % of the picture apart (${s.dev.n} frames)` : "";
-  const counts = `${s.confirmed} confirmed · ${s.not_seen} not seen · ${s.not_checkable} not checkable${s.checking ? ` · ${s.checking} checking` : ""}`;
+  // layout like the other status cards: title, the three verdicts as the same pills as on the cards, one quiet detail line
+  const s = v.summary();
+  const chip = (k, n, ic) => n ? `<span class="vpill v-${k}">${ic ? icon(ic) : ""}${n} ${V_LABEL[k]}</span>` : ""; // zeros left out
+  const chips = `<div class="vs-chips">${chip("confirmed", s.confirmed, "check")}${chip("not_seen", s.not_seen, "minus")}${chip("not_checkable", s.not_checkable)}${chip("checking", s.checking)}</div>`;
   const how = { element: "only the player is shared", region: "player area of this tab", tab: "this tab, cut to the player" }[v.mode] || "";
+  const dev = s.dev.n ? `Gemini's boxes vs. measured: ${Math.round(s.dev.iou * 100)} % overlap, centres ${s.dev.dist.toFixed(0)} % of the picture apart (median of ${s.dev.n} frames)` : "";
+  const detail = (parts) => { const t = parts.filter(Boolean).join(" · "); return t ? `<small>${t}</small>` : ""; };
   box.hidden = false;
   box.className = `verify-status ${v.running ? "run" : ""}`;
   box.innerHTML = v.phase === "asking" ? `<span class="spinner"></span><div><b>Waiting for your choice</b><span>${esc(v.message)}</span></div>`
     : v.phase === "loading" ? `<span class="spinner"></span><div><b>Loading the models on your device</b><span>First time about 110 MB, then from the browser cache.</span></div>`
-    : v.running ? `<span class="rec"></span><div><b>Verifying on your device · <span class="num">${s.frames}</span> frames checked</b><span>${v.message ? esc(v.message) : `Play the video or jump to a scene. ${counts} · ${how}${v.msPerFrame ? ` · ${(v.msPerFrame / 1000).toFixed(1)} s per frame` : ""}`}${dev}</span></div>`
-    : `${icon("eye")}<div><b>Verified on screen · ${s.frames} frames</b><span>${counts}${dev}${v.message ? ` · ${esc(v.message)}` : ""}. Nothing was uploaded.</span></div>`;
+    : v.running ? `<span class="rec"></span><div><b>Verifying on your device · <span class="num">${s.frames}</span> frames checked</b><span>${v.message ? esc(v.message) : "Play the video or jump to a scene."}</span>${chips}${detail([how, v.msPerFrame && `${(v.msPerFrame / 1000).toFixed(1)} s per frame`, dev])}</div>`
+    : `${icon("eye")}<div><b>Verified on screen · ${s.frames} frames</b><span>${v.message ? `${esc(v.message)} · ` : ""}Nothing was uploaded.</span>${chips}${detail([dev])}</div>`;
 }
 
 /** Permission sheet before the browser's own "share this tab" dialog – what happens, and that nothing leaves the device. */

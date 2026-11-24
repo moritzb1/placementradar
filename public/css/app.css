@@ -642,10 +642,14 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
 .verify-status b { display: block; font-size: 14.5px; } .verify-status span { color: var(--text-2); font-size: 13px; }
 .verify-status > .icon { width: 20px; height: 20px; margin-top: 1px; color: var(--green); }
 .verify-status .spinner { margin-top: 1px; }
+.verify-status .vs-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; } .verify-status .vs-chips:empty { display: none; } .verify-status .vs-chips .vpill { margin: 0; font-size: 12px; }
+.verify-status .vpill.v-not_checkable { background: transparent; box-shadow: inset 0 0 0 1px var(--line); } /* grey pill on a grey card */
+.verify-status small { display: block; margin-top: 8px; font-size: 12px; line-height: 1.45; color: var(--text-3); }
 .verify-status .rec { width: 12px; height: 12px; margin: 4px; border-radius: 50%; background: #ff3b30; box-shadow: 0 0 0 4px rgba(255, 59, 48, .2); animation: blink 1.6s ease-in-out infinite; }
 .vpill { display: inline-flex; align-items: center; gap: 4px; width: fit-content; margin-top: 4px; padding: 2px 8px 2px 6px; border-radius: 999px; font-size: 11.5px; font-weight: 600; letter-spacing: -.005em; white-space: nowrap; }
 .vpill .icon { width: 12px; height: 12px; }
 .vpill em { font-style: normal; font-weight: 500; opacity: .75; margin-left: 4px; }
+.vpill { max-width: 100%; flex-wrap: wrap; row-gap: 0; border-radius: 8px; } /* 'confirmed · type  not in this frame' wraps inside a narrow Right-now card */
 .vpill.v-confirmed { color: var(--green); background: color-mix(in srgb, var(--green) 14%, transparent); }
 .vpill.v-not_seen { color: var(--orange); background: color-mix(in srgb, var(--orange) 14%, transparent); }
 .vpill.v-not_checkable, .vpill.v-checking { color: var(--text-2); background: var(--tile); }

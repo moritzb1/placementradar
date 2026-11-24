@@ -53,6 +53,23 @@ model (packages) / OCR could have found it · not checkable = only the type chec
 measured boxes follow the tracked detector box and are stored as keyframes (replay after the capture)
 ```
 
+### Small things, and Gemini + own models together (24 Nov)
+```
+b) close-up tiles: the frame is cut into 2×2 overlapping tiles (18 % overlap), every tile through YOLOE + YOLO26
+   → ~2× the detector resolution. Boxes cut by an inner tile edge are dropped, boxes the full-frame pass already has
+   are merged. Time budget: paused → all 4 tiles once per frame; playing → 1 tile per checked frame (round robin) and
+   only while a frame takes < 1.6 s.
+c) three kinds of result, the same words in Right now, Products, Media value and the Brand report:
+   confirmed     – Gemini said it AND our models found it on the real frames (rule above)
+   unconfirmed   – only Gemini says so, after it was checked: "not seen" (a model that could have found it did not)
+                   or "can't check" (no model on the device knows that kind of product)
+   found on screen – our models are SURE about a brand (OCR reads it in exact spelling, ≥ 4 letters, score ≥ 0.8; or the
+                   own brand model is sure about a box no Gemini product claimed) at a second where Gemini lists no such
+                   brand, on ≥ 2 checked frames. Counted in media value only if Gemini names the brand nowhere in the video
+                   (no double count); seconds = checked frames ≤ 3 s apart joined, ±0.5 s → a lower bound. Product-type hints
+                   without a brand ("backpack – could be Peak Design") stay hints and never count.
+```
+
 ## Brand agent – why its planner is rules, not a language model (23 Nov, `agent.js`)
 The brand agent (`POST /api/agent`, view `#/agent`) is the "agentic" part of the app: from one brand name it plans and runs a
 chain of tools, reports every step live and stops to ask before it spends quota.

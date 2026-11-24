@@ -450,6 +450,7 @@ function mountPlayer(onTime) {
   });
   state.player = p; state.tracker = tracker;
   // "Verify on screen" (verify.js): own models check Gemini on the real frames once the user shares this tab
+  let foundN = -1; // brands found on screen that count in media value → the overview figures are redrawn when it changes
   const verifier = createVerifier({
     id: state.id, data: state.data, iframe: () => host.querySelector("iframe"),
     time: () => { const x = p.yt?.getCurrentTime?.(); return typeof x === "number" ? x : p.t; },
@@ -464,7 +465,6 @@ function mountPlayer(onTime) {
   return p;
 
   /** After every checked frame: Right now, product cards, boxes, status line (at most ~5× per second). */
-  let foundN = -1; // brands found on screen that count in media value → the overview figures are redrawn when it changes
   function onVerify(v) {
     const nf = v.found().filter((f) => !f.listed).length;
     if (nf !== foundN) { const first = foundN < 0; foundN = nf; if (!first) state.refreshOverview?.(); }

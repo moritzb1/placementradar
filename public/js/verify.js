@@ -92,10 +92,11 @@ const OWN_PER_FRAME = 2, ZS_PER_FRAME = 4, ZOOM_PER_FRAME = 2; // MobileCLIP run
 const PAUSED_FACTOR = 3;    // a paused frame is checked only once → it may use more runs
 const STORE_MAX = 600;      // measured keyframes kept per appearance
 // b) small things (24 Nov): the detectors see the whole frame at only 320 (COCO) / 512 px (YOLOE) – a keyboard in a wide
-// shot is a few pixels tall. TILES: the frame cut into 2×2 overlapping tiles, each tile through both detectors, i.e.
-// ~2× the resolution. Time budget: while paused all 4 tiles once per frame; while playing ONE tile per checked frame
-// (round robin), and only while a frame takes less than TILE_MAX_MS – so a MacBook stays smooth (EVALUATION V2).
-const TILE_GRID = 2, TILE_OVERLAP = 0.18, TILE_MAX_MS = 1600;
+// shot is a few pixels tall. TILES: the frame cut into overlapping tiles, each tile through both detectors. Time budget:
+// while paused 3×3 tiles (~3× the resolution) once per frame (≈ 0.1 s per tile on a MacBook); while playing ONE 2×2 tile
+// per checked frame (round robin, ~2×), and only while a frame takes less than TILE_MAX_MS – the video stays smooth
+// (EVALUATION V2: 3×3 found the orchid, the LEGO car, the clock that the whole frame missed; the keyboard not at all).
+const TILE_GRID_PLAY = 2, TILE_GRID_PAUSED = 3, TILE_OVERLAP = 0.18, TILE_MAX_MS = 1600;
 // c) found on screen: a brand our own models are SURE about (brand read by OCR, or the own brand model sure about a box)
 // at a second where Gemini lists no such brand. Shown once it was found on ≥ FOUND_MIN frames.
 const FOUND_MIN = 2, OWN_SCAN = 1;  // own-model runs per frame on boxes no Gemini product claimed (×3 while paused)
@@ -264,7 +265,7 @@ export function createVerifier({ id, data, iframe, time, playing, onChange = () 
     }
     // b) tiled pass for small things (see TILE_* above); a box cut by an inner tile edge is dropped (the neighbour tile
     //    sees that object whole), a tile box that the full-frame pass already has is merged into it
-    const tiles = tileRects(W, H), paused = !playing();
+    const paused = !playing(), tiles = tileRects(W, H, paused ? TILE_GRID_PAUSED : TILE_GRID_PLAY);
     const todo = paused ? tiles.map((_, i) => i) : st.ms < TILE_MAX_MS ? [st.tile++ % tiles.length] : [];
     const tt0 = performance.now();
     for (const i of todo) {
@@ -570,9 +571,9 @@ function textCandidates(words) {
 // ------------------------------------------------------------------------------------------------
 // b) tiles · c) found on screen
 // ------------------------------------------------------------------------------------------------
-/** TILE_GRID × TILE_GRID overlapping tiles covering the frame. */
-function tileRects(W, H) {
-  const n = TILE_GRID, tw = Math.round(W / (n - (n - 1) * TILE_OVERLAP)), th = Math.round(H / (n - (n - 1) * TILE_OVERLAP)), out = [];
+/** n × n overlapping tiles covering the frame. */
+function tileRects(W, H, n) {
+  const tw = Math.round(W / (n - (n - 1) * TILE_OVERLAP)), th = Math.round(H / (n - (n - 1) * TILE_OVERLAP)), out = [];
   for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) out.push({ x: Math.min(W - tw, Math.round(c * tw * (1 - TILE_OVERLAP))), y: Math.min(H - th, Math.round(r * th * (1 - TILE_OVERLAP))), w: tw, h: th });
   return out;
 }

@@ -11,7 +11,7 @@ Rules: ≥ 20 usable photos → class (max. 60, best search hits first); 8–19 
        Test share ≈ 20 % (≥ 4 photos). Generic photos of the same kind of objects (keyboard, sneaker, car …) without a
        brand query are the negatives: (other)-class training, validation and a separate false-alarm test.
 Out:   <data>/img_v3/<key>/<pageid>.jpg  +  <data>/index_v3.json  +  placementradar/data/brand_v3_sources.csv
-Run:   python tools/build_brand_data_v3.py <data dir> [--no-download]   (polite: 1 API call at a time, 4 downloads)
+Run:   python tools/build_brand_data_v3.py <data dir> [--no-download]   (polite: ≤ ~1.4 requests/s in total, Retry-After honoured, resumable: search cache + existing files are skipped)
 """
 import concurrent.futures as cf, csv, subprocess, html, json, random, re, sys, time, unicodedata, urllib.parse, urllib.request, zlib
 from collections import defaultdict
@@ -23,7 +23,7 @@ from brands_v3 import DISPLAY, entries  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 DATA = Path(sys.argv[1])
 IMG = DATA / "img_v3"
-UA = "PlacementRadar-CourseProject/0.3 (university course project; brand classifier on free images)"
+UA = "PlacementRadar-course-project/1.0"
 API = "https://commons.wikimedia.org/w/api.php"
 MIN_CLASS, MIN_FOREIGN, MAX_PER_BRAND, PER_QUERY = 20, 8, 50, 100
 EXCLUDE = "-intitle:logo -intitle:logos -intitle:wordmark -intitle:headquarters -intitle:hauptsitz -intitle:factory -intitle:werk -intitle:icon -intitle:map -intitle:signature"
@@ -42,16 +42,38 @@ def key(s):
     return re.sub(r"[^a-z0-9]", "", unicodedata.normalize("NFKD", s.lower()).encode("ascii", "ignore").decode())
 
 
-def get(url, tries=6):
-    """GET via curl (the Python builds here lack CA certificates); backs off on 429 / 5xx / timeouts"""
+_LOCK, _LAST = __import__("threading").Lock(), {"api": 0.0, "img": 0.0}
+GAP = {"api": 2.0, "img": 0.5}  # seconds between requests: API 0.5/s, thumbnails 2/s; every 429 slows this kind down (×1.5, ≤ 8 s)
+
+
+def get(url, tries=8):
+    """GET via curl (the Python builds here lack CA certificates). Global pacing (GAP), on 429/503 wait Retry-After,
+    otherwise exponential backoff."""
+    kind = "api" if "/w/api.php" in url else "img"
     for i in range(tries):
-        r = subprocess.run(["curl", "-sS", "-L", "--max-time", "40", "-A", UA, "-w", "\n%{http_code}", url], capture_output=True)
-        body, _, code = r.stdout.rpartition(b"\n")
-        if r.returncode == 0 and code.strip() == b"200":
+        with _LOCK:
+            wait = _LAST[kind] + GAP[kind] - time.time()
+            if wait > 0:
+                time.sleep(wait)
+            _LAST[kind] = time.time()
+        r = subprocess.run(["curl", "-sS", "-L", "--max-time", "40", "-A", UA, "-D", "-", "-w", "\n%{http_code}", url], capture_output=True)
+        head, _, rest = r.stdout.partition(b"\r\n\r\n")
+        while rest.startswith(b"HTTP/"):          # redirects: one header block per hop
+            head, _, rest = rest.partition(b"\r\n\r\n")
+        body, _, code = rest.rpartition(b"\n")
+        code = code.strip()
+        if r.returncode == 0 and code == b"200":
             return body
         if i == tries - 1:
             raise RuntimeError(f"HTTP {code.decode(errors='ignore')} {r.stderr.decode(errors='ignore')[:80]}")
-        time.sleep(min(60, 3 * 2 ** i) if code.strip() in (b"429", b"503") else 2 + i * 2)
+        m = re.search(rb"(?i)retry-after:\s*(\d+)", head)
+        pause = (int(m.group(1)) if m else 0) + min(120, 4 * 2 ** i)   # Retry-After PLUS exponential backoff
+        print(f"  HTTP {code.decode(errors='ignore')} → waiting {pause} s", flush=True)
+        with _LOCK:
+            _LAST[kind] = time.time() + pause    # every thread of this kind waits
+            if code in (b"429", b"503"):
+                GAP[kind] = min(8.0, GAP[kind] * 1.5)
+        time.sleep(pause)
 
 
 def search(q, limit):
@@ -73,7 +95,6 @@ def search(q, limit):
         if "continue" not in d:
             break
         cont = d["continue"]
-        time.sleep(0.5)
     return out
 
 
@@ -129,16 +150,16 @@ def main():
     todo = [q for q in dict.fromkeys([p[3] for p in plan] + gq) if q not in S]
     print(f"{len(plan)} brand queries + {len(gq)} generic, {len(todo)} not cached yet", flush=True)
 
-    def run(q):  # 3 searches at a time (Wikimedia asks for moderate, not serial-only, API use with a clear User-Agent)
+    def run(q):  # paced globally by get(): ≤ ~1.4 requests per second in total
         try:
             return q, search(q, 60 if q in gq else PER_QUERY)
         except Exception as e:
             print("  search failed", q, e, flush=True); return q, None
-    with cf.ThreadPoolExecutor(3) as ex:
+    with cf.ThreadPoolExecutor(1) as ex:
         for i, (q, r) in enumerate(ex.map(run, todo)):
             if r is not None:
                 S[q] = r
-            if i % 50 == 49:
+            if i % 25 == 24:
                 cache.write_text(json.dumps(S)); print(f"  {i + 1}/{len(todo)} searches ({time.time() - t0:.0f}s)", flush=True)
     cache.write_text(json.dumps(S))
     for disp, cat, term, q in plan:
@@ -203,10 +224,10 @@ def main():
                 return True
             p.parent.mkdir(parents=True, exist_ok=True)
             try:
-                p.write_bytes(get(d["thumb"])); time.sleep(0.1); return True
+                p.write_bytes(get(d["thumb"])); return True
             except Exception as e:
                 print("  download failed", d["thumb"], e); return False
-        with cf.ThreadPoolExecutor(4) as ex:
+        with cf.ThreadPoolExecutor(2) as ex:
             ok = list(ex.map(dl, idx))
         print(f"downloaded: {sum(ok)}/{len(idx)} ({time.time() - t0:.0f}s)")
         keep = {d["code"] for d, o in zip(idx, ok) if o}

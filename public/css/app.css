@@ -566,7 +566,9 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
 .rp-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 18px; }
 .rp-kpis > div { background: var(--tile); border-radius: 14px; padding: 14px 16px; display: grid; gap: 2px; }
 .rp-kpis span { font-size: 12px; color: var(--text-2); }
-.rp-kpis b { font: 700 26px var(--font-d); letter-spacing: -.03em; } .rp-kpis small { font-size: 13px; color: var(--text-3); font-weight: 500; }
+/* ranges ("€739 – €3.0k", "56 s – 3 min") stay on one line: the figure shrinks with its tile (container query) */
+.rp-kpis > div { container-type: inline-size; min-width: 0; }
+.rp-kpis b { font: 700 26px var(--font-d); font-size: clamp(16px, 17cqi, 26px); letter-spacing: -.03em; white-space: nowrap; } .rp-kpis small { font-size: 13px; color: var(--text-3); font-weight: 500; }
 .rp-kpis i { font-style: normal; font-size: 11.5px; color: var(--text-3); }
 .rp-lane .lane { height: 18px; } .rp-lane .seg { height: 14px; }
 .rp-lane .axis { margin-left: 0; }
@@ -828,7 +830,7 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
   .bar i { animation: none; } .rp-table tr { break-inside: avoid; }
   .report h4 { margin: 14px 0 6px; }
   .rp-brand { grid-template-columns: auto 1fr auto; margin-top: 14px; } .rp-rank { grid-column: auto; text-align: right; }
-  .rp-kpis { grid-template-columns: repeat(4, 1fr); } .rp-kpis b { font-size: 22px; } .rp-kpis > div { padding: 10px 12px; }
+  .rp-kpis { grid-template-columns: repeat(4, 1fr); } .rp-kpis b { font-size: clamp(15px, 14cqi, 22px); } .rp-kpis > div { padding: 10px 12px; }
   .rp-two { grid-template-columns: 1fr 1fr; } .rp-table td:nth-child(2) { width: 170px; }
   .rp-brand h2 { font-size: 26px; } .rp-video { margin-top: 12px; }
   .rp-table tr:nth-child(n+7) { display: none; } .rp-table td { padding: 5px 8px 5px 0; } .report .legal { margin-top: 8px; }

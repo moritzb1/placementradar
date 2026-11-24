@@ -329,13 +329,15 @@ Lean version of PLAN_DEZEMBER D: no Workers AI, only rules (`public/js/shared/co
 | Purchase intent (right / false / missed) | 4 / 1 / 0 | 1 / 1 / 0 |
 | Question | 4 / 0 / 0 | **10 / 2 / 0** |
 | Praise | 30 / 0 / 1 | **20 / 8 / 7** |
-| Criticism | 2 / 0 / 1 | 2 / 3 / 2 |
+| Criticism | 2 / 0 / 1 | 1 / 2 / 3 |
 | Ad suspicion | 1 / 0 / 0 | 0 / 1 / 0 |
 | Comment → product (right / false / missed) | 13 / 0 / 5 | **13 / 1 / 7** |
 
 Before tuning, sample 1 gave: purchase intent 0 of 4 found, criticism 0 of 3, praise 27 of 31 at 87 % precision, brand link 84 % precision. A first version that also linked comments by product-type words ("grinder", "backpack", "headphones") found more mentions on sample 2 (18 of 20) but was wrong 8 times out of 26 (69 % precision) – "my backpack" or "the Breville grinder" is often someone else's product. The type words were therefore taken out (93 % precision, 65 % recall): **a missing link is better than a wrong one** when the view says "the audience says this about product X".
 
-Reading: **questions and praise are recognised well, the rarer reactions are not yet reliable** – purchase intent (5 in 100 hand-labelled comments), criticism (7) and ad suspicion (1) are too rare in top comments to measure precisely, and the misses are irony, requests without a question mark ("please test the Loewe") and praise without a keyword ("JAMES IS BACK!!!"). The view therefore shows counts with examples, explains the method in its (i) and adds "read as a first impression". Top comments are not a survey: YouTube favours early and liked comments. In all 410 comments the rules found 149 × praise, 50 × question, 12 × criticism, 10 × purchase intent and 5 × ad suspicion.
+Reading: **questions and praise are recognised well, the rarer reactions are not yet reliable** – purchase intent (5 in 100 hand-labelled comments), criticism (7) and ad suspicion (1) are too rare in top comments to measure precisely, and the misses are irony, requests without a question mark ("please test the Loewe") and praise without a keyword ("JAMES IS BACK!!!"). The view therefore shows counts with examples, explains the method in its (i) and adds "read as a first impression". Top comments are not a survey: YouTube favours early and liked comments. In all 410 comments the rules found 149 × praise, 50 × question, 9 × criticism, 10 × purchase intent and 5 × ad suspicion.
+
+One change after the held-back score (rules version 3): "broke" now counts as criticism only as "it broke", "broke after/down" – "my broke ass likes this" (poor, not broken) was marked as criticism in the Audience view. On sample 2 this turned one criticism right → missed ("the plastic switch broke") and removed one false one: criticism 2 / 3 / 2 → 1 / 2 / 3. Everything else unchanged.
 
 Privacy: the Worker keeps only counts and ≤ 3 excerpts of ≤ 100 characters per product (24 h KV cache, key includes the rules version), never names or profile pictures. The test keeps the raw texts (without names) locally in `tests/ergebnisse/k_kommentare/` for the hand check; they are not in the repository.
 

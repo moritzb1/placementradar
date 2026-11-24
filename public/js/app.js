@@ -1155,7 +1155,7 @@ async function viewAudience() {
         ${s.examples.length ? `<ul class="aud-quotes">${quotes(s.examples)}</ul>` : ""}
       </div>`).join("")}
       <div class="card aud-row aud-general">
-        <div class="aud-brand"><span class="logo">${icon("chat")}</span><div><b>About the video in general</b><span class="small muted">comments that name none of the products</span></div><span class="aud-n num">${res.general.comments}<small>comments</small></span></div>
+        <div class="aud-brand"><span class="logo">${icon("chat")}</span><div><b>About the video in general</b><span class="small muted">no product named</span></div><span class="aud-n num">${res.general.comments}<small>comments</small></span></div>
         <div class="aud-pills">${pills(res.general.cats)}</div>
         ${res.general.examples.length ? `<ul class="aud-quotes">${quotes(res.general.examples)}</ul>` : ""}
       </div>

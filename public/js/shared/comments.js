@@ -27,7 +27,7 @@
  */
 
 /** Bumped whenever the rules change – part of the Worker's cache key, so old results are not served. */
-export const RULES_VERSION = 2;
+export const RULES_VERSION = 3;
 
 export const CATS = ["buy", "question", "praise", "critic", "ad_doubt"];
 export const CAT_LABEL = { buy: "Purchase intent", question: "Question", praise: "Praise", critic: "Criticism", ad_doubt: "Ad suspicion" };
@@ -129,7 +129,8 @@ const RX = {
   ],
   critic: [
     /\b(overpriced|over ?priced|(too|so|really|very) (expensive|pricey)|rip ?off|not worth|waste of money|scam|keeping me from|can'?t afford)\b/i,
-    /\b(broke|broken|breaks|cracked|stopped working|doesn'?t work|died|faulty|defective|returned (it|mine|them)|refund)\b/i,
+    /\b(it|they|mine|that|this|which|has|have|already) broke\b|\bbroke (after|down|within|in|on)\b/i,
+    /\b(broken|breaks|cracked|stopped working|doesn'?t work|died|faulty|defective|returned (it|mine|them)|refund)\b/i,
     /\b(bad|terrible|awful|worst|worse|disappoint(ed|ing)?|hate|cheap(ly)? (made|quality)|flimsy|uncomfortable|problem|issue|annoying|buggy|laggy|glitch(y|es)?)\b/i,
     /\b(zu teuer|überteuert|nicht wert|kaputt|defekt|schlecht|enttäusch\w*|zurückgeschickt|reklamier\w*|mist|schrott|unbequem|nervig)\b/i,
   ],

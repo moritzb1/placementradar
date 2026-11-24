@@ -281,6 +281,31 @@ Reading: on the desk video the change gets back the full recall of the re-check 
 
 **Not tested:** Firefox/Safari (no Element Capture → whole tab, boxes hidden while checking), a real user clicking Chrome's share dialog (the flag answers it), long sessions (memory), other videos.
 
+## V2 – Small things (tiles) and Gemini + own models together (24 Nov, 0 Gemini requests)
+**Setup.** Same script and scenes as test V (`../tests/test_v_verify.mjs`, system Chrome via Puppeteer, muted, Retina scale, real tab capture with Element Capture), brand model still v2. New in `verify.js`: (b) close-up **tiles** – 3×3 overlapping tiles through both detectors while paused, one 2×2 tile per checked frame while playing; (c) results in three words – *confirmed*, *unconfirmed* (not seen / can't check) and *found on screen*. Raw results: `../tests/ergebnisse/v2_verify/`, `v2_snap/` (raw frames at 0:54, 0:56, 3:22–3:30), `v2c_found*/`.
+
+**b) Tiles – honest result: no clear gain where it mattered.**
+
+| JB, frames × products against the M proposal | precision | recall |
+|---|---|---|
+| test V (no tiles, 4 runs) | 95–100 % (18/18 … 21/22) | 31–36 % |
+| V2 with tiles (3 runs) | **100 %** (16/16, 19/19, 32/32) | 28–36 % (16/58, 19/58, 32/88 incl. extra paused frames) |
+
+The Keychron keyboard in the wide shot (3:22–3:30, clearly visible, ~200 × 35 px in a 1600 px frame) stays **not seen**. Offline check on the saved raw frames (`daten_s3/py`, same ONNX files, whole frame vs. 2×2 vs. 3×3 tiles): YOLO26n gives **no "keyboard" box at all, even at a 0.05 threshold and 3×3 tiles** – the small COCO model does not know this low, angled keyboard; resolution is not the bottleneck. What the tiles do find that the whole frame misses: the orchid ("potted plant"/"vase" in 4 of 6 frames with 2×2, none without), and with 3×3 also the LEGO car ("car"), the clock and the laptop on the shelf – these feed the *object* evidence of products whose type has a detector class. Cost: 9 tiles ≈ 0.25 s per paused frame (WebGPU), one tile ≈ 0.03–0.12 s while playing; a whole checked frame stays at 0.7–2.9 s, dominated by OCR and the type check, so the video stays smooth.
+
+**c) Gemini + own models together.** One wording everywhere (Right now, Products cards, the Verify status, Media value, Brand report, each with an (i)): *confirmed* (our models found it), *unconfirmed · not seen*, *unconfirmed · can't check*, and *found on screen* – a brand our models are sure about (OCR reads it in exact spelling, or the own model is sure about a box nobody claimed) on ≥ 2 frames where Gemini lists no such brand. It counts in media value only if Gemini names the brand nowhere (no double count), with the checked seconds only (a lower bound).
+Ablations (a brand removed from a stored analysis = a brand Gemini missed):
+
+| Case | frames | found on screen | right? |
+|---|---|---|---|
+| headphones video, **Sonos removed**, 1:41–1:54 (name printed on the headphones) | 38–39 | **Sonos** (brand read "SONOS", 2–3 frames) → Products card "Found on screen", Media value row €16–€57, report option "Sonos (found on screen)" | ✓ |
+| headphones video, **Bose removed**, 1:20–1:40 | 57 | nothing | ✓ no Bose logo readable in these frames, v2 does not know Bose |
+| same run, 1:41–1:54 with Sonos listed | 44 | nothing | ✓ |
+| MKBHD, **Canon removed**, 3:48–4:13 | 66 | nothing | ✓ there is no camera on screen – Gemini's Canon span is itself wrong here |
+| JB wide shot + close-up, MKBHD 6:06–6:15 (full analyses) | 36 | nothing | ✓ |
+
+→ **0 wrong "found on screen" in 241 checked frames**, 1 of 1 findable missing brand added. Small sample; captions and the YouTube pause overlay (title, "Weitere Videos") are in the frames and were not read as brands.
+
 ## G – Brand agent: from a brand name to one report (23–24 Nov, local Worker `tests/wrangler.s1-lokal.jsonc`, 0 successful Gemini requests – about 6 attempts failed)
 *(The older SSE heartbeat check is listed under "F/G – Hosting".)* Script `../tests/test_g_agent.mjs`, raw events `../tests/ergebnisse/g_agent/`.
 Setup: local KV holds two analyses saved earlier by the app (JB desk tour `eLAVGYQCkQI`, Side of Tech desk setup `6DMUMgQyVtc`) next to the ten

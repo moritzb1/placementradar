@@ -36,11 +36,15 @@
   //   TEACH              "off" switches keeping off (default: on, with the note in the live scanner)
   //   TEACH_MAX          default 1500 examples in total · TEACH_DAYS default 90 · TEACH_MAX_KB default 160
   //   TEACH_MIN_CONF     default 0.7 (cloud model's confidence needed)
+  // Brand agent (agent.js, POST /api/agent):
+  //   DAILY_AGENT_SEARCHES  default 10 new YouTube searches per visitor and day (cached searches are free)
+  //   DAILY_SEARCHES        default 60 searches for all visitors together (= 6,000 of the 10,000 free Data API units)
   "keep_vars": true
   // Secrets (set in the Cloudflare dashboard, never in this file):
   //   GEMINI_API_KEY      – Google AI Studio key (free tier, no billing)
   //   INVITE_TOKEN        – optional; new analyses only with ?invite=<token>
   //   OPENROUTER_API_KEY  – optional; enables the OpenRouter free models as third provider
   //   YOUTUBE_API_KEY     – optional; YouTube Data API v3 for exact video length (YouTube blocks the Worker's IP)
+  //                         and the brand agent's search (without it the agent reads YouTube's search page, which may be bot-checked online)
   //   TEACH_TOKEN         – optional; enables the download of kept training examples (GET /api/teach, tools/teach_pull.py)
 }

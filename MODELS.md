@@ -53,6 +53,38 @@ model (packages) / OCR could have found it · not checkable = only the type chec
 measured boxes follow the tracked detector box and are stored as keyframes (replay after the capture)
 ```
 
+## Brand agent – why its planner is rules, not a language model (23 Nov, `agent.js`)
+The brand agent (`POST /api/agent`, view `#/agent`) is the "agentic" part of the app: from one brand name it plans and runs a
+chain of tools, reports every step live and stops to ask before it spends quota.
+```
+plan      brand, language, period → queries, filters, budgets (max 3 new analyses)
+library   repo examples + KV cache: analyses that already contain the brand          0 requests
+search    YouTube Data API v3 search.list (100 units) – or the public search page    cached 24 h per query
+replan    fewer usable videos than half the report size → second query "<brand> review" (once)
+filter    1–20 min, ≥ 1,000 views, period, not the brand's own channel (owned media)
+pick      score = brand in title (+3) / description (+1) + log10(views) + recency → top 6 proposals, top 3 ticked
+confirm   visitor ticks ≤ 3, sees today's Gemini budget (requests left, own analyses left, ≈ 3 requests per video)
+analyze   same pipeline + limits as /api/analyze (Gemini, model chain, re-check, authenticity, KV)
+aggregate shared/aggregate.js summarize(): videos, screen time, paid/labelled, value range, creators, findings
+```
+**Decision: rule-based planning.** Cloudflare Workers AI (free, e.g. Llama 3.x as a tool-calling planner) was the alternative. We chose rules because
+1. **the tool chain is fixed and short** – search, filter, cache, analyse, aggregate. A language model would only re-derive the same order, and every
+   decision that matters (what to spend, what to skip) must be predictable for the person paying the quota;
+2. **spending must never depend on a model's output.** The only expensive action (a Gemini video analysis) is gated by the visitor's click and
+   hard limits in code; a planner that could be talked into "analyse 20 videos" by a crafted video title (prompt injection via search results)
+   would be a risk without benefit;
+3. **reproducible and testable**: the same input gives the same plan, so test G can be repeated and compared; ranking reasons ("brand in title ·
+   239k views") are shown next to each proposal;
+4. **free and local**: Workers AI needs a Cloudflare login and does not run in `wrangler dev` with our test config (S1), and its daily allowance is
+   already used as the live scanner's fallback (model 2b).
+The intelligence of the agent lies in the tools it calls (Gemini watching videos, the aggregation) and in its adaptivity (re-plan when the search
+is thin, skip what is cached, explain what was left out); a language model could later *phrase* the findings, but it should not *decide* the spending.
+
+**Matching a brand across videos** (`aggregate.js brandMatches`): normalised names (lower case, accents and punctuation removed); a brand entry
+counts if its name equals or starts with the query ("Benefit" → "Benefit Cosmetics"), or the query is one of its product lines ("AirPods" → Apple).
+`startsWith`, not `contains`, so "Apple" never matches "Pineapple". Analyses where Gemini found no such brand are listed as "without <brand>" and
+left out of every total.
+
 ## Not used, and why
 | Candidate | Reason |
 |---|---|
@@ -60,6 +92,7 @@ measured boxes follow the tracked detector box and are stored as keyframes (repl
 | Marqo-Ecommerce-B (Apache-2.0) | best product-search embedding in our offline test H4 (brand 100 %, exact product 89.8 % on 49 photos, easier setup), but the image part is ~350 MB – too large for a web page and above Cloudflare's 25 MiB per file → MobileCLIP-S1 + our head instead |
 | MobileCLIP-S1 **text encoder in the browser** (for a real zero-shot check of each analysis' product *names*) | 63.4 M parameters = ~127 MB as float16 (~63 MB as int8): 3–6 files above Cloudflare's 25 MiB limit, more than the whole live scanner downloads today, plus a CLIP tokenizer in JavaScript – too heavy for an optional check. Replaced by 93 product types embedded once offline (93 KB, model 6c); the licence (Apple's MobileCLIP terms, as for the image encoder) would have allowed it |
 | CLIP ViT-B/32 zero-shot | 6/6 correct above confidence 0.75 (H2), but only 7/21 overall; its idea lives on inside our own model ("text opinion" of MobileCLIP) |
+| Workers AI (Llama) as the brand agent's planner | free, but a fixed five-tool chain needs no model to plan it; spending quota must not depend on model output (prompt injection through search results); not available in local `wrangler dev`; rules are reproducible – see "Brand agent" above |
 | Gemma 4 (API) | overloaded during tests, no audio → cannot watch YouTube videos |
 | Gemma 4 12B local (Ollama) | 12–30 s per frame, invents brands |
 | Google Scanned Objects / 3D scans | only ~1,000 objects, mostly US household items – not enough coverage |

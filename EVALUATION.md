@@ -33,6 +33,7 @@ Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). 
 | Do two runs agree? | on the brands mostly (Jaccard 0.61, same settings 0.79), on the seconds only half (0.55, same settings 0.32) → screen time ±50 % | M |
 | Does SponsorBlock confirm the disclosure check? | where it has data, yes (1 of 1, same time) – but only 4 of 14 videos have any entry | M |
 | Can the app check Gemini on the real video frames itself? | yes, on the device ("Verify on screen", tab capture of the player only): JB desk tour – evidence in 18–21 frame × product cells, 0–1 of them wrong (precision 95–100 %), but only 31–36 % of the truly visible cells found; LG monitor measured at the right edge where Gemini's box sat in the middle (overlap 0, centre 34 % apart); MKBHD 6:10: backpack + camera found where Gemini lists nothing. Small items in wide shots (keyboard, Mac mini) are missed | V |
+| Can an agent find a brand across YouTube on its own and report on it without wasting quota? | yes for the cheap part: Sonos, Apple, DJI (+ Sonos in German) – plan, cache, search, filter, ranked proposals, combined report and PDF in ≤ 1 s from the cache, 0 Gemini requests, 0 YouTube units (search page; Data API path not tested locally); guards hold (≤ 3, only proposed videos). The two approved new analyses failed: once our own dev-server reload cut the stream, once Google answered 503 on all four models | G |
 | Does a fresh analysis work online, end to end? | yes: 13-min desk tour, 18 brands, 15 shop links – all verbatim from the description, 0 invented; 14 of 18 exact models from the description; disclosure green; but only ~1 tracking position per appearance | Q |
 | Does a free fallback provider help? | Workers AI (Llama 3.2 Vision) finds main brands, reads slogans as brands → last resort only | S1 |
 
@@ -278,6 +279,40 @@ Reading: on the desk video the change gets back the full recall of the re-check 
 **Zero-shot (optional part).** A real zero-shot check of each analysis' product *names* needs MobileCLIP-S1's text encoder in the browser: 63.4 M parameters ≈ 127 MB float16 / ≈ 63 MB int8 → 3–6 files over Cloudflare's 25 MiB limit plus a CLIP tokenizer in JavaScript – not shipped (licence would have allowed it: same Apple terms as the image encoder). Instead 93 product types were embedded once offline (`tools/build_category_bank.py`, 93 KB). Weak but useful: cosines only 0.18–0.28, so only ranks are used; it confirmed the Sonos speaker in the wide shot (rank 2–3), and crops on the presenter rank "person", "face", "hoodie" first, which correctly keeps the template boxes from being confirmed.
 
 **Not tested:** Firefox/Safari (no Element Capture → whole tab, boxes hidden while checking), a real user clicking Chrome's share dialog (the flag answers it), long sessions (memory), other videos.
+
+## G – Brand agent: from a brand name to one report (23–24 Nov, local Worker `tests/wrangler.s1-lokal.jsonc`, 0 successful Gemini requests – about 6 attempts failed)
+*(The older SSE heartbeat check is listed under "F/G – Hosting".)* Script `../tests/test_g_agent.mjs`, raw events `../tests/ergebnisse/g_agent/`.
+Setup: local KV holds two analyses saved earlier by the app (JB desk tour `eLAVGYQCkQI`, Side of Tech desk setup `6DMUMgQyVtc`) next to the ten
+repo examples = 12 analysed videos. No `YOUTUBE_API_KEY` locally (the Gemini key is refused by the Data API: "API keys are not supported"), so
+the agent used its second search path, YouTube's public search page.
+
+| Brand | Cache (of 12) | Search → kept | Left out | Proposals (top 3 ticked) | Report from cache | Time |
+|---|---|---|---|---|---|---|
+| Sonos | 2 (1 example, 1 saved) | 20 → 16 | 1 own channel ("Sonos"), 1 < 1 min, 1 > 20 min, 1 < 1,000 views | 6, all "brand in title", 55k–239k views | 2 videos, 56–167 s on screen, €370 – €4.5k, **2 of 2 with ad signals but no label** | < 1 s |
+| Apple | 5 (3 examples, 2 saved) | 20 → 15 | 3 own channel, 1 > 20 min, 1 < 1,000 views | 6 (iFixit, Max Tech, 9to5Mac, LTT …) | 5 videos by 5 creators, 68–204 s, €6.8k – €77k; 2 labelled, 2 weak, 1 not; "one video holds 99 % of the value" (MKBHD) | < 1 s |
+| DJI | 2 (examples) | 20 → 9 | **6 own channel** (DJI's regional channels), 2 < 1,000 views, 2 > 20 min, 1 < 1 min | 6 drone/gimbal reviews | 2 videos, 7–20 s, €13 – €158; 1 labelled, 1 not; 1 "only mentioned" | < 1 s |
+| Sonos, German | 2 | 20 → 18 | – | German titles first ("Ist SONOS wieder gut?") | same 2 videos | 1 s |
+
+- **Steps and re-planning:** plan → library → search → filter → pick → confirm → aggregate, each streamed as an SSE step with its reason. The re-plan
+  ("too few usable videos → search '<brand> review'") did not trigger: every brand gave ≥ 9 usable videos.
+- **Cost:** first search per brand 0 units (page) / would be 101 units with the Data API; the confirm round trip and every repeat came from the
+  24 h search cache ("from today's search cache, 0 units"). KV reads: 2 per run (the two saved analyses predate the `names` metadata).
+- **Guards** (0 requests): `approve` with a video that was not proposed → step "Nothing to analyse"; 4 ids → HTTP 400 "At most 3 new analyses";
+  brand " x " → 400. Confirm card: checkboxes lock at 3, the button shows "Analyse 1 video" and "this step: 3 Gemini requests at most",
+  next to "80 requests left of 80" and "10 of 10 new analyses left" (`quotaInfo`).
+- **New analyses – both failed, honestly reported:** (1) Sonos "Arc Ultra: I Almost Returned It" approved in the UI → after 16 s the step showed
+  "Stopped – network error": `wrangler dev` reloads on every file change, and an edit to the CSS during the run cut the stream (1 request counted,
+  failed). Online this cannot happen, but it shows that a run dies with its connection – the pending flag then blocks the video for 15 min.
+  (2) DJI "Mini 5 Pro" approved via the script → all four video models answered **503** (10–42 s each), the chain started a second round and the
+  run did not finish before the session ended. So test G shows the agent with cached analyses only; the "new" path is the unchanged
+  `/api/analyze` pipeline (now `analyzeVideo` in worker.js), tested in S1, P, W and Q.
+- **Report:** KPIs as ranges (±50 % on screen time, value = low scenario × 0.5 … high × 1.5, test M4), disclosure bar, videos with source
+  (Example / Cached / New), top creators, "seen next to" (Sonos: LG, Nothing, Apple, Beats, Bose …), findings. "Save as PDF" prints only the
+  report (Sonos: 2 A4 pages). Bug found and fixed: finding rows used the class `info`, which is the (i) tooltip's class – the text collapsed into a 16 px circle.
+- **Matching:** "AirPods" finds Apple in the bag video (product line); "Anastasia" finds Anastasia Beverly Hills in 3 examples; "Apple" does not match
+  "Pineapple" (startsWith).
+- **Open:** the Data API path (`search.list` + `videos.list`) is written but untested (no key locally; the key is a secret of the online Worker);
+  online, YouTube may bot-check the search page as it does the watch page – then the step fails and the report uses the cache only.
 
 ## T – Tracking boxes with keyframes (21 Nov, 1 Gemini request)
 Question: can Gemini give enough positions for a box that follows the product while the video plays?

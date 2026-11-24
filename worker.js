@@ -10,6 +10,8 @@
  *   POST /api/analyze {v}       → full Gemini video analysis, streamed as Server-Sent Events
  *   POST /api/identify {image}  → brands in one camera crop (live mode fallback), via the provider router
  *   POST /api/closer {v,start,end} → "Look closer": inventory of a ≤ 20 s clip at 2 frames/s (SSE, cached per clip)
+ *   POST /api/agent {brand, lang?, period?, approve?} → brand agent: search, cached analyses first, up to 3 new ones
+ *                                 after the visitor's OK, one combined brand report (SSE; agent.js)
  *   GET  /api/teach[?cursor=]   → training examples kept from /api/identify ("Gemini teaches the on-device model"),
  *   GET  /api/teach/item?k=<key>  only with the secret TEACH_TOKEN as bearer token (tools/teach_pull.py)
  *
@@ -39,6 +41,7 @@ import { VIDEO_MODELS, FRAME_MODELS, TIMELINE_SCHEMA, AUTHENTICITY_SCHEMA, FRAME
   CLOSER_PROMPT, CLOSER_SCHEMA, RECHECK_SCHEMA, MAX_RECHECK_ITEMS, authenticityPrompt, timelinePrompt, recheckPrompt,
   geminiBody } from "./public/js/shared/prompts.js";
 import { normalizeAnalysis, normalizeCloser, promotedCandidates, recheckItems, mergeRecheck, screenTime } from "./public/js/shared/normalize.js";
+import { agent, AGENT_MESSAGES } from "./agent.js";
 
 const API = "https://generativelanguage.googleapis.com/v1beta";
 const ID_RE = /^[A-Za-z0-9_-]{11}$/;
@@ -57,6 +60,9 @@ const MESSAGES = {
   busy: "Google's AI is overloaded right now – please try again in a few minutes.",
   bad_answer: "Gemini's answer was unreadable – please try again in a moment.",
   invalid_video: "That does not look like a YouTube video link.",
+  invalid_brand: "Please enter a brand name (at least 2 letters).",
+  too_many: "At most 3 new analyses per agent run.",
+  ...AGENT_MESSAGES,
 };
 
 class ApiError extends Error {
@@ -74,6 +80,7 @@ export default {
       if (url.pathname === "/api/analyze" && request.method === "POST") return await analyze(request, env, ctx);
       if (url.pathname === "/api/identify" && request.method === "POST") return await identify(request, env, ctx);
       if (url.pathname === "/api/closer" && request.method === "POST") return await closer(request, env, ctx);
+      if (url.pathname === "/api/agent" && request.method === "POST") return await agent(request, env, ctx, KIT);
       if (url.pathname === "/api/teach" || url.pathname === "/api/teach/item") return await teachExport(request, env, url);
       if (url.pathname.startsWith("/api/")) return json({ error: "not_found" }, 404);
     } catch (e) {
@@ -415,73 +422,80 @@ async function analyze(request, env, ctx) {
   if (env.STORE) await env.STORE.put(`pending:${v}`, String(Date.now()), { expirationTtl: 900 }); // 15 min max, then a new run may start
 
   return sseResponse(ctx, async (send) => {
-    try { await runAnalysis(send); } finally { if (env.STORE) ctx.waitUntil(env.STORE.delete(`pending:${v}`)); }
+    try { await send("result", await analyzeVideo(env, v, models, send)); } finally { if (env.STORE) ctx.waitUntil(env.STORE.delete(`pending:${v}`)); }
   });
+}
 
-  async function runAnalysis(send) {
-    await send("stage", { id: "meta" });
-    const meta = await videoMeta(v, env);
-    await send("meta", meta);
-    if (meta.duration_s && meta.duration_s > Number(env.MAX_VIDEO_S || 1200)) throw new ApiError("video_too_long");
+/**
+ * The analysis pipeline itself (meta → timeline → re-check → authenticity → normalise → KV), without access checks.
+ * Used by /api/analyze and by the brand agent (agent.js); both do the checks (key, quota, limits, pending flag) first.
+ * `send` receives the progress events (stage, meta, model, retry, note); the caller sends the result.
+ */
+export async function analyzeVideo(env, v, models, send) {
+  await send("stage", { id: "meta" });
+  const meta = await videoMeta(v, env);
+  await send("meta", meta);
+  if (meta.duration_s && meta.duration_s > Number(env.MAX_VIDEO_S || 1200)) throw new ApiError("video_too_long");
 
-    await send("stage", { id: "timeline" });
-    // title + description go into the same request as marked data (exact models, product links; prompts.js timelinePrompt)
-    const tl = await gemini(env, models, geminiBody({ video: v, prompt: timelinePrompt(meta), schema: TIMELINE_SCHEMA }),
-      (ev, data) => send(ev, data));
+  await send("stage", { id: "timeline" });
+  // title + description go into the same request as marked data (exact models, product links; prompts.js timelinePrompt)
+  const tl = await gemini(env, models, geminiBody({ video: v, prompt: timelinePrompt(meta), schema: TIMELINE_SCHEMA }),
+    (ev, data) => send(ev, data));
 
-    // Call 1a, re-check (since 22 Nov, prompts.js): where is each found product visible – also lying on the desk?
-    // Same model chain, exhausted flags and usage meter as every call (gemini()). Optional: if it fails (quota used up,
-    // Google overloaded, unreadable answer) the analysis simply keeps the timeline of call 1 – no error for the visitor.
-    await send("stage", { id: "recheck" });
-    let timeline = tl.data, rc = null, recheckInfo = null;
-    const items = recheckItems(tl.data, MAX_RECHECK_ITEMS);
-    if (items.length) {
-      const t0 = Date.now();
-      rc = await gemini(env, models, geminiBody({ video: v, prompt: recheckPrompt(items), schema: RECHECK_SCHEMA, maxTokens: 24000 }),
-        (ev, data) => send(ev, data)).catch((e) => { console.log(`recheck skipped: ${e?.code || e?.message || e}`); return null; });
-      if (rc) {
-        timeline = mergeRecheck(tl.data, items, rc.data);
-        recheckInfo = { model: rc.model, products: items.length, spans: (rc.data?.items || []).reduce((n, it) => n + (it.appearances?.length || 0), 0), seconds: Math.round((Date.now() - t0) / 1000),
-          filter: timeline.recheck_filter }; // what the plausibility filter removed (normalize.js filterRecheckSpans)
-      } else {
-        recheckInfo = { skipped: true };
-        await send("note", { text: "Re-check skipped (Google busy or quota used up) – keeping the first result" });
-      }
+  // Call 1a, re-check (since 22 Nov, prompts.js): where is each found product visible – also lying on the desk?
+  // Same model chain, exhausted flags and usage meter as every call (gemini()). Optional: if it fails (quota used up,
+  // Google overloaded, unreadable answer) the analysis simply keeps the timeline of call 1 – no error for the visitor.
+  await send("stage", { id: "recheck" });
+  let timeline = tl.data, rc = null, recheckInfo = null;
+  const items = recheckItems(tl.data, MAX_RECHECK_ITEMS);
+  if (items.length) {
+    const t0 = Date.now();
+    rc = await gemini(env, models, geminiBody({ video: v, prompt: recheckPrompt(items), schema: RECHECK_SCHEMA, maxTokens: 24000 }),
+      (ev, data) => send(ev, data)).catch((e) => { console.log(`recheck skipped: ${e?.code || e?.message || e}`); return null; });
+    if (rc) {
+      timeline = mergeRecheck(tl.data, items, rc.data);
+      recheckInfo = { model: rc.model, products: items.length, spans: (rc.data?.items || []).reduce((n, it) => n + (it.appearances?.length || 0), 0), seconds: Math.round((Date.now() - t0) / 1000),
+        filter: timeline.recheck_filter }; // what the plausibility filter removed (normalize.js filterRecheckSpans)
+    } else {
+      recheckInfo = { skipped: true };
+      await send("note", { text: "Re-check skipped (Google busy or quota used up) – keeping the first result" });
     }
-
-    await send("stage", { id: "authenticity" });
-    let au = null;
-    const products = promotedCandidates(tl.data);
-    if (products.length && tl.data.looks_like_paid_promotion !== false) {
-      au = await gemini(env, models, geminiBody({ video: v, prompt: authenticityPrompt(products), schema: AUTHENTICITY_SCHEMA }),
-        (ev, data) => send(ev, data)).catch(() => null); // authenticity is optional – never fail the whole analysis
-    }
-
-    await send("stage", { id: "done" });
-    const result = normalizeAnalysis({ video: meta, timeline, authenticity: au?.data, models: [tl.model, rc?.model, au?.model].filter(Boolean) });
-    // tokens per call, shown in the app's usage meter ("this analysis cost …")
-    result.source.usage = [{ call: "timeline", model: tl.model, ...tl.usage }, ...(rc ? [{ call: "recheck", model: rc.model, ...rc.usage }] : []),
-      ...(au ? [{ call: "authenticity", model: au.model, ...au.usage }] : [])];
-    if (recheckInfo) {
-      // before/after numbers for transparency (EVALUATION.md test W): what call 1 alone would have shown
-      const before = normalizeAnalysis({ video: meta, timeline: tl.data });
-      const count = (r) => r.brands.reduce((n, b) => n + b.appearances.filter((a) => a.channel === "visual").length, 0);
-      const secs = (r) => Math.round(r.brands.reduce((n, b) => n + screenTime(b), 0));
-      const raw = (tl.data?.brands || []).reduce((n, b) => n + (b.appearances || []).filter((a) => (a.channel || "visual") === "visual").length, 0);
-      result.source.recheck = { ...recheckInfo, visual_raw: raw, visual_before: count(before), visual_after: count(result), seconds_before: secs(before), seconds_after: secs(result) };
-    }
-    if (!result.video.duration_s) { // YouTube withheld the length (bot check) → last brand appearance as lower bound
-      const ends = (result.brands || []).flatMap((b) => (b.appearances || []).map((x) => x.end_s || 0));
-      if (ends.length) { result.video.duration_s = Math.max(...ends); result.video.duration_estimated = true; }
-    }
-    if (env.STORE) {
-      // kept forever: whatever the professor analyses once loads instantly the next time
-      const metadata = { title: meta.title, channel: meta.channel, views: meta.views, duration_s: meta.duration_s,
-        brands: result.brands?.length || 0, analyzed_at: new Date().toISOString() };
-      await env.STORE.put(`analysis:${v}`, JSON.stringify(result), { metadata }); // before the pending flag is removed
-    }
-    await send("result", result);
   }
+
+  await send("stage", { id: "authenticity" });
+  let au = null;
+  const products = promotedCandidates(tl.data);
+  if (products.length && tl.data.looks_like_paid_promotion !== false) {
+    au = await gemini(env, models, geminiBody({ video: v, prompt: authenticityPrompt(products), schema: AUTHENTICITY_SCHEMA }),
+      (ev, data) => send(ev, data)).catch(() => null); // authenticity is optional – never fail the whole analysis
+  }
+
+  await send("stage", { id: "done" });
+  const result = normalizeAnalysis({ video: meta, timeline, authenticity: au?.data, models: [tl.model, rc?.model, au?.model].filter(Boolean) });
+  // tokens per call, shown in the app's usage meter ("this analysis cost …")
+  result.source.usage = [{ call: "timeline", model: tl.model, ...tl.usage }, ...(rc ? [{ call: "recheck", model: rc.model, ...rc.usage }] : []),
+    ...(au ? [{ call: "authenticity", model: au.model, ...au.usage }] : [])];
+  if (recheckInfo) {
+    // before/after numbers for transparency (EVALUATION.md test W): what call 1 alone would have shown
+    const before = normalizeAnalysis({ video: meta, timeline: tl.data });
+    const count = (r) => r.brands.reduce((n, b) => n + b.appearances.filter((a) => a.channel === "visual").length, 0);
+    const secs = (r) => Math.round(r.brands.reduce((n, b) => n + screenTime(b), 0));
+    const raw = (tl.data?.brands || []).reduce((n, b) => n + (b.appearances || []).filter((a) => (a.channel || "visual") === "visual").length, 0);
+    result.source.recheck = { ...recheckInfo, visual_raw: raw, visual_before: count(before), visual_after: count(result), seconds_before: secs(before), seconds_after: secs(result) };
+  }
+  if (!result.video.duration_s) { // YouTube withheld the length (bot check) → last brand appearance as lower bound
+    const ends = (result.brands || []).flatMap((b) => (b.appearances || []).map((x) => x.end_s || 0));
+    if (ends.length) { result.video.duration_s = Math.max(...ends); result.video.duration_estimated = true; }
+  }
+  if (env.STORE) {
+    // kept forever: whatever the professor analyses once loads instantly the next time
+    // names (since 23 Nov): brand + product names, so the brand agent finds matching analyses without reading them
+    const names = [...new Set((result.brands || []).flatMap((b) => [b.brand, ...(b.products || [])]))].join("|").slice(0, 600);
+    const metadata = { title: meta.title, channel: meta.channel, views: meta.views, duration_s: meta.duration_s,
+      brands: result.brands?.length || 0, analyzed_at: new Date().toISOString(), names };
+    await env.STORE.put(`analysis:${v}`, JSON.stringify(result), { metadata }); // before the pending flag is removed
+  }
+  return result;
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -715,3 +729,29 @@ async function teachExport(request, env, url) {
   return json({ keys: r.keys.map((k) => ({ key: k.name, ...k.metadata })), cursor: r.list_complete ? null : r.cursor,
     count: Number(await env.STORE.get("teach-count")) || 0, max: Number(env.TEACH_MAX || 1500) });
 }
+
+// ------------------------------------------------------------------------------------------------
+// Brand agent (agent.js) – what it gets from this file, and the quota it shows before asking for an OK
+// ------------------------------------------------------------------------------------------------
+/**
+ * Today's Gemini budget as the visitor sees it in the agent's confirm card:
+ *   left_requests  = Σ over video models not marked exhausted of (free per model − requests counted today)
+ *   visitor_left   = new analyses this visitor may still start today (DAILY_ANALYSES − counter, not bumped here)
+ *   blocked        = why new analyses are impossible right now (invite, key mode, no key) – null if possible
+ * The free tier counts per model family, so the number is an estimate (Google does not report the remainder).
+ */
+async function quotaInfo(request, env) {
+  const models = videoModels(env);
+  const exhausted = new Set(await exhaustedModels(env, models));
+  const rows = env.STORE ? await Promise.all(models.map((m) => env.STORE.get(`usage:${today()}:${m}`, "json"))) : [];
+  const used = rows.reduce((n, r) => n + (r?.requests || 0), 0);
+  const left = models.reduce((n, m, i) => n + (exhausted.has(m) ? 0 : Math.max(0, FREE_REQUESTS_PER_MODEL - (rows[i]?.requests || 0))), 0);
+  const ip = request.headers.get("cf-connecting-ip") || "local";
+  const mine = env.STORE ? Number(await env.STORE.get(`count:analyze:${today()}:${ip}`)) || 0 : 0;
+  const cap = Number(env.DAILY_ANALYSES || 10);
+  return { models: models.length, exhausted: exhausted.size, used_requests: used, left_requests: left, free_per_model: FREE_REQUESTS_PER_MODEL,
+    visitor_left: Math.max(0, cap - mine), visitor_cap: cap, reset_in_s: secondsToReset(), blocked: geminiDenied(request, env) };
+}
+
+const KIT = { ApiError, sseResponse, analyzeVideo, cachedAnalysis, geminiDenied, withinLimit, bumpGlobal, exhaustedModels, videoModels,
+  quotaInfo, sha256, BROWSER_HEADERS, ID_RE };

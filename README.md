@@ -77,6 +77,12 @@ The app is responsive (phone screenshots: `docs/screenshots/10_mobile_*.png`) an
 
 ---
 
+**2e · Brand agent.** The agentic part: type a brand instead of a link (`#/agent`). The agent plans its steps and shows each one live – it looks for analyses we already have, searches YouTube, drops what does not fit (over 20 min, under 1,000 views, the brand's own channel), ranks the rest (brand in the title, views, recency) and **stops to ask**: up to 3 new analyses, ticked by hand, with today's Gemini budget next to the button ("80 requests left", "this step: 9 at most"). Cached videos are used at once, so a first report is there in about a second. The combined report: videos, screen time and equivalent ad cost **as ranges** (one analysis per video carries about ±50 %, test M4), paid / labelled / not labelled, top creators, brands seen next to it, and findings such as "1 of 5 videos with ad signals but no label" – "Save as PDF" like the single-video report. Planning is rule-based on purpose (MODELS.md → Brand agent): spending quota must never depend on a model's output. Test G in EVALUATION.md.
+
+![Brand agent: steps and the confirm card with today's quota](docs/screenshots/17_agent_steps.png)
+
+![Brand agent report for Apple: 5 cached videos, ranges, disclosure, creators, findings](docs/screenshots/18_agent_report.png)
+
 ## 1. Why this project
 
 Influencer marketing is a multi-billion market, but two questions are hard to answer at scale:
@@ -104,6 +110,7 @@ PlacementRadar answers both from a single YouTube link and adds a third, newer q
 | **Live scanner** | webcam or photo: a packaging finder (YOLOE) boxes products on the device, **text recognition reads the brand** (3,599 brands; 39 of 49 real product photos, no API), a **barcode gives the exact product** via Open Food Facts (name, photo, Nutri-Score), tap a box to ask Gemini; boxes are smoothed and keep their name when a hand covers the product for a moment; the side panel shows live what each stage sees | v3 done (21 Nov) |
 | **Own model** | brand classifier trained by us (frozen MobileCLIP encoder + our brand head, **1,020 brands**, 64,000 photos from Open Food / Beauty / Products Facts, trained for webcam images): names the packages OCR cannot read – script logos like Coca-Cola, Babybel, Oreo; OCR + own model name **42 of 49** real product photos on the device, also in webcam quality, without a wrong brand from the model; learns from Gemini's confident answers (distillation) | v2 done (21 Nov) |
 | **Brand report** | one A4 page per brand (value, exposure strip, key moments with YouTube links, disclosure, authenticity, method) – "Save as PDF" via the print dialog – plus a pitch mail to the creator filled with the measured numbers (no extra API call) | done |
+| **Brand agent** | brand name → live steps (cache, YouTube search, filter, ranking) → up to 3 new analyses only after an OK with the quota shown → one combined report (ranges, disclosure, creators, findings) as PDF; `POST /api/agent` (SSE), `#/agent`; the roll-up (`shared/aggregate.js`) is built for the comment and channel views to reuse | done (24 Nov, test G) |
 | **Waiting screen** | while Gemini watches (2–5 min): video details, a text-only disclosure check of title and description, which model is working and when Google is busy; the page may be closed – the result is stored and loads instantly later | done |
 
 ## 3. Architecture – three engines that work together
@@ -250,8 +257,10 @@ npx wrangler dev
 ## 8. Repository
 
 ```
-worker.js                  Cloudflare Worker: API (config, meta, recent, analyze, identify, closer), key modes, limits,
+worker.js                  Cloudflare Worker: API (config, meta, recent, analyze, identify, closer, agent), key modes, limits,
                            KV cache, quota tracking, Gemini model chain, single-frame provider router
+agent.js                   brand agent (POST /api/agent): plan, cache, YouTube search (Data API or search page), filter, rank,
+                           confirm, analyse, aggregate – streamed as SSE steps
 wrangler.jsonc             Worker configuration (no secrets)
 public/index.html          app shell
 public/css/app.css         design system (light/dark, Apple-like)
@@ -273,7 +282,8 @@ public/js/ocr.js           on-device text recognition (PaddleOCR det + rec) and 
 public/js/brandmodel.js    own brand model in the browser (MobileCLIP-S1 encoder + our head, "two opinions" rule); product-type check
 public/js/wasmqueue.js     one ONNX WASM model at a time (shared queue)
 public/js/icons.js         own SVG icons (no emoji)
-public/js/shared/          prompts + data normalisation, used by Worker AND browser
+public/js/agentview.js     brand agent view (#/agent): live steps, confirm card with quota, combined report + PDF
+public/js/shared/          prompts + data normalisation + roll-up over many videos (aggregate.js), used by Worker AND browser
 public/data/               ten pre-analysed example videos (+ index.json)
 public/models/             ONNX models, brand list, trained brand head (each file < 25 MiB, Cloudflare limit)
 public/vendor/             ONNX Runtime Web

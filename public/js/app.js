@@ -5,6 +5,7 @@
  *   #/                       start screen: paste a YouTube link or pick a demo
  *   #/v/<id>/<view>[?t=12]   result for one video; view = overview | timeline | value | disclosure | authenticity | report
  *   #/live                   live scanner (camera or photo, mostly on-device; see live.js)
+ *   #/agent[?brand=Sonos]    brand agent: search + cached analyses + up to 3 new ones after an OK → one report (agentview.js)
  *
  * Where the data comes from:
  *   1. data/<id>.json  – pre-analysed demo videos (instant, no API quota)
@@ -24,6 +25,7 @@ import { hydrateLogos } from "./logos.js";
 import { createTracking } from "./tracking.js";
 import { createVerifier } from "./verify.js";
 import { maybeShowIntro, showIntro } from "./intro.js";
+import { renderAgent, stopAgent } from "./agentview.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -96,7 +98,12 @@ async function route() {
   // new page (not just another tab of the same video) → start at the top
   const pageKey = parts[0] === "v" ? `v/${parts[1]}` : parts[0] || "start";
   if (pageKey !== lastPage) { window.scrollTo(0, 0); lastPage = pageKey; }
-  stopLive();
+  stopLive(); stopAgent();
+  if (parts[0] === "agent") {
+    state.id = null; state.data = null; state.page = "agent"; state.renderedId = null;
+    renderSidebar(); destroyPlayer();
+    renderAgent($("#main"), { brand: new URLSearchParams(location.hash.split("?")[1] || "").get("brand") || "" }); return;
+  }
   if (parts[0] === "live") {
     state.id = null; state.data = null; state.page = "live";
     state.renderedId = null; renderSidebar(); destroyPlayer(); await renderLive($("#main")); addInfoButton(); return;
@@ -202,6 +209,10 @@ function renderStart() {
         <div class="shelf-row">${state.demos.map((d) => card(d, true)).join("")}</div></div>
       ${state.recent.length ? `<div class="shelf"><div class="shelf-head"><h2>Analysed by visitors</h2><span>Saved for everyone.</span></div>
         <div class="shelf-row small">${state.recent.map((d) => card(d, false)).join("")}</div></div>` : ""}
+      <a class="tool-card agent-card" href="#/agent">
+        <div><h3>Brand agent</h3><p>Type a brand. The agent searches YouTube, reuses what is already analysed, asks before it spends quota and writes one report across all videos.</p><span class="btn primary">${icon("search")} Open the agent</span></div>
+        <div class="tc-art" aria-hidden="true"><span class="tc-ic">${icon("radar")}</span><span class="tc-label">5 videos · 2 not labelled</span></div>
+      </a>
       <a class="tool-card" href="#/live">
         <div><h3>Live scanner</h3><p>Hold a product up to your camera. It is recognised right on your device, no cloud needed.</p><span class="btn primary">${icon("camera")} Open the scanner</span></div>
         <div class="tc-art" aria-hidden="true"><span class="tc-ic">${icon("bag")}</span><span class="tc-label">Brand found</span></div>

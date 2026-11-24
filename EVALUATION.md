@@ -34,6 +34,7 @@ Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). 
 | Does SponsorBlock confirm the disclosure check? | where it has data, yes (1 of 1, same time) – but only 4 of 14 videos have any entry | M |
 | Can the app check Gemini on the real video frames itself? | yes, on the device ("Verify on screen", tab capture of the player only): JB desk tour – evidence in 18–21 frame × product cells, 0–1 of them wrong (precision 95–100 %), but only 31–36 % of the truly visible cells found; LG monitor measured at the right edge where Gemini's box sat in the middle (overlap 0, centre 34 % apart); MKBHD 6:10: backpack + camera found where Gemini lists nothing. Small items in wide shots (keyboard, Mac mini) are missed | V |
 | Can an agent find a brand across YouTube on its own and report on it without wasting quota? | yes for the cheap part: Sonos, Apple, DJI (+ Sonos in German) – plan, cache, search, filter, ranked proposals, combined report and PDF in ≤ 1 s from the cache, 0 Gemini requests, 0 YouTube units (search page; Data API path not tested locally); guards hold (≤ 3, only proposed videos). The two approved new analyses failed: once our own dev-server reload cut the stream, once Google answered 503 on all four models | G |
+| How does the audience react to each product (comments)? | readable without an API key: 410 top comments of 5 videos; rules on 50 held-back comments: questions 10/12 right and none missed, praise 20/28 (finds 20 of 27), criticism and purchase intent rare and less reliable; a comment is linked to the right product in 13 of 14 cases but only 13 of 20 product mentions are found | K |
 | Does a fresh analysis work online, end to end? | yes: 13-min desk tour, 18 brands, 15 shop links – all verbatim from the description, 0 invented; 14 of 18 exact models from the description; disclosure green; but only ~1 tracking position per appearance | Q |
 | Does a free fallback provider help? | Workers AI (Llama 3.2 Vision) finds main brands, reads slogans as brands → last resort only | S1 |
 
@@ -313,6 +314,30 @@ the agent used its second search path, YouTube's public search page.
   "Pineapple" (startsWith).
 - **Open:** the Data API path (`search.list` + `videos.list`) is written but untested (no key locally; the key is a secret of the online Worker);
   online, YouTube may bot-check the search page as it does the watch page – then the step fails and the report uses the cache only.
+
+## K – Audience comments per product (24 Nov, 0 Gemini requests, `tests/test_k_kommentare.mjs`)
+Lean version of PLAN_DEZEMBER D: no Workers AI, only rules (`public/js/shared/comments.js`, used by `POST /api/comments`).
+
+**Reading comments without a key.** No YouTube Data API key is set, so the Worker uses the request the watch page itself makes when you scroll to the comments (`youtubei/v1/next`, "Top comments", 20 per page). It worked for 5 of 5 example videos from the Mac and from the local Workers runtime: 100 comments each, the bag video has only 10. One first try on the German headphone video got a page without data (bot check), the next one worked – so the Worker fails soft and the view says so. With `YOUTUBE_API_KEY` the official `commentThreads.list` is used instead (1 unit per 100 comments). Online in Cloudflare's data centre this endpoint is **not yet tested** (YouTube may block data-centre IPs more often).
+
+**Rules.** A comment belongs to a product if it names the brand or a word of the product name that no other product in this video has (≥ 5 letters, not a product type such as "backpack" – the 93 types of Verify on screen). Five reactions, several per comment possible: purchase intent, question, praise, criticism, ad suspicion – fixed English and German phrases ("where can I get", "link?", "wo gibt es", "is this sponsored", "Werbung", "free items" …).
+
+**Hand check.** Ground truth: Claude read and labelled the comments (a proposal like the M ground truth – one reader, to be checked by Moritz). Sample 1 (50 comments, 30 of them marked by the rules + 20 random) was used to **tune** the rules; sample 2 (50 other comments, other seed) was drawn and labelled **after** tuning and only scored. One label in sample 2 was corrected after reading the full text (a chapter list also names "Wallet" and "Pixel 6 Pro").
+
+| | Sample 1 (tuning, after tuning) | **Sample 2 (held back)** |
+|---|---|---|
+| Purchase intent (right / false / missed) | 4 / 1 / 0 | 1 / 1 / 0 |
+| Question | 4 / 0 / 0 | **10 / 2 / 0** |
+| Praise | 30 / 0 / 1 | **20 / 8 / 7** |
+| Criticism | 2 / 0 / 1 | 2 / 3 / 2 |
+| Ad suspicion | 1 / 0 / 0 | 0 / 1 / 0 |
+| Comment → product (right / false / missed) | 13 / 0 / 5 | **13 / 1 / 7** |
+
+Before tuning, sample 1 gave: purchase intent 0 of 4 found, criticism 0 of 3, praise 27 of 31 at 87 % precision, brand link 84 % precision. A first version that also linked comments by product-type words ("grinder", "backpack", "headphones") found more mentions on sample 2 (18 of 20) but was wrong 8 times out of 26 (69 % precision) – "my backpack" or "the Breville grinder" is often someone else's product. The type words were therefore taken out (93 % precision, 65 % recall): **a missing link is better than a wrong one** when the view says "the audience says this about product X".
+
+Reading: **questions and praise are recognised well, the rarer reactions are not yet reliable** – purchase intent (5 in 100 hand-labelled comments), criticism (7) and ad suspicion (1) are too rare in top comments to measure precisely, and the misses are irony, requests without a question mark ("please test the Loewe") and praise without a keyword ("JAMES IS BACK!!!"). The view therefore shows counts with examples, explains the method in its (i) and adds "read as a first impression". Top comments are not a survey: YouTube favours early and liked comments. In all 410 comments the rules found 149 × praise, 50 × question, 12 × criticism, 10 × purchase intent and 5 × ad suspicion.
+
+Privacy: the Worker keeps only counts and ≤ 3 excerpts of ≤ 100 characters per product (24 h KV cache, key includes the rules version), never names or profile pictures. The test keeps the raw texts (without names) locally in `tests/ergebnisse/k_kommentare/` for the hand check; they are not in the repository.
 
 ## T – Tracking boxes with keyframes (21 Nov, 1 Gemini request)
 Question: can Gemini give enough positions for a box that follows the product while the video plays?

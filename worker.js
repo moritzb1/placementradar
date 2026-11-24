@@ -12,6 +12,8 @@
  *   POST /api/closer {v,start,end} → "Look closer": inventory of a ≤ 20 s clip at 2 frames/s (SSE, cached per clip)
  *   POST /api/agent {brand, lang?, period?, approve?} → brand agent: search, cached analyses first, up to 3 new ones
  *                                 after the visitor's OK, one combined brand report (SSE; agent.js)
+ *   POST /api/comments {v, brands} → audience reactions per product from the top ~100 YouTube comments, rule-based
+ *                                 (public/js/shared/comments.js); only counts and ≤ 100-character excerpts are kept, 24 h KV cache
  *   GET  /api/teach[?cursor=]   → training examples kept from /api/identify ("Gemini teaches the on-device model"),
  *   GET  /api/teach/item?k=<key>  only with the secret TEACH_TOKEN as bearer token (tools/teach_pull.py)
  *
@@ -42,6 +44,7 @@ import { VIDEO_MODELS, FRAME_MODELS, TIMELINE_SCHEMA, AUTHENTICITY_SCHEMA, FRAME
   geminiBody } from "./public/js/shared/prompts.js";
 import { normalizeAnalysis, normalizeCloser, promotedCandidates, recheckItems, mergeRecheck, screenTime } from "./public/js/shared/normalize.js";
 import { agent, AGENT_MESSAGES } from "./agent.js";
+import { fetchTopComments, classifyComments, RULES_VERSION } from "./public/js/shared/comments.js";
 
 const API = "https://generativelanguage.googleapis.com/v1beta";
 const ID_RE = /^[A-Za-z0-9_-]{11}$/;
@@ -52,6 +55,7 @@ const MESSAGES = {
   frame_quota_exhausted: "Today's free cloud recognitions are used up – barcode and on-device recognition still work.",
   daily_limit: "You reached today's limit for new analyses – the examples and the live scanner still work.",
   closer_limit: "You reached today's limit for \"Look closer\" – the analysis itself and the examples still work.",
+  comments_limit: "You reached today's limit for loading comments – try again tomorrow.",
   invalid_clip: "That part of the video cannot be analysed.",
   invite_required: "New analyses need an invite link. The examples work without one.",
   own_key_required: "New analyses are switched off right now. The examples and the live scanner still work.",
@@ -80,6 +84,7 @@ export default {
       if (url.pathname === "/api/analyze" && request.method === "POST") return await analyze(request, env, ctx);
       if (url.pathname === "/api/identify" && request.method === "POST") return await identify(request, env, ctx);
       if (url.pathname === "/api/closer" && request.method === "POST") return await closer(request, env, ctx);
+      if (url.pathname === "/api/comments" && request.method === "POST") return json(await comments(request, env));
       if (url.pathname === "/api/agent" && request.method === "POST") return await agent(request, env, ctx, KIT);
       if (url.pathname === "/api/teach" || url.pathname === "/api/teach/item") return await teachExport(request, env, url);
       if (url.pathname.startsWith("/api/")) return json({ error: "not_found" }, 404);
@@ -505,6 +510,30 @@ export async function analyzeVideo(env, v, models, send) {
 // Cached forever per clip (KV `closer:<v>:<start>-<end>`); the app snaps the clip to 5-second steps so
 // neighbouring clicks hit the same cache entry. Own daily limit per visitor (DAILY_CLOSER, default 8).
 // ------------------------------------------------------------------------------------------------
+/**
+ * POST /api/comments {v, brands: [{brand, product}]} – how the audience reacts to each product (PLAN_DEZEMBER D).
+ * No Gemini call: YouTube's top comments (Data API with YOUTUBE_API_KEY, else the watch page's own endpoint) are
+ * matched to the brands of the analysis and sorted into purchase intent / question / praise / criticism / ad
+ * suspicion by rules (shared/comments.js, test K). Comment texts are not stored – only counts and up to 3
+ * excerpts of ≤ 100 characters per brand, never a name. Cached 24 h per video and brand list.
+ */
+async function comments(request, env) {
+  const body = await request.json().catch(() => ({}));
+  const v = body.v; if (!ID_RE.test(v || "")) throw new ApiError("invalid_video", 400);
+  const brands = (Array.isArray(body.brands) ? body.brands : []).slice(0, 60)
+    .map((b) => ({ brand: String(b?.brand || "").slice(0, 80), product: b?.product ? String(b.product).slice(0, 120) : undefined }))
+    .filter((b) => b.brand);
+  const key = `comments:r${RULES_VERSION}:${v}:${(await sha256(JSON.stringify(brands))).slice(0, 16)}`;
+  const cached = env.STORE && (await env.STORE.get(key, "json"));
+  if (cached) return { ...cached, cached: true };
+  if (!(await withinLimit(env, request, "comments", Number(env.DAILY_COMMENTS || 40)))) throw new ApiError("comments_limit", 429);
+  const r = await fetchTopComments(v, { apiKey: env.YOUTUBE_API_KEY || null });
+  const out = { v, rules: RULES_VERSION, source: r.source, n: r.comments.length, error: r.error || undefined, fetched_at: new Date().toISOString(),
+    ...classifyComments(r.comments, brands) };
+  if (env.STORE && r.comments.length) await env.STORE.put(key, JSON.stringify(out), { expirationTtl: 60 * 60 * 24 });
+  return out;
+}
+
 async function closer(request, env, ctx) {
   const body = await request.json().catch(() => ({}));
   const v = body.v; const start = Math.max(0, Math.round(Number(body.start))); const end = Math.round(Number(body.end));

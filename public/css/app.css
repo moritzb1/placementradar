@@ -935,3 +935,32 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
   .ag-table tr, .ag-findings li { break-inside: avoid; } .ag-vid img { width: 72px; } .ag-vid { grid-template-columns: 72px minmax(0, 1fr); }
   .ag-table tr:nth-child(n+7) { display: table-row !important; }
 }
+
+/* ---------- Audience (comments per product, shared/comments.js) ---------- */
+.aud-wait { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; }
+.aud-wait b { display: block; } .aud-wait span:not(.spinner) { display: block; font-size: 13.5px; color: var(--text-2); margin-top: 2px; }
+.empty-state > .icon { width: 28px; height: 28px; color: var(--text-3); display: block; margin: 0 auto 10px; }
+.empty-state b { display: block; color: var(--text); font-size: 17px; margin-bottom: 4px; } .empty-state span { font-size: 14px; }
+.aud-head h3 { margin: 0 0 2px; display: flex; align-items: center; gap: 6px; }
+.aud-bar { display: flex; gap: 2px; height: 10px; border-radius: 5px; overflow: hidden; margin: 16px 0 10px; }
+.aud-bar i { background: var(--c); min-width: 4px; }
+.aud-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--text-2); }
+.aud-legend span { display: inline-flex; align-items: center; gap: 6px; } .aud-legend b { color: var(--text); font-weight: 600; }
+.aud-legend i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); display: inline-block; }
+.aud-note { display: flex; align-items: flex-start; gap: 8px; margin: 14px 0 0; font-size: 13.5px; color: var(--text-2); }
+.aud-note .icon { width: 16px; height: 16px; color: var(--orange); flex: none; }
+.aud-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 14px; margin-top: 14px; align-items: start; }
+.aud-brand { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; }
+.aud-brand b { display: block; font-size: 15.5px; } .aud-brand .small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.aud-general .logo { background: var(--tile-2); color: var(--text-2); } .aud-general .logo .icon { width: 22px; height: 22px; }
+.aud-n { text-align: right; font: 700 22px var(--font-d); letter-spacing: -.02em; line-height: 1; }
+.aud-n small { display: block; font: 500 11.5px var(--font); color: var(--text-3); letter-spacing: 0; margin-top: 3px; }
+.aud-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.aud-pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 8px; border-radius: 999px; font-size: 12.5px; font-weight: 500;
+  background: color-mix(in srgb, var(--c) 12%, transparent); color: var(--text); }
+.aud-pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--c); }
+.aud-quotes { list-style: none; margin: 12px 0 0; padding: 12px 0 0; border-top: 1px solid var(--line); display: grid; gap: 8px; }
+.aud-quotes li { display: grid; grid-template-columns: 8px 1fr; gap: 10px; align-items: baseline; font-size: 13.5px; line-height: 1.45; color: var(--text-2); }
+.aud-quotes q { quotes: "\201C" "\201D"; overflow-wrap: anywhere; }
+.aud-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--c); transform: translateY(-1px); }
+.aud-silent { margin: 16px 2px 0; }

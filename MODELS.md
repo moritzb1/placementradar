@@ -85,6 +85,9 @@ counts if its name equals or starts with the query ("Benefit" → "Benefit Cosme
 `startsWith`, not `contains`, so "Apple" never matches "Pineapple". Analyses where Gemini found no such brand are listed as "without <brand>" and
 left out of every total.
 
+## Audience comments – rules, not a model (24 Nov, `public/js/shared/comments.js`)
+The five reactions (purchase intent, question, praise, criticism, ad suspicion) are recognised by fixed English and German phrases, and a comment is linked to a product by the brand name or a distinctive word of the product name (product-type words such as "backpack" excluded – they come from the 93 types of Verify on screen). No language model on purpose: the categories are about wording that repeats ("link?", "where to buy"), every decision can be shown and checked by hand, and 100 comments per video cost nothing. Workers AI (free) was planned for the comments the rules cannot sort; it was left out in this lean version because the measured weak spots (irony, requests without a question mark) would need a model *and* a new hand check. Accuracy: EVALUATION.md test K.
+
 ## Not used, and why
 | Candidate | Reason |
 |---|---|

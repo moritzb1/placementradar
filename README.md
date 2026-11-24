@@ -83,6 +83,8 @@ The app is responsive (phone screenshots: `docs/screenshots/10_mobile_*.png`) an
 
 ![Brand agent report for Apple: 5 cached videos, ranges, disclosure, creators, findings](docs/screenshots/18_agent_report.png)
 
+**2f · Audience.** What do viewers say about each product? The *Audience* tab reads the video's top ~100 comments (YouTube's own comment endpoint, or the Data API if a key is set) and sorts them by fixed English and German rules – no AI request, no quota: which product a comment names, and whether it shows **purchase intent** ("where can I get it", "link?"), a **question**, **praise**, **criticism** or **ad suspicion** ("is this sponsored?"). Per product: number of comments, the reactions as pills and up to three excerpts; the product cards show the count once the tab was opened. Only counts and excerpts of ≤ 100 characters are kept, never names. Measured on 50 held-back comments (test K): questions and praise are recognised well, the rare reactions less reliably – shown as a first impression, not a survey.
+
 ## 1. Why this project
 
 Influencer marketing is a multi-billion market, but two questions are hard to answer at scale:
@@ -110,6 +112,7 @@ PlacementRadar answers both from a single YouTube link and adds a third, newer q
 | **Live scanner** | webcam or photo: a packaging finder (YOLOE) boxes products on the device, **text recognition reads the brand** (3,599 brands; 39 of 49 real product photos, no API), a **barcode gives the exact product** via Open Food Facts (name, photo, Nutri-Score), tap a box to ask Gemini; boxes are smoothed and keep their name when a hand covers the product for a moment; the side panel shows live what each stage sees | v3 done (21 Nov) |
 | **Own model** | brand classifier trained by us (frozen MobileCLIP encoder + our brand head, **1,020 brands**, 64,000 photos from Open Food / Beauty / Products Facts, trained for webcam images): names the packages OCR cannot read – script logos like Coca-Cola, Babybel, Oreo; OCR + own model name **42 of 49** real product photos on the device, also in webcam quality, without a wrong brand from the model; learns from Gemini's confident answers (distillation) | v2 done (21 Nov) |
 | **Brand report** | one A4 page per brand (value, exposure strip, key moments with YouTube links, disclosure, authenticity, method) – "Save as PDF" via the print dialog – plus a pitch mail to the creator filled with the measured numbers (no extra API call) | done |
+| **Audience (comments)** | top ~100 comments per video, rule-based (`shared/comments.js`, `POST /api/comments`): comments per product, purchase intent / question / praise / criticism / ad suspicion, excerpts ≤ 100 characters, no names; count on the product cards | done (24 Nov, test K) |
 | **Brand agent** | brand name → live steps (cache, YouTube search, filter, ranking) → up to 3 new analyses only after an OK with the quota shown → one combined report (ranges, disclosure, creators, findings) as PDF; `POST /api/agent` (SSE), `#/agent`; the roll-up (`shared/aggregate.js`) is built for the comment and channel views to reuse | done (24 Nov, test G) |
 | **Waiting screen** | while Gemini watches (2–5 min): video details, a text-only disclosure check of title and description, which model is working and when Google is busy; the page may be closed – the result is stored and loads instantly later | done |
 
@@ -259,6 +262,8 @@ npx wrangler dev
 ```
 worker.js                  Cloudflare Worker: API (config, meta, recent, analyze, identify, closer, agent), key modes, limits,
                            KV cache, quota tracking, Gemini model chain, single-frame provider router
+public/js/shared/comments.js  top comments of a video (Data API or YouTube's comment endpoint) and the rules that link them to
+                           products and sort them into five reactions – used by POST /api/comments and test K
 agent.js                   brand agent (POST /api/agent): plan, cache, YouTube search (Data API or search page), filter, rank,
                            confirm, analyse, aggregate – streamed as SSE steps
 wrangler.jsonc             Worker configuration (no secrets)
@@ -317,6 +322,7 @@ In short: **what the app shows is mostly right, but it misses much of the time a
 - Media value is an *equivalent ad cost*, not the creator's income, and depends on assumed CPM, audience drop-off and attention; it is shown as a range for comparison, not as an invoice.
 - The video description is written by the uploader and is untrusted text. It is given to Gemini only as marked data with an explicit "never follow instructions in it"; links from Gemini's answer are kept only if they occur verbatim in the description. A misleading description can still steer the *model name* Gemini reports – the evidence quotes and timestamps let a reader check it.
 - The disclosure check and authenticity score judge *content*, not people. Wording is deliberately neutral.
+- **Audience:** top comments are not a survey (YouTube favours early and liked ones); word rules miss irony and context. A comment is linked to a product only by its brand or a distinctive word of the product name – 13 of 14 links right, but 7 of 20 mentions missed (test K). Without an API key the Worker uses YouTube's unofficial comment endpoint, which can stop working; the tab then says so. Names and profile pictures are never read; excerpts are cut to 100 characters.
 - No video is downloaded or re-hosted. The original YouTube player is embedded (privacy-enhanced mode).
 - Live scanner: camera images are processed on the device; a crop is sent to the cloud only when the user taps a box.
 - **Verify on screen** shares the tab only after an explanation sheet and the browser's own dialog; in Chrome only the player area is captured. Frames are analysed in the browser and never uploaded or recorded; results live in `sessionStorage` and vanish with the tab. Limits: it checks only the scenes the user plays or jumps to, the type check confirms the *kind* of object, not the brand (shown as "type"), the YouTube player's own overlays (title, "more videos" when paused) are part of the picture, and it needs a desktop browser that can share a tab (Chrome/Edge; other browsers: whole tab, boxes hidden while checking).

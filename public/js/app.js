@@ -20,6 +20,7 @@ import { Player } from "./player.js";
 import { videoValue, brandValue, euro, euroRange, scenarioParams, retention, WEIGHTS, DEFAULTS, SCENARIOS, VALUE_WHAT } from "./value.js";
 import { checkDisclosure } from "./disclosure.js";
 import { mmss } from "./shared/normalize.js";
+import { CATS, CAT_LABEL } from "./shared/comments.js";
 import { renderLive, stopLive } from "./live.js";
 import { hydrateLogos } from "./logos.js";
 import { createTracking } from "./tracking.js";
@@ -71,6 +72,7 @@ const VIEWS = [
   { id: "value", label: "Media value", icon: "value" },
   { id: "disclosure", label: "Ad disclosure", icon: "shield" },
   { id: "authenticity", label: "Authenticity", icon: "heart" },
+  { id: "audience", label: "Audience", icon: "chat" },
   { id: "report", label: "Brand report", icon: "doc" },
 ];
 
@@ -407,7 +409,7 @@ function renderResult() {
   if (state.renderedId === state.id && $("#view") && $("#main .v-hero")) { // same video, other tab
     $("#main").querySelectorAll(".tabs [data-view]").forEach((b) => b.classList.toggle("on", b.dataset.view === state.view));
     destroyPlayer();
-    return ({ overview: viewOverview, value: viewValue, disclosure: viewDisclosure, authenticity: viewAuthenticity, report: viewReport })[state.view]();
+    return ({ overview: viewOverview, value: viewValue, disclosure: viewDisclosure, authenticity: viewAuthenticity, audience: viewAudience, report: viewReport })[state.view]();
   }
   state.renderedId = state.id;
   const engine = [...new Set(d.source?.models || [])].map(modelName).join(" + ") || "Gemini";
@@ -428,7 +430,7 @@ function renderResult() {
     </header>
     <div class="content" id="view"></div>`;
   $("#main").querySelectorAll(".tabs [data-view]").forEach((b) => (b.onclick = () => go(state.id, b.dataset.view)));
-  ({ overview: viewOverview, value: viewValue, disclosure: viewDisclosure, authenticity: viewAuthenticity, report: viewReport })[state.view]();
+  ({ overview: viewOverview, value: viewValue, disclosure: viewDisclosure, authenticity: viewAuthenticity, audience: viewAudience, report: viewReport })[state.view]();
 }
 
 function destroyPlayer() { state.player?.destroy(); state.player = null; state.tracker?.destroy(); state.tracker = null; state.verifier?.destroy(); state.verifier = null; }
@@ -688,7 +690,7 @@ function viewOverview() {
           <div class="pc-top">${logoBox(b.brand)}<div class="pc-name"><b>${esc(b.brand)}</b><span>${esc(b.product || b.category || "")}</span></div>
             ${promoted.has(b.brand.toLowerCase()) ? `<span class="tag">promoted</span>` : b.appearances.every((a) => a.closer) ? `<span class="tag soft">look closer</span>` : b.appearances.some((a) => a.in_use) ? `<span class="tag soft">in use</span>` : ""}</div>
           <div class="pc-lane">${b.appearances.map((a) => `<i class="${a.channel}" style="left:${Math.min(100, (100 * a.start_s) / dur)}%;width:${Math.max(0.8, (100 * (a.end_s - a.start_s)) / dur)}%;background:${color(b.brand)};color:${color(b.brand)}"></i>`).join("")}</div>
-          <div class="pc-facts"><span title="${esc(SCREEN_INFO)}"><b class="num">${secRange(r.raw.visual || 0)}</b> on screen</span><span><b class="num">${spoken}×</b> spoken</span><span title="${esc(VALUE_WHAT)}"><b class="num">${euroRange(r.range)}</b> ad cost eq.</span></div>
+          <div class="pc-facts"><span title="${esc(SCREEN_INFO)}"><b class="num">${secRange(r.raw.visual || 0)}</b> on screen</span><span><b class="num">${spoken}×</b> spoken</span><span title="${esc(VALUE_WHAT)}"><b class="num">${euroRange(r.range)}</b> ad cost eq.</span>${audFact(b.brand)}</div>
           <div class="pc-jumps">${jumps.map((a) => `<button class="time" data-jump="${a.start_s}">${mmss(a.start_s)}</button>`).join("")}${b.appearances.length > jumps.length ? `<span class="more">+${b.appearances.length - jumps.length}</span>` : ""}</div>
           <div class="pc-verify" data-vb="${esc(b.brand)}"></div>
           ${cardLinks(b)}
@@ -1090,6 +1092,77 @@ function viewAuthenticity() {
       (people detect deception barely above chance, Bond &amp; DePaulo 2006), so it is one of six factors and the score is rounded to steps of 5. Theory: source credibility (Hovland) and the Persuasion Knowledge Model (Friestad &amp; Wright 1994).</p>`;
   $("#view").querySelectorAll(".factor").forEach((f) => (f.onclick = () => f.classList.toggle("open")));
   $("#view").querySelectorAll("[data-t]").forEach((el) => (el.onclick = (e) => { e.stopPropagation(); go(state.id, "overview", Number(el.dataset.t)); }));
+}
+
+// ---------- Audience: reactions to each product in the top comments (POST /api/comments, shared/comments.js) ----------
+/**
+ * The Worker reads the top ~100 YouTube comments and sorts them by rules (no AI call, no quota): which product a
+ * comment is about, and whether it shows purchase intent, a question, praise, criticism or ad suspicion. Only
+ * counts and short excerpts arrive here; the result stays in this tab (sessionStorage). Accuracy: test K.
+ */
+const CAT_COLOR = { buy: "var(--accent)", question: "var(--purple, #af52de)", praise: "var(--green)", critic: "var(--red)", ad_doubt: "var(--orange)" };
+const CAT_INFO = {
+  buy: "Purchase intent: asks where to buy, for a link or the exact model, or says they want, ordered or bought it.",
+  question: "Any other question – about the product, the video or something missing.",
+  praise: "Praise for the product or the video.",
+  critic: "Criticism: too expensive, broke, disappointed, something missing.",
+  ad_doubt: "Ad suspicion: asks or says that the video is sponsored, paid or an ad, or that the products were free.",
+};
+/** Product card line once the Audience view has read the comments (nothing is fetched for the cards themselves). */
+const audFact = (brand) => {
+  const s = audienceOf(state.id)?.brands?.[brand]; if (!s?.comments) return "";
+  const extra = [s.cats.buy && `${s.cats.buy} want it`, s.cats.ad_doubt && `${s.cats.ad_doubt} suspect an ad`].filter(Boolean).join(" · ");
+  return `<span title="Top comments that name this product (Audience view)"><b class="num">${s.comments}</b> comment${s.comments === 1 ? "" : "s"}${extra ? ` · ${extra}` : ""}</span>`;
+};
+const audienceKey = (id) => `comments:${id}`;
+const audienceOf = (id) => { try { return JSON.parse(sessionStorage.getItem(audienceKey(id)) || "null"); } catch { return null; } };
+
+async function viewAudience() {
+  const d = state.data; const id = state.id;
+  const brands = d.brands.filter((b) => !/^unknown/i.test(b.brand)).map((b) => ({ brand: b.brand, product: b.product || undefined }));
+  let res = audienceOf(id);
+  if (!res) {
+    $("#view").innerHTML = `<div class="card aud-wait"><span class="spinner"></span><div><b>Reading the top comments</b><span>About 100 comments from YouTube, sorted by rules on the server – no AI request, nothing about the commenters is kept.</span></div></div>`;
+    try {
+      const r = await fetch("api/comments", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ v: id, brands }) });
+      res = await r.json(); if (!r.ok) throw new Error(res.message || res.error || `HTTP ${r.status}`);
+      if (res.n) try { sessionStorage.setItem(audienceKey(id), JSON.stringify(res)); } catch { /* full */ }
+    } catch (e) { res = { n: 0, error: String(e.message || e) }; }
+    if (state.id !== id || state.view !== "audience") return; // the visitor moved on meanwhile
+  }
+  if (!res.n) {
+    $("#view").innerHTML = `<div class="empty-state">${icon("chat")}<b>No comments to read</b><span>${esc(res.error === "comments turned off or not found" ? "Comments are turned off for this video." : `YouTube did not hand out the comments right now${res.error ? ` (${res.error})` : ""}. The other views are not affected.`)}</span></div>`;
+    return;
+  }
+  const t = res.total.cats; const sum = CATS.reduce((n, k) => n + t[k], 0) || 1;
+  const pills = (cats) => CATS.filter((k) => cats[k]).map((k) => `<span class="aud-pill" style="--c:${CAT_COLOR[k]}" title="${esc(CAT_INFO[k])}"><i></i>${cats[k]} ${esc(CAT_LABEL[k].toLowerCase())}</span>`).join("");
+  const quotes = (ex) => ex.map((e) => `<li><span class="aud-dot" style="--c:${CAT_COLOR[e.cats[0]]}" title="${esc(e.cats.map((k) => CAT_LABEL[k]).join(", "))}"></span><q>${esc(e.text)}</q></li>`).join("");
+  const rows = Object.entries(res.brands).filter(([, s]) => s.comments).sort((a, b) => b[1].comments - a[1].comments);
+  const silent = Object.entries(res.brands).filter(([, s]) => !s.comments).map(([k]) => k);
+  const product = (name) => d.brands.find((b) => b.brand === name)?.product || "";
+  $("#view").innerHTML = `
+    <div class="card aud-head">
+      <div class="aud-title"><h3>What the audience says ${info(`The top ${res.n} comments of this video as YouTube sorts them ("Top comments"), read ${res.cached ? "earlier today" : "just now"} via ${res.source === "data-api" ? "the YouTube Data API" : "YouTube's own comment endpoint"}. A comment counts for a product if it names the brand or a word of the product name that no other product here has. Categories by fixed word rules in English and German – several can apply, many comments fit none. Checked by hand on 50 held-back comments (test K in EVALUATION.md): questions and praise are mostly right, criticism and purchase intent are rare and less reliable.`)}</h3>
+        <span class="small muted">${res.n} top comments · ${rows.length} of ${rows.length + silent.length} brands mentioned · no AI request</span></div>
+      <div class="aud-bar">${CATS.filter((k) => t[k]).map((k) => `<i style="flex:${t[k]};--c:${CAT_COLOR[k]}" title="${t[k]} × ${esc(CAT_LABEL[k])}"></i>`).join("")}</div>
+      <div class="aud-legend">${CATS.map((k) => `<span title="${esc(CAT_INFO[k])}"><i style="--c:${CAT_COLOR[k]}"></i>${esc(CAT_LABEL[k])} <b class="num">${t[k]}</b></span>`).join("")}</div>
+      ${t.ad_doubt ? `<p class="aud-note">${icon("shield")}<span>${t.ad_doubt} comment${t.ad_doubt === 1 ? "" : "s"} ${t.ad_doubt === 1 ? "suspects" : "suspect"} advertising – compare with the <a href="#/v/${esc(id)}/disclosure">Ad disclosure</a> view.</span></p>` : ""}
+    </div>
+    <div class="aud-list">${rows.map(([name, s]) => `
+      <div class="card aud-row">
+        <div class="aud-brand">${logoBox(name)}<div><b>${esc(name)}</b><span class="small muted">${esc(product(name))}</span></div><span class="aud-n num">${s.comments}<small>comment${s.comments === 1 ? "" : "s"}</small></span></div>
+        <div class="aud-pills">${pills(s.cats) || `<span class="small muted">named, but none of the five reactions</span>`}</div>
+        ${s.examples.length ? `<ul class="aud-quotes">${quotes(s.examples)}</ul>` : ""}
+      </div>`).join("")}
+      <div class="card aud-row aud-general">
+        <div class="aud-brand"><span class="logo">${icon("chat")}</span><div><b>About the video in general</b><span class="small muted">comments that name none of the products</span></div><span class="aud-n num">${res.general.comments}<small>comments</small></span></div>
+        <div class="aud-pills">${pills(res.general.cats)}</div>
+        ${res.general.examples.length ? `<ul class="aud-quotes">${quotes(res.general.examples)}</ul>` : ""}
+      </div>
+    </div>
+    ${silent.length ? `<p class="small muted aud-silent">Not named in the top comments: ${esc(silent.join(", "))}.</p>` : ""}
+    <p class="legal">Excerpts are cut to at most 100 characters; names and profile pictures of commenters are never read or stored. Top comments favour early and popular reactions, so they are not a survey of all viewers. Rules miss irony and context (a "backpack" can be someone else's backpack) – read the numbers as a first impression.</p>`;
+  hydrateLogos($("#view"));
 }
 
 // ---------- Brand report (one page for the brand, printable as PDF) + pitch mail ----------

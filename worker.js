@@ -14,6 +14,8 @@
  *                                 after the visitor's OK, one combined brand report (SSE; agent.js)
  *   POST /api/channel {c, approve?} → channel view: latest uploads of a creator, cached analyses first, up to 3 new ones
  *                                 after the visitor's OK, recurring brands / sponsors / value per month (SSE; channel.js)
+ *   POST /api/creators {product?, brand?, lang?, approve?} → Find creators: YouTube search about the product field, candidates'
+ *                                 channels, ranked shortlist with a rule-based creator score (SSE; creators.js)
  *   GET  /api/brandcat?b=<brand> → the product field of a brand, from our own analyses (channel fit; channel.js)
  *   POST /api/comments {v, brands} → audience reactions per product from the top ~100 YouTube comments, rule-based
  *                                 (public/js/shared/comments.js); only counts and ≤ 100-character excerpts are kept, 24 h KV cache
@@ -48,6 +50,7 @@ import { VIDEO_MODELS, FRAME_MODELS, TIMELINE_SCHEMA, AUTHENTICITY_SCHEMA, FRAME
 import { normalizeAnalysis, normalizeCloser, promotedCandidates, recheckItems, mergeRecheck, screenTime } from "./public/js/shared/normalize.js";
 import { agent, AGENT_MESSAGES } from "./agent.js";
 import { channel, brandCategory, CHANNEL_MESSAGES } from "./channel.js";
+import { creators, CREATOR_MESSAGES } from "./creators.js";
 import { fetchTopComments, classifyComments, RULES_VERSION } from "./public/js/shared/comments.js";
 
 const API = "https://generativelanguage.googleapis.com/v1beta";
@@ -72,6 +75,7 @@ const MESSAGES = {
   too_many: "At most 3 new analyses per agent run.",
   ...AGENT_MESSAGES,
   ...CHANNEL_MESSAGES,
+  ...CREATOR_MESSAGES,
 };
 
 class ApiError extends Error {
@@ -92,6 +96,7 @@ export default {
       if (url.pathname === "/api/comments" && request.method === "POST") return json(await comments(request, env));
       if (url.pathname === "/api/agent" && request.method === "POST") return await agent(request, env, ctx, KIT);
       if (url.pathname === "/api/channel" && request.method === "POST") return await channel(request, env, ctx, KIT);
+      if (url.pathname === "/api/creators" && request.method === "POST") return await creators(request, env, ctx, KIT);
       if (url.pathname === "/api/brandcat") return json(await brandCategory(request, env, KIT));
       if (url.pathname === "/api/teach" || url.pathname === "/api/teach/item") return await teachExport(request, env, url);
       if (url.pathname.startsWith("/api/")) return json({ error: "not_found" }, 404);

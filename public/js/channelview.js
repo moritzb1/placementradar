@@ -18,6 +18,7 @@ import { euro, euroRange } from "./value.js";
 import { mmss } from "./shared/normalize.js";
 import { SPREAD } from "./shared/aggregate.js";
 import { channelFit, GROUPS, GROUP_LABEL, FIT_WEIGHTS } from "./shared/fit.js";
+import { channelModes } from "./creatorsview.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -49,6 +50,7 @@ export function renderChannel(main, { channel = "", brand = "" } = {}) {
         <div class="app-icon">${LOGO.replace(/id="lg"/, 'id="lg-ch"').replace("url(#lg)", "url(#lg-ch)")}</div>
         <h1>Channel fit.</h1>
         <p class="lead">Enter a creator's channel. See which brands keep coming back, who sponsors when and whether ads are labelled – and how well your brand would fit.</p>
+        ${channelModes("check")}
         <form class="spotlight ag-form ch-form" id="chForm">${icon("search")}
           <input id="chInput" placeholder="@handle, channel or video link" autocomplete="off" spellcheck="false" aria-label="Channel" value="${esc(c)}" maxlength="200">
           <input id="chBrand" class="ch-brand" placeholder="Your brand (optional)" autocomplete="off" spellcheck="false" aria-label="Your brand" value="${esc(b)}" maxlength="60">

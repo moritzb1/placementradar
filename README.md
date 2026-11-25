@@ -104,6 +104,12 @@ Parts without data are left out, and the total is multiplied by 0.5 + 0.5 × cat
 
 ![Channel fit: live steps and the confirm card for new analyses with today's quota](docs/screenshots/21_channel_steps.jpg)
 
+**2h · Find creators.** The second mode of Channel fit (switch *Check a channel / Find creators*, `#/creators`): type a product and/or a brand ("headphones", "Sonos") and PlacementRadar works out the product field (product words, else the brand's field from our analyses), runs 1–2 YouTube searches ("headphones review", "best headphones"), groups the results by channel, reads the latest 25 uploads of up to 8 channels and ranks them. Each creator gets a **creator score** 0–100 – topic match 35 % (share of the latest upload titles about the product; half or more = 100), reach 25 % (median views, log scale 1,000 → 0, 1 M → 100), activity 15 % (uploads in the last 90 days) and, only where we have analysed videos of the channel, labels its ads 15 % and room next to competitors 10 % (the channel-fit rules); parts without data are left out and the total is scaled by 0.5 + 0.5 × topic match. Every card says what the score rests on (**"metadata only"** or **"metadata + n analysed videos"**), one rule-based sentence why it fits ("13 of 25 latest uploads about headphones · ~45k views per video · 22 uploads in 3 months"), its topics, competitors (if analysed), the **value of one placement** (product 60 s on screen and named once early in a 10-minute video at the channel's median views, value.js scenarios) and its most-viewed on-topic videos; *Channel fit* opens the full channel report with the brand filled in. Optional, only after an OK: one on-topic video of each of the top 3 analysed (≤ 3, quota shown). Cost: with the Data API 2 × 101 units for the searches + 3 per new channel, all cached (searches 24 h, channels 6 h); without a key the search page and channel pages (0 units). Test E3 in EVALUATION.md.
+
+![Find creators: shortlist for headphones / Sonos with creator scores, parts, topics and the value of one placement](docs/screenshots/24_find_creators.jpg)
+
+<img src="docs/screenshots/25_mobile_creators.jpg" alt="Find creators on a phone" width="300">
+
 ## 1. Why this project
 
 Influencer marketing is a multi-billion market, but two questions are hard to answer at scale:
@@ -134,6 +140,7 @@ PlacementRadar answers both from a single YouTube link and adds a third, newer q
 | **Audience (comments)** | top ~100 comments per video, rule-based (`shared/comments.js`, `POST /api/comments`): comments per product, purchase intent / question / praise / criticism / ad suspicion, excerpts ≤ 100 characters, no names; count on the product cards | done (24 Nov, test K) |
 | **Brand agent** | brand name → live steps (cache, YouTube search, filter, ranking) → up to 3 new analyses only after an OK with the quota shown → one combined report (ranges, disclosure, creators, findings) as PDF; `POST /api/agent` (SSE), `#/agent`; the roll-up (`shared/aggregate.js`) is built for the comment and channel views to reuse | done (24 Nov, test G) |
 | **Channel fit** | channel (@handle, link, id or a video link) → latest 25 uploads, analysed videos of the channel, cached comments → recurring brands, product fields, sponsors and value range per month, labelled / not labelled → fit score 0–100 for a typed brand (four rule-based parts with (i), confidence by number of analysed videos); up to 3 new analyses only after an OK; PDF; `POST /api/channel` (SSE), `GET /api/brandcat`, `#/channel/…` | done (25 Nov, test E2) |
+| **Find creators** | product and/or brand → product field → 1–2 YouTube searches → channels of the results → ranked shortlist with a rule-based creator score (topic, reach, activity; ad labels and competitors only from analysed videos), basis shown per creator, value of one placement, "why it fits", link to Channel fit; optional ≤ 3 analyses after an OK; PDF; `POST /api/creators` (SSE), `#/creators` | done (25 Nov, test E3) |
 | **Start page: four tools** | switcher YouTube video · Live camera · Brand search · Channel fit, each with its own field and three steps; segmented control on phones; four explaining tiles | done (25 Nov) |
 | **Waiting screen** | while Gemini watches (2–5 min): video details, a text-only disclosure check of title and description, which model is working and when Google is busy; the page may be closed – the result is stored and loads instantly later | done |
 
@@ -287,6 +294,7 @@ public/js/shared/comments.js  top comments of a video (Data API or YouTube's com
                            products and sort them into five reactions – used by POST /api/comments and test K
 agent.js                   brand agent (POST /api/agent): plan, cache, YouTube search (Data API or search page), filter, rank,
                            confirm, analyse, aggregate – streamed as SSE steps
+creators.js                Find creators (POST /api/creators): product field, YouTube searches, candidates' channels, creator score
 channel.js                 channel view (POST /api/channel): resolve the channel, latest uploads (Data API or channel page + RSS),
                            analyses + cached comments of the channel, confirm, analyse, roll-up; GET /api/brandcat
 wrangler.jsonc             Worker configuration (no secrets)
@@ -312,6 +320,7 @@ public/js/wasmqueue.js     one ONNX WASM model at a time (shared queue)
 public/js/icons.js         own SVG icons (no emoji)
 public/js/agentview.js     brand agent view (#/agent): live steps, confirm card with quota, combined report + PDF
 public/js/channelview.js   channel fit view (#/channel/…): live steps, confirm card, channel report, fit card + PDF
+public/js/creatorsview.js  Find creators (#/creators): live steps, optional analyses, creator shortlist + PDF
 public/js/shared/          prompts + data normalisation + roll-up over many videos (aggregate.js) + channel fit rules (fit.js),
                            used by Worker AND browser
 public/data/               ten pre-analysed example videos (+ index.json)

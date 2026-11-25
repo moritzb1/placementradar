@@ -36,6 +36,7 @@ Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). 
 | Can the app check Gemini on the real video frames itself? | yes, on the device ("Verify on screen", tab capture of the player only): JB desk tour – evidence in 18–21 frame × product cells, 0–1 of them wrong (precision 95–100 %), but only 31–36 % of the truly visible cells found; LG monitor measured at the right edge where Gemini's box sat in the middle (overlap 0, centre 34 % apart); MKBHD 6:10: backpack + camera found where Gemini lists nothing. Small items in wide shots (keyboard, Mac mini) are missed | V |
 | Can an agent find a brand across YouTube on its own and report on it without wasting quota? | yes for the cheap part: Sonos, Apple, DJI (+ Sonos in German) – plan, cache, search, filter, ranked proposals, combined report and PDF in ≤ 1 s from the cache, 0 Gemini requests, 0 YouTube units (search page; Data API path not tested locally); guards hold (≤ 3, only proposed videos). The two approved new analyses failed: once our own dev-server reload cut the stream, once Google answered 503 on all four models | G |
 | Can the app describe a creator's channel and say whether a brand fits it? | yes, from what is cached: 5 channels (@iKnowReview, @mkbhd, Side of Tech, Alycia Marie, Sascha Huber – handle, video link) resolved with 0 YouTube units (channel page + RSS) in ≤ 1 s, 25 latest uploads each, 0 Gemini requests. Fit scores sort as expected: audio/tech brands 74–94 on the three tech channels and 19 on beauty/fitness; Benefit 94 on the beauty channel and 10–19 on tech. But every channel has only 1–2 analysed videos → "confidence low" everywhere; two rule flaws found and fixed during the test | E2 |
+| Can it suggest creators for a product? | yes, from public metadata: headphones/Sonos → 8 audio channels (RecordingNOW 85, The Headphone Show 81 …; MKBHD only 33 – huge reach, 1 of 25 uploads about headphones), Laufschuhe (German) → Ben Parkes 88, Runner's World, Believe in the Run; Benefit (brand only) → beauty channels (James Charles 100, Nikki La Rose 92). 3 runs, 5 searches (1 blocked by YouTube), 24 channels, 0 units, 0 Gemini – but 23 of 24 scores rest on metadata only, and two news channels slipped into the running list | E3 |
 | How does the audience react to each product (comments)? | readable without an API key: 410 top comments of 5 videos; rules on 50 held-back comments: questions 10/12 right and none missed, praise 20/28 (finds 20 of 27), criticism and purchase intent rare and less reliable; a comment is linked to the right product in 13 of 14 cases but only 13 of 20 product mentions are found | K |
 | Does a fresh analysis work online, end to end? | yes: 13-min desk tour, 18 brands, 15 shop links – all verbatim from the description, 0 invented; 14 of 18 exact models from the description; disclosure green; but only ~1 tracking position per appearance | Q |
 | Does a free fallback provider help? | Workers AI (Llama 3.2 Vision) finds main brands, reads slogans as brands → last resort only | S1 |
@@ -394,6 +395,32 @@ banner above the report.
   the Worker has `YOUTUBE_API_KEY`, so this is the path the live site will use. New analyses from the channel view use the same
   `analyzeOne` as the agent (test G) and were not run. Whether YouTube shows the channel page to the online Worker without a bot check is
   unknown (it does not for the watch page, test Q) – that is why the Data API comes first.
+
+## E3 – Find creators: product or brand in, ranked YouTube channels out (25 Nov, local Worker, 0 Gemini requests, 0 YouTube units)
+Script `../tests/test_e3_creators.mjs`, raw events `../tests/ergebnisse/e3_creators/`. Same local Worker as E2, still **no `YOUTUBE_API_KEY`**
+locally (`.dev.vars` holds only the Gemini key), so searches went through YouTube's search page and channels through their pages + RSS – the
+Data API path (the one the online Worker uses) is written but untested here. No `approve` → nothing analysed.
+
+| Input | Field (from) | Searches | Channels read | Top of the shortlist (score · topic uploads of 25 · median views) | Weak end |
+|---|---|---|---|---|---|
+| headphones + Sonos, English | Audio (product words) | 2 (1st run: 2nd blocked by YouTube's bot check, 2nd run from cache) | 8 | RecordingNOW 85 (13 · 45k), The Headphone Show 81 (12 · 40k), This is Tech Today 63, Mike O'Brien 60 | MKBHD 33 (1 · 7M – reach 100, topic 8), Mark Ellis 32 |
+| Laufschuhe, German | Sport & outdoor (product words) | 2 | 8 | Ben Parkes 88 (12 · 178k), Runner's World 50 (9 · 2.5k), Believe in the Run 47 | ARD Marktcheck 32, SRF News 18, Daniel Korte 15 (news / unrelated, 0 uploads on topic) |
+| Benefit (brand only) | Beauty & care (Benefit in 2 of our analyses) → searches "makeup review", "best makeup" | 2 (1st gave 0 results) | 8 | James Charles 100 (15 · 1.1M), Makeup By Nikki La Rose 92, Haley Kim 83, Morgan Turner 82 | Zhirelle 31 (2 of 25) |
+
+- **Ranking:** channels that cover the topic regularly come first, huge general channels drop (MKBHD: reach 100, but topic 8 × the topic
+  scaling → 33). The first version gave full topic marks from 30 % of uploads – six headphone channels tied at 84–90; raised to 50 % during the
+  test (now 60–85 for the same channels).
+- **Honesty:** only MKBHD had an analysed video (labels 50, competitors 100 from test E2's example); every other card says "metadata only" and
+  shows "–" for ads and competitors. Upload dates beyond the latest 15 are approximate (channel page), which affects "activity" a little.
+- **Weak spots seen:** the German running search also returned news reports (ARD, SRF) – they end at the bottom (topic 20 = "found by
+  the search, no upload on topic"), but they are on the list; English results for a German query (Ben Parkes) – YouTube's ranking, not
+  filtered. Topic detection is title keywords only ("Fiio EH11" counts because the title says "headphone"; a review titled only with a model
+  name is missed).
+- **Value of one placement:** €100 – €364 (RecordingNOW, 45k views) … €2.4k – €8.9k (James Charles, 1.1M) – equivalent ad cost of a 60-s
+  placement, not a fee; shown as a range like everywhere else.
+- **UI** (browser pane, muted, no video plays): desktop and 375 px phone, "Channel fit" on a card opens `#/channel/@recordingnow?brand=Sonos`
+  (fit "Not enough data" – no analysed video, said so), no console errors. **PDF not verified:** Chrome headless printed the shortlist as an
+  empty page or hung (the channel report printed fine with the same method); the print CSS reuses the report rules, but this was not checked.
 
 ## K – Audience comments per product (24 Nov, 0 Gemini requests, `tests/test_k_kommentare.mjs`)
 Lean version of PLAN_DEZEMBER D: no Workers AI, only rules (`public/js/shared/comments.js`, used by `POST /api/comments`).

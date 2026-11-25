@@ -40,7 +40,7 @@ export const GROUPS = [
   { id: "beauty", label: "Beauty & care", rx: /beauty|cosmetic|skin ?care|make-?up|personal care|\bhair|fragrance|perfume|oral care|\bnail|kosmetik|pflege|deodorant|shaving/i },
   { id: "health", label: "Health", rx: /health|pharma|medical|eye ?care|vitamin|supplement|medizin|gesundheit|orthop/i },
   { id: "food", label: "Food & drink", rx: /food|beverage|\bdrinks?\b|snack|coffee|espresso|\btea\b|nutrition|grocer|lebensmittel|getränk|candy|sweets|protein/i },
-  { id: "sport", label: "Sport & outdoor", rx: /sport|fitness|outdoor|running|\bgym\b|training|camping|cycling gear/i },
+  { id: "sport", label: "Sport & outdoor", rx: /sport|fitness|outdoor|running|laufschuh|jogging|marathon|\bgym\b|training|camping|cycling gear/i },
   { id: "home", label: "Home & living", rx: /\bhome|furniture|appliance|lighting|automation|kitchen|cleaning|household|tableware|bedding|pillow|mattress|kissen|haushalt|möbel|decor|garden/i },
   { id: "fashion", label: "Fashion & accessories", rx: /cloth|apparel|fashion|\bshoes?\b|sneaker|\bbags?\b|luggage|backpack|wallet|card case|accessor|jewel|\bwatch(es)?\b|luxury|kleidung|mode\b/i },
   { id: "retail", label: "Retail & services", rx: /retail|\bstores?\b|\bshop|supermarket|discounter|service|subscription|bank|insurance|vpn|publication|media|certification/i },

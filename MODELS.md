@@ -118,6 +118,10 @@ A text-embedding similarity between "Sonos" and the channel's brands (MobileCLIP
 Verify on screen) would give one opaque number and would rate a brand it has never seen by its name alone. Test E2 shows where the rules
 are weak – thin data (1–2 analysed videos per channel), empty Gemini categories – and the app states both instead of hiding them.
 
+**Find creators (25 Nov, `creators.js`)** uses the same rule-based approach: the creator score counts upload titles on the topic, median
+views and recent uploads – metadata anyone can check on the channel page – and adds the channel-fit parts only where Gemini analyses exist.
+No model ranks creators, so the ranking cannot be steered by a channel's own text (titles are only matched against keyword lists).
+
 ## Audience comments – rules, not a model (24 Nov, `public/js/shared/comments.js`)
 The five reactions (purchase intent, question, praise, criticism, ad suspicion) are recognised by fixed English and German phrases, and a comment is linked to a product by the brand name or a distinctive word of the product name (product-type words such as "backpack" excluded – they come from the 93 types of Verify on screen). No language model on purpose: the categories are about wording that repeats ("link?", "where to buy"), every decision can be shown and checked by hand, and 100 comments per video cost nothing. Workers AI (free) was planned for the comments the rules cannot sort; it was left out in this lean version because the measured weak spots (irony, requests without a question mark) would need a model *and* a new hand check. Accuracy: EVALUATION.md test K.
 

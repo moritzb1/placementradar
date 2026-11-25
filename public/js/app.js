@@ -6,6 +6,7 @@
  *   #/v/<id>/<view>[?t=12]   result for one video; view = overview | timeline | value | disclosure | authenticity | report
  *   #/live                   live scanner (camera or photo, mostly on-device; see live.js)
  *   #/agent[?brand=Sonos]    brand agent: search + cached analyses + up to 3 new ones after an OK → one report (agentview.js)
+ *   #/creators?product=headphones&brand=Sonos  find creators: product/brand → ranked YouTube channels (creatorsview.js)
  *   #/channel/<@handle|id>[?brand=Sonos]  channel fit: latest uploads, recurring brands, sponsors over time, fit of a brand (channelview.js)
  *
  * Where the data comes from:
@@ -29,6 +30,7 @@ import { createVerifier, storedVerify } from "./verify.js";
 import { maybeShowIntro, showIntro } from "./intro.js";
 import { renderAgent, stopAgent } from "./agentview.js";
 import { renderChannel, stopChannel } from "./channelview.js";
+import { renderCreators, stopCreators } from "./creatorsview.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -102,7 +104,7 @@ async function route() {
   // new page (not just another tab of the same video) → start at the top
   const pageKey = parts[0] === "v" ? `v/${parts[1]}` : parts[0] || "start";
   if (pageKey !== lastPage) { window.scrollTo(0, 0); lastPage = pageKey; }
-  stopLive(); stopAgent(); stopChannel();
+  stopLive(); stopAgent(); stopChannel(); stopCreators();
   // an open sheet (Verify on screen, Settings, …) belongs to the page it was opened on – close it on navigation
   // (night check 24 Nov: the Verify sheet stayed on top of the brand agent after the browser's back button)
   document.querySelectorAll(".scrim").forEach((s) => s.remove());
@@ -117,6 +119,12 @@ async function route() {
     renderSidebar(); destroyPlayer();
     let ch = ""; try { ch = decodeURIComponent(parts.slice(1).join("/")); } catch { ch = parts.slice(1).join("/"); }
     renderChannel($("#main"), { channel: ch, brand: new URLSearchParams(location.hash.split("?")[1] || "").get("brand") || "" }); return;
+  }
+  if (parts[0] === "creators") { // Find creators = second mode of Channel fit (creatorsview.js)
+    state.id = null; state.data = null; state.page = "creators"; state.renderedId = null;
+    renderSidebar(); destroyPlayer();
+    const q = new URLSearchParams(location.hash.split("?")[1] || "");
+    renderCreators($("#main"), { product: q.get("product") || "", brand: q.get("brand") || "", lang: q.get("lang") || "any", autorun: true }); return;
   }
   if (parts[0] === "live") {
     state.id = null; state.data = null; state.page = "live";
@@ -221,7 +229,7 @@ function renderStart() {
           </div>
           <div class="mode-pane pane-channel">
             <form class="spotlight" id="goChannel">${icon("search")}<input id="chq" placeholder="@handle or channel link" autocomplete="off" spellcheck="false" aria-label="YouTube channel" maxlength="200"><button>Check</button></form>
-            <div class="hint" id="chHint"></div>
+            <div class="hint" id="chHint"><a href="#/creators">No creator in mind? Find creators for your product</a></div>
             <ol class="steps"><li><b>1</b>Enter a channel</li><li><b>2</b>Recurring brands and sponsors</li><li><b>3</b>Fit score for your brand</li></ol>
           </div>
         </div>
@@ -253,7 +261,7 @@ function renderStart() {
   };
   $("#goChannel").onsubmit = (e) => {
     e.preventDefault(); const q = $("#chq").value.trim();
-    if (q.length < 2) { $("#chHint").textContent = "Please enter a channel, e.g. @mkbhd."; return; }
+    if (q.length < 2) { $("#chHint").innerHTML = 'Please enter a channel, e.g. @mkbhd – or <a href="#/creators">find creators for your product</a>.'; return; }
     location.hash = `#/channel/${encodeURIComponent(q)}`;
   };
   $("#main").querySelectorAll("[data-open]").forEach((el) => (el.onclick = () => go(el.dataset.open)));
@@ -279,7 +287,7 @@ const TOOLS = [
   { id: "brand", icon: "radar", label: "Brand search", short: "Brand", color: "#5e5ce6",
     question: "Where does my brand appear?", answer: "The brand agent searches YouTube backwards: brand in, videos and one report out." },
   { id: "channel", icon: "chat", label: "Channel fit", short: "Channel", color: "#ff9f0a",
-    question: "Does this creator fit my brand?", answer: "Recurring brands, sponsors over time, ad labels – and a fit score for your brand." },
+    question: "Which creators fit my brand?", answer: "Check a channel's brands, sponsors and ad labels – or let it find creators for your product." },
 ];
 
 /**

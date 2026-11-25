@@ -206,7 +206,7 @@ async function scanLibrary(request, env, kit, brand, cost) {
  *      honestly and the agent reports from the cache only.
  * Results are cached for a day per query (KV `agentsearch:<hash>`), so the confirm round trip costs nothing.
  */
-async function searchVideos(request, env, kit, { q, lang, period }, cost) {
+export async function searchVideos(request, env, kit, { q, lang, period }, cost) { // also used by Find creators (creators.js)
   const key = `agentsearch:${await kit.sha256(JSON.stringify([q.toLowerCase(), lang, period, env.YOUTUBE_API_KEY ? "api" : "page"]))}`;
   const hit = env.STORE && (await env.STORE.get(key, "json"));
   if (hit) { cost.search_cached = true; return { ...hit, cached: true, units: 0 }; }

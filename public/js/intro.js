@@ -24,7 +24,7 @@ const STEPS = [
       <span class="intro-tools"><span class="ie"><span class="ic" style="background:#0a84ff">${icon("play")}</span><span><b>YouTube video</b> – every brand in one video.</span></span>
       <span class="ie"><span class="ic" style="background:#30d158">${icon("camera")}</span><span><b>Live camera</b> – a product named on your device.</span></span>
       <span class="ie"><span class="ic" style="background:#5e5ce6">${icon("radar")}</span><span><b>Brand search</b> – a brand in, its videos and one report out.</span></span>
-      <span class="ie"><span class="ic" style="background:#ff9f0a">${icon("chat")}</span><span><b>Channel fit</b> – does a creator suit your brand?</span></span></span>`,
+      <span class="ie"><span class="ic" style="background:#ff9f0a">${icon("chat")}</span><span><b>Channel fit</b> – does a creator suit your brand, or which would?</span></span></span>`,
     art: () => `<div class="ia-player"><div class="ia-scene"><span class="ia-head"></span><span class="ia-body"></span><span class="ia-prod"></span></div>
       <div class="tbox ia-box" style="--c:#0a84ff"><span class="tb-label"><i></i><b>Bose QuietComfort Ultra</b><em>logo</em></span></div>
       <div class="ia-tl"><i style="left:6%;width:30%;background:#0a84ff"></i><i style="left:44%;width:12%;background:#ff9f0a"></i><i style="left:62%;width:26%;background:#30d158"></i><b></b></div></div>`,

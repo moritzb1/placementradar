@@ -144,7 +144,7 @@ export async function channel(request, env, ctx, kit) {
   });
 }
 
-const publicChannel = (ch) => ({ id: ch.id, title: ch.title, handle: ch.handle, avatar: ch.avatar, subscribers: ch.subscribers, video_count: ch.video_count, source: ch.source, fetched_at: ch.fetched_at });
+export const publicChannel = (ch) => ({ id: ch.id, title: ch.title, handle: ch.handle, avatar: ch.avatar, subscribers: ch.subscribers, video_count: ch.video_count, source: ch.source, fetched_at: ch.fetched_at });
 
 const SPONSOR_HINT = /sponsor|werbung|anzeige|#ad\b|paid partnership|\d+\s?% (?:off|rabatt)|use code|mit dem code|rabattcode|gutschein|sichert euch|sale at|thanks to .{2,40} for|danke an .{2,40} für/i;
 
@@ -160,7 +160,8 @@ function hint(u) {
 // ------------------------------------------------------------------------------------------------
 // resolve + uploads
 // ------------------------------------------------------------------------------------------------
-async function loadChannel(request, env, kit, input, cost) {
+/** @param o.limit false = the caller (Find creators) has its own daily limit for the whole run */
+export async function loadChannel(request, env, kit, input, cost, { limit = true } = {}) {
   // the cache key is the canonical channel id when we know it, else the input (a handle maps to one id)
   const alias = env.STORE && input.kind !== "id" ? await env.STORE.get(`channelalias:${input.kind}:${input.value.toLowerCase()}`) : null;
   const id0 = input.kind === "id" ? input.value : alias;
@@ -168,7 +169,7 @@ async function loadChannel(request, env, kit, input, cost) {
     const hit = await env.STORE.get(`channel:${id0}`, "json");
     if (hit) { cost.cached = true; return hit; }
   }
-  if (!(await kit.withinLimit(env, request, "channel", Number(env.DAILY_CHANNELS || 20)))) throw new kit.ApiError("channel_limit", 429);
+  if (limit && !(await kit.withinLimit(env, request, "channel", Number(env.DAILY_CHANNELS || 20)))) throw new kit.ApiError("channel_limit", 429);
   let ch;
   if (env.YOUTUBE_API_KEY) ch = await viaDataApi(env.YOUTUBE_API_KEY, input, kit, cost);
   else ch = await viaPages(input, kit, cost);
@@ -303,7 +304,7 @@ function relativeDate(t) {
 // ------------------------------------------------------------------------------------------------
 // library: analyses of this channel (examples + KV), matched by video id or channel name
 // ------------------------------------------------------------------------------------------------
-async function channelLibrary(request, env, kit, ch, cost) {
+export async function channelLibrary(request, env, kit, ch, cost) {
   const ids = new Set(ch.uploads.map((u) => u.id)); const name = norm(ch.title);
   const out = []; const seen = new Set();
   const asset = async (p) => { const r = await env.ASSETS.fetch(new Request(new URL(p, request.url))); return r.ok ? r.json() : null; };
@@ -366,7 +367,7 @@ export function placementRows(analyses) {
  * ("Benefit" → Beauty & Personal Care in a what's-in-my-bag video) – that one is used and marked `group_from: library`.
  * Reads: the repo examples (static files) + at most 8 KV analyses whose brand list contains one of the brands.
  */
-async function fillUnknownGroups(request, env, rows, cost) {
+export async function fillUnknownGroups(request, env, rows, cost) {
   const todo = new Set(rows.filter((r) => r.group === "other").map((r) => norm(r.brand)));
   if (!todo.size) return;
   const votes = new Map(); // brand → { group → count }
@@ -411,6 +412,11 @@ export function groupShares(placements) {
 export async function brandCategory(request, env, kit) {
   const brand = String(new URL(request.url).searchParams.get("b") || "").trim().slice(0, 60);
   if (norm(brand).length < 2) throw new kit.ApiError("invalid_brand", 400);
+  return brandField(request, env, brand);
+}
+
+/** The same look-up for a brand string (also used by Find creators, creators.js). */
+export async function brandField(request, env, brand) {
   const b = norm(brand); const counts = {}; let seen = 0, reads = 0;
   const take = (a) => {
     for (const x of a?.brands || []) if (norm(x.brand) === b || (b.length >= 3 && norm(x.brand).startsWith(b))) {

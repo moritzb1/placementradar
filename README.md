@@ -343,12 +343,12 @@ EVALUATION.md              all tests, incl. what did not work
 ## 9. Limitations and ethics
 
 ### How good is it? (measured, test M in EVALUATION.md)
-Three videos were marked by hand every 2 seconds (957 frames, 24 products: which product is recognisable in the picture) and compared with the stored analyses – no new Gemini request. *The hand-marked truth is still a first proposal awaiting a human check; the numbers can move.*
+Three videos were marked by hand every 2 seconds (957 frames, 24 products: which product is recognisable in the picture) and compared with the stored analyses – no new Gemini request. The truth was proposed by Claude and then checked and corrected frame by frame by Moritz (25 Nov; about 3 % of the frames changed).
 
 | Question | MKBHD (products one by one) | JB desk tour (all on one desk) | Five headphones |
 |---|---|---|---|
-| When the app shows a product, is it in the picture? (precision) | 76 % (with re-check 86–92 %) | 71 % (also with the re-check filter since M5) | 86 % |
-| Of the time a product is in the picture, how much does the app show? (recall) | 9 % (with re-check 14–29 %) | 62 % with re-check (since M5 also with its filter), 12 % without | 32 % |
+| When the app shows a product, is it in the picture? (precision) | 76 % (with re-check 86–92 %) | 71 % (also with the re-check filter since M5) | 87 % |
+| Of the time a product is in the picture, how much does the app show? (recall) | 9 % (with re-check 14–29 %) | 62 % with re-check (since M5 also with its filter), 13 % without | 31 % |
 | Products found at least once | 7 of 10 | 9 of 9 | 5 of 5 |
 | Timestamp of a found appearance (median start error) | 2 s | 2 s | 1 s |
 | Two runs of the same video agree on … | brands 0.75–1.0 · seconds 0.13–0.59 (Jaccard) | brands 1.0 · seconds 0.48 | brands 0.56 · seconds 0.59 |

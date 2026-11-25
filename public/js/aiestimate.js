@@ -75,6 +75,7 @@ function draw(el, d) {
   const inp = d.input || {};
   const basis = `Read: ${inp.uploads ?? "?"} upload titles (${inp.with_description ?? 0} with description start)${inp.channel_description ? ", channel description" : ""}${inp.analysed ? `, ${inp.analysed} analysed video${inp.analysed === 1 ? "" : "s"}` : ""}${inp.comments ? `, ${inp.comments} comment excerpts` : ""}.`;
   const dropped = d.checks?.dropped_partners ? ` · ${d.checks.dropped_partners} partner${d.checks.dropped_partners === 1 ? "" : "s"} removed (quote not in the data: ${esc((d.checks.dropped || []).join(", "))})` : "";
+  const own = (d.checks?.own_removed || []).length ? ` · own shop not counted as partner: ${esc(d.checks.own_removed.join(", "))}` : "";
   el.querySelector(".ai-head").outerHTML = head(`<span class="pill ai-pill lvl-${FIT_LVL[f.level] || "none"}"><span class="dot"></span>${esc(FIT_TEXT[f.level] || "Unknown")}</span>`);
   el.querySelector(".ai-body").innerHTML = `
     <div class="ai-grid">
@@ -94,5 +95,5 @@ function draw(el, d) {
           ${(e.partners || []).length ? `<div class="ag-chips">${e.partners.slice(0, 8).map((p) => `<span title="${esc(p.evidence)}">${esc(p.brand)} <i>${esc(KIND_TEXT[p.kind] || p.kind)}</i></span>`).join("")}</div>` : `<p class="small muted">none visible in the titles</p>`}</div>
       </div>
     </div>
-    <p class="ai-foot small muted">${esc(basis)} ${e.data_note ? `${esc(e.data_note)} ` : ""}${esc(d.model || "")} · ${esc(when)}${d.cached ? " · from the 7-day cache, 0 requests" : ""}${dropped}. Not part of the score.</p>`;
+    <p class="ai-foot small muted">${esc(basis)} ${e.data_note ? `${esc(e.data_note)} ` : ""}${esc(d.model || "")} · ${esc(when)}${d.cached ? " · from the 7-day cache, 0 requests" : ""}${dropped}${own}. Not part of the score.</p>`;
 }

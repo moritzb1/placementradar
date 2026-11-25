@@ -62,7 +62,7 @@ export async function assess(request, env, kit) {
   // EVALUATION.md E4 and work only on a local dev server – online the host is never localhost
   const local = /^(localhost|127\.0\.0\.1)$/.test(new URL(request.url).hostname);
   const nocache = local && !!body.nocache, dry = local && !!body.dry;
-  if (cached && !nocache) return { ...cached, cached: true, quota };
+  if (cached && !nocache) return { ...withoutOwn(cached), cached: true, quota };
   if (body.peek && !dry) return { estimate: null, cached: false, quota };
 
   if (dry) { // test only: the exact text Gemini would read
@@ -135,13 +135,29 @@ export function verify(raw, data) {
   const e = raw && typeof raw === "object" ? raw : {};
   const partners = (Array.isArray(e.partners) ? e.partners : []).map((p) => ({ brand: String(p.brand || "").slice(0, 60), kind: p.kind, evidence: String(p.evidence || "").slice(0, 120), verified: found(p.evidence) }));
   const topics = (Array.isArray(e.brand_safety?.topics) ? e.brand_safety.topics : []).map((t) => ({ topic: String(t.topic || "").slice(0, 60), evidence: String(t.evidence || "").slice(0, 120), verified: found(t.evidence) }));
-  const kept = partners.filter((p) => p.verified && p.brand);
+  const own = partners.filter((p) => p.verified && p.brand && isOwn(p.brand, data.channel));
+  const kept = partners.filter((p) => p.verified && p.brand && !own.includes(p));
   return {
     estimate: { ...e, partners: kept, brand_safety: { ...(e.brand_safety || {}), topics },
       fit: { ...(e.fit || {}), reasons: (e.fit?.reasons || []).slice(0, 3) } },
     checks: { partners_given: partners.length, dropped_partners: partners.length - kept.length, dropped: partners.filter((p) => !p.verified).map((p) => p.brand),
-      topics_unverified: topics.filter((t) => !t.verified).length },
+      own_removed: own.map((p) => p.brand), topics_unverified: topics.filter((t) => !t.verified).length },
   };
+}
+/**
+ * The creator's own shop is not an "earlier partner" (test E4: Gemini listed "Ben Parkes" as a sponsor of Ben Parkes
+ * because of a merch code in the descriptions). Own = the brand name is the channel name or handle, or one contains the other.
+ */
+function isOwn(brand, channel) {
+  const b = squash(brand); if (b.length < 3) return false;
+  return [channel?.title, String(channel?.handle || "").replace(/^@/, "")].map(squash).some((c) => c.length >= 3 && (c.includes(b) || b.includes(c)));
+}
+/** Same rule for estimates already in the 7-day cache (made before the rule existed) – no new Gemini request. */
+function withoutOwn(out) {
+  const ps = out.estimate?.partners || []; const own = ps.filter((p) => isOwn(p.brand, out.channel));
+  if (!own.length) return out;
+  return { ...out, estimate: { ...out.estimate, partners: ps.filter((p) => !own.includes(p)) },
+    checks: { ...out.checks, own_removed: [...(out.checks?.own_removed || []), ...own.map((p) => p.brand)] } };
 }
 /** Gives back one count of today's DAILY_ASSESS when the Gemini call failed (KV counter of worker.js withinLimit). */
 async function refund(env, request) {

@@ -37,6 +37,7 @@ Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). 
 | Can an agent find a brand across YouTube on its own and report on it without wasting quota? | yes for the cheap part: Sonos, Apple, DJI (+ Sonos in German) – plan, cache, search, filter, ranked proposals, combined report and PDF in ≤ 1 s from the cache, 0 Gemini requests, 0 YouTube units (search page; Data API path not tested locally); guards hold (≤ 3, only proposed videos). The two approved new analyses failed: once our own dev-server reload cut the stream, once Google answered 503 on all four models | G |
 | Can the app describe a creator's channel and say whether a brand fits it? | yes, from what is cached: 5 channels (@iKnowReview, @mkbhd, Side of Tech, Alycia Marie, Sascha Huber – handle, video link) resolved with 0 YouTube units (channel page + RSS) in ≤ 1 s, 25 latest uploads each, 0 Gemini requests. Fit scores sort as expected: audio/tech brands 74–94 on the three tech channels and 19 on beauty/fitness; Benefit 94 on the beauty channel and 10–19 on tech. But every channel has only 1–2 analysed videos → "confidence low" everywhere; two rule flaws found and fixed during the test | E2 |
 | Can it suggest creators for a product? | yes, from public metadata: headphones/Sonos → 8 audio channels (RecordingNOW 85, The Headphone Show 81 …; MKBHD only 33 – huge reach, 1 of 25 uploads about headphones), Laufschuhe (German) → Ben Parkes 88, Runner's World, Believe in the Run; Benefit (brand only) → beauty channels (James Charles 100, Nikki La Rose 92). 3 runs, 5 searches (1 blocked by YouTube), 24 channels, 0 units, 0 Gemini – but 23 of 24 scores rest on metadata only, and two news channels slipped into the running list | E3 |
+| Can Gemini give a general opinion on a creator without watching a video? | yes, from text only ("AI estimate", 6 requests): 3 running channels for running shoes, 2 audio channels for Sonos headphones, 1 repeat. All 6 plausible, 6 of 6 partner quotes really in the data (0 removed), counts checked by hand were right ("21 of 25 videos" on shoe models). But all 6 said "Good fit" – also MKBHD (rule score 33) and Average James (42): it adds audience, tone, risk and format, it does not rank. Repeat: same fit, risk and format, 2 of 3 reasons alike, country UK → unknown. One mistake: the creator's own merch shop listed as a partner (rule added). 3.7 Flash was overloaded (503) all evening – every answer came from the fallback | E4 |
 | How does the audience react to each product (comments)? | readable without an API key: 410 top comments of 5 videos; rules on 50 held-back comments: questions 10/12 right and none missed, praise 20/28 (finds 20 of 27), criticism and purchase intent rare and less reliable; a comment is linked to the right product in 13 of 14 cases but only 13 of 20 product mentions are found | K |
 | Does a fresh analysis work online, end to end? | yes: 13-min desk tour, 18 brands, 15 shop links – all verbatim from the description, 0 invented; 14 of 18 exact models from the description; disclosure green; but only ~1 tracking position per appearance | Q |
 | Does a free fallback provider help? | Workers AI (Llama 3.2 Vision) finds main brands, reads slogans as brands → last resort only | S1 |
@@ -421,6 +422,48 @@ Data API path (the one the online Worker uses) is written but untested here. No 
 - **UI** (browser pane, muted, no video plays): desktop and 375 px phone, "Channel fit" on a card opens `#/channel/@recordingnow?brand=Sonos`
   (fit "Not enough data" – no analysed video, said so), no console errors. **PDF not verified:** Chrome headless printed the shortlist as an
   empty page or hung (the channel report printed fine with the same method); the print CSS reuses the report rules, but this was not checked.
+
+## E4 – AI estimate: Gemini's opinion on a creator from text only (25 Nov, local Worker, 6 successful Gemini requests)
+Script `../tests/test_e4_assess.mjs`, prompts and answers `../tests/ergebnisse/e4_assess/`, log `../tests/ergebnisse/e4_log.txt`.
+Local Worker via `wrangler dev` (real Gemini key, KV copied from E2/E3). Each case: first the exact prompt (`dry`, 0 requests),
+then one request. Rule scores from E3 for comparison. Planned budget: at most 6 requests – used: **6**.
+
+**Getting an answer took 4 hours.** From ~17:50 both models of the chain answered 503 "high demand" (Gemini 3.7 Flash on *every*
+try); 2.5 Flash/Flash-Lite answered 404 ("no longer available to new users") and Gemma 4 503 already in development. The test then
+ran in the background every 40 minutes (7 rounds, 18:03–22:09) and stopped at the first 503 of a round; 503 answers do not use
+quota and the visitor's count is refunded. 6 rounds had a 503 at some point, the 6 answers came in rounds 2, 2, 3, 5, 7, 7 – **all
+from the fallback 3.1 Flash-Lite preview**, 5–57 s each (the long ones after retries), 2,300–4,200 tokens (of which 120–1,550
+"thinking" despite `thinkingLevel: LOW`).
+
+| # | Creator · compared with | Rule score (E3) | Read | AI fit | Partners (all quotes found) | Brand safety | Remarks |
+|---|---|---|---|---|---|---|---|
+| 1 | Ben Parkes · running shoes | 92 | 25 titles, 15 descriptions, no channel text | **Good** | "Ben Parkes" (affiliate) – his own shop | no risk | country "UK" from two £ prices – a guess, but based on the data |
+| 2 | Believe in the Run · running shoes | 80 | 25 / 9 | **Good** | New Balance (mentioned – "NYC Marathon weekend with New Balance") | no risk | "technical specs like stack height and drop" – right for the titles |
+| 3 | Average James · running shoes | 42 | 25 / 5 + channel text | **Good** | none | no risk | "21 of the last 25 videos" on shoe models – **counted by hand: 21, right**; main risk "very small (722 subscribers)" |
+| 4 | The Headphone Show · Sonos headphones | 81 | 25 / 7 | **Good** | headphones.com (affiliate – shop link) | no risk | risk: "if the Sonos product does not measure well … the review will likely be negative" |
+| 5 | MKBHD · Sonos headphones | 33 | 25 / 13 + channel text + 1 analysed video | **Good** | dbrand, Ridge (sponsor), Asus (mentioned – "provided by Asus for review") | no risk | reason "history of reviewing headphones" rests on **1** title (Nothing Headphone 1 Pro) |
+| 6 | = 1, asked again (no cache) | 92 | same prompt | **Good** | "Ben Parkes" (sponsor) | no risk | see stability |
+
+- **Plausible?** Yes, all six read like a sensible media planner's note, and the reasons point to the data as the prompt asks. The
+  risks are specific and useful ("brutally honest" reviewer, very small channel, critical audio measurements).
+- **Hallucinations?** None found in the checked claims: every partner quote occurs in the input (verify(): 6 of 6 kept, 0 removed),
+  the "21 of 25" count is exact, NYC/Chicago marathons and £ prices are in the titles/descriptions. **One wrong classification:** Ben
+  Parkes' own merch code ("Save 10% … Code YOUTUBE10") came back as a partner (once affiliate, once sponsor). Fixed after the test:
+  a partner whose name is the channel name or handle is not counted (also for cached answers; the box says "own shop not counted").
+  Softer spots: MKBHD "consistently high-quality analysis" is close to outside knowledge; Asus "provided for review" would be *gifted*,
+  not *mentioned*.
+- **Stable?** Case 1 vs 6 (same prompt, temperature 0.2): same fit, age, credibility, safety, risk and format; 2 of 3 reasons say the
+  same in other words, the third differs (shoe brands vs. targeted audience); country UK → unknown; partner kind affiliate → sponsor.
+  Good enough for a second opinion, not for a number.
+- **Does it separate creators?** No – **6 of 6 "Good fit"**, while the rule score spans 33–92. On a shortlist that is already filtered by
+  topic that is partly fair (all are on topic), but for MKBHD the rules see 1 of 25 uploads about headphones and the estimate sees "huge
+  reach + one headphone review". This confirms the design choice: the estimate stays **out of the score** and is read for what the rules
+  cannot see – audience, tone, risk, past partners, format.
+- **UI:** box under the card in Find creators, from the 7-day cache with 0 requests (screenshot `docs/screenshots/26_ai_estimate.jpg`,
+  browser pane, no video, muted). Print: the CSS prints answered boxes and hides empty ones – **not checked in a real PDF** (same headless
+  print problem as in E3).
+- **Not tested:** the online Worker, the Data API path for the channel, 3.7 Flash itself (never answered), and how the estimate reacts to a
+  channel with real controversies (none of the six had sensitive topics in their titles).
 
 ## K – Audience comments per product (24 Nov, 0 Gemini requests, `tests/test_k_kommentare.mjs`)
 Lean version of PLAN_DEZEMBER D: no Workers AI, only rules (`public/js/shared/comments.js`, used by `POST /api/comments`).

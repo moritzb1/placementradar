@@ -143,8 +143,12 @@ rules  only the given data, no outside knowledge about the creator · "unknown" 
        brand-safety topic with a verbatim quote
 output fixed JSON schema with enums (audience, tone, brand_safety, partners, fit, data_note)
 check  assess.js verify(): a partner is kept only if its quote occurs in the input (case/spaces/punctuation ignored);
-       unverified brand-safety topics are kept but marked; the UI shows how many partners were removed
+       unverified brand-safety topics are kept but marked; the UI shows how many partners were removed; a "partner" whose
+       name is the channel name or handle (the creator's own shop) is not counted (added after test E4)
 ```
+**In practice (test E4, 25 Nov evening):** Gemini 3.7 Flash answered 503 "high demand" on every try that day, so all 6 test
+estimates came from the fallback 3.1 Flash-Lite preview (5–57 s, ~2,300–4,200 tokens each). The fallback is what made the
+feature work at all; 3.7 Flash stays first because, once Google's load drops, it is the stronger model.
 **Not in the score.** The creator score and the channel fit stay rule-based and are not changed by the estimate. Reasons:
 (1) the estimate is an opinion from titles, not a measurement – mixing it in would hide where a number comes from;
 (2) it exists only for creators someone clicked, so mixing it in would make cards of one shortlist incomparable;

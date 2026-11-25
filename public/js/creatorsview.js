@@ -6,11 +6,13 @@
  * parts (each with an (i) rule), topics, competitors and ad labels (only from analysed videos), the value of one
  * placement, one rule-based sentence "why it fits", example videos and a link to the full Channel fit view with the
  * brand filled in. Like the agent, new analyses (one video of each of the top 3) only after the visitor's OK.
- * "Save as PDF" prints the shortlist. The last shortlist stays in sessionStorage.
+ * Each card also has an "AI estimate" section (aiestimate.js): Gemini's opinion from titles and descriptions, only on a
+ * click, shown apart from the score and never added to it. "Save as PDF" prints the shortlist (with estimates asked for). The last shortlist stays in sessionStorage.
  */
 import { icon, LOGO } from "./icons.js";
 import { euroRange } from "./value.js";
 import { mmss } from "./shared/normalize.js";
+import { estimateSlot, mountEstimates } from "./aiestimate.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -18,7 +20,7 @@ const info = (text) => `<span class="info" tabindex="0" role="note" aria-label="
 const fmtViews = (n) => n == null ? "–" : n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `${Math.round(n / 1e3)}k` : String(n);
 const STORE_KEY = "creators:last";
 const STAGE_TEXT = { meta: "reading video details", timeline: "Gemini is watching the video", recheck: "re-checking where each product appears", authenticity: "rating authenticity", done: "calculating" };
-const WEIGHT_INFO = "Creator score 0–100: topic match 35 %, reach 25 %, activity 15 % (from titles, views and dates of the latest 25 uploads) and – only where we have analysed videos of the channel – labels its ads 15 %, room next to competitors 10 %. Parts without data are left out, the rest scaled up; the total is multiplied by 0.5 + 0.5 × topic match, so a channel that rarely covers the topic stays low however big it is. Rule-based, no AI model decides.";
+const WEIGHT_INFO = "Creator score 0–100: topic match 35 %, reach 25 %, activity 15 % (from titles, views and dates of the latest 25 uploads) and – only where we have analysed videos of the channel – labels its ads 15 %, room next to competitors 10 %. Parts without data are left out, the rest scaled up; the total is multiplied by 0.5 + 0.5 × topic match, so a channel that rarely covers the topic stays low however big it is. Rule-based, no AI model decides. The AI estimate below each card is a separate opinion and is not added to the score.";
 
 let run = null;
 
@@ -170,6 +172,7 @@ function drawReport(d, { restored = false } = {}) {
   const host = $("#crReport"); if (!host) return;
   host.classList.remove("ag-stale");
   host.innerHTML = renderShortlist(d, { restored });
+  mountEstimates(host); // asks the 7-day cache for each card – never Gemini; "Ask Gemini" is a click per card
   $("#crPrint")?.addEventListener("click", () => window.print());
   host.querySelector("[data-rerun]")?.addEventListener("click", () => $("#crForm")?.requestSubmit());
 }
@@ -193,7 +196,7 @@ export function renderShortlist(d, o = {}) {
           <div class="rp-rank"><b>${analysed}</b> of ${list.length}<br><span class="muted small">with analysed videos</span></div></div>
         ${analysed < list.length ? `<div class="ch-thin">${icon("flag")}<span><b>${analysed ? `${list.length - analysed} of ${list.length}` : "All"} scores rest on metadata only</b> – titles, views and upload dates of the latest 25 videos. How a creator labels ads and which competitors it shows are known only for analysed channels (marked).</span></div>` : ""}
         <h4>Shortlist ${info(WEIGHT_INFO)}</h4>
-        <ol class="cr-list">${list.map((c, i) => creatorCard(c, i, target)).join("")}</ol>
+        <ol class="cr-list">${list.map((c, i) => creatorCard(c, i, target, q)).join("")}</ol>
         <h4>Method</h4>
         <p class="legal">YouTube search for ${(q.queries || []).map((x) => `“${esc(x)}”`).join(" and ")} (${d.cost?.search_units ? `YouTube Data API, ${d.cost.search_units} units` : "YouTube search page or cache, 0 units"}); search hits grouped by channel; the brand's own channel left out; for up to 8 channels the latest 25 uploads (${d.cost?.channel_units ? `${d.cost.channel_units} Data API units` : "channel page + RSS feed or cache, 0 units"}).
           ${esc(WEIGHT_INFO)} Topic = upload titles matching the product words or the field's keyword list. Value of one placement = equivalent ad cost of the product shown 60 s and named once early in a 10-minute video at the channel's median views (cautious to generous scenario, as in each video's Media value view) – not the creator's fee. Disclosure: § 5a (4) UWG, § 22 MStV – a screening aid, not legal advice.
@@ -207,7 +210,7 @@ export function renderShortlist(d, o = {}) {
     </div>`;
 }
 
-function creatorCard(c, i, target) {
+function creatorCard(c, i, target, q = {}) {
   const ch = c.channel || {};
   const href = `#/channel/${encodeURIComponent(ch.handle || ch.id)}${target ? `?brand=${encodeURIComponent(target)}` : ""}`;
   return `<li class="cr-card lvl-${level(c.score)}">
@@ -225,5 +228,6 @@ function creatorCard(c, i, target) {
     </div>
     <div class="cr-foot">${c.examples.length ? `<div class="cr-ex">${c.examples.slice(0, 2).map((v) => `<a href="https://www.youtube.com/watch?v=${esc(v.id)}" target="_blank" rel="noopener"><img alt="" loading="lazy" src="https://i.ytimg.com/vi/${esc(v.id)}/mqdefault.jpg"><span>${esc(v.title)}</span><small>${fmtViews(v.views)} views</small></a>`).join("")}</div>` : ""}
       <a class="btn cr-go" href="${href}">${icon("chat")} Channel fit</a></div>
+    ${estimateSlot({ channel: ch.id, brand: q.brand || "", product: q.product || "" })}
   </li>`;
 }

@@ -16,6 +16,9 @@
  *                                 after the visitor's OK, recurring brands / sponsors / value per month (SSE; channel.js)
  *   POST /api/creators {product?, brand?, lang?, approve?} → Find creators: YouTube search about the product field, candidates'
  *                                 channels, ranked shortlist with a rule-based creator score (SSE; creators.js)
+ *   POST /api/assess {c, brand?, product?, peek?} → AI estimate: Gemini's general opinion whether a creator suits a brand,
+ *                                 from titles, descriptions and our analyses only (no video watched); own model chain
+ *                                 ASSESS_MODELS, 7-day KV cache, DAILY_ASSESS per visitor; peek = cache + quota only (assess.js)
  *   GET  /api/brandcat?b=<brand> → the product field of a brand, from our own analyses (channel fit; channel.js)
  *   POST /api/comments {v, brands} → audience reactions per product from the top ~100 YouTube comments, rule-based
  *                                 (public/js/shared/comments.js); only counts and ≤ 100-character excerpts are kept, 24 h KV cache
@@ -51,6 +54,7 @@ import { normalizeAnalysis, normalizeCloser, promotedCandidates, recheckItems, m
 import { agent, AGENT_MESSAGES } from "./agent.js";
 import { channel, brandCategory, CHANNEL_MESSAGES } from "./channel.js";
 import { creators, CREATOR_MESSAGES } from "./creators.js";
+import { assess, assessModels, ASSESS_MESSAGES } from "./assess.js";
 import { fetchTopComments, classifyComments, RULES_VERSION } from "./public/js/shared/comments.js";
 
 const API = "https://generativelanguage.googleapis.com/v1beta";
@@ -76,6 +80,7 @@ const MESSAGES = {
   ...AGENT_MESSAGES,
   ...CHANNEL_MESSAGES,
   ...CREATOR_MESSAGES,
+  ...ASSESS_MESSAGES,
 };
 
 class ApiError extends Error {
@@ -97,6 +102,7 @@ export default {
       if (url.pathname === "/api/agent" && request.method === "POST") return await agent(request, env, ctx, KIT);
       if (url.pathname === "/api/channel" && request.method === "POST") return await channel(request, env, ctx, KIT);
       if (url.pathname === "/api/creators" && request.method === "POST") return await creators(request, env, ctx, KIT);
+      if (url.pathname === "/api/assess" && request.method === "POST") return json(await assess(request, env, KIT));
       if (url.pathname === "/api/brandcat") return json(await brandCategory(request, env, KIT));
       if (url.pathname === "/api/teach" || url.pathname === "/api/teach/item") return await teachExport(request, env, url);
       if (url.pathname.startsWith("/api/")) return json({ error: "not_found" }, 404);
@@ -313,12 +319,12 @@ async function recordUsage(env, model, ok, usageMetadata) {
 
 /** GET /api/usage → today's requests and tokens per model, exhausted flags, Workers AI counter. */
 async function usage(env) {
-  const models = [...new Set([...videoModels(env), ...frameModels(env)])];
+  const models = [...new Set([...videoModels(env), ...frameModels(env), ...assessModels(env)])];
   const out = { day: today(), reset_in_s: secondsToReset(), free_requests_per_model: FREE_REQUESTS_PER_MODEL, models: [], workers_ai: null };
   if (!env.STORE) return { ...out, available: false };
   const exhausted = new Set(await exhaustedModels(env, models));
   const rows = await Promise.all(models.map((m) => env.STORE.get(`usage:${today()}:${m}`, "json")));
-  out.models = models.map((m, i) => ({ model: m, kind: videoModels(env).includes(m) ? "video" : "frame", exhausted: exhausted.has(m),
+  out.models = models.map((m, i) => ({ model: m, kind: videoModels(env).includes(m) ? "video" : frameModels(env).includes(m) ? "frame" : "assess", exhausted: exhausted.has(m),
     ...(rows[i] || { requests: 0, ok: 0, failed: 0, prompt: 0, output: 0, thoughts: 0 }) }));
   out.workers_ai = { used: Number(await env.STORE.get(`global:workers-ai:${today()}`)) || 0, cap: Number(env.DAILY_WORKERS_AI || 250) };
   return { ...out, available: true };
@@ -795,4 +801,4 @@ async function quotaInfo(request, env) {
 }
 
 const KIT = { ApiError, sseResponse, analyzeVideo, cachedAnalysis, geminiDenied, withinLimit, bumpGlobal, exhaustedModels, videoModels,
-  quotaInfo, sha256, BROWSER_HEADERS, ID_RE };
+  quotaInfo, sha256, BROWSER_HEADERS, ID_RE, gemini, FREE_REQUESTS_PER_MODEL };

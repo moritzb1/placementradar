@@ -110,6 +110,8 @@ Parts without data are left out, and the total is multiplied by 0.5 + 0.5 × cat
 
 <img src="docs/screenshots/25_mobile_creators.jpg" alt="Find creators on a phone" width="300">
 
+**2i · AI estimate.** The creator score and the channel fit are rules over what we measured – titles, views, dates, analysed videos. For most creators no video is analysed, so they say nothing about *who* watches, the *tone* or past *controversies*. The **AI estimate** adds Gemini's general opinion: a box under every card in *Find creators* and under the fit card in *Channel fit*, also for channels without a single analysed video. One click on **Ask Gemini** (never automatic) sends **text only** to a model the video analysis does not use (Gemini 3.7 Flash, MODELS.md row 7): the channel description, subscribers, the latest 25 titles with views, dates and the first lines of their descriptions, a summary of our analyses of the channel and comment excerpts we already have. Back come, in a fixed JSON schema: **audience** (rough age, interests, language/country), **tone** and credibility, **brand safety** (only topics visible in the data, each with a quote – "not enough data" is allowed), **earlier partners** seen in titles/descriptions (sponsor, affiliate, gifted, mentioned – each with its quote) and the **fit**: good / possible / poor, 2–3 reasons, one main risk and a suggested placement format. The box is indigo and marked **"estimate from titles and description, not watched"**; its (i) says exactly what was read. Two guards against invention: the prompt forbids outside knowledge about the creator, and the Worker keeps a partner only if its quote really occurs in the data (removed ones are counted in the box). The estimate is **not added to any score** – it is an opinion, may vary between runs and exists only where someone clicked (MODELS.md → AI estimate). Cost: 1 Gemini request, cached 7 days per channel + brand + product (a repeat or another visitor costs 0), 10 new estimates per visitor and day; the button shows what is left. In "Save as PDF" the estimates asked for are printed with the report. Test E4 in EVALUATION.md.
+
 ## 1. Why this project
 
 Influencer marketing is a multi-billion market, but two questions are hard to answer at scale:
@@ -141,6 +143,7 @@ PlacementRadar answers both from a single YouTube link and adds a third, newer q
 | **Brand agent** | brand name → live steps (cache, YouTube search, filter, ranking) → up to 3 new analyses only after an OK with the quota shown → one combined report (ranges, disclosure, creators, findings) as PDF; `POST /api/agent` (SSE), `#/agent`; the roll-up (`shared/aggregate.js`) is built for the comment and channel views to reuse | done (24 Nov, test G) |
 | **Channel fit** | channel (@handle, link, id or a video link) → latest 25 uploads, analysed videos of the channel, cached comments → recurring brands, product fields, sponsors and value range per month, labelled / not labelled → fit score 0–100 for a typed brand (four rule-based parts with (i), confidence by number of analysed videos); up to 3 new analyses only after an OK; PDF; `POST /api/channel` (SSE), `GET /api/brandcat`, `#/channel/…` | done (25 Nov, test E2) |
 | **Find creators** | product and/or brand → product field → 1–2 YouTube searches → channels of the results → ranked shortlist with a rule-based creator score (topic, reach, activity; ad labels and competitors only from analysed videos), basis shown per creator, value of one placement, "why it fits", link to Channel fit; optional ≤ 3 analyses after an OK; PDF; `POST /api/creators` (SSE), `#/creators` | done (25 Nov, test E3) |
+| **AI estimate** | Gemini's general opinion whether a creator suits a brand/product from text only (titles, descriptions, our analyses, cached comments): audience, tone, brand safety, earlier partners with quotes, fit + reasons + risk + format; only on a click, own model (3.7 Flash), 7-day cache, partner quotes checked against the data, never added to a score; in Find creators and Channel fit, printed in the PDF; `POST /api/assess` | done (25 Nov, test E4) |
 | **Start page: four tools** | switcher YouTube video · Live camera · Brand search · Channel fit, each with its own field and three steps; segmented control on phones; four explaining tiles | done (25 Nov) |
 | **Waiting screen** | while Gemini watches (2–5 min): video details, a text-only disclosure check of title and description, which model is working and when Google is busy; the page may be closed – the result is stored and loads instantly later | done |
 
@@ -295,6 +298,7 @@ public/js/shared/comments.js  top comments of a video (Data API or YouTube's com
 agent.js                   brand agent (POST /api/agent): plan, cache, YouTube search (Data API or search page), filter, rank,
                            confirm, analyse, aggregate – streamed as SSE steps
 creators.js                Find creators (POST /api/creators): product field, YouTube searches, candidates' channels, creator score
+assess.js                  AI estimate (POST /api/assess): text-only Gemini opinion on a creator, quote check, 7-day cache, limits
 channel.js                 channel view (POST /api/channel): resolve the channel, latest uploads (Data API or channel page + RSS),
                            analyses + cached comments of the channel, confirm, analyse, roll-up; GET /api/brandcat
 wrangler.jsonc             Worker configuration (no secrets)
@@ -321,6 +325,7 @@ public/js/icons.js         own SVG icons (no emoji)
 public/js/agentview.js     brand agent view (#/agent): live steps, confirm card with quota, combined report + PDF
 public/js/channelview.js   channel fit view (#/channel/…): live steps, confirm card, channel report, fit card + PDF
 public/js/creatorsview.js  Find creators (#/creators): live steps, optional analyses, creator shortlist + PDF
+public/js/aiestimate.js    "AI estimate" box (Find creators + Channel fit): cache look-up, Ask Gemini with quota, result
 public/js/shared/          prompts + data normalisation + roll-up over many videos (aggregate.js) + channel fit rules (fit.js),
                            used by Worker AND browser
 public/data/               ten pre-analysed example videos (+ index.json)

@@ -15,6 +15,7 @@ Shipped in the app (as of 21 Nov 2026). Measured numbers come from EVALUATION.md
 | 6 | **Own model v3: brand classifier** (MobileCLIP-S1 image encoder, Apple, frozen + **stage 1: our linear brand head for 1,020 packaging brands + "(other)" (v2, unchanged); stage 2 (v3, 25 Nov): a second head for 375 non-packaging brands from Wikimedia Commons, of which the 120 that cross-validation can tell apart may answer** → 1,137 brands) | live scanner stage 4: recognises the *look* of 1,020 brands – food, cosmetics, household/tech, German retail (logo, colours) – for boxes OCR could not name; trained with 3 webcam-like views per photo and hard negatives; answers only if head (≥ 0.95) and the encoder's text knowledge of brand names (top 50) agree, thresholds calibrated on a validation split ; stage 2 is asked only when stage 1 is not sure, threshold 0.95 (`tools/build_brand_data.py`, `tools/build_brand_data_v3.py`, `tools/brands_v3.py`, `tools/camaug.py`, `tools/train_brand_model_v2.py`, `tools/train_brand_model_v3.py`, `public/js/brandmodel.js`; v1 with 131 brands: `train_brand_*.py`) | trained on Mac (MPS; 190,000 fingerprints ~56 min, head seconds), runs in browser (WASM), 42 MB float16 encoder in 3 parts + **2.8 MB binary head (both stages)** | encoder: Apple's licence for the MobileCLIP weights (github.com/apple/ml-mobileclip – fine for a course project, check before commercial use); head: ours; data: **Open Food Facts, Open Beauty Facts, Open Products Facts – ODbL (database), photos CC BY-SA; stage 2: 20,549 Wikimedia Commons photos under free licences (CC BY-SA, CC BY, CC0, public domain), author + licence per file in `data/brand_v3_sources.csv`** | 5,189 held-back products: **2,338 named, 96.8 % of answers right** (v1: 399, 68 %); webcam views 769 vs 126; 3.4 % false alarms on foreign brands (v1 2.6 %); **cascade OCR + own model 42/49 photos, also 42/49 in webcam quality, 0 wrong brands from the model**, ~0.24 s per box (EVALUATION.md S4). **v3 stage 2: 93.9 % of its answers right on 3,463 held-back Commons photos (webcam 88.8 %); old brands and the 49 photos unchanged; false alarms on unknown non-packaging brands 2.1 → 4.7 %, on generic photos 3.3 → 4.9 % (EVALUATION.md S5)** |
 | 6c | **Product-type check** for Verify on screen (MobileCLIP-S1 *text* encoder, run once offline → 93 fixed product types incl. distractors like "person", "wall"; image side = the encoder of model 6) | is the expected *type* ("computer monitor", "speaker") among the best 3 of 93 types for a box or Gemini's position? Confirms the kind of object, never the brand; also double-checks detector boxes far from Gemini's estimate (best 5) | text side offline on the Mac (`tools/build_category_bank.py`), 93 KB float16 in the browser | Apple's MobileCLIP licence (as model 6) | test V: cosines only 0.20–0.27, so ranks decide; JB 0:55 Sonos speaker confirmed (rank 2), crops on the presenter rank "person"/"face"/"hoodie" first |
 | 6b | **Distillation "Gemini teaches the on-device model"** | crops that Gemini / Workers AI named confidently in the live scanner are kept (with a visible note and opt-out) and become training examples for model 6 (`worker.js` keepForTraining, `tools/teach_pull.py`: download with secret token, check, retrain the head ×3 weight) | Worker KV (≤ 1,500 crops, 90 days) + Mac | crops: kept only with the note shown, README → Privacy | pipeline tested locally end to end; grows with use |
+| 7 | **Gemini 3.7 Flash** (fallback 3.1 Flash-Lite preview) – text only | **AI estimate** (25 Nov, `assess.js`, `POST /api/assess`): a general opinion whether a creator suits a brand/product – audience, tone/credibility, brand safety, earlier partners, fit low/medium/high with 2–3 reasons, one risk, a placement format. Reads only text (~7,500 characters): channel description, subscribers, titles/views/dates + description openings of the latest 25 uploads, our analyses of the channel, cached comment excerpts. Never watches a video. Only on a click, 1 request, KV cache 7 days per channel + brand + product, `DAILY_ASSESS` 10 per visitor | Google, via Worker | Gemini API terms, free tier | see test E4 in EVALUATION.md |
 
 ## Prompt-injection guard for the video description (21 Nov)
 The description is written by the uploader, so it is treated like any untrusted input:
@@ -124,6 +125,32 @@ No model ranks creators, so the ranking cannot be steered by a channel's own tex
 
 ## Audience comments – rules, not a model (24 Nov, `public/js/shared/comments.js`)
 The five reactions (purchase intent, question, praise, criticism, ad suspicion) are recognised by fixed English and German phrases, and a comment is linked to a product by the brand name or a distinctive word of the product name (product-type words such as "backpack" excluded – they come from the 93 types of Verify on screen). No language model on purpose: the categories are about wording that repeats ("link?", "where to buy"), every decision can be shown and checked by hand, and 100 comments per video cost nothing. Workers AI (free) was planned for the comments the rules cannot sort; it was left out in this lean version because the measured weak spots (irony, requests without a question mark) would need a model *and* a new hand check. Accuracy: EVALUATION.md test K.
+
+## AI estimate – why a separate model, and why it stays out of the score (25 Nov, `assess.js`)
+**Model.** The scarce resource is the video chain: ~20 free requests per model and day, up to 3 per video. The estimate reads
+text only, so it must not eat into that. The chain `ASSESS_MODELS` uses models the rest of the app never calls:
+**Gemini 3.7 Flash** (the one current Flash model the video chain 3.8 → 3.6 → 3.5 → 3 skips) and, as fallback,
+**3.1 Flash-Lite preview** (the live scanner uses 3.5 Flash-Lite and 3.1 Flash-Lite GA). Each has its own free daily quota.
+Tried first and dropped (25 Nov): **2.5 Flash-Lite / 2.5 Flash** – "no longer available to new users" (HTTP 404, the key is
+from Nov 2026); **Gemma 4 31B / 26B-A4B** (open models on the same API, a separate and larger free quota) – answered "high
+demand" (503) on both tries, and whether they accept a `responseSchema` is unverified → not in the chain. All of it is a
+Worker variable, so the chain can change without a rebuild.
+```
+input  channel description · subscribers · median views · latest 25 uploads (title | views | date | first 220 chars of the
+       description) · our analyses of the channel (brands, paid?, ad-label verdict) · ≤ 12 cached comment excerpts
+       → wrapped in <<<CHANNEL_DATA>>> … as DATA, never instructions (prompt-injection guard as for video descriptions)
+rules  only the given data, no outside knowledge about the creator · "unknown" allowed everywhere · every partner and every
+       brand-safety topic with a verbatim quote
+output fixed JSON schema with enums (audience, tone, brand_safety, partners, fit, data_note)
+check  assess.js verify(): a partner is kept only if its quote occurs in the input (case/spaces/punctuation ignored);
+       unverified brand-safety topics are kept but marked; the UI shows how many partners were removed
+```
+**Not in the score.** The creator score and the channel fit stay rule-based and are not changed by the estimate. Reasons:
+(1) the estimate is an opinion from titles, not a measurement – mixing it in would hide where a number comes from;
+(2) it exists only for creators someone clicked, so mixing it in would make cards of one shortlist incomparable;
+(3) it may vary between runs (test E4), the rules do not; (4) a channel description written by the creator could try to
+talk the model into "high" – kept apart, such an attempt can at most change the opinion box, never the ranking.
+It is shown right under the score, in its own indigo box marked "estimate from titles and description, not watched".
 
 ## Not used, and why
 | Candidate | Reason |

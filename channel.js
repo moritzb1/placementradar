@@ -214,6 +214,7 @@ async function viaDataApi(key, input, kit, cost) {
     description: String(it.snippet?.description || "").slice(0, 800), live: it.snippet?.liveBroadcastContent && it.snippet.liveBroadcastContent !== "none",
   })).filter((u) => !u.live && (u.duration_s == null || u.duration_s > 60)).slice(0, MAX_UPLOADS);
   return { id: c.id, title: c.snippet?.title || "", handle: c.snippet?.customUrl || (input.kind === "handle" ? input.value : null),
+    description: String(c.snippet?.description || "").slice(0, 1000), // channel "About" text – only the AI estimate reads it (assess.js)
     avatar: c.snippet?.thumbnails?.medium?.url || c.snippet?.thumbnails?.default?.url || null,
     subscribers: c.statistics?.hiddenSubscriberCount ? null : compact(Number(c.statistics?.subscriberCount)), video_count: Number(c.statistics?.videoCount) || null,
     uploads, source: "data-api" };
@@ -282,6 +283,7 @@ async function viaPages(input, kit, cost) {
   }
   cost.units += 0;
   return { id, title: meta.title || "", handle: parts.find((p) => p.startsWith("@")) || (input.kind === "handle" ? input.value : null), avatar,
+    description: String(meta.description || "").slice(0, 1000), // channel "About" text – only the AI estimate reads it (assess.js)
     subscribers: parts.find((p) => /subscriber/i.test(p)) || null, video_count: Number(String(parts.find((p) => /videos?$/i.test(p)) || "").replace(/[^\d.KM]/gi, "").replace(/K$/i, "e3").replace(/M$/i, "e6")) || null,
     uploads: items.filter((u) => kit.ID_RE.test(u.id || "") && !u.live).slice(0, MAX_UPLOADS), source: "youtube-page" };
 }

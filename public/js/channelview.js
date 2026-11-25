@@ -11,6 +11,9 @@
  * here in the browser from the report, so changing the brand costs no request (except one cheap look-up of the
  * brand's product field in our own analyses, GET /api/brandcat).
  *
+ * Under the fit card: the "AI estimate" (aiestimate.js) – Gemini's general opinion from titles and descriptions, also
+ * when no video is analysed yet; only on a click, never added to the fit score.
+ *
  * The last report stays in sessionStorage so "back" from a video returns to it.
  */
 import { icon, LOGO } from "./icons.js";
@@ -19,6 +22,7 @@ import { mmss } from "./shared/normalize.js";
 import { SPREAD } from "./shared/aggregate.js";
 import { channelFit, GROUPS, GROUP_LABEL, FIT_WEIGHTS } from "./shared/fit.js";
 import { channelModes } from "./creatorsview.js";
+import { estimateSlot, mountEstimates } from "./aiestimate.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -228,7 +232,7 @@ export function renderChannelReport(d, o = {}) {
   if (!t.videos) {
     return `${notes}<div class="report-wrap"><article class="report ch-report" id="report">${head}
       <div class="empty-state ag-empty"><b>None of ${esc(ch.title || "this channel")}'s videos is analysed yet.</b><br>Tick a few uploads above – recurring brands, sponsors and the fit appear once at least one video is analysed. Three or more make the fit reliable.</div>
-      <div id="chFit"></div>${uploadsStrip(d)}</article></div>`;
+      <div id="chFit"></div><div id="chEst"></div>${uploadsStrip(d)}</article></div>`;
   }
 
   return `${notes}
@@ -237,6 +241,7 @@ export function renderChannelReport(d, o = {}) {
         ${head}
         ${t.videos < 3 ? `<div class="ch-thin">${icon("flag")}<span><b>Only ${t.videos} analysed video${t.videos === 1 ? "" : "s"}.</b> Everything below describes ${t.videos === 1 ? "this one video" : "these videos"}, not the channel as a whole. Analyse more uploads for a reliable picture.</span></div>` : ""}
         <div id="chFit"></div>
+        <div id="chEst"></div>
         <div class="rp-kpis">
           ${kpi("Recurring brands", `${recurring.length}<small>/${(s.brands || []).length}</small>`, recurring.length ? `in 2 or more videos: ${recurring.slice(0, 3).map((b) => b.brand).join(", ")}` : "no brand in more than one video", "Brands Gemini found in at least two analysed videos of this channel. Counted per video, not per appearance.")}
           ${kpi("Ad disclosure", `${t.commercial}<small>/${t.videos}</small>`, `with ad signals · ${t.labelled} labelled${t.weak ? ` · ${t.weak} weak` : ""} · ${t.unlabelled} not`, "Per video: paid or gifted (Gemini), shop/affiliate links in the description, and whether an ad label appears in title, description, image or speech (§ 5a (4) UWG, § 22 MStV – screening aid, not legal advice).")}
@@ -309,6 +314,7 @@ async function updateFit(brand, group = null) {
   const host = $("#chFit"); if (!host || !current?.report) return;
   const d = current.report;
   brand = String(brand || "").trim();
+  drawEstimate(brand);
   if ($("#chBrand") && brand && $("#chBrand").value.trim() !== brand) $("#chBrand").value = brand;
   if (!brand) {
     host.innerHTML = `<div class="ch-fit ch-fit-empty">${icon("sparkle")}<span><b>How well would your brand fit?</b> Type it in the second field above and press Check channel – the fit is calculated from this report, no new request.</span></div>`;
@@ -331,6 +337,15 @@ async function updateFit(brand, group = null) {
   host.innerHTML = renderFit(f, source);
   host.querySelector("#chGroup")?.addEventListener("change", (e) => updateFit(brand, e.target.value || null));
   try { const last = JSON.parse(sessionStorage.getItem(STORE_KEY) || "null"); if (last) { last.brand = brand; sessionStorage.setItem(STORE_KEY, JSON.stringify(last)); } } catch { /* ignore */ }
+}
+
+/** AI estimate for the current channel + brand (placeholder; the cache is asked, Gemini only on a click). */
+function drawEstimate(brand) {
+  const host = $("#chEst"); const ch = current?.report?.channel; if (!host || !ch?.id) return;
+  if (host.dataset.key === `${ch.id}|${brand}`) return; // same channel and brand → keep what is shown
+  host.dataset.key = `${ch.id}|${brand}`;
+  host.innerHTML = estimateSlot({ channel: ch.id, brand });
+  mountEstimates(host);
 }
 
 function renderFit(f, source) {

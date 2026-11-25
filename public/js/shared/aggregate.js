@@ -87,7 +87,24 @@ export function videoRow(analysis, brands, opts = DEFAULTS) {
     paid: !!analysis.paid?.looks_like_paid_promotion,
     disclosure: { level: disc.level, label: DISCLOSURE_LABEL[disc.level], title: disc.title, signals: disc.signals },
     others: others.slice(0, 30),
+    sponsors: sponsorsOf(analysis, brands),
   };
+}
+
+/**
+ * Commercial partners of one video (channel view: "sponsors over time"), two kinds:
+ *   paid       Gemini judged the video paid or gifted → the products it rated for authenticity (the promoted ones),
+ *              or, without that list, every counted brand
+ *   affiliate  the description links the product with a shop / affiliate link (the creator earns per sale)
+ */
+export function sponsorsOf(analysis, brands) {
+  const out = [];
+  if (analysis.paid?.looks_like_paid_promotion) {
+    const promoted = new Set((analysis.authenticity || []).map((a) => norm(a.brand)));
+    for (const b of brands) if (!promoted.size || promoted.has(norm(b.brand))) out.push({ brand: b.brand, kind: "paid" });
+  }
+  for (const b of brands) if ((b.link || b.links?.length) && !out.some((x) => x.brand === b.brand)) out.push({ brand: b.brand, kind: "affiliate" });
+  return out.slice(0, 12);
 }
 
 const spreadRange = (s) => ({ low: Math.round(s * (1 - SPREAD)), high: Math.round(s * (1 + SPREAD)) });
@@ -128,8 +145,11 @@ export function summarize(analyses, { match = null, opts = DEFAULTS, source = {}
   const byMonth = new Map();
   for (const r of rows) {
     const m = String(r.upload_date || "").replace(/^(\d{4})(\d{2}).*/, "$1-$2").slice(0, 7) || "unknown";
-    const e = byMonth.get(m) || { month: m, videos: 0, value_mid: 0, labelled: 0, unlabelled: 0 };
-    e.videos += 1; e.value_mid += r.value.mid; if (r.disclosure.level === "green") e.labelled += 1; if (r.disclosure.level === "red") e.unlabelled += 1;
+    // value_low/high + sponsors added 25 Nov for the channel view (media value range per month, sponsors over time)
+    const e = byMonth.get(m) || { month: m, videos: 0, value_mid: 0, value_low: 0, value_high: 0, labelled: 0, unlabelled: 0, sponsors: [] };
+    e.videos += 1; e.value_mid += r.value.mid; e.value_low += r.value_range.low; e.value_high += r.value_range.high;
+    if (r.disclosure.level === "green") e.labelled += 1; if (r.disclosure.level === "red") e.unlabelled += 1;
+    for (const sp of r.sponsors || []) if (!e.sponsors.some((x) => x.brand === sp.brand)) e.sponsors.push(sp);
     byMonth.set(m, e);
   }
   const months = [...byMonth.values()].sort((a, b) => a.month.localeCompare(b.month));

@@ -307,7 +307,7 @@ const why = (v, brand) => [norm(v.title).includes(norm(brand)) ? "brand in title
 // --------------------------------------------------------------------------------------------------------------
 // one approved analysis – same order and limits as /api/analyze
 // --------------------------------------------------------------------------------------------------------------
-async function analyzeOne(request, env, kit, v, send) {
+export async function analyzeOne(request, env, kit, v, send) { // also used by the channel view (channel.js)
   const cached = await kit.cachedAnalysis(request, env, v);
   if (cached) return { analysis: cached, fresh: false };                       // someone analysed it in the meantime
   const denied = kit.geminiDenied(request, env);
@@ -330,7 +330,7 @@ const AGENT_MESSAGES = {
   search_quota: "Today's YouTube search budget is used up – cached analyses still work.",
   running: "this video is being analysed right now by someone else – it will be in the cache in a few minutes",
 };
-function messageFor(e) {
+export function messageFor(e) {
   return AGENT_MESSAGES[e?.code] || e?.visitorMessage || ({
     quota_exhausted: "today's free Gemini quota is used up", daily_limit: "your daily limit for new analyses is reached",
     invite_required: "new analyses need an invite code", own_key_required: "new analyses are switched off", server_key_missing: "the server has no Gemini key",

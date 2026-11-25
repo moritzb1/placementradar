@@ -30,8 +30,11 @@ let run = null; // { brand, lang, period, steps: Map, order: [], confirm, report
 
 export function stopAgent() { run?.abort?.abort(); }
 
-/** Route #/agent[?brand=Sonos] – prefill only; a run starts on click (a search costs YouTube quota). */
-export function renderAgent(main, { brand = "" } = {}) {
+/**
+ * Route #/agent[?brand=Sonos] – prefill only; a run starts on click (a search costs YouTube quota).
+ * `&run=1` (set by the start page's "Brand search" field, i.e. after the visitor's own click) starts it at once.
+ */
+export function renderAgent(main, { brand = "", run: autorun = false } = {}) {
   let last = null; try { last = JSON.parse(sessionStorage.getItem(STORE_KEY) || "null"); } catch { /* ignore */ }
   const q = brand || last?.brand || "";
   main.innerHTML = `
@@ -69,6 +72,10 @@ export function renderAgent(main, { brand = "" } = {}) {
     start({ brand: b, lang: $("#agLang").value, period: $("#agPeriod").value });
   };
   if (!q) $("#agBrand").focus({ preventScroll: true });
+  if (autorun && brand.length >= 2) {
+    history.replaceState(null, "", `#/agent?brand=${encodeURIComponent(brand)}`); // a reload must not search again
+    start({ brand, lang: $("#agLang").value, period: $("#agPeriod").value });
+  }
 }
 
 // ------------------------------------------------------------------------------------------------

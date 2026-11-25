@@ -6,6 +6,7 @@
  *   #/v/<id>/<view>[?t=12]   result for one video; view = overview | timeline | value | disclosure | authenticity | report
  *   #/live                   live scanner (camera or photo, mostly on-device; see live.js)
  *   #/agent[?brand=Sonos]    brand agent: search + cached analyses + up to 3 new ones after an OK → one report (agentview.js)
+ *   #/channel/<@handle|id>[?brand=Sonos]  channel fit: latest uploads, recurring brands, sponsors over time, fit of a brand (channelview.js)
  *
  * Where the data comes from:
  *   1. data/<id>.json  – pre-analysed demo videos (instant, no API quota)
@@ -27,6 +28,7 @@ import { createTracking } from "./tracking.js";
 import { createVerifier, storedVerify } from "./verify.js";
 import { maybeShowIntro, showIntro } from "./intro.js";
 import { renderAgent, stopAgent } from "./agentview.js";
+import { renderChannel, stopChannel } from "./channelview.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -100,14 +102,21 @@ async function route() {
   // new page (not just another tab of the same video) → start at the top
   const pageKey = parts[0] === "v" ? `v/${parts[1]}` : parts[0] || "start";
   if (pageKey !== lastPage) { window.scrollTo(0, 0); lastPage = pageKey; }
-  stopLive(); stopAgent();
+  stopLive(); stopAgent(); stopChannel();
   // an open sheet (Verify on screen, Settings, …) belongs to the page it was opened on – close it on navigation
   // (night check 24 Nov: the Verify sheet stayed on top of the brand agent after the browser's back button)
   document.querySelectorAll(".scrim").forEach((s) => s.remove());
   if (parts[0] === "agent") {
     state.id = null; state.data = null; state.page = "agent"; state.renderedId = null;
     renderSidebar(); destroyPlayer();
-    renderAgent($("#main"), { brand: new URLSearchParams(location.hash.split("?")[1] || "").get("brand") || "" }); return;
+    const q = new URLSearchParams(location.hash.split("?")[1] || "");
+    renderAgent($("#main"), { brand: q.get("brand") || "", run: q.get("run") === "1" }); return;
+  }
+  if (parts[0] === "channel") {
+    state.id = null; state.data = null; state.page = "channel"; state.renderedId = null;
+    renderSidebar(); destroyPlayer();
+    let ch = ""; try { ch = decodeURIComponent(parts.slice(1).join("/")); } catch { ch = parts.slice(1).join("/"); }
+    renderChannel($("#main"), { channel: ch, brand: new URLSearchParams(location.hash.split("?")[1] || "").get("brand") || "" }); return;
   }
   if (parts[0] === "live") {
     state.id = null; state.data = null; state.page = "live";
@@ -190,10 +199,9 @@ function renderStart() {
       <div class="hero">
         <div class="app-icon">${LOGO}</div>
         <h1>Every brand in a video.</h1>
-        <p class="lead">Paste a YouTube link, or hold a product up to your camera. PlacementRadar shows which brands appear, what that exposure is worth and whether it is labelled as advertising.</p>
-        <div class="mode-pick" role="tablist" aria-label="What to analyse">
-          <button role="tab" data-mode="video" class="${startMode === "video" ? "on" : ""}">${icon("play")}<span>YouTube video</span></button>
-          <button role="tab" data-mode="camera" class="${startMode === "camera" ? "on" : ""}">${icon("camera")}<span>Live camera</span></button>
+        <p class="lead">Four tools, one question each: which brands are in a video, what product is in front of the camera, where a brand appears on YouTube – and whether a creator fits your brand.</p>
+        <div class="mode-pick" role="tablist" aria-label="Choose a tool">
+          ${TOOLS.map((t) => `<button role="tab" data-mode="${t.id}" aria-selected="${startMode === t.id}" class="${startMode === t.id ? "on" : ""}">${icon(t.icon)}<span class="ml">${t.label}</span><span class="ms">${t.short}</span></button>`).join("")}
         </div>
         <div class="mode-panes" data-mode="${startMode}">
           <div class="mode-pane pane-video">
@@ -206,6 +214,16 @@ function renderStart() {
             <div class="hint"><a href="#/live">or analyse a photo</a></div>
             <ol class="steps"><li><b>1</b>Allow the camera</li><li><b>2</b>Hold up a product</li><li><b>3</b>Brand, barcode, product</li></ol>
           </div>
+          <div class="mode-pane pane-brand">
+            <form class="spotlight" id="goBrand">${icon("search")}<input id="brandq" placeholder="Brand, e.g. Sonos" autocomplete="off" spellcheck="false" aria-label="Brand" maxlength="60"><button>Search</button></form>
+            <div class="hint" id="brandHint"></div>
+            <ol class="steps"><li><b>1</b>Type a brand</li><li><b>2</b>The agent finds its videos</li><li><b>3</b>One report, new analyses with your OK</li></ol>
+          </div>
+          <div class="mode-pane pane-channel">
+            <form class="spotlight" id="goChannel">${icon("search")}<input id="chq" placeholder="@handle or channel link" autocomplete="off" spellcheck="false" aria-label="YouTube channel" maxlength="200"><button>Check</button></form>
+            <div class="hint" id="chHint"></div>
+            <ol class="steps"><li><b>1</b>Enter a channel</li><li><b>2</b>Recurring brands and sponsors</li><li><b>3</b>Fit score for your brand</li></ol>
+          </div>
         </div>
       </div>
     </section>
@@ -214,21 +232,30 @@ function renderStart() {
         <div class="shelf-row">${state.demos.map((d) => card(d, true)).join("")}</div></div>
       ${state.recent.length ? `<div class="shelf"><div class="shelf-head"><h2>Analysed by visitors</h2><span>Saved for everyone.</span></div>
         <div class="shelf-row small">${state.recent.map((d) => card(d, false)).join("")}</div></div>` : ""}
-      <a class="tool-card agent-card" href="#/agent">
-        <div><h3>Brand agent</h3><p>Type a brand. The agent searches YouTube, reuses what is already analysed, asks before it spends quota and writes one report across all videos.</p><span class="btn primary">${icon("search")} Open the agent</span></div>
-        <div class="tc-art" aria-hidden="true"><span class="tc-ic">${icon("radar")}</span><span class="tc-label">5 videos · 2 not labelled</span></div>
-      </a>
-      <a class="tool-card" href="#/live">
-        <div><h3>Live scanner</h3><p>Hold a product up to your camera. It is recognised right on your device, no cloud needed.</p><span class="btn primary">${icon("camera")} Open the scanner</span></div>
-        <div class="tc-art" aria-hidden="true"><span class="tc-ic">${icon("bag")}</span><span class="tc-label">Brand found</span></div>
-      </a>
+      <div class="shelf tools-shelf"><div class="shelf-head"><h2>Four tools</h2><span>What each one answers – pick one and it opens above.</span></div>
+        <div class="tool-grid">${TOOLS.map((t) => `<button class="tool-tile" data-pick="${t.id}" style="--c:${t.color}">
+          <span class="tt-ic">${icon(t.icon)}</span><b>${t.question}</b><span>${t.answer}</span><em>${t.label} ${icon("chevron")}</em></button>`).join("")}</div></div>
     </section>`;
-  $("#main").querySelectorAll(".mode-pick [data-mode]").forEach((b) => (b.onclick = () => {
-    startMode = b.dataset.mode;
-    $("#main").querySelectorAll(".mode-pick [data-mode]").forEach((x) => x.classList.toggle("on", x === b));
-    $(".mode-panes").dataset.mode = startMode;
-    if (startMode === "video") $("#url").focus({ preventScroll: true });
-  }));
+  const pick = (mode, focus = true) => {
+    startMode = mode;
+    $("#main").querySelectorAll(".mode-pick [data-mode]").forEach((x) => { x.classList.toggle("on", x.dataset.mode === mode); x.setAttribute("aria-selected", String(x.dataset.mode === mode)); });
+    $(".mode-panes").dataset.mode = mode;
+    const field = { video: "#url", brand: "#brandq", channel: "#chq" }[mode];
+    if (focus && field) $(field).focus({ preventScroll: true });
+  };
+  $("#main").querySelectorAll(".mode-pick [data-mode]").forEach((b) => (b.onclick = () => pick(b.dataset.mode)));
+  // the tiles below only explain the tools; a click switches the tool above and scrolls back up (no second entry point)
+  $("#main").querySelectorAll("[data-pick]").forEach((b) => (b.onclick = () => { pick(b.dataset.pick, false); window.scrollTo({ top: 0, behavior: "smooth" }); setTimeout(() => pick(b.dataset.pick), 450); }));
+  $("#goBrand").onsubmit = (e) => {
+    e.preventDefault(); const q = $("#brandq").value.trim();
+    if (q.length < 2) { $("#brandHint").textContent = "Please type a brand name."; return; }
+    location.hash = `#/agent?brand=${encodeURIComponent(q)}&run=1`;
+  };
+  $("#goChannel").onsubmit = (e) => {
+    e.preventDefault(); const q = $("#chq").value.trim();
+    if (q.length < 2) { $("#chHint").textContent = "Please enter a channel, e.g. @mkbhd."; return; }
+    location.hash = `#/channel/${encodeURIComponent(q)}`;
+  };
   $("#main").querySelectorAll("[data-open]").forEach((el) => (el.onclick = () => go(el.dataset.open)));
   $("#go").onsubmit = (e) => {
     e.preventDefault();
@@ -236,9 +263,24 @@ function renderStart() {
     if (!id) { $("#hint").textContent = "That does not look like a YouTube link."; return; }
     go(id);
   };
-  if (startMode === "video" && matchMedia("(min-width: 761px)").matches) $("#url").focus({ preventScroll: true });
+  if (matchMedia("(min-width: 761px)").matches) { const f = { video: "#url", brand: "#brandq", channel: "#chq" }[startMode]; if (f) $(f).focus({ preventScroll: true }); }
 }
 let startMode = "video";
+
+/**
+ * The four tools of the start page, equal in rank (Moritz, 25 Nov): each has its own field and three steps in the
+ * switcher, and one explaining tile below. `short` is the label on narrow phones, where four full labels do not fit.
+ */
+const TOOLS = [
+  { id: "video", icon: "play", label: "YouTube video", short: "Video", color: "#0a84ff",
+    question: "Which brands are in this video?", answer: "Every brand in picture, speech and text – when, what it is worth, whether it is labelled." },
+  { id: "camera", icon: "camera", label: "Live camera", short: "Camera", color: "#30d158",
+    question: "What is this product?", answer: "Hold it up to the camera – recognised on your device, barcode included." },
+  { id: "brand", icon: "radar", label: "Brand search", short: "Brand", color: "#5e5ce6",
+    question: "Where does my brand appear?", answer: "The brand agent searches YouTube backwards: brand in, videos and one report out." },
+  { id: "channel", icon: "chat", label: "Channel fit", short: "Channel", color: "#ff9f0a",
+    question: "Does this creator fit my brand?", answer: "Recurring brands, sponsors over time, ad labels – and a fit score for your brand." },
+];
 
 /**
  * Background of the start page: a slowly drifting wall of video stills. A fixed, deliberately mixed set of

@@ -1,7 +1,7 @@
 # Evaluation – feasibility tests before building
 
 Every mechanism was tested on its own before it went into the app ("small tests first, then the whole").
-Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). Dates: 19–24 Nov 2026.
+Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). Dates: 19–25 Nov 2026.
 
 ## At a glance
 | Question | Answer (measured) | Test |
@@ -35,6 +35,7 @@ Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). 
 | Does SponsorBlock confirm the disclosure check? | where it has data, yes (1 of 1, same time) – but only 4 of 14 videos have any entry | M |
 | Can the app check Gemini on the real video frames itself? | yes, on the device ("Verify on screen", tab capture of the player only): JB desk tour – evidence in 18–21 frame × product cells, 0–1 of them wrong (precision 95–100 %), but only 31–36 % of the truly visible cells found; LG monitor measured at the right edge where Gemini's box sat in the middle (overlap 0, centre 34 % apart); MKBHD 6:10: backpack + camera found where Gemini lists nothing. Small items in wide shots (keyboard, Mac mini) are missed | V |
 | Can an agent find a brand across YouTube on its own and report on it without wasting quota? | yes for the cheap part: Sonos, Apple, DJI (+ Sonos in German) – plan, cache, search, filter, ranked proposals, combined report and PDF in ≤ 1 s from the cache, 0 Gemini requests, 0 YouTube units (search page; Data API path not tested locally); guards hold (≤ 3, only proposed videos). The two approved new analyses failed: once our own dev-server reload cut the stream, once Google answered 503 on all four models | G |
+| Can the app describe a creator's channel and say whether a brand fits it? | yes, from what is cached: 5 channels (@iKnowReview, @mkbhd, Side of Tech, Alycia Marie, Sascha Huber – handle, video link) resolved with 0 YouTube units (channel page + RSS) in ≤ 1 s, 25 latest uploads each, 0 Gemini requests. Fit scores sort as expected: audio/tech brands 74–94 on the three tech channels and 19 on beauty/fitness; Benefit 94 on the beauty channel and 10–19 on tech. But every channel has only 1–2 analysed videos → "confidence low" everywhere; two rule flaws found and fixed during the test | E2 |
 | How does the audience react to each product (comments)? | readable without an API key: 410 top comments of 5 videos; rules on 50 held-back comments: questions 10/12 right and none missed, praise 20/28 (finds 20 of 27), criticism and purchase intent rare and less reliable; a comment is linked to the right product in 13 of 14 cases but only 13 of 20 product mentions are found | K |
 | Does a fresh analysis work online, end to end? | yes: 13-min desk tour, 18 brands, 15 shop links – all verbatim from the description, 0 invented; 14 of 18 exact models from the description; disclosure green; but only ~1 tracking position per appearance | Q |
 | Does a free fallback provider help? | Workers AI (Llama 3.2 Vision) finds main brands, reads slogans as brands → last resort only | S1 |
@@ -348,6 +349,51 @@ the agent used its second search path, YouTube's public search page.
   "Pineapple" (startsWith).
 - **Open:** the Data API path (`search.list` + `videos.list`) is written but untested (no key locally; the key is a secret of the online Worker);
   online, YouTube may bot-check the search page as it does the watch page – then the step fails and the report uses the cache only.
+
+## E2 – Channel fit: a creator's channel, its brands and the fit of a brand (25 Nov, local Worker, 0 Gemini requests, 0 YouTube units)
+*(Plan item E. "E" in this file is the older authenticity test, hence E2.)* Script `../tests/test_e2_kanal.mjs`, raw events and tables
+`../tests/ergebnisse/e2_kanal/` (`summary.json` = tech channels, `summary_beauty_fitness.json`). Setup: `wrangler dev` with the ten repo examples
+and the six analyses visitors saved online (copied into the local KV via the online cache – 0 requests), no `YOUTUBE_API_KEY` locally, so the
+channel came from its YouTube page + RSS feed. The script calls `POST /api/channel` **without** `approve` (nothing can be analysed) and rates
+seven brands with `shared/fit.js` exactly as the browser does; where neither the channel nor our library knows a brand's field, it answers
+the field question like a visitor (Prozis → food, Anker → tech).
+
+**Honest limitation first:** the plan asked for one channel "with many cached videos, e.g. MKBHD". We have no such channel: MKBHD has **1**
+analysed video (a 2022 example, not among the latest 25 uploads), iKnowReview has the most with **2**. Analysing more would have cost
+Gemini quota, which this test was not allowed to spend. Every fit below is therefore "confidence low" – the app says so in the card and in a
+banner above the report.
+
+| Channel (input) | Uploads | Analysed (in latest 25) | Fields | Disclosure | Proposed / preselected | Sonos | Logitech | Benefit | Prozis |
+|---|---|---|---|---|---|---|---|---|---|
+| iKnowReview (`@iKnowReview`) | 25 | 2 (1) | audio 64 %, tech 27 %, fashion 9 % | 1 labelled, 1 not | 8 / 3 ("ad hint in the description · shop links") | **74** (brand already on the channel) | 79 | 10 | 10 |
+| Marques Brownlee (`@mkbhd`) | 25 | 1 (0) | tech 71 %, fashion 29 % | 1 weak (affiliate links) | 8 / 0 (the one sponsor read, Ridge, sits in a 21-min video) | 85 | 79 | 10 | 10 |
+| Side of Tech (video link) | 25 | 1 (1) | tech 56 %, home 22 %, audio 22 % | 1 labelled | 8 / 0 | 94 | 94 (on the channel) | 19 | 19 |
+| Alycia Marie (video link, beauty) | 25 | 1 (0) | other 80 %, beauty 20 % | 1 labelled | 4 / 1 | 19 | 19 | **94** | 19 |
+| Sascha Huber (video link, fitness) | 25 | 1 (0) | other 100 % | 1 labelled | 8 / 3 | – | – | – | – (no other brand to compare) |
+
+- **Resolution:** handle, bare handle, channel URL, channel id and video link (via oEmbed → channel URL) all resolved; first look-up 0.5–1 s, repeats
+  "from the 6-hour cache". Upload dates: exact for the latest 15 (RSS), "≈" for older ones (the page only says "3 months ago").
+- **Over time / sponsors:** per month the value range and partners, e.g. iKnowReview 2025-05: Sony, 3Dio, Carhartt, Apple (paid or gifted,
+  labelled, €5.3k – €21k); 2026-10: no paid or linked brand, but "not labelled" (the disclosure check sees signals Gemini does not count as paid).
+  MKBHD 2022-01: six affiliate partners (Peak Design, Apple, Canon, Trove, Opal, Google).
+- **Two rule flaws, found by this test and fixed before the numbers above:** (1) an earlier version gave Benefit **51 "possible fit" on MKBHD** –
+  a backpack and a wallet counted as "related field" (fashion ↔ beauty), and "no competitors" scored 100 although the channel never shows
+  beauty. Now related fields are narrow (audio ↔ tech ↔ gaming, beauty ↔ health …), "room next to competitors" is left out when the field is
+  absent, and the total is multiplied by 0.5 + 0.5 × category match. (2) In the beauty PR haul Gemini left **all ten categories empty**, so
+  the beauty channel looked like "other" and Benefit got 94 only because everything was "other". Now an empty category is filled from another
+  analysis of the same brand (Benefit → Beauty from a what's-in-my-bag example) and "other" never counts as a field; 8 of 10 brands stay
+  unknown, which the product-field bars show openly ("other 80 %"). With only one brand (Sascha Huber: Prozis) there is no score at all.
+- **Brand field look-up** (`GET /api/brandcat`): Sonos → audio (3 placements), Apple → tech (6), Logitech → tech (1), Benefit → beauty (2);
+  Prozis and Anker unknown (no category in our data) → the card shows a field picker. The Open Food Facts brand list was tried as a
+  fallback and dropped: it also lists cosmetics brands (Nivea, 322 products), so it cannot say "food".
+- **Audience part:** "no data" in every run – no comments were cached for these videos, and the channel view on purpose never fetches them.
+- **UI (browser pane + Chrome headless, muted, no video on the page):** desktop 1280 px and phone 375 px; confirm card with "80 Gemini
+  requests left", checkboxes lock at 3, "Analyse 3 videos" – **not clicked**. PDF: 3 A4 pages; the phone layout first leaked into the print
+  (A4 is narrower than 760 px) – fixed with print rules.
+- **Not tested:** the Data API path (`channels.list` + `playlistItems.list` + `videos.list`, 3 units) – written, but no key locally; online
+  the Worker has `YOUTUBE_API_KEY`, so this is the path the live site will use. New analyses from the channel view use the same
+  `analyzeOne` as the agent (test G) and were not run. Whether YouTube shows the channel page to the online Worker without a bot check is
+  unknown (it does not for the watch page, test Q) – that is why the Data API comes first.
 
 ## K – Audience comments per product (24 Nov, 0 Gemini requests, `tests/test_k_kommentare.mjs`)
 Lean version of PLAN_DEZEMBER D: no Workers AI, only rules (`public/js/shared/comments.js`, used by `POST /api/comments`).

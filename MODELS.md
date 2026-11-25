@@ -103,6 +103,21 @@ counts if its name equals or starts with the query ("Benefit" → "Benefit Cosme
 `startsWith`, not `contains`, so "Apple" never matches "Pineapple". Analyses where Gemini found no such brand are listed as "without <brand>" and
 left out of every total.
 
+## Channel fit – rules, not a model (25 Nov, `channel.js`, `public/js/shared/fit.js`)
+The channel view (`POST /api/channel`, `#/channel/@handle`) uses **no new model**: the channel and its uploads come from YouTube (Data API, or
+the channel page + RSS feed), the brands from the Gemini analyses we already have, the reactions from comments the Audience tab cached.
+Two rule sets decide the rest:
+1. **Product field** – Gemini's free-text category ("Consumer Electronics", "Headphones", "Beauty & Personal Care") → one of 13 fields by a
+   keyword list; a generic category gives way to a more specific product name ("Consumer Electronics" + "Ace headphones" → audio). Empty
+   categories are filled from another analysis of the same brand; what stays unknown is shown as "other" and never counts.
+2. **Fit score** – category match 40 %, room next to competitors 20 %, labels its ads 25 %, audience reaction 15 %; parts without data
+   are left out; total × (0.5 + 0.5 × category match). Exact rules in README 2g and in the (i) of each part.
+
+**Why not an embedding or a language model?** A brand manager has to defend the score; each part here is a count from the report above it.
+A text-embedding similarity between "Sonos" and the channel's brands (MobileCLIP's text encoder would be at hand, but is 127 MB – see
+Verify on screen) would give one opaque number and would rate a brand it has never seen by its name alone. Test E2 shows where the rules
+are weak – thin data (1–2 analysed videos per channel), empty Gemini categories – and the app states both instead of hiding them.
+
 ## Audience comments – rules, not a model (24 Nov, `public/js/shared/comments.js`)
 The five reactions (purchase intent, question, praise, criticism, ad suspicion) are recognised by fixed English and German phrases, and a comment is linked to a product by the brand name or a distinctive word of the product name (product-type words such as "backpack" excluded – they come from the 93 types of Verify on screen). No language model on purpose: the categories are about wording that repeats ("link?", "where to buy"), every decision can be shown and checked by hand, and 100 comments per video cost nothing. Workers AI (free) was planned for the comments the rules cannot sort; it was left out in this lean version because the measured weak spots (irony, requests without a question mark) would need a model *and* a new hand check. Accuracy: EVALUATION.md test K.
 

@@ -38,6 +38,8 @@
   //   TEACH_MIN_CONF     default 0.7 (cloud model's confidence needed)
   // Brand agent (agent.js, POST /api/agent):
   //   DAILY_AGENT_SEARCHES  default 10 new YouTube searches per visitor and day (cached searches are free)
+  // Channel fit (channel.js, POST /api/channel):
+  //   DAILY_CHANNELS        default 20 new channel look-ups per visitor and day (3 Data API units each; cached 6 h, then free)
   //   DAILY_SEARCHES        default 60 searches for all visitors together (= 6,000 of the 10,000 free Data API units)
   "keep_vars": true
   // Secrets (set in the Cloudflare dashboard, never in this file):

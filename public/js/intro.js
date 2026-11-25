@@ -1,6 +1,6 @@
 /**
- * intro.js — short introduction on the very first visit (5 steps): what PlacementRadar is, how it was built
- * (three engines), why it matters, what it brings, where to start.
+ * intro.js — short introduction on the very first visit (5 steps): what PlacementRadar is (four tools), how it was
+ * built (three engines), why it matters, what it brings, where to start (one card per tool).
  *
  * Written for a visitor who did not see the presentation (e.g. the professor opening the link later).
  * Skippable; "Don't show again" is stored in localStorage (guarded: storage may be blocked). It can be opened
@@ -20,9 +20,11 @@ const STEPS = [
   {
     eyebrow: "Welcome",
     title: "Every brand in a video.",
-    text: `<p>PlacementRadar watches a YouTube video and finds every brand in it – in the picture, in speech and in on-screen text.
-      It shows exactly when each product appears, what that exposure is worth and whether it is labelled as advertising.
-      A live scanner does the same for products you hold up to your camera.</p>`,
+    text: `<p>Every brand in picture, speech and on-screen text – when it appears, what it is worth, whether it is labelled. Four tools:</p>
+      <span class="intro-tools"><span class="ie"><span class="ic" style="background:#0a84ff">${icon("play")}</span><span><b>YouTube video</b> – every brand in one video.</span></span>
+      <span class="ie"><span class="ic" style="background:#30d158">${icon("camera")}</span><span><b>Live camera</b> – a product named on your device.</span></span>
+      <span class="ie"><span class="ic" style="background:#5e5ce6">${icon("radar")}</span><span><b>Brand search</b> – a brand in, its videos and one report out.</span></span>
+      <span class="ie"><span class="ic" style="background:#ff9f0a">${icon("chat")}</span><span><b>Channel fit</b> – does a creator suit your brand?</span></span></span>`,
     art: () => `<div class="ia-player"><div class="ia-scene"><span class="ia-head"></span><span class="ia-body"></span><span class="ia-prod"></span></div>
       <div class="tbox ia-box" style="--c:#0a84ff"><span class="tb-label"><i></i><b>Bose QuietComfort Ultra</b><em>logo</em></span></div>
       <div class="ia-tl"><i style="left:6%;width:30%;background:#0a84ff"></i><i style="left:44%;width:12%;background:#ff9f0a"></i><i style="left:62%;width:26%;background:#30d158"></i><b></b></div></div>`,
@@ -50,7 +52,7 @@ const STEPS = [
   {
     eyebrow: "What it brings",
     title: "Answers in minutes instead of hours of watching.",
-    text: `<span class="ie"><span class="ic" style="background:#ff9f0a">${icon("value")}</span><span><b>Brand managers</b> find creators who already use their product, see the media value and send a ready brand report (PDF) and pitch mail.</span></span>
+    text: `      <span class="ie"><span class="ic" style="background:#ff9f0a">${icon("value")}</span><span><b>Brand managers</b> search their brand across YouTube, check whether a creator's channel fits before they pay, and send a ready report (PDF).</span></span>
       <span class="ie"><span class="ic" style="background:#ff375f">${icon("shield")}</span><span><b>Creators and agencies</b> check before publishing whether the ad label is clear enough.</span></span>
       <span class="ie"><span class="ic" style="background:#64d2ff">${icon("eye")}</span><span><b>Viewers and watchdogs</b> get a quick screening of hidden advertising. All estimates, not legal advice – and free: results are cached, the camera runs on your device.</span></span>`,
     art: () => `<div class="ia-report"><div class="ia-doc">${icon("doc")}<span></span><span></span><span class="s"></span></div><div class="ia-doc b">${icon("shield")}<span></span><span class="s"></span></div><div class="ia-doc c">${icon("heart")}<span></span><span></span></div></div>`,
@@ -59,9 +61,10 @@ const STEPS = [
     eyebrow: "Where to start",
     title: "Try it.",
     text: `<span class="intro-go">
-        <button class="go-card" data-go="example"><span class="ic" style="background:#0a84ff">${icon("play")}</span><b>Open an example</b><small>analysed already, opens instantly</small></button>
-        <button class="go-card" data-go="link"><span class="ic" style="background:#5e5ce6">${icon("link")}</span><b>Paste a YouTube link</b><small>Gemini needs 2–5 minutes</small></button>
-        <button class="go-card" data-go="live"><span class="ic" style="background:#30d158">${icon("camera")}</span><b>Live scanner</b><small>hold up a product or a barcode</small></button>
+        <button class="go-card" data-go="example"><span class="ic" style="background:#0a84ff">${icon("play")}</span><b>Open an example video</b><small>analysed already, opens instantly</small></button>
+        <button class="go-card" data-go="live"><span class="ic" style="background:#30d158">${icon("camera")}</span><b>Live camera</b><small>hold up a product or a barcode</small></button>
+        <button class="go-card" data-go="brand"><span class="ic" style="background:#5e5ce6">${icon("radar")}</span><b>Brand search</b><small>type a brand, e.g. Sonos</small></button>
+        <button class="go-card" data-go="channel"><span class="ic" style="background:#ff9f0a">${icon("chat")}</span><b>Channel fit</b><small>try @iKnowReview with Sonos</small></button>
       </span>
       <span class="small muted intro-tip">Tip: under every video, <b>Show tracking</b> draws boxes and names over the products. This introduction is always available behind the round i button in the top right.</span>`,
     art: () => `<div class="ia-radar"><span></span><span></span><span></span><i></i><div class="ia-logo">${LOGO.replace(/id="lg"/, 'id="lg-in"').replace("url(#lg)", "url(#lg-in)")}</div></div>`,
@@ -106,9 +109,10 @@ export function showIntro() {
   const start = async (where) => {
     close();
     if (where === "live") { location.hash = "#/live"; return; }
-    if (where === "link") {
+    if (where === "channel") { location.hash = "#/channel/%40iKnowReview?brand=Sonos"; return; } // a channel with analysed videos
+    if (where === "brand") { // start page, "Brand search" tool selected, cursor in its field
       if (location.hash.replace(/^#\/?/, "")) location.hash = "#/";
-      setTimeout(() => document.querySelector("#url")?.focus(), 120); return;
+      setTimeout(() => document.querySelector('.mode-pick [data-mode="brand"]')?.click(), 150); return;
     }
     try { const list = await (await fetch("data/index.json")).json(); if (list[0]) location.hash = `#/v/${list[0].id}/overview`; } catch { location.hash = "#/"; }
   };

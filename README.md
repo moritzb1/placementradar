@@ -17,9 +17,11 @@ Final project for *MMI5190E – The New Frontiers of AI: From Perception to Agen
 
 ## 0. PlacementRadar in 3 minutes
 
-**1 · Start.** Paste any public YouTube link (up to 20 min) or open one of the analysed examples. Nothing is downloaded – Gemini watches the video straight from YouTube. On the first visit a five-step introduction explains what the app does, the three engines, why it matters and where to start (skippable, "Don't show again" is remembered, reopen it from the About sheet).
+**1 · Start – four tools.** The switcher on the start page offers four tools of equal rank, each with its own field and three steps: **YouTube video** (paste any public link up to 20 min, or open an analysed example – nothing is downloaded, Gemini watches the video straight from YouTube), **Live camera**, **Brand search** (the brand agent, 2e: brand in, videos out) and **Channel fit** (2g: a creator in, recurring brands and a fit score out). On a phone the four entries become an iOS-style segmented control (icon above a short label). Below the examples, four tiles say which question each tool answers; a click switches the tool above (no second entry point). On the first visit a five-step introduction explains the four tools, the three engines, why it matters and where to start (skippable, "Don't show again" is remembered, reopen it from the About sheet).
 
-![Start screen](docs/screenshots/01_start.png)
+![Start screen with the four tools](docs/screenshots/22_start_four_tools.jpg)
+
+<img src="docs/screenshots/23_mobile_four_tools.jpg" alt="Start screen on a phone: four tools as a segmented control" width="300">
 
 **2 · Products.** The original YouTube player with the **Right now** panel beside it: while the video plays (or after a pause or jump) it lists the products in the picture, the brands mentioned or written at that second, and unidentified products. Below: five key figures (products, brand on screen, disclosure, authenticity, media value as a range), the brand timeline and one card per product – logo (Wikidata), exact model, seconds on screen, mentions, equivalent ad cost and the **link from the video description** (affiliate links marked). Clicking a card jumps to the moment in the video.
 
@@ -87,6 +89,21 @@ The app is responsive (phone screenshots: `docs/screenshots/10_mobile_*.png`) an
 
 ![Audience: top comments of an espresso video per product – reactions and excerpts](docs/screenshots/19_audience.jpg)
 
+**2g · Channel fit.** The view from the creator's side (`#/channel/@handle`, also a channel link, channel id or the link of one of its videos): the channel and its latest 25 uploads (YouTube Data API with 3 quota units, or without a key the channel page + RSS feed; cached 6 h), every analysis we already have of that channel (also older videos), comments already cached by the Audience tab – and, as with the agent, up to 3 new analyses of the latest uploads only after an OK, ranked by ad hints in their descriptions ("49 % off at …", "use code", "Werbung", shop links). The report shows **recurring brands**, **product fields** (Gemini's free-text categories mapped to 13 fields by a keyword list), **over time** per month: media value range, commercial partners (paid or gifted per Gemini / shop or affiliate link) and the disclosure verdicts; the analysed videos and the latest uploads (analysed ones highlighted). Type your own brand and the **fit card** rates it from 0 to 100 – rule-based (`shared/fit.js`), every part with its own calculation behind an (i):
+
+| Part | Weight | Rule |
+|---|---|---|
+| Category match | 40 % | share of the channel's brand placements in the brand's field (related fields such as audio ↔ tech count half); 25 % or more = 100 |
+| Room next to competitors | 20 % | other brands of the same field: in 0 videos → 100, 1 → 75, 2–3 → 50, more → 25; left out if the channel never shows the field |
+| Labels its ads | 25 % | videos with ad signals: labelled = 1, weak label = ½, none = 0 – a paying brand shares the risk (§ 5a (4) UWG) |
+| Audience reaction | 15 % | only comments already cached: (praise + purchase intent + 1) ÷ (… + criticism + ad suspicion + 2) |
+
+Parts without data are left out, and the total is multiplied by 0.5 + 0.5 × category match, so a channel that never shows the brand's field reaches at most 50 however well it labels. The brand's field comes from the channel itself, else from our other analyses (`GET /api/brandcat`), else the visitor picks it. Honesty: under 3 analysed videos the card says "confidence low" and the report opens with "Only 2 analysed videos – this describes these videos, not the channel"; with no other brand to compare there is no score at all. Test E2 in EVALUATION.md (5 channels, 7 brands, 0 Gemini requests). "Save as PDF" like the other reports.
+
+![Channel fit for Sonos on iKnowReview: fit card, key figures, product fields, over time](docs/screenshots/20_channel_fit.jpg)
+
+![Channel fit: live steps and the confirm card for new analyses with today's quota](docs/screenshots/21_channel_steps.jpg)
+
 ## 1. Why this project
 
 Influencer marketing is a multi-billion market, but two questions are hard to answer at scale:
@@ -106,7 +123,7 @@ PlacementRadar answers both from a single YouTube link and adds a third, newer q
 | **Show tracking** | labelled boxes over the YouTube player (brand + model + recognition basis) that follow each product; Gemini keyframes every ~2–4 s; solid / dashed "approx. position" / dot depending on how close a reported position is; same look as the live scanner's boxes | done (21 Nov) |
 | **Verify on screen** | button under the player: the user shares this tab (Chrome: only the player, via Element Capture), and the models on the device look at the **real video frames** – text recognition, own brand model, two object finders (YOLOE + YOLO26) and a product-type check (MobileCLIP). Every Gemini appearance gets *confirmed* / *not seen* / *not checkable* in Right now and on the product cards; **measured boxes** (MEASURED) follow the product, Gemini's own box turns into a dashed "Gemini estimate"; products the device sees where Gemini lists nothing appear as "on screen only". Nothing is uploaded (test V) | done (23 Nov) |
 | **Look closer / Unidentified products** | button under the player: inventory of the current ~20 s at 2 frames/s (`POST /api/closer`, 1 request, cached per clip, 8 per visitor and day); products without an identifiable brand are listed separately, never guessed, not counted in value or disclosure | done (21 Nov) |
-| **Introduction** | five steps on the first visit: what, how (three engines), why, what it brings, where to start; reopen via About | done (21 Nov) |
+| **Introduction** | five steps on the first visit: the four tools, how (three engines), why, what it brings, where to start (one card per tool); reopen via About | done (four tools 25 Nov) |
 | **Media value** | equivalent ad cost (earned media value) per brand as a low – high range, with audience drop-off over the video and an attention factor; visibility score 0–100; transparent formula, adjustable CPM and attention | done (range since 21 Nov) |
 | **Settings + AI usage** | light/dark/auto, usage meter (`/api/usage`: requests and tokens per model and day, cost of each analysis), technical details, invite code | done |
 | **Ad disclosure check** | traffic light: *Disclosure found / Check disclosure / No disclosure found / No advertising detected*, with every place that was checked | done |
@@ -116,6 +133,8 @@ PlacementRadar answers both from a single YouTube link and adds a third, newer q
 | **Brand report** | one A4 page per brand (value, exposure strip, key moments with YouTube links, disclosure, authenticity, method) – "Save as PDF" via the print dialog – plus a pitch mail to the creator filled with the measured numbers (no extra API call) | done |
 | **Audience (comments)** | top ~100 comments per video, rule-based (`shared/comments.js`, `POST /api/comments`): comments per product, purchase intent / question / praise / criticism / ad suspicion, excerpts ≤ 100 characters, no names; count on the product cards | done (24 Nov, test K) |
 | **Brand agent** | brand name → live steps (cache, YouTube search, filter, ranking) → up to 3 new analyses only after an OK with the quota shown → one combined report (ranges, disclosure, creators, findings) as PDF; `POST /api/agent` (SSE), `#/agent`; the roll-up (`shared/aggregate.js`) is built for the comment and channel views to reuse | done (24 Nov, test G) |
+| **Channel fit** | channel (@handle, link, id or a video link) → latest 25 uploads, analysed videos of the channel, cached comments → recurring brands, product fields, sponsors and value range per month, labelled / not labelled → fit score 0–100 for a typed brand (four rule-based parts with (i), confidence by number of analysed videos); up to 3 new analyses only after an OK; PDF; `POST /api/channel` (SSE), `GET /api/brandcat`, `#/channel/…` | done (25 Nov, test E2) |
+| **Start page: four tools** | switcher YouTube video · Live camera · Brand search · Channel fit, each with its own field and three steps; segmented control on phones; four explaining tiles | done (25 Nov) |
 | **Waiting screen** | while Gemini watches (2–5 min): video details, a text-only disclosure check of title and description, which model is working and when Google is busy; the page may be closed – the result is stored and loads instantly later | done |
 
 ## 3. Architecture – three engines that work together
@@ -262,12 +281,14 @@ npx wrangler dev
 ## 8. Repository
 
 ```
-worker.js                  Cloudflare Worker: API (config, meta, recent, analyze, identify, closer, agent), key modes, limits,
+worker.js                  Cloudflare Worker: API (config, meta, recent, analyze, identify, closer, agent, channel), key modes, limits,
                            KV cache, quota tracking, Gemini model chain, single-frame provider router
 public/js/shared/comments.js  top comments of a video (Data API or YouTube's comment endpoint) and the rules that link them to
                            products and sort them into five reactions – used by POST /api/comments and test K
 agent.js                   brand agent (POST /api/agent): plan, cache, YouTube search (Data API or search page), filter, rank,
                            confirm, analyse, aggregate – streamed as SSE steps
+channel.js                 channel view (POST /api/channel): resolve the channel, latest uploads (Data API or channel page + RSS),
+                           analyses + cached comments of the channel, confirm, analyse, roll-up; GET /api/brandcat
 wrangler.jsonc             Worker configuration (no secrets)
 public/index.html          app shell
 public/css/app.css         design system (light/dark, Apple-like)
@@ -280,7 +301,7 @@ public/js/verify.js        "Verify on screen": tab capture of the player, on-dev
                            appearance (confirmed / not seen / not checkable), measured boxes, deviation from Gemini
 public/js/detector.js      YOLOE packaging finder + YOLO26n (COCO) in the browser, shared by live scanner and Verify on screen
 public/js/logos.js         brand logos from Wikidata (P154), cached in the browser
-public/js/intro.js         five-step introduction on the first visit (reopen via About)
+public/js/intro.js         five-step introduction on the first visit: the four tools (reopen via About)
 public/js/value.js         equivalent ad cost (earned media value) as a low / mid / high range
 public/js/disclosure.js    ad label check
 public/js/live.js          live scanner: detector, 5-stage cascade, drawing, side panel
@@ -290,7 +311,9 @@ public/js/brandmodel.js    own brand model in the browser (MobileCLIP-S1 encoder
 public/js/wasmqueue.js     one ONNX WASM model at a time (shared queue)
 public/js/icons.js         own SVG icons (no emoji)
 public/js/agentview.js     brand agent view (#/agent): live steps, confirm card with quota, combined report + PDF
-public/js/shared/          prompts + data normalisation + roll-up over many videos (aggregate.js), used by Worker AND browser
+public/js/channelview.js   channel fit view (#/channel/…): live steps, confirm card, channel report, fit card + PDF
+public/js/shared/          prompts + data normalisation + roll-up over many videos (aggregate.js) + channel fit rules (fit.js),
+                           used by Worker AND browser
 public/data/               ten pre-analysed example videos (+ index.json)
 public/models/             ONNX models, brand list, trained brand head (each file < 25 MiB, Cloudflare limit)
 public/vendor/             ONNX Runtime Web

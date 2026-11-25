@@ -12,6 +12,9 @@
  *   POST /api/closer {v,start,end} → "Look closer": inventory of a ≤ 20 s clip at 2 frames/s (SSE, cached per clip)
  *   POST /api/agent {brand, lang?, period?, approve?} → brand agent: search, cached analyses first, up to 3 new ones
  *                                 after the visitor's OK, one combined brand report (SSE; agent.js)
+ *   POST /api/channel {c, approve?} → channel view: latest uploads of a creator, cached analyses first, up to 3 new ones
+ *                                 after the visitor's OK, recurring brands / sponsors / value per month (SSE; channel.js)
+ *   GET  /api/brandcat?b=<brand> → the product field of a brand, from our own analyses (channel fit; channel.js)
  *   POST /api/comments {v, brands} → audience reactions per product from the top ~100 YouTube comments, rule-based
  *                                 (public/js/shared/comments.js); only counts and ≤ 100-character excerpts are kept, 24 h KV cache
  *   GET  /api/teach[?cursor=]   → training examples kept from /api/identify ("Gemini teaches the on-device model"),
@@ -44,6 +47,7 @@ import { VIDEO_MODELS, FRAME_MODELS, TIMELINE_SCHEMA, AUTHENTICITY_SCHEMA, FRAME
   geminiBody } from "./public/js/shared/prompts.js";
 import { normalizeAnalysis, normalizeCloser, promotedCandidates, recheckItems, mergeRecheck, screenTime } from "./public/js/shared/normalize.js";
 import { agent, AGENT_MESSAGES } from "./agent.js";
+import { channel, brandCategory, CHANNEL_MESSAGES } from "./channel.js";
 import { fetchTopComments, classifyComments, RULES_VERSION } from "./public/js/shared/comments.js";
 
 const API = "https://generativelanguage.googleapis.com/v1beta";
@@ -67,6 +71,7 @@ const MESSAGES = {
   invalid_brand: "Please enter a brand name (at least 2 letters).",
   too_many: "At most 3 new analyses per agent run.",
   ...AGENT_MESSAGES,
+  ...CHANNEL_MESSAGES,
 };
 
 class ApiError extends Error {
@@ -86,6 +91,8 @@ export default {
       if (url.pathname === "/api/closer" && request.method === "POST") return await closer(request, env, ctx);
       if (url.pathname === "/api/comments" && request.method === "POST") return json(await comments(request, env));
       if (url.pathname === "/api/agent" && request.method === "POST") return await agent(request, env, ctx, KIT);
+      if (url.pathname === "/api/channel" && request.method === "POST") return await channel(request, env, ctx, KIT);
+      if (url.pathname === "/api/brandcat") return json(await brandCategory(request, env, KIT));
       if (url.pathname === "/api/teach" || url.pathname === "/api/teach/item") return await teachExport(request, env, url);
       if (url.pathname.startsWith("/api/")) return json({ error: "not_found" }, 404);
     } catch (e) {

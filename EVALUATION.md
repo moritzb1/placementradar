@@ -17,6 +17,7 @@ Scripts and raw results: `../tests/` (`test_*.py`, `test_*.js`, `ergebnisse/`). 
 | Does our own trained model add anything? | OCR + own model 41/49 (84 %), 0 wrong labels from the model; 96 % of its answers right on 741 held-back products | S2b |
 | Can it know many more brands? | v2: 1,020 brands (food, cosmetics, household) from the open dumps – 2,338 of 5,189 held-back products named at 96.8 % precision (v1: 399 at 68 %); 3.4 % false alarms on foreign brands (v1 2.6 %) | S4 |
 | Does webcam-like training help? | +37 % right answers on webcam views (767 vs 558), −7 % on clean photos | S4 |
+| Does it also know tech, fashion, sport, home and car brands? | v3 (S5): +117 brands from 20,549 freely licensed Commons photos (1,137 in all). New stage 93.9 % right on held-back photos (webcam 88.8 %); old brands and the 49 photos unchanged; but false alarms on unknown non-packaging brands and generic photos rose from 2.1 → 4.7 % and 3.3 → 4.9 %, and v2 still misfires on such photos → the 95 % target is missed | S5 |
 | Whole chain on the 49 photos now? | 42/49 original and 42/49 webcam quality (before 41 and 39), still 0 wrong labels from the model | S4 |
 | Can Gemini's answers train the device model? | yes: confident crops kept (with note + opt-out), checked and retrained by `tools/teach_pull.py` – tested locally | S4 |
 | Do the scanner boxes stay calm and keep their name? | simulated webcam: error 23 → 11 px, name after a hand in front 0 % → 100 %, one identity instead of 2.1 | S4 |
@@ -306,6 +307,14 @@ Ablations (a brand removed from a stored analysis = a brand Gemini missed):
 
 → **0 wrong "found on screen" in 241 checked frames**, 1 of 1 findable missing brand added. Small sample; captions and the YouTube pause overlay (title, "Weitere Videos") are in the frames and were not read as brands.
 
+**Re-run with brand model v3 (25 Nov, `tests/ergebnisse/v3_verify/`, `v3_verify_c3/`).**
+- JB desk tour: 16 frame × product cells right, 0 wrong (16/58, as in the first V2 run).
+- MKBHD 6:10: the camera is now also *recognised by its look* as Canon in 19 frames. Gemini lists Canon only at other
+  moments, so these frames become "found on screen" next to the listed brand, and nothing is counted twice.
+- Headphones video without Sonos: Sonos is found on 4 frames (text 3, look 1; with v2: 2–3, text only), counted in
+  media value as €28 – €101.
+- No page errors.
+
 ## G – Brand agent: from a brand name to one report (23–24 Nov, local Worker `tests/wrangler.s1-lokal.jsonc`, 0 successful Gemini requests – about 6 attempts failed)
 *(The older SSE heartbeat check is listed under "F/G – Hosting".)* Script `../tests/test_g_agent.mjs`, raw events `../tests/ergebnisse/g_agent/`.
 Setup: local KV holds two analyses saved earlier by the app (JB desk tour `eLAVGYQCkQI`, Side of Tech desk setup `6DMUMgQyVtc`) next to the ten
@@ -558,6 +567,104 @@ Gains chosen with the simulation (`GAIN`, `JITTER` in `tracker.js`).
 
 **A – real photos (prepared, not yet measured):** `../tests/echt/LIESMICH.md` + `../tests/test_echt.py` measure OCR, own model
 and cascade before/after on Moritz' own phone photos (foto + webcam version, "unbekannt" = false-alarm test).
+
+## S5 – Brand model v3: brands that are not packaging (24–25 Nov, 0 Gemini requests)
+
+**Goal.** v2 only knows brands from the open product dumps (food, cosmetics, household). YouTube videos are full of other
+brands: tech, clothing and shoes, sport, home and kitchen, cars. Targets were: ≥ 95 % precision on held-back images,
+false alarms on foreign brands no worse than v2, old brands no worse than v2, and the head file ≤ 25 MiB.
+
+**Brand list** (`tools/brands_v3.py`, 724 candidates). It comes from the brands in our stored analyses plus well-known
+rankings (Interbrand / Kantar BrandZ top brands, the largest makers in each category, German brands). Store chains and
+banks are left out. Names that are also ordinary words or people get a helper query or are dropped (Puma → "shoe OR
+sneaker …", Nike → without the goddess; Jordan, Off-White, Carrera … dropped).
+
+**Images – only freely licensed.** All images are Wikimedia Commons photos
+(`tools/build_brand_data_v3.py`, the brand in the file title, thumbnails 330 px). There are no YouTube frames, no shop
+images and no research-only datasets. Licence, author and file page are stored for each of the 20,549 images in
+`data/brand_v3_sources.csv`; the images themselves are not in the repo. The licences are CC BY-SA 4.0 (8,552),
+CC BY-SA 3.0, CC BY 2.0, public domain, CC0 and others, from 7,155 authors.
+
+Selection rules:
+- at most 12 photos per author and 50 per brand;
+- a photo found for two brands is dropped;
+- the test split takes whole authors (about 20 %), so held-back photos are from other photographers;
+- a brand needs ≥ 20 photos, otherwise it is not a class.
+
+Result: **375 brands** became classes. 83 brands with 8–19 photos became a false-alarm test ("foreign brands", 1,119
+photos), and 235 brands were dropped. 2,510 generic photos (keyboard, sneaker, car … without a brand query) became
+"(other)" and a second false-alarm test.
+
+Downloading was slow: Commons answered HTTP 429 at first, so the download ran at 1 request per 2 s with Retry-After
+plus backoff and took 8 h. Open Products Facts was **not** used again (v2 already contains it).
+
+**Attempt 1 – one head for all 1,370 brands: failed.** This used v2's recipe (frozen MobileCLIP-S1, linear head, webcam
+views, "(other)", calibration on validation). No threshold met the goals. The best setting by the rule reached only
+48 % precision on held-back Commons photos, and old brands dropped from 96.8 % to 84 % precision. Commons photos are
+far more varied than packshots, and the softmax over 1,370 classes became unsure everywhere.
+
+**Attempt 2 – two stages (shipped as v3).**
+- *Stage 1* is v2's head, unchanged.
+- *Stage 2* is a separate head for the 375 Commons brands plus "(other)". Its "(other)" was trained on generic photos,
+  foreign packs and v2 packs. It is asked only when stage 1 is not sure.
+
+A 3-fold cross-validation **on the training photos only** showed that many brands cannot be told apart by look
+without a readable logo (monitors BenQ/ViewSonic/AOC, bike parts Shimano/SRAM/Campagnolo, cars of one segment). Only
+the **120 brands** that were ≥ 90 % right in the cross-validation may answer. The other 255 stay silent: they help the
+head, but never produce a name. The threshold (0.95) was chosen on the validation split.
+
+Of the 120, 117 brands are new (Canon, Nikon, GoPro, Garmin, JBL, Sonos, Marshall, Fender, Lenovo, Dell, Razer,
+Converse, Vans, New Balance, Ray-Ban, Rimowa, Victorinox, Zwilling, WMF, Makita, Stihl, Kia, Mazda, Jeep, Land Rover,
+McLaren, Polestar …). In total the model now answers for **1,137 brands**. The head file is 2.8 MB (limit 25 MiB).
+
+| Same fingerprints (`tests/ergebnisse/s5_marken_v3/S5_markenmodell_v3.json`) | v2 | v3 |
+|---|---|---|
+| v2 held-back products, original: right · wrong · precision | 2,338 · 78 · 96.8 % | 2,338 · 81 · 96.7 % |
+| … webcam view | 769 · 31 · 96.1 % | 770 · 35 · 95.7 % |
+| v2 packshots | 2,547 · 96 · 96.4 % | 2,547 · 98 · 96.3 % |
+| 49 phone photos (own model alone), original · webcam | 26/1 · 23/1 | 26/1 · 23/1 (unchanged) |
+| **held-back Commons photos (3,463, other authors)**: right · wrong | 21 · 76 (21.6 %) | **362 · 98 (78.7 %)** |
+| … of these, stage 2 alone | – | **341 · 22 (93.9 %)**, webcam view 111 · 14 (88.8 %) |
+| … of these, stage 1 (v2) on Commons photos | 21 · 76 | 21 · 76 (same misfires as v2) |
+| Commons photos, webcam view: right · wrong | 12 · 38 | 123 · 52 (70.3 %) |
+| false alarms: foreign packs (v2 test) · webcam | 3.4 % · 1.1 % | 3.4 % · 1.1 % |
+| packs that look like a known brand | 7.3 % | 7.3 % |
+| foreign Commons brands (83 brands, never a class) · webcam | 2.1 % · 0.5 % | **4.7 % · 1.3 %** |
+| generic photos (no brand) · webcam | 3.3 % · 0.6 % | **4.9 % · 1.1 %** |
+
+Commons test by category (v3, right · wrong):
+
+| Category | Right · wrong |
+|---|---|
+| tech | 110 · 35 |
+| fashion | 79 · 12 |
+| cars | 89 · 11 |
+| home | 54 · 16 |
+| sport | 10 · 14 |
+| German brands | 20 · 10 |
+
+Many of the wrong answers come from stage 1, i.e. v2 on photos that are not packs. For example, v2 calls a Porsche
+photo a food brand.
+
+**Honest verdict against the targets.**
+- **Old brands no worse: met.** The 49 photos give the same result in the browser: cascade 42/49 original and 42/49
+  webcam, 27 · 0 and 25 · 0 model answers, identical to S4 (`tests/ergebnisse/s5_marken_v3/S5_49fotos_browser.json`).
+- **Precision ≥ 95 % on held-back images: not met.**
+  - The new stage alone reaches 93.9 %, or 88.8 % in the webcam view.
+  - Counting the v2 misfires on these photos, it is 78.7 %.
+  - A "veto" (stage 2 says "not a pack" → stage 1 must not answer) lifted Commons precision on validation to 100 %, but
+    it halved old-brand answers in the webcam view, so it was not shipped.
+- **False alarms no worse than v2: not met.** On foreign packs nothing changed, but on photos of unknown non-packaging
+  brands and on generic photos v3 raises 1.4–2.6 points (from 2.1 % to 4.7 % and from 3.3 % to 4.9 %).
+- **Head ≤ 25 MiB: met.**
+
+In the app a brand-by-look answer is never counted on its own:
+- Verify only confirms a brand Gemini listed;
+- "Found on screen" needs two frames;
+- media value needs a confirmation (V2).
+
+Reproduce: `daten_s3/py tools/build_brand_data_v3.py daten_s3` (8 h, resumable), then
+`daten_s3/py tools/train_brand_model_v3.py daten_s3 --export` (25 s with cached fingerprints, 20 min without).
 
 ## S3 – New example videos, waiting screen, brand report (20 Nov, online Worker)
 | Video | Result | Models | Kept as example? |

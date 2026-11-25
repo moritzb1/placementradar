@@ -155,55 +155,115 @@ def main():
     print(f"fingerprints ready ({time.time() - t0:.0f}s): Commons fit {len(E['fit3'])} views of {len(fit3)} photos, "
           f"val {len(val3)}, test {len(te3)}, foreign brands {len(s3['unknown_c'])}, generic test {len(s3['generic_test'])}")
 
-    # ---- heads
-    T, ls = text_fp(names)
-    X_fit, y_fit = torch.cat([E["fit2"], E["fit3"]]), torch.cat([y_fit2, y_fit3])
-    X_val, y_val = torch.cat([E["val2"], E["val3"]]), torch.cat([y_val2, y_val3])
-    print("training head A (brands only) …", flush=True)
-    Wa, ba = train_head(X_fit, y_fit, C)
+    # ---- heads. Attempt 1 (one head for all 1,370 brands, see EVALUATION S5) lost too much: Commons photos are far more
+    # varied than packshots, the softmax over 1,370 classes got unsure everywhere → old brands worse, Commons precision < 50 %.
+    # So v3 = TWO STAGES: (1) v2's head exactly as shipped; (2) only if (1) is not sure: a separate Commons head
+    # (non-packaging brands + "(other)"), calibrated so that it adds as few false alarms as possible.
+    v2rule, v2names = load_v2_head()
+    ckeys = sorted({d["key"] for d in cls3})
+    cnames = [names[cid[k]] for k in ckeys]
+    ccid = {k: i for i, k in enumerate(ckeys)}
+    Cc = len(cnames)
+    to_c = lambda y: torch.tensor([ccid[key(names[i])] for i in y.tolist()])
+    T, ls = text_fp(cnames)
+    X_fit, y_fit = E["fit3"], to_c(y_fit3)
+    X_val, y_val = E["val3"], to_c(y_val3)
+    print(f"training Commons head A ({Cc} brands) …", flush=True)
+    Wa, ba = train_head(X_fit, y_fit, Cc)
     alpha = max((0.0, 0.25, 0.5, 1.0), key=lambda a: float((torch.softmax(X_val @ (Wa + a * ls * T).T + ba, -1).argmax(-1) == y_val).float().mean()))
     print(f"  alpha (text) = {alpha}")
-    other_pool = torch.cat([E["other2"], E["c_other"]])
-    Pa = torch.softmax(other_pool @ (Wa + alpha * ls * T).T + ba, -1).max(-1).values
-    hard = other_pool[Pa >= 0.5]
-    n_hard_c = int((Pa[len(E["other2"]):] >= 0.5).sum())
-    print(f"  hard negatives: {len(hard)} of {len(other_pool)} foreign views ({n_hard_c} of them generic Commons photos)")
-    # every generic Commons view joins "(other)" (not only the confusing ones): the scenes in a video are mostly NOT brands
-    neg = torch.cat([hard, E["c_other"][Pa[len(E["other2"]):] < 0.5]])
-    print("training head B (brands + '(other)') …", flush=True)
-    Wb, bb = train_head(torch.cat([X_fit, neg]), torch.cat([y_fit, torch.full((len(neg),), C)]), C + 1)
+    # "(other)" for the Commons head: generic Commons photos, foreign packs, and packs of v2 brands that are not Commons classes
+    # (stage 1 handles those; stage 2 must not claim them)
+    not_c = torch.tensor([key(names[i]) not in ccid for i in y_fit2.tolist()])
+    packs = E["fit2"][not_c][::4]
+    neg = torch.cat([E["c_other"], E["other2"], packs])
+    hard = neg
+    print(f"  '(other)': {len(E['c_other'])} generic views + {len(E['other2'])} foreign packs + {len(packs)} v2 packs", flush=True)
+    print("training Commons head B (brands + '(other)') …", flush=True)
+    Wb, bb = train_head(torch.cat([X_fit, neg]), torch.cat([y_fit, torch.full((len(neg),), Cc)]), Cc + 1)
     Zx = torch.cat([ls * T, torch.zeros(1, T.shape[1])])
-    W, b, oth = Wb + alpha * Zx, bb, C
+    W, b, oth = Wb + alpha * Zx, bb, Cc
 
-    # ---- calibration on validation only
+    # ---- which Commons brands can the head tell apart at all? 3-fold cross-validation on the TRAINING photos only
+    # (folds by photo, all 4 views of a photo in the same fold). Many brands look alike without a readable logo
+    # (monitors, bike parts, cars of one segment) → a brand answers only if it was ≥ 90 % right in cross-validation.
+    fold = torch.tensor([zlib.crc32(f.encode()) % 3 for d in fit3 for f in d["files"] for _ in clean_aug])
+    nfold = torch.arange(len(neg)) % 3
+    cv = torch.zeros(Cc, 2)  # [right, wrong] per predicted class
+    for k in range(3):
+        Wk, bk = train_head(torch.cat([X_fit[fold != k], neg[nfold != k]]),
+                            torch.cat([y_fit[fold != k], torch.full((int((nfold != k).sum()),), Cc)]), Cc + 1)
+        rk = Rule(Wk + alpha * Zx, bk, ls * T, Cc, 0.9, 100000)
+        for Xq, yq in ((X_fit[fold == k], y_fit[fold == k]), (neg[nfold == k], torch.full((int((nfold == k).sum()),), -1))):
+            o, pq, _ = rk(Xq)
+            for pp, yy in zip(pq[o].tolist(), yq[o].tolist()):
+                cv[pp, 0 if pp == yy else 1] += 1
+    cv_prec = cv[:, 0] / cv.sum(1).clamp(min=1)
+    keep = (cv_prec >= 0.9) & (cv[:, 0] >= 8)
+    print(f"  cross-validation: {int(keep.sum())} of {Cc} Commons brands ≥ 90 % right → they may answer", flush=True)
+
+    class KeepRule(Rule):
+        def __call__(self, X):
+            o, p, c = super().__call__(X)
+            return o & keep[p.clamp(max=Cc - 1)] & (p < Cc), p, c
+
+    class Combo:
+        """stage 1 = v2 head; stage 2 = Commons head, asked only when stage 1 is not sure. p indexes v2names + cnames + (other)"""
+        def __init__(self, r2, rc, override=False, veto=None):
+            self.r2, self.rc, self.override, self.veto = r2, rc, override, veto
+        def __call__(self, X):
+            o2, p2, c2 = self.r2(X)
+            oc, pc, cc = self.rc(X)
+            if self.override:  # a sure stage-2 answer wins: v2 also fires on photos of cars, shoes … (it only knows packs)
+                o2 = o2 & ~oc
+            if self.veto is not None:  # stage 2 says "this is NOT a pack" ((other) unlikely) → stage 1 (packs only) must not answer
+                po = torch.softmax(X @ self.rc.W.T + self.rc.b, -1)[:, self.rc.other]
+                o2 = o2 & (po >= self.veto)
+            return o2 | oc, torch.where(o2, p2, pc + len(v2names)), torch.where(o2, c2, cc)
+    cmb_names = v2names + cnames + ["(other)"]
+
+    # ---- calibration on validation only: Commons val photos (webcam view), v2 val packs, foreign packs + generic photos
     valneg = torch.cat([E["valneg2"], E["c_valneg"]])
-    n2 = len(E["val2"])
+    fa_v2 = false_alarm(v2rule, valneg)
+    Xv_all, yv_all = torch.cat([E["val2"], E["val3"]]), torch.cat([y_val2, y_val3])
     grid = []
-    for mc in (0.5, 0.6, 0.7, 0.8, 0.85, 0.9, 0.95):
-        for zt in (5, 10, 20, 50, 100000):
-            r = Rule(W, b, ls * T, oth, mc, zt)
-            m = measure(r, X_val, y_val, names)
-            grid.append({"min_conf": mc, "zs_top": zt, "val_false_alarm": false_alarm(r, valneg),
+    for mc in (0.5, 0.6, 0.7, 0.8, 0.85, 0.9, 0.95, 0.97, 0.99):
+        for zt, ov, vt in [(z, o, v) for z in (3, 100000) for o in (False, True) for v in (None, 0.0002, 0.0005, 0.002)]:
+            r = Combo(v2rule, KeepRule(W, b, ls * T, oth, mc, zt), ov, vt)
+            m = measure(r, Xv_all, yv_all, cmb_names, names)
+            grid.append({"min_conf": mc, "zs_top": zt, "override": ov, "veto": vt, "val_false_alarm": false_alarm(r, valneg),
                          "val_false_alarm_generic": false_alarm(r, E["c_valneg"]),
-                         "val_precision_commons": measure(r, E["val3"], y_val3, names)["precision"],
+                         "val_old": measure(r, E["val2"], y_val2, cmb_names, names),
+                         "val_commons": measure(r, E["val3"], y_val3, cmb_names, names),
+                         "val_precision_commons": measure(r, E["val3"], y_val3, cmb_names, names)["precision"],
                          **{f"val_{k}": v for k, v in m.items()}})
-    ok = [g for g in grid if g["val_false_alarm"] <= TARGET_FA and g["val_precision"] >= 0.95 and g["val_precision_commons"] >= 0.95]
-    best = max(ok or grid, key=lambda g: (g["val_right"], -g["val_false_alarm"]))
-    print(f"  chosen: min_conf {best['min_conf']}, zero-shot top {best['zs_top']} → val right {best['val_right']}/{best['val_n']}, "
-          f"precision {best['val_precision']} (Commons {best['val_precision_commons']}), false alarm {best['val_false_alarm']}")
-    v3rule = Rule(W, b, ls * T, oth, best["min_conf"], best["zs_top"])
+    old_v2 = measure(v2rule, E["val2"], y_val2, v2names, names)
+    # goals: old brands as good as v2 (≥ 98 % of its right answers, precision not lower), false alarms ≤ v2 + 0.5 points,
+    # Commons precision ≥ 95 %
+    ok = [g for g in grid if g["val_false_alarm"] <= fa_v2 + 0.005 and g["val_old"]["right"] >= 0.98 * old_v2["right"]
+          and g["val_old"]["precision"] >= old_v2["precision"] - 0.005 and g["val_precision_commons"] >= 0.95]
+    old_ok = [g for g in grid if g["val_old"]["right"] >= 0.98 * old_v2["right"] and g["val_old"]["precision"] >= old_v2["precision"] - 0.005
+              and g["val_false_alarm"] <= fa_v2 + 0.005]
+    # if no setting meets every goal: old brands + false alarms stay the hard limits, then the most right Commons answers
+    best = max(ok or old_ok or grid, key=lambda g: (g["val_commons"]["right"], -g["val_false_alarm"]))
+    print(f"  v2 alone: val old brands {old_v2}")
+    print(f"  v2 alone: val false alarm {fa_v2}; {len(ok)} settings meet the goals")
+    print(f"  chosen: min_conf {best['min_conf']}, zero-shot top {best['zs_top']}, override {best['override']}, veto {best['veto']} → Commons val {best['val_commons']}, "
+          f"all val precision {best['val_precision']}, false alarm {best['val_false_alarm']}")
+    crule = KeepRule(W, b, ls * T, oth, best["min_conf"], best["zs_top"])
+    v3rule = Combo(v2rule, crule, best["override"], best["veto"])
 
     # ---- measure v2 (shipped) vs v3
-    v2rule, v2names = load_v2_head()
     unk_keys2 = [key(d["brand"].strip("()")) for d in side["unknown"]]
     look_keys = [key(d["brand"].strip("()")) for d in look_list]
     cu_keys = [key(d["brand"]) for d in s3["unknown_c"]]
-    res = {"brands": C, "brands_v2": len(names2), "brands_new": C - len(names2), "merged_into_v2_classes": merged,
+    res = {"brands": C, "brands_v2": len(names2), "brands_new": C - len(names2), "commons_head_classes": Cc, "commons_answering": [cnames[i] for i in range(Cc) if keep[i]],
+           "commons_silent": {cnames[i]: [int(cv[i, 0]), int(cv[i, 1])] for i in range(Cc) if not keep[i]}, "val_false_alarm_v2": fa_v2, "val_old_v2": old_v2, "merged_into_v2_classes": merged,
            "commons": {"fit_photos": len(fit3), "val_photos": len(val3), "test_photos": len(te3), "foreign_brand_photos": len(s3["unknown_c"]),
                        "foreign_brands": len({d["brand"] for d in s3["unknown_c"]}), "generic_test": len(s3["generic_test"]),
                        "domains": dict(Counter(d["domain"] for d in cls3 if d["split"] == "train"))},
            "alpha": alpha, "hard_negatives": len(hard), "calibration": {"chosen": best, "grid": grid}, "results": {}}
-    for rn, (rule, nm) in {"v2 (1,020 brands, as shipped)": (v2rule, v2names), "v3": (v3rule, names + ["(other)"])}.items():
+    for rn, (rule, nm) in {"v2 (1,020 brands, as shipped)": (v2rule, v2names), "v3": (v3rule, cmb_names)}.items():
         r = res["results"][rn] = {}
         for part, lab in (("t_pack", "v2test_packshot"), ("t_orig", "v2test_original"), ("t_cam", "v2test_original_webcam"),
                           ("c_test", "commons_test"), ("c_test_cam", "commons_test_webcam")):
@@ -228,8 +288,20 @@ def main():
         for t in (per[d["brand"]], cat[d["domain"]]):
             t["n"] += 1
             if o:
-                t["right" if key(names[p]) == d["key"] else "wrong"] += 1
+                t["right" if key(cmb_names[p]) == d["key"] else "wrong"] += 1
     res["commons_test_by_category"] = dict(cat)
+    for part in ("c_test", "c_test_cam"):  # who is wrong on Commons photos: stage 1 (v2, packs only) or the new stage 2?
+        o, p, _ = v3rule(E[part]); s2 = o & (p >= len(v2names))
+        r2 = sum(1 for pp, yy in zip(p[s2].tolist(), Y[part][s2].tolist()) if key(cmb_names[pp]) == key(names[yy]))
+        o1 = o & (p < len(v2names))
+        r1 = sum(1 for pp, yy in zip(p[o1].tolist(), Y[part][o1].tolist()) if key(cmb_names[pp]) == key(names[yy]))
+        res[f"{part}_by_stage"] = {"stage1_v2": {"answered": int(o1.sum()), "right": r1}, "stage2_commons": {"answered": int(s2.sum()), "right": r2,
+                                   "precision": round(r2 / max(1, int(s2.sum())), 3)}}
+        print(part, "by stage:", res[f"{part}_by_stage"])
+    o2t = (p3 < len(v2names)) & ok3
+    conf = Counter((d["brand"], cmb_names[p], "stage1" if s1 else "stage2") for d, o, p, s1 in zip(te3, ok3.tolist(), p3.tolist(), o2t.tolist())
+                   if o and key(cmb_names[p]) != d["key"])
+    res["commons_test_confusions"] = [list(k) + [n] for k, n in conf.most_common(60)]
     res["commons_test_by_brand"] = dict(sorted(per.items()))
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "S5_markenmodell_v3.json").write_text(json.dumps(res, ensure_ascii=False, indent=1))
@@ -237,19 +309,20 @@ def main():
 
     if "--export" in sys.argv:
         dst = ROOT / "public" / "models"
-        W16, b16, Z16 = W.numpy().astype("<f2"), b.numpy().astype("<f2"), (ls * T).numpy().astype("<f2")
-        (dst / "brand_head.bin").write_bytes(W16.tobytes() + b16.tobytes() + Z16.tobytes())
         old = json.loads((OUT / "brand_head_v2.json").read_text())
-        (dst / "brand_head.json").write_text(json.dumps({
-            "version": 3, "encoder": v2.ENC, "parts": old["parts"], "input": old["input"], "preprocess": old["preprocess"],
-            "built": time.strftime("%Y-%m-%d"), "variant": "v3: v2 packaging brands + Commons non-packaging brands, (other) from hard negatives + generic photos",
-            "names": names + ["(other)"], "other": "(other)",
-            "head": {"file": "brand_head.bin", "dtype": "float16", "classes": C + 1, "dim": int(W.shape[1]), "text_classes": int(T.shape[0])},
-            "rule": {"min_conf": best["min_conf"], "zero_shot_top": best["zs_top"]},
-            "data": "Open Food Facts, Open Beauty Facts, Open Products Facts (ODbL; photos CC BY-SA); Wikimedia Commons photos "
-                    "(free licences, authors and licences per file in data/brand_v3_sources.csv)",
-            "note": old["note"]}, ensure_ascii=False, separators=(",", ":")))
-        print(f"→ exported v3: {C + 1} classes, brand_head.bin {(dst / 'brand_head.bin').stat().st_size // 1024} KB")
+        raw2 = (OUT / "brand_head_v2.bin").read_bytes()
+        W16, b16, Z16 = W.numpy().astype("<f2"), b.numpy().astype("<f2"), (ls * T).numpy().astype("<f2")
+        (dst / "brand_head.bin").write_bytes(raw2 + W16.tobytes() + b16.tobytes() + Z16.tobytes())
+        meta = dict(old)
+        meta.update({"version": 3, "built": time.strftime("%Y-%m-%d"),
+                     "variant": "v3: stage 1 = v2 head (packaging brands, unchanged); stage 2 = Commons head (non-packaging brands), only when stage 1 is not sure",
+                     "stage2": {"names": cnames + ["(other)"], "other": "(other)",
+                                "answers": [cnames[i] for i in range(Cc) if keep[i]],
+                                "head": {"offset": len(raw2), "dtype": "float16", "classes": Cc + 1, "dim": int(W.shape[1]), "text_classes": int(T.shape[0])},
+                                "rule": {"min_conf": best["min_conf"], "zero_shot_top": best["zs_top"], "overrides_stage1": best["override"], "veto_stage1_below_other": best["veto"]}},
+                     "data": old.get("data", "") + "; stage 2: Wikimedia Commons photos (free licences, authors and licences per file in data/brand_v3_sources.csv)"})
+        (dst / "brand_head.json").write_text(json.dumps(meta, ensure_ascii=False, separators=(",", ":")))
+        print(f"→ exported v3: {len(v2names)} + {Cc + 1} classes, brand_head.bin {(dst / 'brand_head.bin').stat().st_size // 1024} KB")
 
 
 if __name__ == "__main__":

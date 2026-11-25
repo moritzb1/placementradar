@@ -32,7 +32,7 @@ const STEPS = [
     title: "Three engines that work together.",
     text: `<span class="ie"><span class="ic" style="background:#0a84ff">${icon("cloud")}</span><span><b>Gemini in the cloud</b> watches the whole video with sound and reports every brand with time, model, position and how it was recognised (logo, text, speech, design).</span></span>
       <span class="ie"><span class="ic" style="background:#30d158">${icon("chip")}</span><span><b>Recognition on your device</b>: a packaging finder (YOLOE), text recognition and barcodes → Open Food Facts. Runs in the browser, costs no quota.</span></span>
-      <span class="ie"><span class="ic" style="background:#5e5ce6">${icon("sparkle")}</span><span><b>Our own brand model</b>: Apple's MobileCLIP image encoder plus a classification head we trained on 64,000 open product photos – 1,020 brands of food, cosmetics and household goods, 97 % of its answers correct in our test.</span></span>`,
+      <span class="ie"><span class="ic" style="background:#5e5ce6">${icon("sparkle")}</span><span><b>Our own brand model</b>: Apple's MobileCLIP image encoder plus brand heads we trained on 76,000 freely licensed photos – 1,020 brands of food, cosmetics and household goods (97 % of its answers correct in our test) plus 117 tech, fashion, sport, home and car brands (94 %).</span></span>`,
     art: () => `<div class="ia-engines">${[["cloud", "#0a84ff", "Cloud"], ["chip", "#30d158", "On device"], ["sparkle", "#5e5ce6", "Own model"]]
       .map(([i, c, l], k) => `<div style="--d:${k * 0.25}s"><span style="background:${c}">${icon(i)}</span><small>${l}</small></div>`).join('<em></em>')}</div>`,
   },

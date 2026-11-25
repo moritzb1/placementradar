@@ -15,7 +15,7 @@ export const GROUPS = {
   runtime: { label: "AI runtime (ONNX, WebAssembly)", stage: 1, mb: 21.7 },
   finder: { label: "Packaging finder (YOLOE)", stage: 1, mb: 19.7 },
   ocr: { label: "Text recognition · 3,599 brands", stage: 2, mb: 13.4 },
-  own: { label: "Own model · 1,020 brands", stage: 3, mb: 45.3 },
+  own: { label: "Own model · 1,137 brands", stage: 3, mb: 45.3 },
 };
 const MB = 1024 * 1024;
 const state = Object.fromEntries(Object.keys(GROUPS).map((k) => [k, { loaded: 0, total: GROUPS[k].mb * MB, files: 0, done: 0, status: "waiting" }]));

@@ -28,24 +28,35 @@ export async function loadBrandModel() {
     const bytes = new Uint8Array(bufs.reduce((n, b) => n + b.length, 0)); let o = 0; for (const b of bufs) { bytes.set(b, o); o += b.length; }
     // WASM on purpose: the detector already uses WebGPU every frame; this model runs a few times per second at most
     const s = await ort.InferenceSession.create(bytes, { executionProviders: ["wasm"], graphOptimizationLevel: "all" });
-    let W, b, Z;
+    let W, b, Z, S2 = null;
     if (head.head?.file) {
-      // v2: one binary float16 file [W (classes×dim) | b (classes) | Z (text classes×dim)] – ~2 MB for 1,000 brands
-      const { classes: C, dim: D, text_classes: CZ } = head.head;
+      // v2/v3: one binary float16 file [W (classes×dim) | b (classes) | Z (text classes×dim)] – ~2 MB for 1,000 brands;
+      // v3 appends stage 2 (Commons head for brands that are not packaging) at head.stage2.head.offset
       const hb = await fetchBytes(`models/${head.head.file}`, "own");
       const f = halfToFloat(new Uint16Array(hb.buffer, hb.byteOffset, hb.byteLength / 2));
-      W = Array.from({ length: C }, (_, i) => f.subarray(i * D, (i + 1) * D));
-      b = f.subarray(C * D, C * D + C);
-      Z = Array.from({ length: CZ }, (_, i) => f.subarray(C * D + C + i * D, C * D + C + (i + 1) * D));
+      ({ W, b, Z } = readHead(f, 0, head.head));
+      if (head.stage2) {
+        const h2 = head.stage2;
+        S2 = { ...readHead(f, h2.head.offset / 2, h2.head), names: h2.names, rule: h2.rule, other: h2.names.indexOf(h2.other),
+               answers: new Set(h2.answers) };
+      }
     } else { // v1: everything as JSON numbers
       W = head.W.map((r) => Float32Array.from(r)); b = Float32Array.from(head.b); Z = head.Z.map((r) => Float32Array.from(r));
     }
-    const brands = head.names.filter((n) => n !== head.other).length;
-    M = { s, head, N: head.input[2], W, b, Z, rule: head.rule, other: head.other ? head.names.indexOf(head.other) : -1, brands };
+    const known = new Set(head.names.filter((n) => n !== head.other).map(key));
+    for (const n of S2?.answers || []) known.add(key(n));
+    M = { s, head, N: head.input[2], W, b, Z, rule: head.rule, other: head.other ? head.names.indexOf(head.other) : -1,
+          names: head.names, S2, keys: known, brands: known.size };
     markGroup("own", "ready");
     return M;
   })().catch((e) => { M_P = null; markGroup("own", "failed"); throw e; });
   return M_P;
+}
+
+/** one head out of the float16 buffer, starting at element o: W (classes×dim), b (classes), Z (text classes×dim) */
+function readHead(f, o, { classes: C, dim: D, text_classes: CZ }) {
+  return { W: Array.from({ length: C }, (_, i) => f.subarray(o + i * D, o + (i + 1) * D)), b: f.subarray(o + C * D, o + C * D + C),
+           Z: Array.from({ length: CZ }, (_, i) => f.subarray(o + C * D + C + i * D, o + C * D + C + (i + 1) * D)) };
 }
 
 /** IEEE 754 half precision → Float32Array (Float16Array is not available in every browser yet). */
@@ -85,7 +96,6 @@ export async function embedBox(src, box, fw, fh) {
 /** Does the own model know this brand? (Verify on screen: only then can "not recognised by its look" mean anything.) */
 export function knowsBrand(name) {
   if (!M) return false;
-  M.keys ??= new Set(M.head.names.filter((n) => n !== M.head.other).map(key));
   return M.keys.has(key(name));
 }
 const key = (s) => String(s).toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
@@ -96,19 +106,30 @@ export async function classifyBox(src, box, fw, fh) {
   if (!M) return null;
   const t0 = performance.now();
   const e = await embedBox(src, box, fw, fh); if (!e) return null;
-  // brand head: logits = W·e + b → softmax
-  const logits = M.W.map((row, i) => M.b[i] + dot(row, e));
+  // stage 1 (v2 head, packaging brands); v3: only if it is not sure, stage 2 (Commons head: tech, fashion, cars …).
+  // Stage 2 may answer only for the brands it told apart in cross-validation (head.stage2.answers, EVALUATION.md S5).
+  let r = decide(M, e);
+  if (!r.sure && M.S2) {
+    const r2 = decide(M.S2, e);
+    if (r2.sure && M.S2.answers.has(r2.brand)) r = { ...r2, stage: 2 };
+    else if (r.isOther && !r2.isOther) r = { ...r2, sure: false, stage: 2 };
+  }
+  const { brand, conf, sure, better, top } = r;
+  // emb: the fingerprint itself – live.js uses it to recognise the same product again after it was hidden
+  return { brand, conf, sure, textRank: better + 1, top, stage: r.stage || 1, emb: e, ms: Math.round(performance.now() - t0) };
+}
+
+/** one head's opinion: logits = W·e + b → softmax; "(other)" = looks like a brand this head does NOT know → never an answer;
+ *  second opinion: rank of the same brand when only the brand NAMES (text) are compared with the picture */
+function decide(H, e) {
+  const logits = H.W.map((row, i) => H.b[i] + dot(row, e));
   const mx = Math.max(...logits), ex = logits.map((v) => Math.exp(v - mx)), sum = ex.reduce((a, b) => a + b, 0);
   const order = ex.map((v, i) => [i, v / sum]).sort((a, b) => b[1] - a[1]);
-  const best = order[0][0], conf = order[0][1];
-  // "(other)" (v2): the head learnt that this looks like a package of a brand it does NOT know → never an answer
-  const isOther = best === M.other;
-  // second opinion: rank of the same brand when only the brand NAMES (text) are compared with the picture
-  const zs = M.Z.map((row) => dot(row, e)), better = isOther ? Infinity : zs.filter((v) => v > zs[best]).length;
-  const sure = !isOther && conf >= M.rule.min_conf && better < M.rule.zero_shot_top;
-  const top = order.filter(([i]) => i !== M.other).slice(0, 3).map(([i, p]) => [M.head.names[i], p]);
-  // emb: the fingerprint itself – live.js uses it to recognise the same product again after it was hidden
-  return { brand: isOther ? "(other brand)" : top[0][0], conf, sure, textRank: better + 1, top, emb: e, ms: Math.round(performance.now() - t0) };
+  const best = order[0][0], conf = order[0][1], isOther = best === H.other;
+  const zs = H.Z.map((row) => dot(row, e)), better = isOther || best >= zs.length ? Infinity : zs.filter((v) => v > zs[best]).length;
+  const sure = !isOther && conf >= H.rule.min_conf && better < H.rule.zero_shot_top;
+  const top = order.filter(([i]) => i !== H.other).slice(0, 3).map(([i, p]) => [H.names[i], p]);
+  return { brand: isOther ? "(other brand)" : top[0][0], conf, sure, better, top, isOther };
 }
 
 function dot(a, b) { let v = 0; for (let j = 0; j < a.length; j++) v += a[j] * b[j]; return v; }

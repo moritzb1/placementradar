@@ -742,7 +742,7 @@ const labelOf = (brand, product) => !product ? brand : product.toLowerCase().sta
 const V_KIND = { text: "brand read on screen", look: "brand recognised by its look", object: "object found by the detector", type: "object type matches (not the brand)" };
 // c) (24 Nov) Gemini + our models together: what Verify confirms is "confirmed"; what only Gemini claims is "unconfirmed" once
 // it was checked – either not seen (a model that could have found it did not) or no model on the device knows that kind of product
-const BRAND_COUNT = "1,020"; // classes of the own brand model (public/models/brand_head.json), shown in the Verify sheet
+const BRAND_COUNT = "1,137"; // classes of the own brand model (public/models/brand_head.json), shown in the Verify sheet
 const V_LABEL = { confirmed: "confirmed", not_seen: "unconfirmed · not seen", not_checkable: "unconfirmed · can't check", checking: "checking…" };
 const V_INFO = "Confirmed: models on your device found it on the real frames (brand read, brand recognised by its look, object found by a detector, or only the object type matches). Unconfirmed: only Gemini says so – either our models checked several frames and did not find it (not seen), or none of them knows this kind of product (can't check). Found on screen: a brand our own models are sure about (read on screen or recognised by its look on at least 2 frames) that Gemini does not list at that moment – added by your device, counted in media value only when Gemini does not list the brand anywhere in the video (no double count).";
 /** Small status pill for Right now. s = verifier.statusAt(); nothing before the first check. */
@@ -1419,7 +1419,7 @@ function showInfo() {
     <div class="engines">
       <div><span class="ic" style="background:#0a84ff">${icon("cloud")}</span><div><b>Engine 1 · Gemini in the cloud</b><span>watches the whole video with sound: every brand, when and how it appears, spoken and on-screen ad labels, authenticity cues.</span></div></div>
       <div><span class="ic" style="background:#30d158">${icon("chip")}</span><div><b>Engine 2 · AI on your device</b><span>live scanner: a packaging finder (YOLOE), text recognition and barcodes (exact product via Open Food Facts) run in the browser – no cloud needed.</span></div></div>
-      <div><span class="ic" style="background:#5e5ce6">${icon("sparkle")}</span><div><b>Engine 3 · our own model</b><span>Apple's MobileCLIP image encoder plus a brand head we trained on 64,000 open product photos (1,020 brands, webcam-ready) – names packages whose text cannot be read, and learns from Gemini's confident answers.</span></div></div>
+      <div><span class="ic" style="background:#5e5ce6">${icon("sparkle")}</span><div><b>Engine 3 · our own model</b><span>Apple's MobileCLIP image encoder plus brand heads we trained on 76,000 freely licensed photos (1,137 brands: 1,020 packaging + 117 tech, fashion, sport, home and car brands, webcam-ready) – names packages whose text cannot be read, and learns from Gemini's confident answers.</span></div></div>
     </div>
     <p class="small">Media value = equivalent ad cost (earned media value), not what the creator earned: views ÷ 1000 × CPM × weighted seconds ÷ 30, counting only the audience still watching at each moment and an attention factor; shown as a low – high range. The disclosure check refers to § 5a (4) UWG and § 22 MStV; it is a screening aid, not legal advice.
       Details, formulas and all test results: README, MODELS and EVALUATION in the project repository.</p>

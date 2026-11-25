@@ -17,7 +17,7 @@
  *   1. detectors: YOLOE packaging finder + YOLO26n (COCO: monitor/tv, keyboard, mouse, laptop, backpack …) → boxes,
  *      smoothed and kept apart by tracker.js
  *   2. OCR (ocr.js) → is the brand or the model name written anywhere in the frame?
- *   3. own brand model (brandmodel.js, 1,020 brands) → does a box LOOK like that brand?
+ *   3. own brand model (brandmodel.js, 1,137 brands: v2 packaging head + v3 Commons head) → does a box LOOK like that brand?
  *   4. product TYPE (brandmodel.js rankTypes): MobileCLIP image fingerprint of the box / of Gemini's position against
  *      text fingerprints of ~90 product types computed offline (tools/build_category_bank.py) – the type, not the brand
  *

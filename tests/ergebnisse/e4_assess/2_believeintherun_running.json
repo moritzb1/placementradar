@@ -1,0 +1,93 @@
+{
+  "estimate": {
+    "audience": {
+      "age": "25-44",
+      "interests": [
+        "running",
+        "marathon training",
+        "gear reviews",
+        "trail running"
+      ],
+      "language": "English",
+      "country": "USA",
+      "basis": "The content focuses on marathon events like NYC and Chicago and uses terminology typical of serious hobbyist runners."
+    },
+    "tone": {
+      "style": "technical, analytical, gear-focused, expert reviews",
+      "credibility": "high",
+      "basis": "The channel consistently produces detailed, comparative reviews with specific technical specs like stack height and drop."
+    },
+    "brand_safety": {
+      "level": "low_risk",
+      "topics": [],
+      "note": "The content is highly specialized and professional, focusing entirely on athletic footwear."
+    },
+    "partners": [
+      {
+        "brand": "New Balance",
+        "kind": "mentioned",
+        "evidence": "The Baltimore crew headed up for NYC Marathon weekend with New Balance",
+        "verified": true
+      }
+    ],
+    "fit": {
+      "level": "high",
+      "reasons": [
+        "The channel is entirely dedicated to running footwear reviews and comparisons.",
+        "Almost every video title features specific running shoe models or 'best of' lists.",
+        "The audience is clearly composed of active runners looking for detailed performance data."
+      ],
+      "risk": "The audience is highly critical and technical; a product that does not perform well will be exposed.",
+      "format": "Dedicated review or a 60-90s integration in a 'Best of' or comparison video."
+    },
+    "data_note": "The channel description was not available, but the video titles provide a very clear picture of the content niche."
+  },
+  "checks": {
+    "partners_given": 1,
+    "dropped_partners": 0,
+    "dropped": [],
+    "topics_unverified": 0
+  },
+  "channel": {
+    "id": "UC2-2J_y_jpOYz8Rld5C6C5w",
+    "title": "Believe in the Run",
+    "handle": "@Believeintherun",
+    "avatar": "https://yt3.googleusercontent.com/qV-5WpA0CnzB16EEJoMocQaQuIXfnFvHrEAc1qj3VbCV9_ebQ68G4bf6hRC2BzD0zqjEjAQ3miw=s160-c-k-c0x00ffffff-no-rj",
+    "subscribers": "129K subscribers",
+    "video_count": 2200,
+    "source": "youtube-page",
+    "fetched_at": "2026-11-25T15:12:13.319Z"
+  },
+  "brand": "",
+  "product": "running shoes",
+  "input": {
+    "uploads": 25,
+    "with_description": 9,
+    "channel_description": false,
+    "analysed": 0,
+    "comments": 0,
+    "chars": 6829
+  },
+  "model": "gemini-3.1-flash-lite-preview",
+  "usage": {
+    "prompt": 2074,
+    "output": 416,
+    "thoughts": 149,
+    "total": 2639
+  },
+  "seconds": 25,
+  "created_at": "2026-11-25T17:44:56.684Z",
+  "prompt_version": 1,
+  "cached": false,
+  "quota": {
+    "visitor_left": 6,
+    "visitor_cap": 10,
+    "models": [
+      "gemini-3.7-flash",
+      "gemini-3.1-flash-lite-preview"
+    ],
+    "left_requests": 12,
+    "free_per_model": 20,
+    "blocked": null
+  }
+}

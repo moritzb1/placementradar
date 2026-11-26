@@ -1,0 +1,1226 @@
+[
+ {
+  "t": 0,
+  "ev": "step",
+  "data": {
+   "id": "field",
+   "status": "run",
+   "title": "Working out the product field",
+   "detail": "",
+   "at_s": 0
+  }
+ },
+ {
+  "t": 0,
+  "ev": "step",
+  "data": {
+   "id": "field",
+   "status": "done",
+   "title": "Product field",
+   "detail": "Sport & outdoor (from product words) · topic words: laufschuhe, sport & outdoor · searches: “Laufschuhe review”, “best Laufschuhe”",
+   "at_s": 0,
+   "group": "sport",
+   "queries": [
+    "Laufschuhe review",
+    "best Laufschuhe"
+   ]
+  }
+ },
+ {
+  "t": 0,
+  "ev": "step",
+  "data": {
+   "id": "search:Laufschuhe review",
+   "status": "run",
+   "title": "Searching YouTube for “Laufschuhe review”",
+   "detail": "",
+   "at_s": 0
+  }
+ },
+ {
+  "t": 1,
+  "ev": "step",
+  "data": {
+   "id": "search:Laufschuhe review",
+   "status": "done",
+   "title": "Searched YouTube for “Laufschuhe review”",
+   "detail": "20 videos · 0 quota units · YouTube search page",
+   "at_s": 1
+  }
+ },
+ {
+  "t": 1,
+  "ev": "step",
+  "data": {
+   "id": "search:best Laufschuhe",
+   "status": "run",
+   "title": "Searching YouTube for “best Laufschuhe”",
+   "detail": "",
+   "at_s": 1
+  }
+ },
+ {
+  "t": 1,
+  "ev": "step",
+  "data": {
+   "id": "search:best Laufschuhe",
+   "status": "done",
+   "title": "Searched YouTube for “best Laufschuhe”",
+   "detail": "20 videos · 0 quota units · YouTube search page",
+   "at_s": 1
+  }
+ },
+ {
+  "t": 1,
+  "ev": "step",
+  "data": {
+   "id": "group",
+   "status": "done",
+   "title": "Grouping by channel",
+   "detail": "37 videos from 17 channels · 8 looked at closely (most search hits × views)",
+   "at_s": 1
+  }
+ },
+ {
+  "t": 1,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "1 of 8: Running Culture",
+   "at_s": 1
+  }
+ },
+ {
+  "t": 2,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "2 of 8: RUNNER'S WORLD",
+   "at_s": 2
+  }
+ },
+ {
+  "t": 2,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "3 of 8: Ben Parkes",
+   "at_s": 2
+  }
+ },
+ {
+  "t": 3,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "4 of 8: Daniel Korte",
+   "at_s": 3
+  }
+ },
+ {
+  "t": 4,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "5 of 8: Believe in the Run",
+   "at_s": 4
+  }
+ },
+ {
+  "t": 4,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "6 of 8: SRF News & Hintergründe",
+   "at_s": 4
+  }
+ },
+ {
+  "t": 5,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "7 of 8: Adi Rambo Production",
+   "at_s": 5
+  }
+ },
+ {
+  "t": 5,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "8 of 8: ARD Marktcheck",
+   "at_s": 5
+  }
+ },
+ {
+  "t": 5,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "done",
+   "title": "Read the candidates' channels",
+   "detail": "8 channels, latest 25 uploads each · 0 from the 6-hour cache · 0 quota units",
+   "at_s": 5
+  }
+ },
+ {
+  "t": 5,
+  "ev": "step",
+  "data": {
+   "id": "library",
+   "status": "run",
+   "title": "Checking analyses we already have of these channels",
+   "detail": "",
+   "at_s": 5
+  }
+ },
+ {
+  "t": 6,
+  "ev": "step",
+  "data": {
+   "id": "library",
+   "status": "done",
+   "title": "Analyses we already have",
+   "detail": "none of these channels is analysed yet – the scores rest on titles, views and dates only",
+   "at_s": 5
+  }
+ },
+ {
+  "t": 6,
+  "ev": "step",
+  "data": {
+   "id": "score",
+   "status": "done",
+   "title": "Ranking",
+   "detail": "8 creators · 0 with analysed videos, the rest on metadata only",
+   "at_s": 5
+  }
+ },
+ {
+  "t": 6,
+  "ev": "confirm",
+  "data": {
+   "candidates": [
+    {
+     "id": "vTCWl9a7VSg",
+     "title": "The Top 6 WORST running shoes of 2026 (& what to get instead)",
+     "views": 749000,
+     "duration_s": 605,
+     "published": "2026-11-12",
+     "channel": "Ben Parkes",
+     "why": "most-viewed on-topic upload of Ben Parkes"
+    },
+    {
+     "id": "YpjjOTwUg5Q",
+     "title": "Unser großer Laufschuhtest Herbst 2026",
+     "views": 11000,
+     "duration_s": 910,
+     "published": "2026-10-26",
+     "channel": "RUNNER'S WORLD",
+     "why": "most-viewed on-topic upload of RUNNER'S WORLD"
+    },
+    {
+     "id": "UDBuVNORxh0",
+     "title": "Meg's Favorite Marathon Racer is Finally Updated | Nike Alphafly 4 Review",
+     "views": 45000,
+     "duration_s": 893,
+     "published": "2026-10-28",
+     "channel": "Believe in the Run",
+     "why": "most-viewed on-topic upload of Believe in the Run"
+    }
+   ],
+   "preselected": [],
+   "quota": {
+    "models": 4,
+    "exhausted": 0,
+    "used_requests": 0,
+    "left_requests": 80,
+    "free_per_model": 20,
+    "visitor_left": 10,
+    "visitor_cap": 10,
+    "reset_in_s": 60466,
+    "blocked": null
+   },
+   "max_new": 3,
+   "per_video_requests": 3
+  }
+ },
+ {
+  "t": 6,
+  "ev": "step",
+  "data": {
+   "id": "confirm",
+   "status": "skip",
+   "title": "Optional: analyse one video each",
+   "detail": "one on-topic video of each of the top 3 – adds competitors and ad labels to their scores; nothing is analysed without your OK",
+   "at_s": 5
+  }
+ },
+ {
+  "t": 6,
+  "ev": "report",
+  "data": {
+   "query": {
+    "product": "Laufschuhe",
+    "brand": "",
+    "lang": "de",
+    "group": "sport",
+    "group_label": "Sport & outdoor",
+    "field_from": "product words",
+    "queries": [
+     "Laufschuhe review",
+     "best Laufschuhe"
+    ],
+    "words": [
+     "laufschuhe"
+    ]
+   },
+   "shortlist": [
+    {
+     "channel": {
+      "id": "UCZPqG0yh_xPm2AyLjffbDvw",
+      "title": "Ben Parkes",
+      "handle": "@BenParkes",
+      "avatar": "https://yt3.googleusercontent.com/ytc/AIdro_mDy4ZoQqcj7DiO_-1z6j2Y6Nu_PvFESGAsJagEM5FdPg=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "377K subscribers",
+      "video_count": 581,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:12.409Z"
+     },
+     "score": 88,
+     "verdict": "Strong candidate",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 96,
+       "text": "12 of the latest 25 uploads are about Laufschuhe (48 %); half or more = 100. Found 4× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 75,
+       "text": "Median 178k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "24 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "12 of 25 latest uploads about Laufschuhe · ~178k views per video · 24 uploads in 3 months",
+     "value": {
+      "low": 396.3479274999999,
+      "mid": 780.8188791666666,
+      "high": 1441.7660687500002
+     },
+     "median_views": 178000,
+     "recent": 24,
+     "on_topic": 12,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "sport",
+       "label": "Sport & outdoor",
+       "uploads": 12
+      },
+      {
+       "group": "fashion",
+       "label": "Fashion & accessories",
+       "uploads": 5
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "vTCWl9a7VSg",
+       "title": "Die 6 SCHLECHTESTEN Laufschuhe des Jahres 2026 (& was ihr stattdessen kaufen solltet)",
+       "views": 749979,
+       "published": "2026-11-13",
+       "duration_s": 605
+      },
+      {
+       "id": "9qv6rh34rXU",
+       "title": "Der beste Laufschuh jeder Marke im Jahr 2026!",
+       "views": 383716,
+       "published": "2026-06-28",
+       "duration_s": 943
+      },
+      {
+       "id": "kmZCzZBXAHA",
+       "title": "Die langlebigsten und strapazierfähigsten Laufschuhe im Jahr 2026!",
+       "views": 374271,
+       "published": "2026-10-26",
+       "duration_s": 1162
+      }
+     ],
+     "best_video": {
+      "id": "vTCWl9a7VSg",
+      "title": "The Top 6 WORST running shoes of 2026 (& what to get instead)",
+      "views": 749000,
+      "duration_s": 605,
+      "published": "2026-11-12"
+     },
+     "examples": [
+      {
+       "id": "dQAmBoKppbg",
+       "title": "Everything I Bought To Make Winter Running BETTER! (lots of tips too!)",
+       "views": 113000,
+       "published": "2026-11-19"
+      },
+      {
+       "id": "LIfR116q9A0",
+       "title": "It's TOUGH, but this will make you run a Sub 3 Marathon",
+       "views": 165000,
+       "published": "2026-11-15"
+      },
+      {
+       "id": "vTCWl9a7VSg",
+       "title": "The Top 6 WORST running shoes of 2026 (& what to get instead)",
+       "views": 749000,
+       "published": "2026-11-12"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCSJ5BTZhRe46qdiqGDj2kaQ",
+      "title": "RUNNER'S WORLD",
+      "handle": "@runnersworldde",
+      "avatar": "https://yt3.googleusercontent.com/XeIOqaL8Jn6or2wuKFTZmNoElDadZUgMooDZGCTMlMioRRTUkV4T1uB3C0wniHAVQ57-1ANX9w=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "16.5K subscribers",
+      "video_count": 613,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:11.154Z"
+     },
+     "score": 50,
+     "verdict": "Worth a look",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 72,
+       "text": "9 of the latest 25 uploads are about Laufschuhe (36 %); half or more = 100. Found 8× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 13,
+       "text": "Median 3k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "24 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "9 of 25 latest uploads about Laufschuhe · ~3k views per video · 24 uploads in 3 months",
+     "value": {
+      "low": 5.566684374999999,
+      "mid": 10.966557291666666,
+      "high": 20.249523437500002
+     },
+     "median_views": 2500,
+     "recent": 24,
+     "on_topic": 9,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "sport",
+       "label": "Sport & outdoor",
+       "uploads": 8
+      },
+      {
+       "group": "tech",
+       "label": "Tech & electronics",
+       "uploads": 2
+      },
+      {
+       "group": "beauty",
+       "label": "Beauty & care",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "0gaVLXRGJrs",
+       "title": "Hoka Mach 7 im Test",
+       "views": 4968,
+       "published": "2026-04-29",
+       "duration_s": 507
+      },
+      {
+       "id": "YpjjOTwUg5Q",
+       "title": "Unser großer Laufschuhtest Herbst 2026",
+       "views": 11682,
+       "published": "2026-10-26",
+       "duration_s": 910
+      },
+      {
+       "id": "yDTHGD_X18s",
+       "title": "Hoka Clifton 10 im Test",
+       "views": 8313,
+       "published": "2025-11-25",
+       "duration_s": 489
+      }
+     ],
+     "best_video": {
+      "id": "YpjjOTwUg5Q",
+      "title": "Unser großer Laufschuhtest Herbst 2026",
+      "views": 11000,
+      "duration_s": 910,
+      "published": "2026-10-26"
+     },
+     "examples": [
+      {
+       "id": "XqyEbco6pdY",
+       "title": "Diese wasserdichten Laufschuhe sind ideal für Herbst und Winter",
+       "views": 1900,
+       "published": "2026-11-24"
+      },
+      {
+       "id": "mqDpo1S4mUQ",
+       "title": "Das solltest du beim Tempotraining beachten",
+       "views": 3600,
+       "published": "2026-11-14"
+      },
+      {
+       "id": "5r3TCFT3FMc",
+       "title": "Episode 214: Berlin Marathon TV Producer René Hiepen - RUNNER'S WORLD Podcast",
+       "views": 537,
+       "published": "2026-11-13"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UC2-2J_y_jpOYz8Rld5C6C5w",
+      "title": "Believe in the Run",
+      "handle": "@Believeintherun",
+      "avatar": "https://yt3.googleusercontent.com/qV-5WpA0CnzB16EEJoMocQaQuIXfnFvHrEAc1qj3VbCV9_ebQ68G4bf6hRC2BzD0zqjEjAQ3miw=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "129K subscribers",
+      "video_count": 2200,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:13.319Z"
+     },
+     "score": 47,
+     "verdict": "Worth a look",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 56,
+       "text": "7 of the latest 25 uploads are about Laufschuhe (28 %); half or more = 100. Found 1× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 41,
+       "text": "Median 17k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "25 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "7 of 25 latest uploads about Laufschuhe · ~17k views per video · 25 uploads in 3 months",
+     "value": {
+      "low": 37.85345374999999,
+      "mid": 74.57258958333333,
+      "high": 137.696759375
+     },
+     "median_views": 17000,
+     "recent": 25,
+     "on_topic": 7,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "fashion",
+       "label": "Fashion & accessories",
+       "uploads": 10
+      },
+      {
+       "group": "sport",
+       "label": "Sport & outdoor",
+       "uploads": 7
+      },
+      {
+       "group": "toys",
+       "label": "Toys & hobby",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "jJ2hmNzqCxY",
+       "title": "Wir haben alle verfügbaren Daily Trainer bewertet.",
+       "views": 426572,
+       "published": "2026-01-29",
+       "duration_s": 507
+      }
+     ],
+     "best_video": {
+      "id": "UDBuVNORxh0",
+      "title": "Meg's Favorite Marathon Racer is Finally Updated | Nike Alphafly 4 Review",
+      "views": 45000,
+      "duration_s": 893,
+      "published": "2026-10-28"
+     },
+     "examples": [
+      {
+       "id": "ek0z_csh07s",
+       "title": "The Best Running Shoes of the Year (For Bigger Runners) | Best in Gear (BIG) Awards 2026",
+       "views": 14000,
+       "published": "2026-11-23"
+      },
+      {
+       "id": "mPzkdJo5S_g",
+       "title": "The Best Running Shoes of the Year | Best in Gear (BIG) Awards 2026",
+       "views": 47000,
+       "published": "2026-11-20"
+      },
+      {
+       "id": "j9Gjt_NuLXo",
+       "title": "Best Trail Running Shoes in 2026 | Best in Gear Trail Awards 2026",
+       "views": 33000,
+       "published": "2026-11-12"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCxec_VgCE-5DUZ8MocKbEdg",
+      "title": "ARD Marktcheck",
+      "handle": "@marktcheck",
+      "avatar": "https://yt3.googleusercontent.com/B2EjK-Jd427zi997kMO3KJDMgWSQE9e7kAR2oDsNSjUO5zBheXvcsuPXsHP7yMTfLs53EyfIYQ=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "830K subscribers",
+      "video_count": 2400,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:14.419Z"
+     },
+     "score": 32,
+     "verdict": "Weak match",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 20,
+       "text": "0 of the latest 25 uploads are about Laufschuhe (0 %); half or more = 100. Found 1× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 71,
+       "text": "Median 133k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "25 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "found by the search for Laufschuhe, but few uploads on it · ~133k views per video · 25 uploads in 3 months",
+     "value": {
+      "low": 296.14760874999996,
+      "mid": 583.4208479166666,
+      "high": 1077.2746468750001
+     },
+     "median_views": 133000,
+     "recent": 25,
+     "on_topic": 0,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "food",
+       "label": "Food & drink",
+       "uploads": 3
+      },
+      {
+       "group": "mobility",
+       "label": "Cars & mobility",
+       "uploads": 3
+      },
+      {
+       "group": "retail",
+       "label": "Retail & services",
+       "uploads": 2
+      },
+      {
+       "group": "health",
+       "label": "Health",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "kAbPedd7dS8",
+       "title": "Das kosten GUTE Laufschuhe wirklich! (inkl. Tipps für Carbonschuhe)👟 | BUY BETTER SWR",
+       "views": 195565,
+       "published": "2025-11-25",
+       "duration_s": 786
+      }
+     ],
+     "best_video": null,
+     "examples": []
+    },
+    {
+     "channel": {
+      "id": "UCs4PItDK6R0b8vn01Nn_JIg",
+      "title": "Adi Rambo Production",
+      "handle": "@adiramboproduction",
+      "avatar": "https://yt3.googleusercontent.com/MyaCE3jZ6YUv1rGeOuT29EuCP0u922Wv_IG-KRoT8oeitx9B4tIr1FcGOwnqQgAH9vVgxeNNHA=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "2.2K subscribers",
+      "video_count": 176,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:14.059Z"
+     },
+     "score": 31,
+     "verdict": "Weak match",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 48,
+       "text": "6 of the latest 25 uploads are about Laufschuhe (24 %); half or more = 100. Found 2× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 0,
+       "text": "Median 504 views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "15 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "6 of 25 latest uploads about Laufschuhe · ~504 views per video · 15 uploads in 3 months",
+     "value": {
+      "low": 1.1222435699999997,
+      "mid": 2.2108579500000003,
+      "high": 4.082303925
+     },
+     "median_views": 504,
+     "recent": 15,
+     "on_topic": 6,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "sport",
+       "label": "Sport & outdoor",
+       "uploads": 6
+      },
+      {
+       "group": "mobility",
+       "label": "Cars & mobility",
+       "uploads": 2
+      },
+      {
+       "group": "fashion",
+       "label": "Fashion & accessories",
+       "uploads": 2
+      },
+      {
+       "group": "home",
+       "label": "Home & living",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "vjLtBH3C8Es",
+       "title": "Perfekter Laufschuh für lange Läufe? Der Brooks Glycerin 23! Laufschuh Test",
+       "views": 1744,
+       "published": "2026-03-30",
+       "duration_s": 386
+      },
+      {
+       "id": "lO92En4gRBM",
+       "title": "Der Trailschuh HAMMER! Der On Cloudsurfer Trail 2! Laufschuhe Test",
+       "views": 874,
+       "published": "2026-04-29",
+       "duration_s": 398
+      }
+     ],
+     "best_video": {
+      "id": "zwP46St7_Sc",
+      "title": "No stress while running! This running vest makes all the difference! Dynafit Alpine 8 running bac...",
+      "views": 3500,
+      "duration_s": 324,
+      "published": "2026-04-29"
+     },
+     "examples": [
+      {
+       "id": "yLyWZnIzeFM",
+       "title": "The perfect cooler for camping & BBQs?! 😍 Insmeer 50L cooler test!",
+       "views": 32,
+       "published": "2026-11-24"
+      },
+      {
+       "id": "YjQ00gfwY-c",
+       "title": "Battery-Operated Fan + Remote & LED 💨 The Best Clip-On Fan for Camping?",
+       "views": 74,
+       "published": "2026-07-28"
+      },
+      {
+       "id": "zwP46St7_Sc",
+       "title": "No stress while running! This running vest makes all the difference! Dynafit Alpine 8 running bac...",
+       "views": 3500,
+       "published": "2026-04-29"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCEL3zGES_9Rt3g4rgQQE9fA",
+      "title": "Running Culture",
+      "handle": "@RunningCulture",
+      "avatar": "https://yt3.googleusercontent.com/3WnhrDvQaxYQ_EvtOMnyHYUmr05RRDgoqqd9HDU3oGN6B0TEw3MKpNR6K7RhmeYl5-5o7H2b5YY=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "5.18K subscribers",
+      "video_count": 447,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:10.693Z"
+     },
+     "score": 28,
+     "verdict": "Weak match",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 40,
+       "text": "5 of the latest 25 uploads are about Laufschuhe (20 %); half or more = 100. Found 9× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 5,
+       "text": "Median 1k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "25 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "5 of 25 latest uploads about Laufschuhe · ~1k views per video · 25 uploads in 3 months",
+     "value": {
+      "low": 3.117343249999999,
+      "mid": 6.141272083333334,
+      "high": 11.339733125
+     },
+     "median_views": 1400,
+     "recent": 25,
+     "on_topic": 5,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "sport",
+       "label": "Sport & outdoor",
+       "uploads": 5
+      },
+      {
+       "group": "fashion",
+       "label": "Fashion & accessories",
+       "uploads": 1
+      },
+      {
+       "group": "tech",
+       "label": "Tech & electronics",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "tuGpZQtKiOg",
+       "title": "On Cloudmonster 3 Test - der beste Cloudmonster bisher?!",
+       "views": 776461,
+       "published": "2026-03-30",
+       "duration_s": 513
+      },
+      {
+       "id": "AUG1J7VWGXQ",
+       "title": "Adidas Adizero EVO SL im Test: Ein vielseitiger Tempotrainer für dein tägliches Lauftraining",
+       "views": 29227,
+       "published": "2025-11-25",
+       "duration_s": 747
+      },
+      {
+       "id": "5pYiQLmrEP0",
+       "title": "Nike Zoom Fly 6 Test: Dynamik, Komfort und Leichtigkeit für Training und Wettkampf",
+       "views": 15239,
+       "published": "2024-11-25",
+       "duration_s": 610
+      }
+     ],
+     "best_video": {
+      "id": "JO_c0pfC_9A",
+      "title": "Mizuno Sky Prime review: ideal for long runs and marathon preparation?",
+      "views": 1400,
+      "duration_s": 684,
+      "published": "2026-10-12"
+     },
+     "examples": [
+      {
+       "id": "xY6esbkJVJA",
+       "title": "Dresden Half Marathon Recap: When the coach cheers and the athlete doesn't | BTL #42",
+       "views": 411,
+       "published": "2026-11-13"
+      },
+      {
+       "id": "17ZO5vTVu5c",
+       "title": "#42 - Dresden Halbmarathon Recap: Wenn der Coach jubelt und der Athlet nicht",
+       "views": 260,
+       "published": "2026-11-13"
+      },
+      {
+       "id": "JO_c0pfC_9A",
+       "title": "Mizuno Sky Prime review: ideal for long runs and marathon preparation?",
+       "views": 1400,
+       "published": "2026-10-12"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCqdXpIZSamBceDmH8uOoTHA",
+      "title": "SRF News & Hintergründe",
+      "handle": "@srfnews",
+      "avatar": "https://yt3.googleusercontent.com/fa-uLIjy8c0ukNdrWbcHMxwMCCPGc18aOx2assE6Lo-oimHP6H5lly8hbkn9u8QZfvkjYXnN_w=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "55.6K subscribers",
+      "video_count": 2000,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:13.655Z"
+     },
+     "score": 18,
+     "verdict": "Weak match",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 20,
+       "text": "0 of the latest 25 uploads are about Laufschuhe (0 %); half or more = 100. Found 1× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 4,
+       "text": "Median 1k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "25 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "found by the search for Laufschuhe, but few uploads on it · ~1k views per video · 25 uploads in 3 months",
+     "value": {
+      "low": 2.8946758749999995,
+      "mid": 5.702609791666667,
+      "high": 10.529752187500002
+     },
+     "median_views": 1300,
+     "recent": 25,
+     "on_topic": 0,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "retail",
+       "label": "Retail & services",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "FvmgF0ULMCc",
+       "title": "Laufschuhe im Test: Wieso On, Asics & New Balance nicht überzeugen | 2026 | Kassensturz | SRF",
+       "views": 391865,
+       "published": "2026-10-26",
+       "duration_s": 710
+      }
+     ],
+     "best_video": null,
+     "examples": []
+    },
+    {
+     "channel": {
+      "id": "UCjmG_IxVXMcmTaTkVA3-BWw",
+      "title": "Daniel Korte",
+      "handle": "@daniel-korte",
+      "avatar": "https://yt3.googleusercontent.com/zFRgJY7iKJBjeZFgLGhS-WkWWr0Hbhl-okJA4kSl0b0ARCvapPQliP8vU3CkLuiks-V9i4kj-g=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "89.8K subscribers",
+      "video_count": 1300,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:12.797Z"
+     },
+     "score": 15,
+     "verdict": "Weak match",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 20,
+       "text": "0 of the latest 25 uploads are about Laufschuhe (0 %); half or more = 100. Found 2× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 24,
+       "text": "Median 5k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 40,
+       "text": "1 upload in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "found by the search for Laufschuhe, but few uploads on it · ~5k views per video · 1 upload in 3 months",
+     "value": {
+      "low": 12.024038249999998,
+      "mid": 23.687763750000002,
+      "high": 43.73897062500001
+     },
+     "median_views": 5400,
+     "recent": 1,
+     "on_topic": 0,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "beauty",
+       "label": "Beauty & care",
+       "uploads": 10
+      },
+      {
+       "group": "home",
+       "label": "Home & living",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "EV-e3yx37eU",
+       "title": "LAUFSCHUH GUIDE ● Welche Laufschuhe passen zu mir?",
+       "views": 36866,
+       "published": "2024-11-25",
+       "duration_s": 440
+      },
+      {
+       "id": "gzhq_FUTwQI",
+       "title": "TOP LAUFSCHUHE im TEST ● Das sind meine Favoriten",
+       "views": 44287,
+       "published": "2024-11-25",
+       "duration_s": 443
+      }
+     ],
+     "best_video": null,
+     "examples": []
+    }
+   ],
+   "cost": {
+    "search_units": 0,
+    "channel_units": 0,
+    "searches_cached": 0,
+    "channels_cached": 0,
+    "gemini_requests": 0,
+    "new_analyses": 0,
+    "kv_reads": 0
+   },
+   "pending": 3,
+   "seconds": 5,
+   "generated_at": "2026-11-25T15:12:14.435Z"
+  }
+ }
+]

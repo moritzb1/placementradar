@@ -1,0 +1,233 @@
+{
+  "video": "2fAruP6qKd4",
+  "model": "gemini-3.7-flash",
+  "seconds": 300.6,
+  "http": 200,
+  "meta": {
+    "title": "Glückstoff orthopädisches Kopfkissen im Test – Schluss mit Nackenschmerzen!",
+    "channel": "MEGA-Testberichte",
+    "view_count": 67117,
+    "duration": 230,
+    "upload_date": "20241106",
+    "description": "✅ Produktlink: https://link.amazon/B06t58277\nArtikel: https://www.mega-testberichte.de/testbericht/orthopaedisches-kopfkissen-glueckstoff-test\n\nEin orthopädisches Kissen, das mal etwas anders aussieht. Ich habe es getestet und teste es immer noch. \n\n#Kissen #schlafen #Bett #Nackenschmerzen #Rückenschläfer #Seitenschläfer\n\n=============================\nFolge mir:\n=============================\nAbonniere den Kanal, danke für den Support: https://www.youtube.com/c/MEGATestberichte\n\n► Instagram: https://www.instagram.com/mega_testberichte/\n► Web: www.mega-testberichte.de\n\n=============================\nMein Equipment\n=============================\nKameraequipment im Test: https://www.mega-testberichte.de/kameras-fotoequipment-test\n\n► Mein Schnittprogramm: https://amzn.to/3pWvQjf\n► Kamera 1: Lumix G81 mit Kitobjektiv: https://amzn.to/3GKUIkF\n► Kamera 2: Lumix S5: https://amzn.to/3m9bodP\n\n► Field-Monitor 2, Lilliput A7s-2: https://amzn.to/2EgXalp\n\n► Mikrofon Shure SM57: https://amzn.to/3yv455l\n► Mikrofonarm: https://amzn.to/3IQtIlD\n► Audiointerface 1, Behringer QX1002USB Xenyx : https://amzn.to/33BIT2d\n► Audiointerface 2, Behringer UMC22: https://amzn.to/33yl8Ic \n\nMusik: https://artlist.io/marco-3098682\nhttps://www.mega-testberichte.de/genutze-cc-materialien\n\n*Links auf Amazon oder andere Online-Shops sind Affiliate-Links. Durch einen Einkauf über diese Links erhalte ich eine kleine Provision. Für dich entstehen dabei keine Mehrkosten und es verändert den Preis auch nicht! Danke.\n► Amazon: https://amzn.to/3GP6cDE\n\nDie Produktion des Videos wurde vom Hersteller durch einen Produktionskostenzuschuss finanziell unterstützt."
+  },
+  "usage": {
+    "promptTokenCount": 21032,
+    "candidatesTokenCount": 1491,
+    "totalTokenCount": 23797,
+    "promptTokensDetails": [
+      {
+        "modality": "VIDEO",
+        "tokenCount": 20930
+      },
+      {
+        "modality": "TEXT",
+        "tokenCount": 102
+      }
+    ],
+    "thoughtsTokenCount": 1274,
+    "serviceTier": "standard"
+  },
+  "result": {
+    "brands": [
+      {
+        "brand": "Glücksstoff",
+        "appearances": [
+          {
+            "start": "00:08",
+            "end": "00:18",
+            "channel": "visual",
+            "evidence": "Orthopedic pillow shown and tested on bed",
+            "in_use": true,
+            "position": "center",
+            "size": "large",
+            "start_s": 8.0,
+            "end_s": 18.0
+          },
+          {
+            "start": "00:09",
+            "end": "00:11",
+            "channel": "audio",
+            "evidence": "Mentioned as 'orthopädische Kissen von Glücksstoff'",
+            "start_s": 9.0,
+            "end_s": 11.0
+          },
+          {
+            "start": "00:32",
+            "end": "00:52",
+            "channel": "visual",
+            "evidence": "Orthopedic pillow demonstrated and used for sleeping positions",
+            "in_use": true,
+            "position": "center",
+            "size": "large",
+            "start_s": 32.0,
+            "end_s": 52.0
+          },
+          {
+            "start": "00:56",
+            "end": "01:23",
+            "channel": "visual",
+            "evidence": "Demonstrating the contours and side-sleeper features of the pillow",
+            "in_use": true,
+            "position": "center",
+            "size": "large",
+            "start_s": 56.0,
+            "end_s": 83.0
+          },
+          {
+            "start": "01:18",
+            "end": "01:20",
+            "channel": "audio",
+            "evidence": "Spoken: 'Das Glücksstoff-Kissen ist wirklich flexibel einsetzbar'",
+            "start_s": 78.0,
+            "end_s": 80.0
+          },
+          {
+            "start": "01:24",
+            "end": "01:48",
+            "channel": "visual",
+            "evidence": "Detailed demonstration and measurement of pillow height and foam core",
+            "in_use": true,
+            "position": "center",
+            "size": "large",
+            "start_s": 84.0,
+            "end_s": 108.0
+          },
+          {
+            "start": "02:08",
+            "end": "02:14",
+            "channel": "text",
+            "evidence": "Label text: 'Made with Glücksstoff GmbH'",
+            "in_use": false,
+            "position": "center",
+            "size": "medium",
+            "start_s": 128.0,
+            "end_s": 134.0
+          },
+          {
+            "start": "02:15",
+            "end": "02:24",
+            "channel": "visual",
+            "evidence": "Pillow rolled up and packed into travel bag",
+            "in_use": true,
+            "position": "center",
+            "size": "large",
+            "start_s": 135.0,
+            "end_s": 144.0
+          },
+          {
+            "start": "02:27",
+            "end": "02:31",
+            "channel": "visual",
+            "evidence": "Glücksstoff website product catalog showing pillow variations",
+            "in_use": false,
+            "position": "center",
+            "size": "large",
+            "start_s": 147.0,
+            "end_s": 151.0
+          },
+          {
+            "start": "02:38",
+            "end": "02:41",
+            "channel": "audio",
+            "evidence": "Spoken: 'Glücksstoff pflanzt auch Bäume'",
+            "start_s": 158.0,
+            "end_s": 161.0
+          },
+          {
+            "start": "02:38",
+            "end": "02:41",
+            "channel": "text",
+            "evidence": "Glücksstoff website page on tree planting program",
+            "in_use": false,
+            "position": "center",
+            "size": "large",
+            "start_s": 158.0,
+            "end_s": 161.0
+          },
+          {
+            "start": "02:41",
+            "end": "03:38",
+            "channel": "visual",
+            "evidence": "Creator reviews and inspects interior of Glücksstoff pillow",
+            "in_use": true,
+            "position": "center",
+            "size": "large",
+            "start_s": 161.0,
+            "end_s": 218.0
+          }
+        ],
+        "category": "Home & Bedding",
+        "product": "Orthopedic Pillow"
+      },
+      {
+        "brand": "HEAD",
+        "appearances": [
+          {
+            "start": "00:19",
+            "end": "00:23",
+            "channel": "visual",
+            "evidence": "HEAD brand lettering on underwear waistband",
+            "in_use": true,
+            "position": "edge",
+            "size": "small",
+            "start_s": 19.0,
+            "end_s": 23.0
+          },
+          {
+            "start": "00:36",
+            "end": "00:41",
+            "channel": "visual",
+            "evidence": "HEAD brand lettering on waistband",
+            "in_use": true,
+            "position": "edge",
+            "size": "small",
+            "start_s": 36.0,
+            "end_s": 41.0
+          }
+        ],
+        "category": "Apparel",
+        "product": "Underwear"
+      },
+      {
+        "brand": "OEKO-TEX",
+        "appearances": [
+          {
+            "start": "01:59",
+            "end": "02:02",
+            "channel": "visual",
+            "evidence": "OEKO-TEX Standard 100 label shown on product packaging",
+            "in_use": false,
+            "position": "center",
+            "size": "medium",
+            "start_s": 119.0,
+            "end_s": 122.0
+          }
+        ],
+        "category": "Certification",
+        "product": "Standard 100 Certification"
+      },
+      {
+        "brand": "Grow My Tree",
+        "appearances": [
+          {
+            "start": "02:38",
+            "end": "02:40",
+            "channel": "text",
+            "evidence": "Website header reads 'Baumpflanzaktion mit Grow My Tree'",
+            "in_use": false,
+            "position": "center",
+            "size": "small",
+            "start_s": 158.0,
+            "end_s": 160.0
+          }
+        ],
+        "category": "Environmental Organization / Initiative",
+        "product": "Tree Planting Partnership"
+      }
+    ],
+    "disclosures": [],
+    "looks_like_paid_promotion": true,
+    "reasoning": "The entire video is dedicated to presenting and positively reviewing the Glücksstoff orthopedic pillow, showcasing product specifications, packaging, variants from the webshop, and directing viewers to purchase links in the description, indicating commercial intent or an affiliate/sponsored partnership."
+  }
+}

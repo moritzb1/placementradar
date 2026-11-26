@@ -339,6 +339,8 @@ tools/                     reproducible scripts: demo data (add_demo.py), brand 
                            YOLOE export (export_yoloe.py), own model v1 (train_brand_data.py, train_brand_model.py),
                            own model v2 (build_brand_data.py, camaug.py, train_brand_model_v2.py),
                            distillation (teach_pull.py), product types for Verify on screen (build_category_bank.py)
+tests/                     every test script, raw results (ergebnisse/) and the hand-checked ground truth (wahrheit/) of EVALUATION.md;
+                           photos and video frames left out (privacy, size)
 docs/screenshots/          screenshots used in this README
 docs/story/                the project in 15 slides: one HTML page (16:9 on screens, a normal page on phones) + PDF
                            (tools/story_pdf.mjs prints it); also published at moritzb1.github.io/apps/placementradar/

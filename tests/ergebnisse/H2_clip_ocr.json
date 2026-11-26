@@ -1,0 +1,262 @@
+[
+  {
+    "bild": "cam_2fAruP6qKd4.jpg",
+    "soll": "Head",
+    "clip": "Volvo",
+    "clip_p": 0.25,
+    "ocr": null,
+    "ocr_text": [],
+    "final": null,
+    "richtig": false,
+    "ms_clip": 21,
+    "ms_ocr": 261
+  },
+  {
+    "bild": "cam_VnBZfauMR5M.jpg",
+    "soll": "e.l.f.",
+    "clip": "Maybelline",
+    "clip_p": 0.56,
+    "ocr": null,
+    "ocr_text": [],
+    "final": "Maybelline",
+    "richtig": false,
+    "ms_clip": 19,
+    "ms_ocr": 82
+  },
+  {
+    "bild": "cam_VnBZfauMR5M.jpg",
+    "soll": "Dyson",
+    "clip": "Rossmann",
+    "clip_p": 0.14,
+    "ocr": null,
+    "ocr_text": [],
+    "final": null,
+    "richtig": false,
+    "ms_clip": 20,
+    "ms_ocr": 57
+  },
+  {
+    "bild": "cam_VnBZfauMR5M.jpg",
+    "soll": "Guess",
+    "clip": "Chanel",
+    "clip_p": 0.13,
+    "ocr": null,
+    "ocr_text": [],
+    "final": null,
+    "richtig": false,
+    "ms_clip": 21,
+    "ms_ocr": 32
+  },
+  {
+    "bild": "cam_dhFY1yo83d4.jpg",
+    "soll": "Louis Vuitton",
+    "clip": "Louis Vuitton",
+    "clip_p": 0.31,
+    "ocr": null,
+    "ocr_text": [
+      "my",
+      "bag",
+      "als"
+    ],
+    "final": "Louis Vuitton",
+    "richtig": true,
+    "ms_clip": 18,
+    "ms_ocr": 48
+  },
+  {
+    "bild": "cam_dhFY1yo83d4.jpg",
+    "soll": "Louis Vuitton",
+    "clip": "Colgate",
+    "clip_p": 0.26,
+    "ocr": null,
+    "ocr_text": [],
+    "final": null,
+    "richtig": false,
+    "ms_clip": 18,
+    "ms_ocr": 31
+  },
+  {
+    "bild": "cam_kPkLDnBByZE.jpg",
+    "soll": "Lidl",
+    "clip": "Lidl",
+    "clip_p": 0.99,
+    "ocr": "Lidl",
+    "ocr_text": [
+      "LiDL"
+    ],
+    "final": "Lidl",
+    "richtig": true,
+    "ms_clip": 20,
+    "ms_ocr": 43
+  },
+  {
+    "bild": "cam_kPkLDnBByZE.jpg",
+    "soll": "Babybel",
+    "clip": "Babybel",
+    "clip_p": 0.82,
+    "ocr": null,
+    "ocr_text": [],
+    "final": "Babybel",
+    "richtig": true,
+    "ms_clip": 18,
+    "ms_ocr": 60
+  },
+  {
+    "bild": "cam_kPkLDnBByZE.jpg",
+    "soll": "Grafschafter",
+    "clip": "Edeka",
+    "clip_p": 0.37,
+    "ocr": null,
+    "ocr_text": [],
+    "final": "Edeka",
+    "richtig": false,
+    "ms_clip": 20,
+    "ms_ocr": 115
+  },
+  {
+    "bild": "cam_kPkLDnBByZE.jpg",
+    "soll": "Lidl",
+    "clip": "Aldi",
+    "clip_p": 0.14,
+    "ocr": null,
+    "ocr_text": [],
+    "final": null,
+    "richtig": false,
+    "ms_clip": 20,
+    "ms_ocr": 37
+  },
+  {
+    "bild": "cam_wtDyhM_18Yo.jpg",
+    "soll": "BMW",
+    "clip": "Mercedes-Benz",
+    "clip_p": 0.58,
+    "ocr": null,
+    "ocr_text": [],
+    "final": "Mercedes-Benz",
+    "richtig": false,
+    "ms_clip": 19,
+    "ms_ocr": 57
+  },
+  {
+    "bild": "cam_wtDyhM_18Yo.jpg",
+    "soll": "Volvo",
+    "clip": "Volvo",
+    "clip_p": 0.78,
+    "ocr": null,
+    "ocr_text": [],
+    "final": "Volvo",
+    "richtig": true,
+    "ms_clip": 20,
+    "ms_ocr": 66
+  },
+  {
+    "bild": "cam_xRZSftRtB-s.jpg",
+    "soll": "REWE",
+    "clip": "REWE",
+    "clip_p": 0.78,
+    "ocr": null,
+    "ocr_text": [],
+    "final": "REWE",
+    "richtig": true,
+    "ms_clip": 19,
+    "ms_ocr": 83
+  },
+  {
+    "bild": "cam_xRZSftRtB-s.jpg",
+    "soll": "Skyr",
+    "clip": "Skyr",
+    "clip_p": 1.0,
+    "ocr": null,
+    "ocr_text": [],
+    "final": "Skyr",
+    "richtig": true,
+    "ms_clip": 20,
+    "ms_ocr": 39
+  },
+  {
+    "bild": "cam_xRZSftRtB-s.jpg",
+    "soll": "Skyr",
+    "clip": "Skyr",
+    "clip_p": 0.93,
+    "ocr": "Skyr",
+    "ocr_text": [
+      "SKYR"
+    ],
+    "final": "Skyr",
+    "richtig": true,
+    "ms_clip": 19,
+    "ms_ocr": 47
+  },
+  {
+    "bild": "cam_xRZSftRtB-s.jpg",
+    "soll": "Ja!",
+    "clip": "Edeka",
+    "clip_p": 0.42,
+    "ocr": null,
+    "ocr_text": [],
+    "final": "Edeka",
+    "richtig": false,
+    "ms_clip": 21,
+    "ms_ocr": 45
+  },
+  {
+    "bild": "cam_xRZSftRtB-s.jpg",
+    "soll": "Ja!",
+    "clip": "Skyr",
+    "clip_p": 0.36,
+    "ocr": null,
+    "ocr_text": [],
+    "final": "Skyr",
+    "richtig": false,
+    "ms_clip": 20,
+    "ms_ocr": 50
+  },
+  {
+    "bild": "cam_xRZSftRtB-s.jpg",
+    "soll": "Ja!",
+    "clip": "Edeka",
+    "clip_p": 0.22,
+    "ocr": null,
+    "ocr_text": [],
+    "final": null,
+    "richtig": false,
+    "ms_clip": 22,
+    "ms_ocr": 37
+  },
+  {
+    "bild": "cam_xRZSftRtB-s.jpg",
+    "soll": "Ja!",
+    "clip": "REWE",
+    "clip_p": 0.47,
+    "ocr": null,
+    "ocr_text": [],
+    "final": "REWE",
+    "richtig": false,
+    "ms_clip": 20,
+    "ms_ocr": 33
+  },
+  {
+    "bild": "cam_xRZSftRtB-s.jpg",
+    "soll": "Ja!",
+    "clip": "Guess",
+    "clip_p": 0.21,
+    "ocr": null,
+    "ocr_text": [],
+    "final": null,
+    "richtig": false,
+    "ms_clip": 20,
+    "ms_ocr": 60
+  },
+  {
+    "bild": "cam_xRZSftRtB-s.jpg",
+    "soll": "Ja!",
+    "clip": "Babybel",
+    "clip_p": 0.16,
+    "ocr": null,
+    "ocr_text": [],
+    "final": null,
+    "richtig": false,
+    "ms_clip": 22,
+    "ms_ocr": 44
+  }
+]

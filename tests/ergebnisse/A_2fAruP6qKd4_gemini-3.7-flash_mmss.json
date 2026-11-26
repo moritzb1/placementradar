@@ -1,0 +1,160 @@
+{
+  "video": "2fAruP6qKd4",
+  "model": "gemini-3.7-flash",
+  "seconds": 292.0,
+  "http": 200,
+  "meta": {
+    "title": "Glückstoff orthopädisches Kopfkissen im Test – Schluss mit Nackenschmerzen!",
+    "channel": "MEGA-Testberichte",
+    "view_count": 67117,
+    "duration": 230,
+    "upload_date": "20241106",
+    "description": "✅ Produktlink: https://link.amazon/B06t58277\nArtikel: https://www.mega-testberichte.de/testbericht/orthopaedisches-kopfkissen-glueckstoff-test\n\nEin orthopädisches Kissen, das mal etwas anders aussieht. Ich habe es getestet und teste es immer noch. \n\n#Kissen #schlafen #Bett #Nackenschmerzen #Rückenschläfer #Seitenschläfer\n\n=============================\nFolge mir:\n=============================\nAbonniere den Kanal, danke für den Support: https://www.youtube.com/c/MEGATestberichte\n\n► Instagram: https://www.instagram.com/mega_testberichte/\n► Web: www.mega-testberichte.de\n\n=============================\nMein Equipment\n=============================\nKameraequipment im Test: https://www.mega-testberichte.de/kameras-fotoequipment-test\n\n► Mein Schnittprogramm: https://amzn.to/3pWvQjf\n► Kamera 1: Lumix G81 mit Kitobjektiv: https://amzn.to/3GKUIkF\n► Kamera 2: Lumix S5: https://amzn.to/3m9bodP\n\n► Field-Monitor 2, Lilliput A7s-2: https://amzn.to/2EgXalp\n\n► Mikrofon Shure SM57: https://amzn.to/3yv455l\n► Mikrofonarm: https://amzn.to/3IQtIlD\n► Audiointerface 1, Behringer QX1002USB Xenyx : https://amzn.to/33BIT2d\n► Audiointerface 2, Behringer UMC22: https://amzn.to/33yl8Ic \n\nMusik: https://artlist.io/marco-3098682\nhttps://www.mega-testberichte.de/genutze-cc-materialien\n\n*Links auf Amazon oder andere Online-Shops sind Affiliate-Links. Durch einen Einkauf über diese Links erhalte ich eine kleine Provision. Für dich entstehen dabei keine Mehrkosten und es verändert den Preis auch nicht! Danke.\n► Amazon: https://amzn.to/3GP6cDE\n\nDie Produktion des Videos wurde vom Hersteller durch einen Produktionskostenzuschuss finanziell unterstützt."
+  },
+  "usage": {
+    "promptTokenCount": 21032,
+    "candidatesTokenCount": 932,
+    "totalTokenCount": 22744,
+    "promptTokensDetails": [
+      {
+        "modality": "VIDEO",
+        "tokenCount": 20930
+      },
+      {
+        "modality": "TEXT",
+        "tokenCount": 102
+      }
+    ],
+    "thoughtsTokenCount": 780,
+    "serviceTier": "standard"
+  },
+  "result": {
+    "brands": [
+      {
+        "brand": "Glücksstoff",
+        "appearances": [
+          {
+            "start": "00:08",
+            "end": "00:12",
+            "channel": "audio",
+            "evidence": "Spoken: '...orthopädische Kissen von Glücksstoff an...'",
+            "start_s": 8.0,
+            "end_s": 12.0
+          },
+          {
+            "start": "01:18",
+            "end": "01:21",
+            "channel": "audio",
+            "evidence": "Spoken: 'Das Glücksstoff-Kissen...'",
+            "start_s": 78.0,
+            "end_s": 81.0
+          },
+          {
+            "start": "02:08",
+            "end": "02:14",
+            "channel": "visual",
+            "evidence": "Tag printed with 'Glückstoff GmbH'",
+            "in_use": true,
+            "position": "center",
+            "size": "large",
+            "start_s": 128.0,
+            "end_s": 134.0
+          },
+          {
+            "start": "02:38",
+            "end": "02:41",
+            "channel": "audio",
+            "evidence": "Spoken: '...Glücksstoff pflanzt auch Bäume.'",
+            "start_s": 158.0,
+            "end_s": 161.0
+          },
+          {
+            "start": "02:38",
+            "end": "02:41",
+            "channel": "text",
+            "evidence": "Website text mentioning 'Glücksstoff'",
+            "in_use": false,
+            "position": "center",
+            "size": "small",
+            "start_s": 158.0,
+            "end_s": 161.0
+          }
+        ],
+        "category": "Home & Furniture",
+        "product": "Orthopedic Pillow"
+      },
+      {
+        "brand": "HEAD",
+        "appearances": [
+          {
+            "start": "00:19",
+            "end": "00:23",
+            "channel": "visual",
+            "evidence": "Logo/lettering on underwear waistband",
+            "in_use": true,
+            "position": "edge",
+            "size": "small",
+            "start_s": 19.0,
+            "end_s": 23.0
+          },
+          {
+            "start": "00:36",
+            "end": "00:42",
+            "channel": "visual",
+            "evidence": "Logo/lettering on underwear waistband",
+            "in_use": true,
+            "position": "edge",
+            "size": "small",
+            "start_s": 36.0,
+            "end_s": 42.0
+          },
+          {
+            "start": "02:44",
+            "end": "02:46",
+            "channel": "visual",
+            "evidence": "Logo/lettering on underwear waistband",
+            "in_use": true,
+            "position": "edge",
+            "size": "small",
+            "start_s": 164.0,
+            "end_s": 166.0
+          },
+          {
+            "start": "03:40",
+            "end": "03:44",
+            "channel": "visual",
+            "evidence": "Logo/lettering on underwear waistband",
+            "in_use": true,
+            "position": "edge",
+            "size": "small",
+            "start_s": 220.0,
+            "end_s": 224.0
+          }
+        ],
+        "category": "Clothing & Apparel",
+        "product": "Underwear"
+      },
+      {
+        "brand": "OEKO-TEX",
+        "appearances": [
+          {
+            "start": "01:59",
+            "end": "02:03",
+            "channel": "visual",
+            "evidence": "'OEKO-TEX STANDARD 100' certification label",
+            "in_use": false,
+            "position": "center",
+            "size": "medium",
+            "start_s": 119.0,
+            "end_s": 123.0
+          }
+        ],
+        "category": "Certification",
+        "product": "Textile Standard"
+      }
+    ],
+    "disclosures": [],
+    "looks_like_paid_promotion": true,
+    "reasoning": "The entire video is focused on showcasing, praising, and demonstrating the Glücksstoff orthopedic pillow with multiple callouts and an affiliate-style review article link referenced in the description."
+  }
+}

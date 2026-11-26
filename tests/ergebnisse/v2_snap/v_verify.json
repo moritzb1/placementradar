@@ -1,0 +1,572 @@
+{
+ "at": "2026-11-24T18:23:35.325Z",
+ "chrome": "Chrome/158.0.8127.88",
+ "cases": [
+  {
+   "id": "eLAVGYQCkQI",
+   "mode": "element",
+   "loadS": 1.082,
+   "scenes": [
+    {
+     "name": "jb_0055_totale",
+     "from": 50,
+     "to": 61,
+     "shot": 55,
+     "found": [],
+     "foundAt": [],
+     "tiles": {
+      "tilesRun": 9,
+      "lastMs": 116,
+      "boxes": 2
+     },
+     "frames": 7,
+     "msLastFrame": 3005,
+     "apps": [
+      {
+       "key": "Apple|48|64",
+       "brand": "Apple",
+       "product": "Mac Mini M4",
+       "type": "desktop computer",
+       "status": "not_checkable",
+       "checks": 7,
+       "hits": 0,
+       "kind": null,
+       "read": [],
+       "checkable": false,
+       "zs": {
+        "pos": 21,
+        "top": [
+         "shelf 0.246",
+         "wall 0.242",
+         "webcam 0.235"
+        ],
+        "on": "estimate"
+       },
+       "how": {},
+       "dev": [],
+       "meas": [],
+       "devMedian": null
+      },
+      {
+       "key": "LEGO|48|64",
+       "brand": "LEGO",
+       "product": "Orchid",
+       "type": "plant",
+       "status": "not_seen",
+       "checks": 7,
+       "hits": 1,
+       "kind": "object",
+       "read": [],
+       "checkable": true,
+       "zs": null,
+       "how": {
+        "object": 1
+       },
+       "dev": [
+        [
+         55,
+         0,
+         38.1
+        ]
+       ],
+       "meas": [
+        [
+         55,
+         366,
+         684,
+         457,
+         747
+        ]
+       ],
+       "devMedian": {
+        "iou": 0,
+        "dist": 38.1
+       }
+      },
+      {
+       "key": "Sonos|48|64",
+       "brand": "Sonos",
+       "product": "One Speakers",
+       "type": "speaker",
+       "status": "confirmed",
+       "checks": 7,
+       "hits": 3,
+       "kind": "type",
+       "read": [],
+       "checkable": false,
+       "zs": {
+        "pos": 4,
+        "top": [
+         "desktop computer tower 0.234",
+         "shelf 0.233",
+         "dark background 0.218"
+        ],
+        "on": "estimate"
+       },
+       "how": {
+        "type": 3
+       },
+       "dev": [],
+       "meas": [],
+       "devMedian": null
+      },
+      {
+       "key": "LG|48|64",
+       "brand": "LG",
+       "product": "43” Smart Monitor",
+       "type": "monitor",
+       "status": "confirmed",
+       "checks": 7,
+       "hits": 4,
+       "kind": "object",
+       "read": [],
+       "checkable": true,
+       "zs": {
+        "pos": 3,
+        "top": [
+         "desk 0.230",
+         "drawing tablet 0.209",
+         "computer monitor 0.209"
+        ],
+        "on": "estimate"
+       },
+       "how": {
+        "object": 3,
+        "type": 1
+       },
+       "dev": [
+        [
+         55.77,
+         0.3,
+         6.8
+        ],
+        [
+         57.79,
+         0.3,
+         9.1
+        ],
+        [
+         59.8,
+         0,
+         34.4
+        ]
+       ],
+       "meas": [
+        [
+         55.77,
+         312,
+         450,
+         536,
+         575
+        ],
+        [
+         57.79,
+         289,
+         440,
+         515,
+         576
+        ],
+        [
+         59.8,
+         113,
+         760,
+         817,
+         1000
+        ]
+       ],
+       "devMedian": {
+        "iou": 0.3,
+        "dist": 9.1
+       }
+      },
+      {
+       "key": "Quntis|48|64",
+       "brand": "Quntis",
+       "product": "Monitor Light Bar",
+       "type": "lamp",
+       "status": "not_checkable",
+       "checks": 7,
+       "hits": 0,
+       "kind": null,
+       "read": [],
+       "checkable": false,
+       "zs": {
+        "pos": 11,
+        "top": [
+         "drawing tablet 0.256",
+         "tablet computer 0.255",
+         "text on a screen 0.248"
+        ],
+        "on": "estimate"
+       },
+       "how": {},
+       "dev": [],
+       "meas": [],
+       "devMedian": null
+      }
+     ],
+     "unclaimed": [],
+     "measuredAtShot": [
+      {
+       "key": "LEGO|48|64",
+       "brand": "LEGO",
+       "product": "Orchid",
+       "box": [
+        366,
+        684,
+        457,
+        747
+       ],
+       "live": true
+      }
+     ],
+     "screenshot": "ergebnisse/v2_snap/jb_0055_totale.png"
+    },
+    {
+     "name": "jb_0325_nah",
+     "from": 200,
+     "to": 211,
+     "shot": 205,
+     "found": [],
+     "foundAt": [],
+     "tiles": {
+      "tilesRun": 18,
+      "lastMs": 119,
+      "boxes": 1
+     },
+     "frames": 7,
+     "msLastFrame": 2328,
+     "apps": [
+      {
+       "key": "Apple|200|210",
+       "brand": "Apple",
+       "product": "Mac Mini M4",
+       "type": "desktop computer",
+       "status": "not_checkable",
+       "checks": 7,
+       "hits": 0,
+       "kind": null,
+       "read": [],
+       "checkable": false,
+       "zs": {
+        "pos": 84,
+        "top": [
+         "face 0.235",
+         "person 0.225",
+         "hand 0.215"
+        ],
+        "on": "estimate"
+       },
+       "how": {},
+       "dev": [],
+       "meas": [],
+       "devMedian": null
+      },
+      {
+       "key": "LEGO|200|210",
+       "brand": "LEGO",
+       "product": "Orchid",
+       "type": "plant",
+       "status": "confirmed",
+       "checks": 7,
+       "hits": 4,
+       "kind": "object",
+       "read": [],
+       "checkable": true,
+       "zs": {
+        "pos": 73,
+        "top": [
+         "person 0.268",
+         "t-shirt 0.265",
+         "face 0.235"
+        ],
+        "on": "estimate"
+       },
+       "how": {
+        "object": 4
+       },
+       "dev": [
+        [
+         202.59,
+         0,
+         10
+        ],
+        [
+         206.62,
+         0,
+         10
+        ],
+        [
+         208.39,
+         0,
+         13.2
+        ],
+        [
+         209.88,
+         0,
+         13.3
+        ]
+       ],
+       "meas": [
+        [
+         202.59,
+         499,
+         453,
+         603,
+         490
+        ],
+        [
+         206.62,
+         502,
+         453,
+         602,
+         490
+        ],
+        [
+         208.39,
+         389,
+         427,
+         604,
+         511
+        ],
+        [
+         209.88,
+         390,
+         427,
+         599,
+         510
+        ]
+       ],
+       "devMedian": {
+        "iou": 0,
+        "dist": 11.6
+       }
+      },
+      {
+       "key": "Sonos|200|210",
+       "brand": "Sonos",
+       "product": "One Speakers",
+       "type": "speaker",
+       "status": "not_checkable",
+       "checks": 7,
+       "hits": 0,
+       "kind": null,
+       "read": [],
+       "checkable": false,
+       "zs": {
+        "pos": 33,
+        "top": [
+         "hoodie 0.239",
+         "t-shirt 0.233",
+         "jacket 0.224"
+        ],
+        "on": "estimate"
+       },
+       "how": {},
+       "dev": [],
+       "meas": [],
+       "devMedian": null
+      },
+      {
+       "key": "Keychron|200|210",
+       "brand": "Keychron",
+       "product": "K3 Keyboard",
+       "type": "keyboard",
+       "status": "not_seen",
+       "checks": 7,
+       "hits": 0,
+       "kind": null,
+       "read": [],
+       "checkable": true,
+       "zs": {
+        "pos": 79,
+        "top": [
+         "hand 0.277",
+         "trackpad 0.238",
+         "hoodie 0.233"
+        ],
+        "on": "estimate"
+       },
+       "how": {},
+       "dev": [],
+       "meas": [],
+       "devMedian": null
+      },
+      {
+       "key": "LG|200|210",
+       "brand": "LG",
+       "product": "43” Smart Monitor",
+       "type": "monitor",
+       "status": "confirmed",
+       "checks": 7,
+       "hits": 6,
+       "kind": "object",
+       "read": [],
+       "checkable": true,
+       "zs": null,
+       "how": {
+        "object": 4,
+        "type": 2
+       },
+       "dev": [
+        [
+         200,
+         0,
+         34.4
+        ],
+        [
+         204.59,
+         0,
+         34.5
+        ],
+        [
+         208.39,
+         0.22,
+         16.9
+        ],
+        [
+         205,
+         0,
+         34.5
+        ]
+       ],
+       "meas": [
+        [
+         200,
+         121,
+         761,
+         821,
+         1000
+        ],
+        [
+         204.59,
+         61,
+         756,
+         824,
+         1000
+        ],
+        [
+         208.39,
+         233,
+         516,
+         521,
+         812
+        ],
+        [
+         205,
+         118,
+         761,
+         818,
+         1000
+        ]
+       ],
+       "devMedian": {
+        "iou": 0,
+        "dist": 34.45
+       }
+      }
+     ],
+     "unclaimed": [],
+     "measuredAtShot": [
+      {
+       "key": "LG|200|210",
+       "brand": "LG",
+       "product": "43” Smart Monitor",
+       "box": [
+        118,
+        761,
+        818,
+        1000
+       ],
+       "live": true
+      }
+     ],
+     "screenshot": "ergebnisse/v2_snap/jb_0325_nah.png"
+    }
+   ],
+   "vsTruth": {
+    "all": {
+     "tp": 32,
+     "fp": 0,
+     "fn": 56,
+     "tn": 12
+    },
+    "sure": {
+     "tp": 3,
+     "fp": 0,
+     "fn": 0,
+     "tn": 12
+    },
+    "perBrand": {
+     "Apple": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 17,
+      "tn": 3
+     },
+     "LEGO": {
+      "tp": 11,
+      "fp": 0,
+      "fn": 6,
+      "tn": 3
+     },
+     "Sonos": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 12,
+      "tn": 3
+     },
+     "LG": {
+      "tp": 16,
+      "fp": 0,
+      "fn": 4,
+      "tn": 0
+     },
+     "Quntis": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 8,
+      "tn": 1
+     },
+     "Keychron": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 9,
+      "tn": 2
+     }
+    }
+   },
+   "summary": {
+    "confirmed": 5,
+    "not_seen": 1,
+    "not_checkable": 4,
+    "checking": 0,
+    "unchecked": 74,
+    "frames": 20,
+    "checked": 10,
+    "dev": {
+     "n": 24,
+     "iou": 0,
+     "dist": 16.2
+    }
+   },
+   "replayAfterStop": [
+    "LG 61,756,824,1000"
+   ],
+   "afterReload": {
+    "confirmed": 5,
+    "not_seen": 1,
+    "not_checkable": 4,
+    "checking": 0,
+    "unchecked": 74,
+    "frames": 19,
+    "checked": 10,
+    "dev": {
+     "n": 22,
+     "iou": 0,
+     "dist": 16.2
+    }
+   }
+  }
+ ]
+}

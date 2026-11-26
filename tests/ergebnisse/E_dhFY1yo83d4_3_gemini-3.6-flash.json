@@ -1,0 +1,295 @@
+{
+  "video": "dhFY1yo83d4",
+  "lauf": "3",
+  "model": "gemini-3.6-flash",
+  "seconds": 71.3,
+  "usage": {
+    "promptTokenCount": 45044,
+    "candidatesTokenCount": 1785,
+    "totalTokenCount": 49060,
+    "promptTokensDetails": [
+      {
+        "modality": "VIDEO",
+        "tokenCount": 44677
+      },
+      {
+        "modality": "TEXT",
+        "tokenCount": 367
+      }
+    ],
+    "thoughtsTokenCount": 2231,
+    "serviceTier": "standard"
+  },
+  "versuch": 2,
+  "result": {
+    "brands": [
+      {
+        "brand": "Louis Vuitton",
+        "appearances": [
+          {
+            "start": "00:00",
+            "end": "08:10",
+            "channel": "visual",
+            "frame_time": "00:24",
+            "in_use": true,
+            "start_s": 0.0,
+            "end_s": 490.0,
+            "frame_s": 24.0
+          },
+          {
+            "start": "00:23",
+            "end": "00:26",
+            "channel": "audio",
+            "start_s": 23.0,
+            "end_s": 26.0
+          },
+          {
+            "start": "01:39",
+            "end": "01:42",
+            "channel": "audio",
+            "start_s": 99.0,
+            "end_s": 102.0
+          }
+        ],
+        "product": "Monogram Palm Springs Mini Backpack"
+      },
+      {
+        "brand": "Glow Recipe",
+        "appearances": [
+          {
+            "start": "03:30",
+            "end": "03:39",
+            "channel": "visual",
+            "frame_time": "03:31",
+            "in_use": true,
+            "start_s": 210.0,
+            "end_s": 219.0,
+            "frame_s": 211.0
+          },
+          {
+            "start": "03:30",
+            "end": "03:32",
+            "channel": "audio",
+            "start_s": 210.0,
+            "end_s": 212.0
+          }
+        ],
+        "product": "Watermelon Glow Niacinamide Dew Drops Serum"
+      },
+      {
+        "brand": "Tarte Cosmetics",
+        "appearances": [
+          {
+            "start": "03:26",
+            "end": "03:27",
+            "channel": "visual",
+            "frame_time": "03:26",
+            "in_use": false,
+            "start_s": 206.0,
+            "end_s": 207.0,
+            "frame_s": 206.0
+          },
+          {
+            "start": "03:41",
+            "end": "03:43",
+            "channel": "visual",
+            "frame_time": "03:42",
+            "in_use": false,
+            "start_s": 221.0,
+            "end_s": 223.0,
+            "frame_s": 222.0
+          },
+          {
+            "start": "04:26",
+            "end": "04:28",
+            "channel": "visual",
+            "frame_time": "04:27",
+            "in_use": false,
+            "start_s": 266.0,
+            "end_s": 268.0,
+            "frame_s": 267.0
+          },
+          {
+            "start": "04:27",
+            "end": "04:28",
+            "channel": "audio",
+            "start_s": 267.0,
+            "end_s": 268.0
+          }
+        ],
+        "product": "Maracuja Juicy Lip Tint & Shape Tape Concealer"
+      },
+      {
+        "brand": "Rare Beauty",
+        "appearances": [
+          {
+            "start": "03:59",
+            "end": "04:02",
+            "channel": "visual",
+            "frame_time": "04:00",
+            "in_use": false,
+            "start_s": 239.0,
+            "end_s": 242.0,
+            "frame_s": 240.0
+          },
+          {
+            "start": "04:22",
+            "end": "04:25",
+            "channel": "visual",
+            "frame_time": "04:24",
+            "in_use": false,
+            "start_s": 262.0,
+            "end_s": 265.0,
+            "frame_s": 264.0
+          },
+          {
+            "start": "03:59",
+            "end": "04:00",
+            "channel": "audio",
+            "start_s": 239.0,
+            "end_s": 240.0
+          },
+          {
+            "start": "04:23",
+            "end": "04:24",
+            "channel": "audio",
+            "start_s": 263.0,
+            "end_s": 264.0
+          }
+        ],
+        "product": "Lipstick & Soft Pinch Liquid Blush"
+      },
+      {
+        "brand": "Benefit Cosmetics",
+        "appearances": [
+          {
+            "start": "04:03",
+            "end": "04:05",
+            "channel": "visual",
+            "frame_time": "04:04",
+            "in_use": false,
+            "start_s": 243.0,
+            "end_s": 245.0,
+            "frame_s": 244.0
+          },
+          {
+            "start": "04:03",
+            "end": "04:05",
+            "channel": "audio",
+            "start_s": 243.0,
+            "end_s": 245.0
+          }
+        ],
+        "product": "Gimme Brow Volumizing Eyebrow Gel"
+      },
+      {
+        "brand": "Josie Maran",
+        "appearances": [
+          {
+            "start": "04:05",
+            "end": "04:21",
+            "channel": "visual",
+            "frame_time": "04:10",
+            "in_use": false,
+            "start_s": 245.0,
+            "end_s": 261.0,
+            "frame_s": 250.0
+          },
+          {
+            "start": "04:05",
+            "end": "04:07",
+            "channel": "audio",
+            "start_s": 245.0,
+            "end_s": 247.0
+          }
+        ],
+        "product": "Whipped Argan Oil Body Butter"
+      },
+      {
+        "brand": "Apple",
+        "appearances": [
+          {
+            "start": "07:18",
+            "end": "07:23",
+            "channel": "visual",
+            "frame_time": "07:21",
+            "in_use": true,
+            "start_s": 438.0,
+            "end_s": 443.0,
+            "frame_s": 441.0
+          },
+          {
+            "start": "07:31",
+            "end": "07:34",
+            "channel": "visual",
+            "frame_time": "07:33",
+            "in_use": true,
+            "start_s": 451.0,
+            "end_s": 454.0,
+            "frame_s": 453.0
+          },
+          {
+            "start": "07:19",
+            "end": "07:23",
+            "channel": "audio",
+            "start_s": 439.0,
+            "end_s": 443.0
+          },
+          {
+            "start": "07:32",
+            "end": "07:34",
+            "channel": "audio",
+            "start_s": 452.0,
+            "end_s": 454.0
+          }
+        ],
+        "product": "AirPods & AirTag"
+      }
+    ],
+    "authenticity": [
+      {
+        "brand": "Louis Vuitton",
+        "overall": 80,
+        "verdict": "A relaxed and candid review of a gifted mini backpack featuring playful anecdotes and detailed functional walk-throughs.",
+        "use_shown": {
+          "score": 75,
+          "evidence": "Shares real experience taking the backpack out shopping recently",
+          "time": "00:36"
+        },
+        "balance": {
+          "score": 70,
+          "evidence": "Lightheartedly admits a kid told her it looked like Dora the Explorer's backpack",
+          "time": "00:46"
+        },
+        "specificity": {
+          "score": 78,
+          "evidence": "Explains specific design features including strap adjusters, top handle, and protruding front pouch",
+          "time": "01:02"
+        },
+        "delivery": {
+          "score": 82,
+          "evidence": "Speaks in an unscripted, soft conversational tone consistent with her usual ASMR style",
+          "time": "00:38"
+        },
+        "body_language": {
+          "score": 85,
+          "evidence": "Hands-on demonstration showing zippers, inner compartments, and fit of items inside",
+          "time": "01:09"
+        },
+        "sales_pressure": {
+          "score": 88,
+          "evidence": "Mentions providing a purchase link without any pushy sales tactics or promo codes",
+          "time": "00:59"
+        },
+        "product": "Palm Springs Mini Backpack"
+      }
+    ],
+    "disclosures": [
+      {
+        "kind": "spoken",
+        "text": "This bag was actually kindly sent to me, they wanted me to do a review",
+        "time": "00:55"
+      }
+    ]
+  }
+}

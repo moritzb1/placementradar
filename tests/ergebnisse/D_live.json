@@ -1,0 +1,576 @@
+{
+  "gemini-3.5-flash-lite": {
+    "cam_2fAruP6qKd4.jpg": {
+      "sekunden": 1.4,
+      "items": [
+        {
+          "brand": "HEAD",
+          "box_2d": [
+            472,
+            240,
+            874,
+            281
+          ],
+          "confidence": 0.95,
+          "product": "underwear"
+        }
+      ],
+      "token": 1237
+    },
+    "cam_VnBZfauMR5M.jpg": {
+      "sekunden": 1.68,
+      "items": [
+        {
+          "brand": "e.l.f.",
+          "box_2d": [
+            73,
+            462,
+            377,
+            548
+          ],
+          "product": "power grip primer"
+        },
+        {
+          "brand": "Guess",
+          "box_2d": [
+            372,
+            264,
+            1000,
+            719
+          ],
+          "product": "handbag"
+        }
+      ],
+      "token": 1295
+    },
+    "cam_dhFY1yo83d4.jpg": {
+      "sekunden": 1.33,
+      "items": [
+        {
+          "brand": "Louis Vuitton",
+          "box_2d": [
+            0,
+            244,
+            1000,
+            951
+          ],
+          "product": "backpack"
+        },
+        {
+          "brand": "Louis Vuitton",
+          "box_2d": [
+            278,
+            471,
+            626,
+            680
+          ],
+          "product": "wallet"
+        }
+      ],
+      "token": 1275
+    },
+    "cam_kPkLDnBByZE.jpg": {
+      "sekunden": 1.81,
+      "items": [
+        {
+          "brand": "Babybel",
+          "box_2d": [
+            834,
+            711,
+            1000,
+            875
+          ],
+          "confidence": 0.95,
+          "product": "cheese"
+        },
+        {
+          "brand": "Lidl",
+          "box_2d": [
+            36,
+            37,
+            452,
+            244
+          ],
+          "confidence": 0.99,
+          "product": "store sign"
+        }
+      ],
+      "token": 1312
+    },
+    "cam_wtDyhM_18Yo.jpg": {
+      "sekunden": 1.76,
+      "items": [
+        {
+          "brand": "BMW",
+          "box_2d": [
+            7,
+            169,
+            497,
+            631
+          ],
+          "confidence": 0.9,
+          "product": "car"
+        },
+        {
+          "brand": "Volvo",
+          "box_2d": [
+            510,
+            166,
+            1000,
+            627
+          ],
+          "confidence": 0.9,
+          "product": "car"
+        }
+      ],
+      "token": 1293
+    },
+    "cam_xRZSftRtB-s.jpg": {
+      "sekunden": 2.09,
+      "items": [
+        {
+          "brand": "Rewe",
+          "box_2d": [
+            18,
+            0,
+            203,
+            247
+          ],
+          "product": "supermarket logo"
+        }
+      ],
+      "token": 1224
+    }
+  },
+  "gemini-3.1-flash-lite": {
+    "cam_2fAruP6qKd4.jpg": {
+      "sekunden": 3.39,
+      "items": [
+        {
+          "brand": "Head",
+          "box_2d": [
+            473,
+            241,
+            866,
+            286
+          ],
+          "confidence": 0.98,
+          "product": "underwear"
+        }
+      ],
+      "token": 1235
+    },
+    "cam_VnBZfauMR5M.jpg": {
+      "sekunden": 2.86,
+      "items": [
+        {
+          "brand": "e.l.f.",
+          "box_2d": [
+            74,
+            464,
+            374,
+            548
+          ],
+          "confidence": 0.98,
+          "product": "primer"
+        },
+        {
+          "brand": "Dyson",
+          "box_2d": [
+            309,
+            543,
+            634,
+            672
+          ],
+          "confidence": 0.95,
+          "product": "hair dryer"
+        },
+        {
+          "brand": "Guess",
+          "box_2d": [
+            371,
+            264,
+            1000,
+            617
+          ],
+          "confidence": 0.92,
+          "product": "handbag"
+        }
+      ],
+      "token": 1385
+    },
+    "cam_dhFY1yo83d4.jpg": {
+      "sekunden": 3.27,
+      "items": [
+        {
+          "brand": "Louis Vuitton",
+          "box_2d": [
+            0,
+            248,
+            1000,
+            756
+          ],
+          "confidence": 0.98,
+          "product": "backpack"
+        },
+        {
+          "brand": "Louis Vuitton",
+          "box_2d": [
+            278,
+            475,
+            625,
+            666
+          ],
+          "confidence": 0.92,
+          "product": "pouch"
+        }
+      ],
+      "token": 1298
+    },
+    "cam_kPkLDnBByZE.jpg": {
+      "sekunden": 4.42,
+      "items": [
+        {
+          "brand": "Lidl",
+          "box_2d": [
+            23,
+            36,
+            453,
+            243
+          ],
+          "confidence": 0.99,
+          "product": "Store Sign"
+        },
+        {
+          "brand": "Babybel",
+          "box_2d": [
+            823,
+            713,
+            996,
+            873
+          ],
+          "confidence": 0.98,
+          "product": "Cheese"
+        },
+        {
+          "brand": "Grafschafter",
+          "box_2d": [
+            846,
+            443,
+            996,
+            713
+          ],
+          "confidence": 0.95,
+          "product": "Toast"
+        },
+        {
+          "brand": "Lidl",
+          "box_2d": [
+            780,
+            863,
+            996,
+            1000
+          ],
+          "confidence": 0.85,
+          "product": "High Protein Yogurt"
+        }
+      ],
+      "token": 1426
+    },
+    "cam_wtDyhM_18Yo.jpg": {
+      "sekunden": 3.08,
+      "items": [
+        {
+          "brand": "BMW",
+          "box_2d": [
+            11,
+            173,
+            497,
+            626
+          ],
+          "confidence": 0.98,
+          "product": "X5"
+        },
+        {
+          "brand": "Volvo",
+          "box_2d": [
+            517,
+            173,
+            997,
+            626
+          ],
+          "confidence": 0.98,
+          "product": "XC90"
+        }
+      ],
+      "token": 1298
+    },
+    "cam_xRZSftRtB-s.jpg": {
+      "sekunden": 4.36,
+      "items": [
+        {
+          "brand": "REWE",
+          "box_2d": [
+            12,
+            0,
+            228,
+            262
+          ],
+          "confidence": 0.99,
+          "product": "store sign"
+        },
+        {
+          "brand": "Skyr",
+          "box_2d": [
+            700,
+            94,
+            875,
+            206
+          ],
+          "confidence": 0.95,
+          "product": "yogurt"
+        },
+        {
+          "brand": "Skyr",
+          "box_2d": [
+            845,
+            97,
+            984,
+            203
+          ],
+          "confidence": 0.95,
+          "product": "yogurt"
+        },
+        {
+          "brand": "Ja!",
+          "box_2d": [
+            738,
+            194,
+            875,
+            283
+          ],
+          "confidence": 0.92,
+          "product": "canned food"
+        },
+        {
+          "brand": "Ja!",
+          "box_2d": [
+            636,
+            191,
+            750,
+            286
+          ],
+          "confidence": 0.92,
+          "product": "yogurt"
+        },
+        {
+          "brand": "Ja!",
+          "box_2d": [
+            566,
+            100,
+            703,
+            197
+          ],
+          "confidence": 0.92,
+          "product": "yogurt"
+        },
+        {
+          "brand": "Ja!",
+          "box_2d": [
+            733,
+            825,
+            986,
+            964
+          ],
+          "confidence": 0.94,
+          "product": "pasta"
+        },
+        {
+          "brand": "Ja!",
+          "box_2d": [
+            469,
+            469,
+            714,
+            547
+          ],
+          "confidence": 0.88,
+          "product": "flour"
+        },
+        {
+          "brand": "Ja!",
+          "box_2d": [
+            864,
+            561,
+            986,
+            631
+          ],
+          "confidence": 0.85,
+          "product": "canned food"
+        }
+      ],
+      "token": 1794
+    }
+  },
+  "gemini-3-flash-preview": {
+    "cam_2fAruP6qKd4.jpg": {
+      "sekunden": 8.84,
+      "items": [
+        {
+          "brand": "HEAD",
+          "box_2d": [
+            470,
+            238,
+            868,
+            288
+          ],
+          "confidence": 0.9,
+          "product": "pants"
+        }
+      ],
+      "token": 2175
+    },
+    "cam_VnBZfauMR5M.jpg": {
+      "sekunden": 120.06,
+      "fehler": "HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=120)"
+    },
+    "cam_dhFY1yo83d4.jpg": {
+      "sekunden": 1.36,
+      "items": [
+        {
+          "brand": "Louis Vuitton",
+          "box_2d": [
+            0,
+            250,
+            1000,
+            762
+          ],
+          "confidence": 0.9,
+          "product": "backpack"
+        }
+      ],
+      "token": 1212
+    },
+    "cam_kPkLDnBByZE.jpg": {
+      "sekunden": 1.77,
+      "items": [
+        {
+          "brand": "Lidl",
+          "box_2d": [
+            18,
+            35,
+            459,
+            243
+          ],
+          "confidence": 0.9
+        },
+        {
+          "brand": "Grafschafter",
+          "box_2d": [
+            850,
+            440,
+            1000,
+            712
+          ],
+          "product": "Vollkorn Toast"
+        },
+        {
+          "brand": "Babybel",
+          "box_2d": [
+            828,
+            712,
+            1000,
+            875
+          ],
+          "product": "Cheese"
+        },
+        {
+          "brand": "Milbona",
+          "box_2d": [
+            778,
+            864,
+            1000,
+            1000
+          ],
+          "product": "High Protein Pudding"
+        }
+      ],
+      "token": 1333
+    },
+    "cam_wtDyhM_18Yo.jpg": {
+      "sekunden": 8.66,
+      "items": [
+        {
+          "brand": "BMW",
+          "box_2d": [
+            12,
+            172,
+            495,
+            628
+          ],
+          "confidence": 0.9,
+          "product": "X5"
+        },
+        {
+          "brand": "Volvo",
+          "box_2d": [
+            515,
+            165,
+            995,
+            625
+          ],
+          "confidence": 0.9,
+          "product": "XC90"
+        }
+      ],
+      "token": 3156
+    },
+    "cam_xRZSftRtB-s.jpg": {
+      "sekunden": 2.9,
+      "fehler": 503,
+      "text": "{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n"
+    }
+  },
+  "gemini-3.5-flash": {
+    "cam_2fAruP6qKd4.jpg": {
+      "sekunden": 12.22,
+      "items": [
+        {
+          "brand": "HEAD",
+          "box_2d": [
+            471,
+            237,
+            866,
+            285
+          ],
+          "confidence": 0.8
+        }
+      ],
+      "token": 1225
+    },
+    "cam_VnBZfauMR5M.jpg": {
+      "sekunden": 0.36,
+      "fehler": 429,
+      "text": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/do"
+    },
+    "cam_dhFY1yo83d4.jpg": {
+      "sekunden": 0.36,
+      "fehler": 429,
+      "text": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/do"
+    },
+    "cam_kPkLDnBByZE.jpg": {
+      "sekunden": 0.4,
+      "fehler": 429,
+      "text": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/do"
+    },
+    "cam_wtDyhM_18Yo.jpg": {
+      "sekunden": 0.26,
+      "fehler": 429,
+      "text": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/do"
+    },
+    "cam_xRZSftRtB-s.jpg": {
+      "sekunden": 0.24,
+      "fehler": 429,
+      "text": "{\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/do"
+    }
+  }
+}

@@ -1,0 +1,1939 @@
+{
+ "brands": 131,
+ "products": 3707,
+ "train_photos": 5922,
+ "aug_per_photo": 3,
+ "test_products": 741,
+ "ocr_test_photos_with_known_brand": 49,
+ "ocr_test_photos_brand_not_in_model": 0,
+ "encoders": {
+  "MobileCLIP-S1": {
+   "visual_params_M": 21.5,
+   "alpha_text": 0.5,
+   "zero-shot (no training)": {
+    "packshot": {
+     "n": 741,
+     "top1": 0.567,
+     "top5": 0.706,
+     "answered@0.5": 0.563,
+     "wrong@0.5": 75,
+     "answered@0.7": 0.414,
+     "wrong@0.7": 32,
+     "answered@0.8": 0.343,
+     "wrong@0.8": 15,
+     "answered@0.9": 0.252,
+     "wrong@0.9": 7,
+     "answered@0.95": 0.177,
+     "wrong@0.95": 3
+    },
+    "original": {
+     "n": 737,
+     "top1": 0.545,
+     "top5": 0.695,
+     "answered@0.5": 0.556,
+     "wrong@0.5": 81,
+     "answered@0.7": 0.402,
+     "wrong@0.7": 33,
+     "answered@0.8": 0.339,
+     "wrong@0.8": 18,
+     "answered@0.9": 0.235,
+     "wrong@0.9": 6,
+     "answered@0.95": 0.171,
+     "wrong@0.95": 3
+    },
+    "original_webcam": {
+     "n": 737,
+     "top1": 0.345,
+     "top5": 0.452,
+     "answered@0.5": 0.361,
+     "wrong@0.5": 65,
+     "answered@0.7": 0.258,
+     "wrong@0.7": 27,
+     "answered@0.8": 0.21,
+     "wrong@0.8": 14,
+     "answered@0.9": 0.171,
+     "wrong@0.9": 7,
+     "answered@0.95": 0.13,
+     "wrong@0.95": 4
+    },
+    "ocr49": {
+     "n": 49,
+     "top1": 0.612,
+     "top5": 0.796,
+     "answered@0.5": 0.612,
+     "wrong@0.5": 4,
+     "answered@0.7": 0.551,
+     "wrong@0.7": 3,
+     "answered@0.8": 0.469,
+     "wrong@0.8": 3,
+     "answered@0.9": 0.388,
+     "wrong@0.9": 2,
+     "answered@0.95": 0.265,
+     "wrong@0.95": 1
+    },
+    "ocr49_logo_store_brands": {
+     "n": 24,
+     "top1": 0.458,
+     "top5": 0.667,
+     "answered@0.5": 0.5,
+     "wrong@0.5": 2,
+     "answered@0.7": 0.458,
+     "wrong@0.7": 1,
+     "answered@0.8": 0.375,
+     "wrong@0.8": 1,
+     "answered@0.9": 0.333,
+     "wrong@0.9": 1,
+     "answered@0.95": 0.292,
+     "wrong@0.95": 1
+    },
+    "unknown_brands": {
+     "n": 146,
+     "false_alarm@0.5": 0.185,
+     "false_alarm@0.7": 0.11,
+     "false_alarm@0.8": 0.055,
+     "false_alarm@0.9": 0.007,
+     "false_alarm@0.95": 0.007
+    },
+    "per_photo": [
+     {
+      "photo": "20692285.jpg",
+      "brand": "Milbona",
+      "pred": "Snack day",
+      "conf": 0.363
+     },
+     {
+      "photo": "3017620425035.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 0.985
+     },
+     {
+      "photo": "3033491454080.jpg",
+      "brand": "Danone",
+      "pred": "Danone",
+      "conf": 0.954
+     },
+     {
+      "photo": "3073780855358.jpg",
+      "brand": "Babybel",
+      "pred": "Schär",
+      "conf": 0.154
+     },
+     {
+      "photo": "3073781106497.jpg",
+      "brand": "Babybel",
+      "pred": "Babybel",
+      "conf": 0.992
+     },
+     {
+      "photo": "4000412020203.jpg",
+      "brand": "Gräfschafter",
+      "pred": "Gräfschafter",
+      "conf": 0.543
+     },
+     {
+      "photo": "4001686011225.jpg",
+      "brand": "Haribo",
+      "pred": "Haribo",
+      "conf": 0.956
+     },
+     {
+      "photo": "4001954000456.jpg",
+      "brand": "Kerrygold",
+      "pred": "Kerrygold",
+      "conf": 0.927
+     },
+     {
+      "photo": "4001954000494.jpg",
+      "brand": "Kerrygold",
+      "pred": "Kerrygold",
+      "conf": 0.925
+     },
+     {
+      "photo": "4002971253207.jpg",
+      "brand": "Ehrmann",
+      "pred": "Ehrmann",
+      "conf": 0.466
+     },
+     {
+      "photo": "4008400191423.jpg",
+      "brand": "Kinder",
+      "pred": "Schär",
+      "conf": 0.304
+     },
+     {
+      "photo": "40084053.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 0.99
+     },
+     {
+      "photo": "4008452028111.jpg",
+      "brand": "Weihenstephan",
+      "pred": "Rewe Bio",
+      "conf": 0.297
+     },
+     {
+      "photo": "4008452028135.jpg",
+      "brand": "Weihenstephan",
+      "pred": "Rewe Bio",
+      "conf": 0.382
+     },
+     {
+      "photo": "4008452036130.jpg",
+      "brand": "Weihenstephan",
+      "pred": "Edeka",
+      "conf": 0.173
+     },
+     {
+      "photo": "4009700035745.jpg",
+      "brand": "Danone",
+      "pred": "funny-frisch",
+      "conf": 0.675
+     },
+     {
+      "photo": "40255101.jpg",
+      "brand": "Müller",
+      "pred": "Müller",
+      "conf": 0.849
+     },
+     {
+      "photo": "4056489118190.jpg",
+      "brand": "Milbona",
+      "pred": "Snack day",
+      "conf": 0.201
+     },
+     {
+      "photo": "4056489187813.jpg",
+      "brand": "Milbona",
+      "pred": "Rewe Bio",
+      "conf": 0.387
+     },
+     {
+      "photo": "4056489206217.jpg",
+      "brand": "Gräfschafter",
+      "pred": "Gräfschafter",
+      "conf": 0.869
+     },
+     {
+      "photo": "42448877.jpg",
+      "brand": "Müller",
+      "pred": "Müller",
+      "conf": 0.928
+     },
+     {
+      "photo": "4250793501703.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia",
+      "conf": 0.998
+     },
+     {
+      "photo": "4260301527101.jpg",
+      "brand": "Coca-Cola",
+      "pred": "Coca-Cola",
+      "conf": 0.239
+     },
+     {
+      "photo": "4311501012246.jpg",
+      "brand": "Edeka",
+      "pred": "Edeka Bio",
+      "conf": 0.91
+     },
+     {
+      "photo": "4311501050224.jpg",
+      "brand": "Edeka",
+      "pred": "Edeka",
+      "conf": 0.569
+     },
+     {
+      "photo": "4311501695135.jpg",
+      "brand": "Edeka",
+      "pred": "Edeka Bio",
+      "conf": 0.865
+     },
+     {
+      "photo": "4337256199612.jpg",
+      "brand": "REWE Beste Wahl",
+      "pred": "Rewe Bio",
+      "conf": 0.332
+     },
+     {
+      "photo": "4337256679978.jpg",
+      "brand": "REWE Beste Wahl",
+      "pred": "Edeka",
+      "conf": 0.354
+     },
+     {
+      "photo": "4337256760485.jpg",
+      "brand": "REWE Beste Wahl",
+      "pred": "Lätta",
+      "conf": 0.093
+     },
+     {
+      "photo": "5000112639445.jpg",
+      "brand": "Coca-Cola",
+      "pred": "Coca-Cola",
+      "conf": 0.872
+     },
+     {
+      "photo": "5010029227062.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.79
+     },
+     {
+      "photo": "5411188125808.jpg",
+      "brand": "Alpro",
+      "pred": "Alpro",
+      "conf": 0.425
+     },
+     {
+      "photo": "5415049001201.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.947
+     },
+     {
+      "photo": "5449000321794.jpg",
+      "brand": "Coca-Cola",
+      "pred": "Volvic",
+      "conf": 0.304
+     },
+     {
+      "photo": "7622210038067.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia",
+      "conf": 0.762
+     },
+     {
+      "photo": "7622210306449.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia",
+      "conf": 0.969
+     },
+     {
+      "photo": "7622210585639.jpg",
+      "brand": "Oreo",
+      "pred": "Milka",
+      "conf": 0.954
+     },
+     {
+      "photo": "7622210616241.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia",
+      "conf": 0.989
+     },
+     {
+      "photo": "7622210704740.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.976
+     },
+     {
+      "photo": "7622300444181.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.999
+     },
+     {
+      "photo": "7622300744663.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.987
+     },
+     {
+      "photo": "8000500131329.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 0.901
+     },
+     {
+      "photo": "8000500227848.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 0.763
+     },
+     {
+      "photo": "8000500392935.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 0.454
+     },
+     {
+      "photo": "80946458.jpg",
+      "brand": "Nutella",
+      "pred": "Philadelphia",
+      "conf": 0.084
+     },
+     {
+      "photo": "84100733.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.999
+     },
+     {
+      "photo": "8934680033428.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.751
+     },
+     {
+      "photo": "90311161.jpg",
+      "brand": "Coca-Cola",
+      "pred": "Rügenwalder Mühle",
+      "conf": 0.195
+     },
+     {
+      "photo": "90398087.jpg",
+      "brand": "Danone",
+      "pred": "Kinder",
+      "conf": 0.179
+     }
+    ],
+    "ocr49_webcam": {
+     "n": 49,
+     "top1": 0.612,
+     "top5": 0.776,
+     "answered@0.5": 0.653,
+     "wrong@0.5": 5,
+     "answered@0.7": 0.531,
+     "wrong@0.7": 4,
+     "answered@0.8": 0.429,
+     "wrong@0.8": 2,
+     "answered@0.9": 0.388,
+     "wrong@0.9": 2,
+     "answered@0.95": 0.327,
+     "wrong@0.95": 1
+    },
+    "ocr49_webcam_logo_store_brands": {
+     "n": 24,
+     "top1": 0.458,
+     "top5": 0.625,
+     "answered@0.5": 0.542,
+     "wrong@0.5": 3,
+     "answered@0.7": 0.458,
+     "wrong@0.7": 2,
+     "answered@0.8": 0.333,
+     "wrong@0.8": 1,
+     "answered@0.9": 0.333,
+     "wrong@0.9": 1,
+     "answered@0.95": 0.292,
+     "wrong@0.95": 1
+    }
+   },
+   "trained head": {
+    "packshot": {
+     "n": 741,
+     "top1": 0.741,
+     "top5": 0.885,
+     "answered@0.5": 0.723,
+     "wrong@0.5": 72,
+     "answered@0.7": 0.579,
+     "wrong@0.7": 36,
+     "answered@0.8": 0.484,
+     "wrong@0.8": 22,
+     "answered@0.9": 0.34,
+     "wrong@0.9": 9,
+     "answered@0.95": 0.221,
+     "wrong@0.95": 6
+    },
+    "original": {
+     "n": 737,
+     "top1": 0.723,
+     "top5": 0.878,
+     "answered@0.5": 0.704,
+     "wrong@0.5": 70,
+     "answered@0.7": 0.554,
+     "wrong@0.7": 35,
+     "answered@0.8": 0.469,
+     "wrong@0.8": 20,
+     "answered@0.9": 0.332,
+     "wrong@0.9": 10,
+     "answered@0.95": 0.217,
+     "wrong@0.95": 6
+    },
+    "original_webcam": {
+     "n": 737,
+     "top1": 0.619,
+     "top5": 0.792,
+     "answered@0.5": 0.605,
+     "wrong@0.5": 75,
+     "answered@0.7": 0.441,
+     "wrong@0.7": 32,
+     "answered@0.8": 0.365,
+     "wrong@0.8": 20,
+     "answered@0.9": 0.259,
+     "wrong@0.9": 11,
+     "answered@0.95": 0.171,
+     "wrong@0.95": 5
+    },
+    "ocr49": {
+     "n": 49,
+     "top1": 0.612,
+     "top5": 0.735,
+     "answered@0.5": 0.633,
+     "wrong@0.5": 6,
+     "answered@0.7": 0.408,
+     "wrong@0.7": 4,
+     "answered@0.8": 0.388,
+     "wrong@0.8": 3,
+     "answered@0.9": 0.204,
+     "wrong@0.9": 1,
+     "answered@0.95": 0.163,
+     "wrong@0.95": 1
+    },
+    "ocr49_logo_store_brands": {
+     "n": 24,
+     "top1": 0.458,
+     "top5": 0.667,
+     "answered@0.5": 0.5,
+     "wrong@0.5": 3,
+     "answered@0.7": 0.333,
+     "wrong@0.7": 2,
+     "answered@0.8": 0.292,
+     "wrong@0.8": 1,
+     "answered@0.9": 0.167,
+     "wrong@0.9": 0,
+     "answered@0.95": 0.125,
+     "wrong@0.95": 0
+    },
+    "unknown_brands": {
+     "n": 146,
+     "false_alarm@0.5": 0.315,
+     "false_alarm@0.7": 0.185,
+     "false_alarm@0.8": 0.11,
+     "false_alarm@0.9": 0.041,
+     "false_alarm@0.95": 0.034
+    },
+    "per_photo": [
+     {
+      "photo": "20692285.jpg",
+      "brand": "Milbona",
+      "pred": "Milbona",
+      "conf": 0.918
+     },
+     {
+      "photo": "3017620425035.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 0.983
+     },
+     {
+      "photo": "3033491454080.jpg",
+      "brand": "Danone",
+      "pred": "Migros",
+      "conf": 0.278
+     },
+     {
+      "photo": "3073780855358.jpg",
+      "brand": "Babybel",
+      "pred": "Maribel",
+      "conf": 0.213
+     },
+     {
+      "photo": "3073781106497.jpg",
+      "brand": "Babybel",
+      "pred": "Milbona",
+      "conf": 0.755
+     },
+     {
+      "photo": "4000412020203.jpg",
+      "brand": "Gräfschafter",
+      "pred": "Freshona",
+      "conf": 0.32
+     },
+     {
+      "photo": "4001686011225.jpg",
+      "brand": "Haribo",
+      "pred": "Haribo",
+      "conf": 0.873
+     },
+     {
+      "photo": "4001954000456.jpg",
+      "brand": "Kerrygold",
+      "pred": "Kerrygold",
+      "conf": 0.603
+     },
+     {
+      "photo": "4001954000494.jpg",
+      "brand": "Kerrygold",
+      "pred": "Kerrygold",
+      "conf": 0.584
+     },
+     {
+      "photo": "4002971253207.jpg",
+      "brand": "Ehrmann",
+      "pred": "Ehrmann",
+      "conf": 0.63
+     },
+     {
+      "photo": "4008400191423.jpg",
+      "brand": "Kinder",
+      "pred": "Sondey",
+      "conf": 0.353
+     },
+     {
+      "photo": "40084053.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 0.961
+     },
+     {
+      "photo": "4008452028111.jpg",
+      "brand": "Weihenstephan",
+      "pred": "Weihenstephan",
+      "conf": 0.871
+     },
+     {
+      "photo": "4008452028135.jpg",
+      "brand": "Weihenstephan",
+      "pred": "Weihenstephan",
+      "conf": 0.548
+     },
+     {
+      "photo": "4008452036130.jpg",
+      "brand": "Weihenstephan",
+      "pred": "Weihenstephan",
+      "conf": 0.863
+     },
+     {
+      "photo": "4009700035745.jpg",
+      "brand": "Danone",
+      "pred": "Rio d'Oro",
+      "conf": 0.123
+     },
+     {
+      "photo": "40255101.jpg",
+      "brand": "Müller",
+      "pred": "Müller",
+      "conf": 0.404
+     },
+     {
+      "photo": "4056489118190.jpg",
+      "brand": "Milbona",
+      "pred": "Sondey",
+      "conf": 0.14
+     },
+     {
+      "photo": "4056489187813.jpg",
+      "brand": "Milbona",
+      "pred": "Milbona",
+      "conf": 0.335
+     },
+     {
+      "photo": "4056489206217.jpg",
+      "brand": "Gräfschafter",
+      "pred": "Choceur",
+      "conf": 0.23
+     },
+     {
+      "photo": "42448877.jpg",
+      "brand": "Müller",
+      "pred": "Müller",
+      "conf": 0.393
+     },
+     {
+      "photo": "4250793501703.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia",
+      "conf": 0.963
+     },
+     {
+      "photo": "4260301527101.jpg",
+      "brand": "Coca-Cola",
+      "pred": "Edeka Bio",
+      "conf": 0.337
+     },
+     {
+      "photo": "4311501012246.jpg",
+      "brand": "Edeka",
+      "pred": "Edeka Bio",
+      "conf": 0.879
+     },
+     {
+      "photo": "4311501050224.jpg",
+      "brand": "Edeka",
+      "pred": "Edeka Bio",
+      "conf": 0.186
+     },
+     {
+      "photo": "4311501695135.jpg",
+      "brand": "Edeka",
+      "pred": "Edeka Bio",
+      "conf": 0.691
+     },
+     {
+      "photo": "4337256199612.jpg",
+      "brand": "REWE Beste Wahl",
+      "pred": "Goldähren",
+      "conf": 0.195
+     },
+     {
+      "photo": "4337256679978.jpg",
+      "brand": "REWE Beste Wahl",
+      "pred": "Goldähren",
+      "conf": 0.345
+     },
+     {
+      "photo": "4337256760485.jpg",
+      "brand": "REWE Beste Wahl",
+      "pred": "funny-frisch",
+      "conf": 0.428
+     },
+     {
+      "photo": "5000112639445.jpg",
+      "brand": "Coca-Cola",
+      "pred": "Coca-Cola",
+      "conf": 0.954
+     },
+     {
+      "photo": "5010029227062.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.665
+     },
+     {
+      "photo": "5411188125808.jpg",
+      "brand": "Alpro",
+      "pred": "Alpro",
+      "conf": 0.911
+     },
+     {
+      "photo": "5415049001201.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.532
+     },
+     {
+      "photo": "5449000321794.jpg",
+      "brand": "Coca-Cola",
+      "pred": "Coca-Cola",
+      "conf": 0.333
+     },
+     {
+      "photo": "7622210038067.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia",
+      "conf": 0.816
+     },
+     {
+      "photo": "7622210306449.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia",
+      "conf": 0.897
+     },
+     {
+      "photo": "7622210585639.jpg",
+      "brand": "Oreo",
+      "pred": "Milka",
+      "conf": 0.331
+     },
+     {
+      "photo": "7622210616241.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia",
+      "conf": 0.397
+     },
+     {
+      "photo": "7622210704740.jpg",
+      "brand": "Oreo",
+      "pred": "Choceur",
+      "conf": 0.597
+     },
+     {
+      "photo": "7622300444181.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.887
+     },
+     {
+      "photo": "7622300744663.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.889
+     },
+     {
+      "photo": "8000500131329.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 0.98
+     },
+     {
+      "photo": "8000500227848.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 0.697
+     },
+     {
+      "photo": "8000500392935.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 0.692
+     },
+     {
+      "photo": "80946458.jpg",
+      "brand": "Nutella",
+      "pred": "Goldähren",
+      "conf": 0.971
+     },
+     {
+      "photo": "84100733.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.961
+     },
+     {
+      "photo": "8934680033428.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.636
+     },
+     {
+      "photo": "90311161.jpg",
+      "brand": "Coca-Cola",
+      "pred": "Migros",
+      "conf": 0.899
+     },
+     {
+      "photo": "90398087.jpg",
+      "brand": "Danone",
+      "pred": "Danone",
+      "conf": 0.956
+     }
+    ],
+    "ocr49_webcam": {
+     "n": 49,
+     "top1": 0.673,
+     "top5": 0.755,
+     "answered@0.5": 0.673,
+     "wrong@0.5": 6,
+     "answered@0.7": 0.469,
+     "wrong@0.7": 4,
+     "answered@0.8": 0.347,
+     "wrong@0.8": 2,
+     "answered@0.9": 0.224,
+     "wrong@0.9": 1,
+     "answered@0.95": 0.163,
+     "wrong@0.95": 1
+    },
+    "ocr49_webcam_logo_store_brands": {
+     "n": 24,
+     "top1": 0.625,
+     "top5": 0.75,
+     "answered@0.5": 0.5,
+     "wrong@0.5": 2,
+     "answered@0.7": 0.292,
+     "wrong@0.7": 1,
+     "answered@0.8": 0.25,
+     "wrong@0.8": 0,
+     "answered@0.9": 0.125,
+     "wrong@0.9": 0,
+     "answered@0.95": 0.083,
+     "wrong@0.95": 0
+    }
+   },
+   "trained head + text (alpha 0.5)": {
+    "packshot": {
+     "n": 741,
+     "top1": 0.784,
+     "top5": 0.907,
+     "answered@0.5": 0.838,
+     "wrong@0.5": 73,
+     "answered@0.7": 0.744,
+     "wrong@0.7": 43,
+     "answered@0.8": 0.695,
+     "wrong@0.8": 33,
+     "answered@0.9": 0.632,
+     "wrong@0.9": 20,
+     "answered@0.95": 0.574,
+     "wrong@0.95": 18
+    },
+    "original": {
+     "n": 737,
+     "top1": 0.764,
+     "top5": 0.898,
+     "answered@0.5": 0.837,
+     "wrong@0.5": 81,
+     "answered@0.7": 0.734,
+     "wrong@0.7": 39,
+     "answered@0.8": 0.676,
+     "wrong@0.8": 32,
+     "answered@0.9": 0.6,
+     "wrong@0.9": 21,
+     "answered@0.95": 0.551,
+     "wrong@0.95": 16
+    },
+    "original_webcam": {
+     "n": 737,
+     "top1": 0.624,
+     "top5": 0.798,
+     "answered@0.5": 0.695,
+     "wrong@0.5": 104,
+     "answered@0.7": 0.541,
+     "wrong@0.7": 41,
+     "answered@0.8": 0.487,
+     "wrong@0.8": 25,
+     "answered@0.9": 0.403,
+     "wrong@0.9": 12,
+     "answered@0.95": 0.336,
+     "wrong@0.95": 6
+    },
+    "ocr49": {
+     "n": 49,
+     "top1": 0.714,
+     "top5": 0.816,
+     "answered@0.5": 0.878,
+     "wrong@0.5": 8,
+     "answered@0.7": 0.776,
+     "wrong@0.7": 6,
+     "answered@0.8": 0.755,
+     "wrong@0.8": 5,
+     "answered@0.9": 0.633,
+     "wrong@0.9": 3,
+     "answered@0.95": 0.592,
+     "wrong@0.95": 3
+    },
+    "ocr49_logo_store_brands": {
+     "n": 24,
+     "top1": 0.625,
+     "top5": 0.75,
+     "answered@0.5": 0.792,
+     "wrong@0.5": 4,
+     "answered@0.7": 0.583,
+     "wrong@0.7": 2,
+     "answered@0.8": 0.583,
+     "wrong@0.8": 2,
+     "answered@0.9": 0.458,
+     "wrong@0.9": 1,
+     "answered@0.95": 0.458,
+     "wrong@0.95": 1
+    },
+    "unknown_brands": {
+     "n": 146,
+     "false_alarm@0.5": 0.432,
+     "false_alarm@0.7": 0.26,
+     "false_alarm@0.8": 0.205,
+     "false_alarm@0.9": 0.116,
+     "false_alarm@0.95": 0.075
+    },
+    "per_photo": [
+     {
+      "photo": "20692285.jpg",
+      "brand": "Milbona",
+      "pred": "Milbona",
+      "conf": 0.955
+     },
+     {
+      "photo": "3017620425035.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 1.0
+     },
+     {
+      "photo": "3033491454080.jpg",
+      "brand": "Danone",
+      "pred": "Migros",
+      "conf": 0.59
+     },
+     {
+      "photo": "3073780855358.jpg",
+      "brand": "Babybel",
+      "pred": "Babybel",
+      "conf": 0.504
+     },
+     {
+      "photo": "3073781106497.jpg",
+      "brand": "Babybel",
+      "pred": "Babybel",
+      "conf": 0.967
+     },
+     {
+      "photo": "4000412020203.jpg",
+      "brand": "Gräfschafter",
+      "pred": "Freshona",
+      "conf": 0.243
+     },
+     {
+      "photo": "4001686011225.jpg",
+      "brand": "Haribo",
+      "pred": "Haribo",
+      "conf": 0.999
+     },
+     {
+      "photo": "4001954000456.jpg",
+      "brand": "Kerrygold",
+      "pred": "Kerrygold",
+      "conf": 0.986
+     },
+     {
+      "photo": "4001954000494.jpg",
+      "brand": "Kerrygold",
+      "pred": "Kerrygold",
+      "conf": 0.992
+     },
+     {
+      "photo": "4002971253207.jpg",
+      "brand": "Ehrmann",
+      "pred": "Ehrmann",
+      "conf": 0.98
+     },
+     {
+      "photo": "4008400191423.jpg",
+      "brand": "Kinder",
+      "pred": "Sondey",
+      "conf": 0.219
+     },
+     {
+      "photo": "40084053.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 1.0
+     },
+     {
+      "photo": "4008452028111.jpg",
+      "brand": "Weihenstephan",
+      "pred": "Weihenstephan",
+      "conf": 0.827
+     },
+     {
+      "photo": "4008452028135.jpg",
+      "brand": "Weihenstephan",
+      "pred": "Weihenstephan",
+      "conf": 0.91
+     },
+     {
+      "photo": "4008452036130.jpg",
+      "brand": "Weihenstephan",
+      "pred": "Weihenstephan",
+      "conf": 0.963
+     },
+     {
+      "photo": "4009700035745.jpg",
+      "brand": "Danone",
+      "pred": "funny-frisch",
+      "conf": 0.296
+     },
+     {
+      "photo": "40255101.jpg",
+      "brand": "Müller",
+      "pred": "Müller",
+      "conf": 0.946
+     },
+     {
+      "photo": "4056489118190.jpg",
+      "brand": "Milbona",
+      "pred": "Sondey",
+      "conf": 0.215
+     },
+     {
+      "photo": "4056489187813.jpg",
+      "brand": "Milbona",
+      "pred": "Milbona",
+      "conf": 0.878
+     },
+     {
+      "photo": "4056489206217.jpg",
+      "brand": "Gräfschafter",
+      "pred": "Gräfschafter",
+      "conf": 0.894
+     },
+     {
+      "photo": "42448877.jpg",
+      "brand": "Müller",
+      "pred": "Müller",
+      "conf": 0.967
+     },
+     {
+      "photo": "4250793501703.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia",
+      "conf": 1.0
+     },
+     {
+      "photo": "4260301527101.jpg",
+      "brand": "Coca-Cola",
+      "pred": "Coca-Cola",
+      "conf": 0.611
+     },
+     {
+      "photo": "4311501012246.jpg",
+      "brand": "Edeka",
+      "pred": "Edeka Bio",
+      "conf": 0.999
+     },
+     {
+      "photo": "4311501050224.jpg",
+      "brand": "Edeka",
+      "pred": "Edeka Bio",
+      "conf": 0.714
+     },
+     {
+      "photo": "4311501695135.jpg",
+      "brand": "Edeka",
+      "pred": "Edeka Bio",
+      "conf": 0.991
+     },
+     {
+      "photo": "4337256199612.jpg",
+      "brand": "REWE Beste Wahl",
+      "pred": "Edeka",
+      "conf": 0.369
+     },
+     {
+      "photo": "4337256679978.jpg",
+      "brand": "REWE Beste Wahl",
+      "pred": "Goldähren",
+      "conf": 0.466
+     },
+     {
+      "photo": "4337256760485.jpg",
+      "brand": "REWE Beste Wahl",
+      "pred": "funny-frisch",
+      "conf": 0.643
+     },
+     {
+      "photo": "5000112639445.jpg",
+      "brand": "Coca-Cola",
+      "pred": "Coca-Cola",
+      "conf": 0.999
+     },
+     {
+      "photo": "5010029227062.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.985
+     },
+     {
+      "photo": "5411188125808.jpg",
+      "brand": "Alpro",
+      "pred": "Alpro",
+      "conf": 0.995
+     },
+     {
+      "photo": "5415049001201.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.991
+     },
+     {
+      "photo": "5449000321794.jpg",
+      "brand": "Coca-Cola",
+      "pred": "Coca-Cola",
+      "conf": 0.503
+     },
+     {
+      "photo": "7622210038067.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia",
+      "conf": 0.991
+     },
+     {
+      "photo": "7622210306449.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia",
+      "conf": 0.999
+     },
+     {
+      "photo": "7622210585639.jpg",
+      "brand": "Oreo",
+      "pred": "Milka",
+      "conf": 0.986
+     },
+     {
+      "photo": "7622210616241.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia",
+      "conf": 0.973
+     },
+     {
+      "photo": "7622210704740.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.892
+     },
+     {
+      "photo": "7622300444181.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 1.0
+     },
+     {
+      "photo": "7622300744663.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.999
+     },
+     {
+      "photo": "8000500131329.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 1.0
+     },
+     {
+      "photo": "8000500227848.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 0.989
+     },
+     {
+      "photo": "8000500392935.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 0.979
+     },
+     {
+      "photo": "80946458.jpg",
+      "brand": "Nutella",
+      "pred": "Goldähren",
+      "conf": 0.832
+     },
+     {
+      "photo": "84100733.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 1.0
+     },
+     {
+      "photo": "8934680033428.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.985
+     },
+     {
+      "photo": "90311161.jpg",
+      "brand": "Coca-Cola",
+      "pred": "Migros",
+      "conf": 0.834
+     },
+     {
+      "photo": "90398087.jpg",
+      "brand": "Danone",
+      "pred": "Danone",
+      "conf": 0.992
+     }
+    ],
+    "ocr49_webcam": {
+     "n": 49,
+     "top1": 0.796,
+     "top5": 0.796,
+     "answered@0.5": 0.898,
+     "wrong@0.5": 9,
+     "answered@0.7": 0.735,
+     "wrong@0.7": 5,
+     "answered@0.8": 0.694,
+     "wrong@0.8": 4,
+     "answered@0.9": 0.612,
+     "wrong@0.9": 3,
+     "answered@0.95": 0.551,
+     "wrong@0.95": 3
+    },
+    "ocr49_webcam_logo_store_brands": {
+     "n": 24,
+     "top1": 0.75,
+     "top5": 0.75,
+     "answered@0.5": 0.875,
+     "wrong@0.5": 5,
+     "answered@0.7": 0.625,
+     "wrong@0.7": 2,
+     "answered@0.8": 0.542,
+     "wrong@0.8": 1,
+     "answered@0.9": 0.5,
+     "wrong@0.9": 1,
+     "answered@0.95": 0.417,
+     "wrong@0.95": 1
+    }
+   },
+   "trained head + text + other-brand class": {
+    "packshot": {
+     "n": 741,
+     "top1": 0.777,
+     "top5": 0.893,
+     "answered@0.5": 0.842,
+     "wrong@0.5": 77,
+     "answered@0.7": 0.76,
+     "wrong@0.7": 47,
+     "answered@0.8": 0.711,
+     "wrong@0.8": 33,
+     "answered@0.9": 0.645,
+     "wrong@0.9": 20,
+     "answered@0.95": 0.588,
+     "wrong@0.95": 11
+    },
+    "original": {
+     "n": 737,
+     "top1": 0.76,
+     "top5": 0.883,
+     "answered@0.5": 0.843,
+     "wrong@0.5": 85,
+     "answered@0.7": 0.746,
+     "wrong@0.7": 48,
+     "answered@0.8": 0.706,
+     "wrong@0.8": 35,
+     "answered@0.9": 0.64,
+     "wrong@0.9": 22,
+     "answered@0.95": 0.578,
+     "wrong@0.95": 13
+    },
+    "original_webcam": {
+     "n": 737,
+     "top1": 0.616,
+     "top5": 0.801,
+     "answered@0.5": 0.754,
+     "wrong@0.5": 137,
+     "answered@0.7": 0.6,
+     "wrong@0.7": 70,
+     "answered@0.8": 0.548,
+     "wrong@0.8": 53,
+     "answered@0.9": 0.467,
+     "wrong@0.9": 29,
+     "answered@0.95": 0.403,
+     "wrong@0.95": 18
+    },
+    "ocr49": {
+     "n": 49,
+     "top1": 0.694,
+     "top5": 0.816,
+     "answered@0.5": 0.918,
+     "wrong@0.5": 11,
+     "answered@0.7": 0.816,
+     "wrong@0.7": 7,
+     "answered@0.8": 0.755,
+     "wrong@0.8": 6,
+     "answered@0.9": 0.694,
+     "wrong@0.9": 4,
+     "answered@0.95": 0.653,
+     "wrong@0.95": 3
+    },
+    "ocr49_logo_store_brands": {
+     "n": 24,
+     "top1": 0.625,
+     "top5": 0.792,
+     "answered@0.5": 0.875,
+     "wrong@0.5": 6,
+     "answered@0.7": 0.792,
+     "wrong@0.7": 4,
+     "answered@0.8": 0.708,
+     "wrong@0.8": 3,
+     "answered@0.9": 0.667,
+     "wrong@0.9": 2,
+     "answered@0.95": 0.583,
+     "wrong@0.95": 1
+    },
+    "unknown_brands": {
+     "n": 146,
+     "false_alarm@0.5": 0.486,
+     "false_alarm@0.7": 0.329,
+     "false_alarm@0.8": 0.253,
+     "false_alarm@0.9": 0.192,
+     "false_alarm@0.95": 0.137
+    },
+    "per_photo": [
+     {
+      "photo": "20692285.jpg",
+      "brand": "Milbona",
+      "pred": "Milbona",
+      "conf": 0.991
+     },
+     {
+      "photo": "3017620425035.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 1.0
+     },
+     {
+      "photo": "3033491454080.jpg",
+      "brand": "Danone",
+      "pred": "Migros",
+      "conf": 0.734
+     },
+     {
+      "photo": "3073780855358.jpg",
+      "brand": "Babybel",
+      "pred": "Babybel",
+      "conf": 0.736
+     },
+     {
+      "photo": "3073781106497.jpg",
+      "brand": "Babybel",
+      "pred": "Babybel",
+      "conf": 0.992
+     },
+     {
+      "photo": "4000412020203.jpg",
+      "brand": "Gräfschafter",
+      "pred": "Pfanner",
+      "conf": 0.157
+     },
+     {
+      "photo": "4001686011225.jpg",
+      "brand": "Haribo",
+      "pred": "Haribo",
+      "conf": 0.999
+     },
+     {
+      "photo": "4001954000456.jpg",
+      "brand": "Kerrygold",
+      "pred": "Kerrygold",
+      "conf": 0.996
+     },
+     {
+      "photo": "4001954000494.jpg",
+      "brand": "Kerrygold",
+      "pred": "Kerrygold",
+      "conf": 0.999
+     },
+     {
+      "photo": "4002971253207.jpg",
+      "brand": "Ehrmann",
+      "pred": "Ehrmann",
+      "conf": 0.982
+     },
+     {
+      "photo": "4008400191423.jpg",
+      "brand": "Kinder",
+      "pred": "Sondey",
+      "conf": 0.661
+     },
+     {
+      "photo": "40084053.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 1.0
+     },
+     {
+      "photo": "4008452028111.jpg",
+      "brand": "Weihenstephan",
+      "pred": "Edeka Bio",
+      "conf": 0.663
+     },
+     {
+      "photo": "4008452028135.jpg",
+      "brand": "Weihenstephan",
+      "pred": "Weihenstephan",
+      "conf": 0.973
+     },
+     {
+      "photo": "4008452036130.jpg",
+      "brand": "Weihenstephan",
+      "pred": "Weihenstephan",
+      "conf": 0.993
+     },
+     {
+      "photo": "4009700035745.jpg",
+      "brand": "Danone",
+      "pred": "funny-frisch",
+      "conf": 0.309
+     },
+     {
+      "photo": "40255101.jpg",
+      "brand": "Müller",
+      "pred": "Müller",
+      "conf": 0.78
+     },
+     {
+      "photo": "4056489118190.jpg",
+      "brand": "Milbona",
+      "pred": "Sondey",
+      "conf": 0.235
+     },
+     {
+      "photo": "4056489187813.jpg",
+      "brand": "Milbona",
+      "pred": "Milbona",
+      "conf": 0.983
+     },
+     {
+      "photo": "4056489206217.jpg",
+      "brand": "Gräfschafter",
+      "pred": "Gräfschafter",
+      "conf": 0.605
+     },
+     {
+      "photo": "42448877.jpg",
+      "brand": "Müller",
+      "pred": "Müller",
+      "conf": 0.964
+     },
+     {
+      "photo": "4250793501703.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia",
+      "conf": 1.0
+     },
+     {
+      "photo": "4260301527101.jpg",
+      "brand": "Coca-Cola",
+      "pred": "Coca-Cola",
+      "conf": 0.944
+     },
+     {
+      "photo": "4311501012246.jpg",
+      "brand": "Edeka",
+      "pred": "Edeka Bio",
+      "conf": 1.0
+     },
+     {
+      "photo": "4311501050224.jpg",
+      "brand": "Edeka",
+      "pred": "Edeka Bio",
+      "conf": 0.667
+     },
+     {
+      "photo": "4311501695135.jpg",
+      "brand": "Edeka",
+      "pred": "Edeka Bio",
+      "conf": 0.817
+     },
+     {
+      "photo": "4337256199612.jpg",
+      "brand": "REWE Beste Wahl",
+      "pred": "Edeka",
+      "conf": 0.901
+     },
+     {
+      "photo": "4337256679978.jpg",
+      "brand": "REWE Beste Wahl",
+      "pred": "Harry",
+      "conf": 0.395
+     },
+     {
+      "photo": "4337256760485.jpg",
+      "brand": "REWE Beste Wahl",
+      "pred": "funny-frisch",
+      "conf": 0.811
+     },
+     {
+      "photo": "5000112639445.jpg",
+      "brand": "Coca-Cola",
+      "pred": "Coca-Cola",
+      "conf": 0.998
+     },
+     {
+      "photo": "5010029227062.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.998
+     },
+     {
+      "photo": "5411188125808.jpg",
+      "brand": "Alpro",
+      "pred": "Alpro",
+      "conf": 0.996
+     },
+     {
+      "photo": "5415049001201.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.998
+     },
+     {
+      "photo": "5449000321794.jpg",
+      "brand": "Coca-Cola",
+      "pred": "Coca-Cola",
+      "conf": 0.971
+     },
+     {
+      "photo": "7622210038067.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia",
+      "conf": 0.995
+     },
+     {
+      "photo": "7622210306449.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia",
+      "conf": 0.999
+     },
+     {
+      "photo": "7622210585639.jpg",
+      "brand": "Oreo",
+      "pred": "Milka",
+      "conf": 0.962
+     },
+     {
+      "photo": "7622210616241.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia",
+      "conf": 0.814
+     },
+     {
+      "photo": "7622210704740.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.988
+     },
+     {
+      "photo": "7622300444181.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 1.0
+     },
+     {
+      "photo": "7622300744663.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 1.0
+     },
+     {
+      "photo": "8000500131329.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 0.999
+     },
+     {
+      "photo": "8000500227848.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 0.995
+     },
+     {
+      "photo": "8000500392935.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella",
+      "conf": 0.993
+     },
+     {
+      "photo": "80946458.jpg",
+      "brand": "Nutella",
+      "pred": "Goldähren",
+      "conf": 0.954
+     },
+     {
+      "photo": "84100733.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 1.0
+     },
+     {
+      "photo": "8934680033428.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo",
+      "conf": 0.998
+     },
+     {
+      "photo": "90311161.jpg",
+      "brand": "Coca-Cola",
+      "pred": "hohes C",
+      "conf": 0.602
+     },
+     {
+      "photo": "90398087.jpg",
+      "brand": "Danone",
+      "pred": "Danone",
+      "conf": 0.998
+     }
+    ],
+    "ocr49_webcam": {
+     "n": 49,
+     "top1": 0.735,
+     "top5": 0.796,
+     "answered@0.5": 0.878,
+     "wrong@0.5": 9,
+     "answered@0.7": 0.755,
+     "wrong@0.7": 6,
+     "answered@0.8": 0.735,
+     "wrong@0.8": 5,
+     "answered@0.9": 0.673,
+     "wrong@0.9": 3,
+     "answered@0.95": 0.592,
+     "wrong@0.95": 3
+    },
+    "ocr49_webcam_logo_store_brands": {
+     "n": 24,
+     "top1": 0.708,
+     "top5": 0.75,
+     "answered@0.5": 0.875,
+     "wrong@0.5": 5,
+     "answered@0.7": 0.708,
+     "wrong@0.7": 3,
+     "answered@0.8": 0.667,
+     "wrong@0.8": 2,
+     "answered@0.9": 0.625,
+     "wrong@0.9": 1,
+     "answered@0.95": 0.5,
+     "wrong@0.95": 1
+    }
+   },
+   "final: head + text, >= 0.9 and zero-shot top 5 agrees": {
+    "packshot": {
+     "n": 741,
+     "answered": 0.58,
+     "right": 415,
+     "wrong": 15
+    },
+    "original": {
+     "n": 737,
+     "answered": 0.548,
+     "right": 388,
+     "wrong": 16
+    },
+    "original_webcam": {
+     "n": 737,
+     "answered": 0.32,
+     "right": 229,
+     "wrong": 7
+    },
+    "ocr49": {
+     "n": 49,
+     "answered": 0.612,
+     "right": 27,
+     "wrong": 3
+    },
+    "per_photo": [
+     {
+      "photo": "20692285.jpg",
+      "brand": "Milbona",
+      "pred": null
+     },
+     {
+      "photo": "3017620425035.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella"
+     },
+     {
+      "photo": "3033491454080.jpg",
+      "brand": "Danone",
+      "pred": null
+     },
+     {
+      "photo": "3073780855358.jpg",
+      "brand": "Babybel",
+      "pred": null
+     },
+     {
+      "photo": "3073781106497.jpg",
+      "brand": "Babybel",
+      "pred": "Babybel"
+     },
+     {
+      "photo": "4000412020203.jpg",
+      "brand": "Gräfschafter",
+      "pred": null
+     },
+     {
+      "photo": "4001686011225.jpg",
+      "brand": "Haribo",
+      "pred": "Haribo"
+     },
+     {
+      "photo": "4001954000456.jpg",
+      "brand": "Kerrygold",
+      "pred": "Kerrygold"
+     },
+     {
+      "photo": "4001954000494.jpg",
+      "brand": "Kerrygold",
+      "pred": "Kerrygold"
+     },
+     {
+      "photo": "4002971253207.jpg",
+      "brand": "Ehrmann",
+      "pred": "Ehrmann"
+     },
+     {
+      "photo": "4008400191423.jpg",
+      "brand": "Kinder",
+      "pred": null
+     },
+     {
+      "photo": "40084053.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella"
+     },
+     {
+      "photo": "4008452028111.jpg",
+      "brand": "Weihenstephan",
+      "pred": null
+     },
+     {
+      "photo": "4008452028135.jpg",
+      "brand": "Weihenstephan",
+      "pred": "Weihenstephan"
+     },
+     {
+      "photo": "4008452036130.jpg",
+      "brand": "Weihenstephan",
+      "pred": "Weihenstephan"
+     },
+     {
+      "photo": "4009700035745.jpg",
+      "brand": "Danone",
+      "pred": null
+     },
+     {
+      "photo": "40255101.jpg",
+      "brand": "Müller",
+      "pred": "Müller"
+     },
+     {
+      "photo": "4056489118190.jpg",
+      "brand": "Milbona",
+      "pred": null
+     },
+     {
+      "photo": "4056489187813.jpg",
+      "brand": "Milbona",
+      "pred": null
+     },
+     {
+      "photo": "4056489206217.jpg",
+      "brand": "Gräfschafter",
+      "pred": null
+     },
+     {
+      "photo": "42448877.jpg",
+      "brand": "Müller",
+      "pred": "Müller"
+     },
+     {
+      "photo": "4250793501703.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia"
+     },
+     {
+      "photo": "4260301527101.jpg",
+      "brand": "Coca-Cola",
+      "pred": null
+     },
+     {
+      "photo": "4311501012246.jpg",
+      "brand": "Edeka",
+      "pred": "Edeka Bio"
+     },
+     {
+      "photo": "4311501050224.jpg",
+      "brand": "Edeka",
+      "pred": null
+     },
+     {
+      "photo": "4311501695135.jpg",
+      "brand": "Edeka",
+      "pred": "Edeka Bio"
+     },
+     {
+      "photo": "4337256199612.jpg",
+      "brand": "REWE Beste Wahl",
+      "pred": null
+     },
+     {
+      "photo": "4337256679978.jpg",
+      "brand": "REWE Beste Wahl",
+      "pred": null
+     },
+     {
+      "photo": "4337256760485.jpg",
+      "brand": "REWE Beste Wahl",
+      "pred": null
+     },
+     {
+      "photo": "5000112639445.jpg",
+      "brand": "Coca-Cola",
+      "pred": "Coca-Cola"
+     },
+     {
+      "photo": "5010029227062.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo"
+     },
+     {
+      "photo": "5411188125808.jpg",
+      "brand": "Alpro",
+      "pred": "Alpro"
+     },
+     {
+      "photo": "5415049001201.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo"
+     },
+     {
+      "photo": "5449000321794.jpg",
+      "brand": "Coca-Cola",
+      "pred": null
+     },
+     {
+      "photo": "7622210038067.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia"
+     },
+     {
+      "photo": "7622210306449.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia"
+     },
+     {
+      "photo": "7622210585639.jpg",
+      "brand": "Oreo",
+      "pred": "Milka"
+     },
+     {
+      "photo": "7622210616241.jpg",
+      "brand": "Philadelphia",
+      "pred": "Philadelphia"
+     },
+     {
+      "photo": "7622210704740.jpg",
+      "brand": "Oreo",
+      "pred": null
+     },
+     {
+      "photo": "7622300444181.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo"
+     },
+     {
+      "photo": "7622300744663.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo"
+     },
+     {
+      "photo": "8000500131329.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella"
+     },
+     {
+      "photo": "8000500227848.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella"
+     },
+     {
+      "photo": "8000500392935.jpg",
+      "brand": "Nutella",
+      "pred": "Nutella"
+     },
+     {
+      "photo": "80946458.jpg",
+      "brand": "Nutella",
+      "pred": null
+     },
+     {
+      "photo": "84100733.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo"
+     },
+     {
+      "photo": "8934680033428.jpg",
+      "brand": "Oreo",
+      "pred": "Oreo"
+     },
+     {
+      "photo": "90311161.jpg",
+      "brand": "Coca-Cola",
+      "pred": null
+     },
+     {
+      "photo": "90398087.jpg",
+      "brand": "Danone",
+      "pred": "Danone"
+     }
+    ],
+    "ocr49_webcam": {
+     "n": 49,
+     "answered": 0.592,
+     "right": 26,
+     "wrong": 3
+    },
+    "unknown_brands_false_alarm": 0.068
+   }
+  }
+ }
+}

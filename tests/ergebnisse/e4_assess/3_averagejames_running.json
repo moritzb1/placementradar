@@ -1,0 +1,85 @@
+{
+  "estimate": {
+    "audience": {
+      "age": "25-44",
+      "interests": [
+        "running",
+        "marathon training",
+        "shoe technology",
+        "fitness gear"
+      ],
+      "language": "English",
+      "country": "unknown",
+      "basis": "The content focuses on specific technical running shoe models and performance metrics, which typically appeals to adult recreational runners."
+    },
+    "tone": {
+      "style": "honest, technical, and accessible running reviews",
+      "credibility": "high",
+      "basis": "The creator explicitly brands the channel as '100% honest running shoe reviews' and provides comparative analysis between models."
+    },
+    "brand_safety": {
+      "level": "low_risk",
+      "topics": [],
+      "note": "The content is strictly focused on sports equipment and running, with no sensitive topics identified."
+    },
+    "partners": [],
+    "fit": {
+      "level": "high",
+      "reasons": [
+        "The channel is entirely dedicated to running shoe reviews, with 21 of the last 25 videos focusing on specific shoe models.",
+        "The creator has a high engagement rate relative to subscriber count, indicating a dedicated audience interested in purchasing decisions."
+      ],
+      "risk": "The channel is very small (722 subscribers), which may limit the total reach for a brand campaign.",
+      "format": "dedicated review"
+    },
+    "data_note": "There is no information regarding past sponsorships or partnerships in the provided data."
+  },
+  "checks": {
+    "partners_given": 0,
+    "dropped_partners": 0,
+    "dropped": [],
+    "topics_unverified": 0
+  },
+  "channel": {
+    "id": "UCaP3rW-Qa5VYWJX11VLuHVA",
+    "title": "Average James ",
+    "handle": "@AverageJames96",
+    "avatar": "https://yt3.googleusercontent.com/61oVsnqcN-K-XSK4MJFkYIKy31GJOMDPQaCfLUA680BqD_lNrw8idxTEw5jQb0-oOJSxvDmEEw=s160-c-k-c0x00ffffff-no-rj",
+    "subscribers": "722 subscribers",
+    "video_count": 231,
+    "source": "youtube-page",
+    "fetched_at": "2026-11-25T16:51:38.863Z"
+  },
+  "brand": "",
+  "product": "running shoes",
+  "input": {
+    "uploads": 25,
+    "with_description": 5,
+    "channel_description": true,
+    "analysed": 0,
+    "comments": 0,
+    "chars": 5989
+  },
+  "model": "gemini-3.1-flash-lite-preview",
+  "usage": {
+    "prompt": 1837,
+    "output": 359,
+    "thoughts": 124,
+    "total": 2320
+  },
+  "seconds": 6,
+  "created_at": "2026-11-25T18:25:41.539Z",
+  "prompt_version": 1,
+  "cached": false,
+  "quota": {
+    "visitor_left": 5,
+    "visitor_cap": 10,
+    "models": [
+      "gemini-3.7-flash",
+      "gemini-3.1-flash-lite-preview"
+    ],
+    "left_requests": 6,
+    "free_per_model": 20,
+    "blocked": null
+  }
+}

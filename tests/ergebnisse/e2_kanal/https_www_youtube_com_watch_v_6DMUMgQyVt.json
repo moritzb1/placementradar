@@ -1,0 +1,1102 @@
+{
+ "events": [
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "resolve",
+    "status": "run",
+    "title": "Finding the channel",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "resolve",
+    "status": "done",
+    "title": "Side of Tech",
+    "detail": "@sideoftech · 10.5K subscribers · YouTube channel page + RSS feed · from the 6-hour cache, 0 units",
+    "at_s": 0,
+    "channel": {
+     "id": "UCaLyvwLBnraBagJNEGDGCZQ",
+     "title": "Side of Tech",
+     "handle": "@sideoftech",
+     "avatar": "https://yt3.googleusercontent.com/sl7miugqK3QTLfyZzh9G_ETBUm9nfyRujF_QdtbbvWhLo1s2QwJh7sWg3bQFeJhwq88_x-NW=s160-c-k-c0x00ffffff-no-rj",
+     "subscribers": "10.5K subscribers",
+     "video_count": 336,
+     "source": "youtube-page",
+     "fetched_at": "2026-11-25T14:55:35.533Z"
+    }
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "uploads",
+    "status": "done",
+    "title": "Latest uploads",
+    "detail": "25 videos, 2024-11-25 – 2026-08-27 · Shorts and live streams left out",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "library",
+    "status": "run",
+    "title": "Checking analyses we already have",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "library",
+    "status": "done",
+    "title": "Analyses we already have",
+    "detail": "1 analysed video of Side of Tech (1 among the latest 25) – 0 requests",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "audience",
+    "status": "done",
+    "title": "Audience reactions",
+    "detail": "no comments cached yet – open a video's Audience tab to load them (not done here, to save quota)",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "confirm",
+   "data": {
+    "candidates": [
+     {
+      "id": "WpJV3jfiyo4",
+      "title": "The ULTIMATE Gaming Desk Setup",
+      "views": 142000,
+      "duration_s": 737,
+      "published": "2024-11-25",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "T5r63cKs_H8",
+      "title": "Exploring the Best iPhone 16 Pro Cases",
+      "views": 101000,
+      "duration_s": 697,
+      "published": "2024-11-25",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "6PFf6i_b9wo",
+      "title": "This is Only $100?! - YUNZII AL66 Mechanical Keyboard Review",
+      "views": 64000,
+      "duration_s": 489,
+      "published": "2024-11-25",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "AhrUiUkZIhw",
+      "title": "Gravastar Mercury M2 Review - The Cyberpunk Gaming Mouse",
+      "views": 56000,
+      "duration_s": 435,
+      "published": "2024-11-25",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "L9qvq_5X578",
+      "title": "Best Thunderbolt 5 Dock? - UGREEN Revodok Max Review",
+      "views": 53000,
+      "duration_s": 418,
+      "published": "2025-11-25",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "LVHfzskIYs0",
+      "title": "Lighting Desk Setup Hacks for Maximum Efficiency",
+      "views": 41000,
+      "duration_s": 344,
+      "published": "2024-11-25",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "XIMbdD8BBV0",
+      "title": "NZXT H3 Flow WHITE mATX PC Build - RTX 5070 Ti | AMD Ryzen 9800X3D",
+      "views": 38000,
+      "duration_s": 741,
+      "published": "2025-11-25",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "PYt6-pMDAKs",
+      "title": "You’ve Never Seen a Keyboard Like This Before - Gravastar Mercury K1 Pro Review",
+      "views": 35000,
+      "duration_s": 423,
+      "published": "2025-11-25",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     }
+    ],
+    "preselected": [],
+    "quota": {
+     "models": 4,
+     "exhausted": 0,
+     "used_requests": 0,
+     "left_requests": 80,
+     "free_per_model": 20,
+     "visitor_left": 10,
+     "visitor_cap": 10,
+     "reset_in_s": 61354,
+     "blocked": null
+    },
+    "max_new": 3,
+    "per_video_requests": 3
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "confirm",
+    "status": "skip",
+    "title": "Waiting for your OK",
+    "detail": "up to 3 new analyses (≈ 3 Gemini requests each) – the report below uses analysed videos only until you confirm",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "aggregate",
+    "status": "run",
+    "title": "Combining the results",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "aggregate",
+    "status": "done",
+    "title": "Combined the results",
+    "detail": "1 analysed video · 18 brands · 3 product fields",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "report",
+   "data": {
+    "channel": {
+     "id": "UCaLyvwLBnraBagJNEGDGCZQ",
+     "title": "Side of Tech",
+     "handle": "@sideoftech",
+     "avatar": "https://yt3.googleusercontent.com/sl7miugqK3QTLfyZzh9G_ETBUm9nfyRujF_QdtbbvWhLo1s2QwJh7sWg3bQFeJhwq88_x-NW=s160-c-k-c0x00ffffff-no-rj",
+     "subscribers": "10.5K subscribers",
+     "video_count": 336,
+     "source": "youtube-page",
+     "fetched_at": "2026-11-25T14:55:35.533Z"
+    },
+    "uploads": [
+     {
+      "id": "4JtXtn3xoe8",
+      "title": "I Built the Ultimate Creative Desk Setup",
+      "views": 479,
+      "duration_s": 381,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "RKjYN-FJ61A",
+      "title": "I COMPLETELY UPGRADED My Gaming Desk Setup",
+      "views": 3200,
+      "duration_s": 473,
+      "published": "2026-05-29",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "XWp1e_LEWbo",
+      "title": "No One Knows About This Gaming Mouse | Angry Miao Infinity Review",
+      "views": 12000,
+      "duration_s": 530,
+      "published": "2025-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "XIMbdD8BBV0",
+      "title": "NZXT H3 Flow WHITE mATX PC Build - RTX 5070 Ti | AMD Ryzen 9800X3D",
+      "views": 38000,
+      "duration_s": 741,
+      "published": "2025-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "jLDn_x0BXqs",
+      "title": "The VALUE King - FLYDIGI Vader 4 Pro Controller Review",
+      "views": 31000,
+      "duration_s": 492,
+      "published": "2025-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "0IWE099ATuo",
+      "title": "Best Wireless Gaming Headset Under $200? - Fractal Scape Review",
+      "views": 12000,
+      "duration_s": 511,
+      "published": "2025-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "L9qvq_5X578",
+      "title": "Best Thunderbolt 5 Dock? - UGREEN Revodok Max Review",
+      "views": 53000,
+      "duration_s": 418,
+      "published": "2025-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "PYt6-pMDAKs",
+      "title": "You’ve Never Seen a Keyboard Like This Before - Gravastar Mercury K1 Pro Review",
+      "views": 35000,
+      "duration_s": 423,
+      "published": "2025-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "QydDooYyUkw",
+      "title": "Level Up Your Gaming Setup! - Nanoleaf Pegboard Desk Dock Review",
+      "views": 4800,
+      "duration_s": 229,
+      "published": "2025-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "2P4rV2eSVFo",
+      "title": "Transforming Old Bedroom Into Dream Room!",
+      "views": 9200,
+      "duration_s": 630,
+      "published": "2025-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "title": "The ULTIMATE PC Gaming & Mac Desk Setup - 2025",
+      "views": 129000,
+      "duration_s": 788,
+      "published": "2025-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": "store"
+     },
+     {
+      "id": "V82GFMKzFKs",
+      "title": "Dark & Moody Desk Setup Studio Tour 2025",
+      "views": 6700,
+      "duration_s": 658,
+      "published": "2025-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "o92hKO7IgCg",
+      "title": "Elite Series 2 VS Victrix Pro BFG Controller Comparison!",
+      "views": 28000,
+      "duration_s": 695,
+      "published": "2025-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "ZUXpYZdovL4",
+      "title": "The Ultimate $100 Gaming Keyboard! | Lemokey P1 Pro Review",
+      "views": 10000,
+      "duration_s": 455,
+      "published": "2025-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "VD9AaHtW-F4",
+      "title": "iPhone 16 Pro Max: The Best Phone Ever Made?",
+      "views": 729,
+      "duration_s": 551,
+      "published": "2024-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "T5r63cKs_H8",
+      "title": "Exploring the Best iPhone 16 Pro Cases",
+      "views": 101000,
+      "duration_s": 697,
+      "published": "2024-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "E21PupmX8eE",
+      "title": "iPhone 16 Pro: Worth The Upgrade?",
+      "views": 612,
+      "duration_s": 323,
+      "published": "2024-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "euwYDJFXhVE",
+      "title": "Unboxing the New G502 X Plus Colorway!",
+      "views": 2800,
+      "duration_s": 445,
+      "published": "2024-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "LVHfzskIYs0",
+      "title": "Lighting Desk Setup Hacks for Maximum Efficiency",
+      "views": 41000,
+      "duration_s": 344,
+      "published": "2024-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "Dx7CDdKjh1w",
+      "title": "The $100 Gem - Epomaker Galaxy80 Keyboard Review",
+      "views": 3900,
+      "duration_s": 390,
+      "published": "2024-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "WpJV3jfiyo4",
+      "title": "The ULTIMATE Gaming Desk Setup",
+      "views": 142000,
+      "duration_s": 737,
+      "published": "2024-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "AhrUiUkZIhw",
+      "title": "Gravastar Mercury M2 Review - The Cyberpunk Gaming Mouse",
+      "views": 56000,
+      "duration_s": 435,
+      "published": "2024-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "6PFf6i_b9wo",
+      "title": "This is Only $100?! - YUNZII AL66 Mechanical Keyboard Review",
+      "views": 64000,
+      "duration_s": 489,
+      "published": "2024-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "xbDD6MOlMak",
+      "title": "Sandmarc Pro Leather Case & Anamorphic Lens Long Term Review",
+      "views": 2600,
+      "duration_s": 268,
+      "published": "2024-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "QipiPs0ZAu4",
+      "title": "The Truth - CASETiFY Ultra Bounce Case Long Term Review",
+      "views": 21000,
+      "duration_s": 415,
+      "published": "2024-11-25",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     }
+    ],
+    "summary": {
+     "query": null,
+     "generated_at": "2026-11-25T14:57:25.870Z",
+     "spread": 0.5,
+     "totals": {
+      "videos": 1,
+      "checked": 1,
+      "not_found": 0,
+      "views": 128432,
+      "screen_s": 71,
+      "screen_range": {
+       "low": 36,
+       "high": 107
+      },
+      "spoken_s": 71,
+      "mentions": 22,
+      "value": {
+       "low": 600.3316473053297,
+       "mid": 1241.3787995088833,
+       "high": 2403.9268207633245
+      },
+      "in_use": 1,
+      "commercial": 1,
+      "paid": 1,
+      "labelled": 1,
+      "weak": 0,
+      "unlabelled": 0,
+      "no_signals": 0
+     },
+     "videos": [
+      {
+       "id": "6DMUMgQyVtc",
+       "title": "The ULTIMATE PC Gaming & Mac Desk Setup - 2025",
+       "channel": "Side of Tech",
+       "views": 128432,
+       "duration_s": 788,
+       "upload_date": "2025-04-15",
+       "analyzed_at": "2026-11-21",
+       "found": true,
+       "brands": [
+        "Razer",
+        "ASUS",
+        "Apple",
+        "Vernal",
+        "GravaStar",
+        "Philips Hue",
+        "Edifier",
+        "Divoom",
+        "NZXT",
+        "LG",
+        "Keychron",
+        "Logitech",
+        "CalDigit",
+        "Graywind",
+        "Nanoleaf",
+        "Focusrite",
+        "RØDE",
+        "beyerdynamic"
+       ],
+       "products": [
+        "USB 4 Dock",
+        "PG32UCDM",
+        "MacBook Pro",
+        "L-Shape Standing Desk",
+        "K1 Pro Keyboard",
+        "Hue Lightstrip"
+       ],
+       "category": "Electronics",
+       "screen_s": 71,
+       "screen_range": {
+        "low": 36,
+        "high": 107
+       },
+       "spoken_s": 71,
+       "text_s": 0,
+       "mentions": 22,
+       "shown": true,
+       "in_use": true,
+       "background_only": false,
+       "value": {
+        "low": 600.3316473053297,
+        "mid": 1241.3787995088833,
+        "high": 2403.9268207633245
+       },
+       "value_range": {
+        "low": 600.3316473053297,
+        "mid": 1241.3787995088833,
+        "high": 2403.9268207633245
+       },
+       "paid": true,
+       "disclosure": {
+        "level": "green",
+        "label": "Labelled",
+        "title": "Disclosure found",
+        "signals": [
+         "Gemini rates the video as paid or gifted promotion",
+         "Shop / affiliate link in description (\"bit.ly\")",
+         "Products are actively recommended"
+        ]
+       },
+       "others": [],
+       "sponsors": [
+        {
+         "brand": "Razer",
+         "kind": "paid"
+        },
+        {
+         "brand": "ASUS",
+         "kind": "paid"
+        },
+        {
+         "brand": "Apple",
+         "kind": "paid"
+        },
+        {
+         "brand": "Philips Hue",
+         "kind": "paid"
+        },
+        {
+         "brand": "Vernal",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "GravaStar",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Edifier",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Divoom",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "LG",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Keychron",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Logitech",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "CalDigit",
+         "kind": "affiliate"
+        }
+       ],
+       "source": "store"
+      }
+     ],
+     "not_found": [],
+     "creators": [
+      {
+       "channel": "Side of Tech",
+       "videos": 1,
+       "views": 128432,
+       "screen_s": 71,
+       "value_mid": 1241.3787995088833,
+       "labelled": 1,
+       "unlabelled": 0
+      }
+     ],
+     "months": [
+      {
+       "month": "2025-04",
+       "videos": 1,
+       "value_mid": 1241.3787995088833,
+       "value_low": 600.3316473053297,
+       "value_high": 2403.9268207633245,
+       "labelled": 1,
+       "unlabelled": 0,
+       "sponsors": [
+        {
+         "brand": "Razer",
+         "kind": "paid"
+        },
+        {
+         "brand": "ASUS",
+         "kind": "paid"
+        },
+        {
+         "brand": "Apple",
+         "kind": "paid"
+        },
+        {
+         "brand": "Philips Hue",
+         "kind": "paid"
+        },
+        {
+         "brand": "Vernal",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "GravaStar",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Edifier",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Divoom",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "LG",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Keychron",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Logitech",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "CalDigit",
+         "kind": "affiliate"
+        }
+       ]
+      }
+     ],
+     "brands": [
+      {
+       "brand": "Razer",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 10
+      },
+      {
+       "brand": "ASUS",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 8
+      },
+      {
+       "brand": "Apple",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 8
+      },
+      {
+       "brand": "Vernal",
+       "category": "Furniture",
+       "videos": 1,
+       "screen_s": 6
+      },
+      {
+       "brand": "GravaStar",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 4
+      },
+      {
+       "brand": "Philips Hue",
+       "category": "Smart Lighting",
+       "videos": 1,
+       "screen_s": 4
+      },
+      {
+       "brand": "Edifier",
+       "category": "Audio Gear",
+       "videos": 1,
+       "screen_s": 3
+      },
+      {
+       "brand": "Divoom",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 3
+      },
+      {
+       "brand": "NZXT",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 3
+      },
+      {
+       "brand": "LG",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 3
+      },
+      {
+       "brand": "Keychron",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 3
+      },
+      {
+       "brand": "Logitech",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 3
+      },
+      {
+       "brand": "CalDigit",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 3
+      },
+      {
+       "brand": "Graywind",
+       "category": "Home Automation",
+       "videos": 1,
+       "screen_s": 3
+      },
+      {
+       "brand": "Nanoleaf",
+       "category": "Smart Lighting",
+       "videos": 1,
+       "screen_s": 3
+      },
+      {
+       "brand": "Focusrite",
+       "category": "Audio Gear",
+       "videos": 1,
+       "screen_s": 2
+      },
+      {
+       "brand": "RØDE",
+       "category": "Audio Gear",
+       "videos": 1,
+       "screen_s": 2
+      },
+      {
+       "brand": "beyerdynamic",
+       "category": "Audio Gear",
+       "videos": 1,
+       "screen_s": 0
+      }
+     ],
+     "findings": [
+      {
+       "kind": "info",
+       "id": "paid_labelled",
+       "title": "1 paid or gifted video, labelled correctly",
+       "text": "Commercial content with a clear label.",
+       "videos": [
+        {
+         "id": "6DMUMgQyVtc",
+         "title": "The ULTIMATE PC Gaming & Mac Desk Setup - 2025",
+         "channel": "Side of Tech"
+        }
+       ]
+      },
+      {
+       "kind": "info",
+       "id": "in_use",
+       "title": "Shown in use in 1 of 1",
+       "text": "Hands-on use is the strongest form of placement (×1.25 in the media value).",
+       "videos": [
+        {
+         "id": "6DMUMgQyVtc",
+         "title": "The ULTIMATE PC Gaming & Mac Desk Setup - 2025",
+         "channel": "Side of Tech"
+        }
+       ]
+      },
+      {
+       "kind": "note",
+       "id": "spread",
+       "title": "Screen time and value are ranges",
+       "text": "Two analyses of the same video agree on only about half of the on-screen seconds (test M4), so screen time is shown ±50 %. The value range (cautious to generous scenario, as in each video's Media value view) is about as wide. Video counts and disclosure verdicts are more stable.",
+       "videos": []
+      }
+     ]
+    },
+    "placements": [
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "Razer",
+      "category": "Electronics",
+      "group": "tech",
+      "screen_s": 10,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "ASUS",
+      "category": "Electronics",
+      "group": "tech",
+      "screen_s": 8,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "Apple",
+      "category": "Electronics",
+      "group": "tech",
+      "screen_s": 8,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "Vernal",
+      "category": "Furniture",
+      "group": "home",
+      "screen_s": 6,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "GravaStar",
+      "category": "Electronics",
+      "group": "tech",
+      "screen_s": 4,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "Philips Hue",
+      "category": "Smart Lighting",
+      "group": "home",
+      "screen_s": 4,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "Edifier",
+      "category": "Audio Gear",
+      "group": "audio",
+      "screen_s": 3,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "Divoom",
+      "category": "Electronics",
+      "group": "tech",
+      "screen_s": 3,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "NZXT",
+      "category": "Electronics",
+      "group": "tech",
+      "screen_s": 3,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "LG",
+      "category": "Electronics",
+      "group": "tech",
+      "screen_s": 3,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "Keychron",
+      "category": "Electronics",
+      "group": "tech",
+      "screen_s": 3,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "Logitech",
+      "category": "Electronics",
+      "group": "tech",
+      "screen_s": 3,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "CalDigit",
+      "category": "Electronics",
+      "group": "tech",
+      "screen_s": 3,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "Graywind",
+      "category": "Home Automation",
+      "group": "home",
+      "screen_s": 3,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "Nanoleaf",
+      "category": "Smart Lighting",
+      "group": "home",
+      "screen_s": 3,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "Focusrite",
+      "category": "Audio Gear",
+      "group": "audio",
+      "screen_s": 2,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "RØDE",
+      "category": "Audio Gear",
+      "group": "audio",
+      "screen_s": 2,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "upload_date": "2025-04-15",
+      "brand": "beyerdynamic",
+      "category": "Audio Gear",
+      "group": "audio",
+      "screen_s": 0,
+      "level": "green",
+      "paid": true
+     }
+    ],
+    "groups": [
+     {
+      "group": "tech",
+      "label": "Tech & electronics",
+      "placements": 10,
+      "share": 0.5555555555555556,
+      "brands": [
+       "Razer",
+       "ASUS",
+       "Apple",
+       "GravaStar",
+       "Divoom",
+       "NZXT",
+       "LG",
+       "Keychron"
+      ],
+      "videos": 1
+     },
+     {
+      "group": "home",
+      "label": "Home & living",
+      "placements": 4,
+      "share": 0.2222222222222222,
+      "brands": [
+       "Vernal",
+       "Philips Hue",
+       "Graywind",
+       "Nanoleaf"
+      ],
+      "videos": 1
+     },
+     {
+      "group": "audio",
+      "label": "Audio",
+      "placements": 4,
+      "share": 0.2222222222222222,
+      "brands": [
+       "Edifier",
+       "Focusrite",
+       "RØDE",
+       "beyerdynamic"
+      ],
+      "videos": 1
+     }
+    ],
+    "audience": {},
+    "cost": {
+     "units": 0,
+     "cached": true,
+     "gemini_requests": 0,
+     "new_analyses": 0,
+     "kv_reads": 1
+    },
+    "pending": 8,
+    "seconds": 0
+   }
+  }
+ ],
+ "seconds": 0
+}

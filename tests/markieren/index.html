@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Markieren – Wahrheit für Test M</title>
+<!--
+  Markier-Seite für die handmarkierte Wahrheit (EVALUATION.md, Test M). Nur lokal, über tests/markieren/server.py.
+  Lädt tests/wahrheit/<id>.json (Vorschlag von Claude) und die Einzelbilder frames/<id>/NNNN.jpg (alle 2 s),
+  Moritz korrigiert, "Speichern" schreibt die Datei zurück (status "checked"). Ein Entwurf liegt zusätzlich im
+  localStorage, falls der Tab zugeht.
+-->
+<style>
+  :root { --bg:#f5f5f7; --card:#fff; --ink:#1d1d1f; --mute:#6e6e73; --line:#d2d2d7; --accent:#0071e3; --warn:#ff9f0a; --sel:#0071e3; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#000; --card:#1c1c1e; --ink:#f5f5f7; --mute:#98989d; --line:#38383a; --accent:#0a84ff; } }
+  * { box-sizing: border-box; }
+  body { margin:0; font:14px/1.4 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif; background:var(--bg); color:var(--ink); }
+  header { position:sticky; top:0; z-index:5; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:blur(16px);
+           border-bottom:1px solid var(--line); padding:10px 16px; display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; }
+  h1 { font-size:17px; margin:0 8px 0 0; font-weight:600; }
+  .seg { display:inline-flex; background:var(--card); border:1px solid var(--line); border-radius:9px; padding:2px; }
+  .seg button { border:0; background:none; color:var(--ink); padding:5px 10px; border-radius:7px; font:inherit; cursor:pointer; }
+  .seg button.on { background:var(--accent); color:#fff; }
+  button.main { background:var(--accent); color:#fff; border:0; border-radius:9px; padding:7px 14px; font:inherit; font-weight:600; cursor:pointer; }
+  label.tg { display:inline-flex; gap:6px; align-items:center; color:var(--mute); cursor:pointer; }
+  .status { color:var(--mute); font-size:13px; }
+  .status b { color:var(--ink); }
+  .wrap { display:grid; grid-template-columns:1fr 440px; gap:16px; padding:12px 16px 40px; }
+  @media (max-width: 1100px) { .wrap { grid-template-columns:1fr; } aside { position:static !important; } }
+  #overview { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:8px 10px; margin-bottom:12px; }
+  #overview canvas { width:100%; display:block; cursor:pointer; }
+  #grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(176px, 1fr)); gap:8px; }
+  .f { background:var(--card); border:2px solid transparent; border-radius:10px; overflow:hidden; cursor:pointer; user-select:none; }
+  .f.unsure { border-color:var(--warn); }
+  .f.sel { border-color:var(--sel); box-shadow:0 0 0 2px color-mix(in srgb, var(--sel) 35%, transparent); }
+  .f.cur { outline:3px solid var(--sel); outline-offset:-3px; }
+  .f img { width:100%; aspect-ratio:16/9; display:block; object-fit:cover; background:#111; }
+  .f .t { display:flex; justify-content:space-between; padding:3px 6px 0; font:600 12px ui-monospace, Menlo, monospace; color:var(--mute); }
+  .chips { display:flex; flex-wrap:wrap; gap:3px; padding:4px 5px 6px; min-height:28px; }
+  .chip { font:600 11px ui-monospace, Menlo, monospace; border-radius:5px; padding:1px 4px; border:1px solid var(--line); color:var(--mute); opacity:.35; }
+  .chip.on { opacity:1; color:#fff; border-color:transparent; }
+  aside { position:sticky; top:70px; align-self:start; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; }
+  aside img, aside iframe { width:100%; aspect-ratio:16/9; border-radius:8px; background:#111; display:block; border:0; }
+  aside h2 { font-size:15px; margin:10px 0 6px; }
+  .plist { display:grid; gap:4px; }
+  .plist label { display:flex; gap:8px; align-items:center; padding:4px 6px; border-radius:7px; cursor:pointer; }
+  .plist label:hover { background:color-mix(in srgb, var(--ink) 6%, transparent); }
+  .plist .sw { width:12px; height:12px; border-radius:3px; flex:none; }
+  .plist kbd, .help kbd { font:600 11px ui-monospace, Menlo, monospace; border:1px solid var(--line); border-radius:4px; padding:0 4px; color:var(--mute); }
+  .row { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  .row button { border:1px solid var(--line); background:var(--card); color:var(--ink); border-radius:8px; padding:5px 9px; font:inherit; cursor:pointer; }
+  .help { color:var(--mute); font-size:12.5px; margin-top:10px; line-height:1.6; }
+  .toast { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:8px 14px; border-radius:10px; opacity:0; transition:opacity .2s; pointer-events:none; }
+  .toast.show { opacity:.95; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Wahrheit markieren</h1>
+  <div class="seg" id="videos"></div>
+  <label class="tg"><input type="checkbox" id="onlyUnsure"> nur unsichere Bilder</label>
+  <span class="status" id="status"></span>
+  <span style="flex:1"></span>
+  <button class="main" id="save">Speichern als geprüft</button>
+</header>
+<div class="wrap">
+  <main>
+    <div id="overview"><canvas id="ov" height="10"></canvas></div>
+    <div id="grid"></div>
+  </main>
+  <aside>
+    <img id="big" alt="">
+    <iframe id="yt" hidden allow="autoplay; encrypted-media"></iframe>
+    <div class="row">
+      <button id="ytBtn">Im YouTube-Player prüfen (scharf)</button>
+      <button id="okBtn">Passt so <kbd>Enter</kbd></button>
+    </div>
+    <h2 id="curTitle"></h2>
+    <div class="plist" id="plist"></div>
+    <div class="help">
+      <b>So geht's:</b> Raster von oben nach unten durchsehen, nur Fehler korrigieren.<br>
+      Klick = Bild wählen · <kbd>Shift</kbd>+Klick = Bereich wählen · <kbd>1</kbd>–<kbd>0</kbd> = Produkt im gewählten Bereich an/aus<br>
+      <kbd>←</kbd><kbd>→</kbd> nächstes Bild · <kbd>↑</kbd><kbd>↓</kbd> eine Zeile · mit <kbd>Shift</kbd> Bereich erweitern<br>
+      <kbd>C</kbd> = vom Bild davor übernehmen · <kbd>X</kbd> = leeren · <kbd>Enter</kbd> = „passt so“ (unsicher erledigt) · <kbd>⌘S</kbd> speichern<br>
+      Orange Rand = Claude war unsicher. „Sichtbar“ heißt: das Produkt ist im Bild erkennbar – auch klein, im Hintergrund, in der Totalen.
+    </div>
+  </aside>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const IDS = ["-pTGc7cIBIA", "eLAVGYQCkQI", "2CqNFIn1AEo"];
+const COLORS = ["#0071e3", "#34c759", "#ff9500", "#af52de", "#ff2d55", "#5ac8fa", "#a2845e", "#ffcc00", "#30b0c7", "#8e8e93"];
+const $ = (s) => document.querySelector(s);
+let vid, T, times = [], cur = 0, anchor = 0, sel = new Set(), dirty = false;
+
+const draftKey = (id) => `wahrheit-entwurf-${id}`;
+const toast = (msg) => { const el = $("#toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("show"), 1800); };
+const mmss = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+const color = (k) => COLORS[T.products.findIndex((p) => p.key === k) % COLORS.length];
+
+async function load(id) {
+  if (dirty && !confirm("Ungespeicherte Änderungen – trotzdem wechseln? (Entwurf bleibt im Browser)")) return;
+  vid = id;
+  T = await (await fetch(`../wahrheit/${id}.json`)).json();
+  try { // a draft from an earlier, unsaved session wins if it is newer than the file
+    const d = JSON.parse(localStorage.getItem(draftKey(id)) || "null");
+    if (d && d.saved_from === (T.checked_at || T.made_by) && confirm("Es gibt einen ungespeicherten Entwurf für dieses Video. Weiterarbeiten?")) T = d;
+  } catch {}
+  T.unsure = T.unsure || [];
+  times = Object.keys(T.labels).map(Number).sort((a, b) => a - b);
+  cur = anchor = 0; sel = new Set([0]); dirty = false;
+  renderTabs(); renderList(); renderGrid(); select(0, false);
+}
+
+function renderTabs() {
+  $("#videos").innerHTML = "";
+  for (const id of IDS) {
+    const b = document.createElement("button");
+    b.textContent = { "-pTGc7cIBIA": "MKBHD", eLAVGYQCkQI: "JB Desk", "2CqNFIn1AEo": "Kopfhörer" }[id];
+    b.className = id === vid ? "on" : ""; b.onclick = () => load(id);
+    $("#videos").append(b);
+  }
+}
+
+function renderList() {
+  $("#plist").innerHTML = "";
+  T.products.forEach((p, i) => {
+    const l = document.createElement("label");
+    l.innerHTML = `<input type="checkbox" data-k="${p.key}"><span class="sw" style="background:${color(p.key)}"></span>
+      <span style="flex:1">${p.brand} · ${p.product}</span><kbd>${(i + 1) % 10}</kbd>`;
+    l.querySelector("input").onchange = () => toggle(p.key);
+    $("#plist").append(l);
+  });
+}
+
+function frameEl(i) {
+  const t = times[i], el = document.createElement("div");
+  el.className = "f"; el.dataset.i = i;
+  el.innerHTML = `<img loading="lazy" src="frames/${vid}/${String(t).padStart(4, "0")}.jpg" alt=""><div class="t"><span>${mmss(t)}</span><span class="n"></span></div><div class="chips"></div>`;
+  el.onclick = (e) => select(i, e.shiftKey);
+  return el;
+}
+
+function paint(i) {
+  const el = $(`#grid .f[data-i="${i}"]`); if (!el) return;
+  const t = times[i], on = new Set(T.labels[t]);
+  el.classList.toggle("unsure", T.unsure.includes(t));
+  el.classList.toggle("sel", sel.has(i)); el.classList.toggle("cur", i === cur);
+  el.querySelector(".chips").innerHTML = T.products.map((p) =>
+    `<span class="chip ${on.has(p.key) ? "on" : ""}" style="${on.has(p.key) ? `background:${color(p.key)}` : ""}">${p.key}</span>`).join("");
+  el.querySelector(".n").textContent = on.size || "";
+}
+
+function renderGrid() {
+  const g = $("#grid"); g.innerHTML = "";
+  const only = $("#onlyUnsure").checked;
+  times.forEach((t, i) => { if (!only || T.unsure.includes(t)) { g.append(frameEl(i)); paint(i); } });
+  drawOverview(); status();
+}
+
+function drawOverview() {
+  const c = $("#ov"), rows = T.products.length, rh = 9, w = c.clientWidth || 800;
+  c.width = w * devicePixelRatio; c.height = (rows * rh + 4) * devicePixelRatio; c.style.height = rows * rh + 4 + "px";
+  const x = c.getContext("2d"); x.scale(devicePixelRatio, devicePixelRatio);
+  const cw = w / times.length;
+  T.products.forEach((p, r) => {
+    x.fillStyle = color(p.key);
+    times.forEach((t, i) => { if (T.labels[t].includes(p.key)) x.fillRect(i * cw, r * rh + 1, Math.max(cw, 1), rh - 2); });
+  });
+  x.fillStyle = "#ff9f0a"; times.forEach((t, i) => { if (T.unsure.includes(t)) x.fillRect(i * cw, rows * rh + 1, Math.max(cw, 1), 3); });
+  x.strokeStyle = "#0071e3"; x.lineWidth = 2; x.strokeRect(cur * cw, 0, Math.max(cw, 2), rows * rh + 4);
+}
+$("#ov").onclick = (e) => { const r = e.target.getBoundingClientRect(); select(Math.floor(((e.clientX - r.left) / r.width) * times.length), false, true); };
+
+function status() {
+  const n = times.reduce((s, t) => s + T.labels[t].length, 0);
+  $("#status").innerHTML = `<b>${T.title}</b> · ${times.length} Bilder · ${n} Produkt-Bilder · <b>${T.unsure.length}</b> unsicher · ` +
+    (T.status === "checked" ? `geprüft ${T.checked_at || ""}` : "Vorschlag (noch nicht geprüft)") + (dirty ? " · <b>ungespeichert</b>" : "");
+}
+
+function select(i, extend, scroll) {
+  i = Math.max(0, Math.min(times.length - 1, i));
+  const old = [...sel, cur];
+  if (extend) { sel = new Set(); for (let k = Math.min(anchor, i); k <= Math.max(anchor, i); k++) sel.add(k); }
+  else { sel = new Set([i]); anchor = i; }
+  cur = i;
+  [...old, ...sel].forEach(paint);
+  const t = times[i];
+  $("#big").src = `frames/${vid}/${String(t).padStart(4, "0")}.jpg`; $("#big").hidden = false; $("#yt").hidden = true; $("#yt").src = "about:blank";
+  $("#curTitle").textContent = sel.size > 1 ? `${sel.size} Bilder gewählt (${mmss(times[Math.min(...sel)])}–${mmss(times[Math.max(...sel)])})` : `Bild bei ${mmss(t)}`;
+  document.querySelectorAll("#plist input").forEach((cb) => {
+    const have = [...sel].filter((k) => T.labels[times[k]].includes(cb.dataset.k)).length;
+    cb.checked = have === sel.size; cb.indeterminate = have > 0 && have < sel.size;
+  });
+  const el = $(`#grid .f[data-i="${i}"]`); if (el && (scroll || !extend)) el.scrollIntoView({ block: "nearest" });
+  drawOverview();
+}
+
+function changed(idx) {
+  dirty = true;
+  for (const k of idx) T.unsure = T.unsure.filter((t) => t !== times[k]); // touched = decided
+  idx.forEach(paint); select(cur, false); if (sel.size === 1) {} status();
+  try { localStorage.setItem(draftKey(vid), JSON.stringify({ ...T, saved_from: T.checked_at || T.made_by })); } catch {}
+}
+function toggle(key) {
+  const idx = [...sel], all = idx.every((k) => T.labels[times[k]].includes(key));
+  for (const k of idx) { const l = new Set(T.labels[times[k]]); all ? l.delete(key) : l.add(key); T.labels[times[k]] = T.products.map((p) => p.key).filter((x) => l.has(x)); }
+  const keep = new Set(sel); changed(idx); sel = keep; idx.forEach(paint);
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.target.tagName === "INPUT" && e.target.type !== "checkbox") return;
+  if ((e.metaKey || e.ctrlKey) && e.key === "s") { e.preventDefault(); return save(); }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const cols = Math.max(1, Math.round($("#grid").clientWidth / ($("#grid .f")?.offsetWidth + 8 || 184)));
+  const move = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: cols, ArrowUp: -cols }[e.key];
+  if (move) { e.preventDefault(); return select(cur + move, e.shiftKey, true); }
+  if (/^[0-9]$/.test(e.key)) { const p = T.products[(Number(e.key) + 9) % 10]; if (p) toggle(p.key); return; }
+  if (e.key === "c" || e.key === "C") { const prev = T.labels[times[Math.max(0, Math.min(...sel) - 1)]]; const idx = [...sel]; idx.forEach((k) => (T.labels[times[k]] = [...prev])); const keep = new Set(sel); changed(idx); sel = keep; idx.forEach(paint); return; }
+  if (e.key === "x" || e.key === "X") { const idx = [...sel]; idx.forEach((k) => (T.labels[times[k]] = [])); const keep = new Set(sel); changed(idx); sel = keep; idx.forEach(paint); return; }
+  if (e.key === "Enter") { e.preventDefault(); changed([...sel]); select(Math.max(...sel) + 1, false, true); }
+});
+$("#okBtn").onclick = () => { changed([...sel]); select(Math.max(...sel) + 1, false, true); };
+$("#ytBtn").onclick = () => { // the real video at this second, full resolution – ALWAYS muted (sound only if Moritz turns it on himself)
+  const t = times[cur]; $("#big").hidden = true; const f = $("#yt"); f.hidden = false;
+  f.src = `https://www.youtube-nocookie.com/embed/${vid}?start=${t}&autoplay=1&mute=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`;
+  // second safety net: the IFrame API command "mute", sent as soon as the player loads and a few times after,
+  // before playback can make a sound (mute=1 in the URL alone is not trusted)
+  const mute = () => f.contentWindow?.postMessage(JSON.stringify({ event: "command", func: "mute", args: [] }), "*");
+  f.onload = () => { mute(); [200, 600, 1500, 3000].forEach((ms) => setTimeout(mute, ms)); };
+};
+$("#onlyUnsure").onchange = renderGrid;
+addEventListener("resize", drawOverview);
+addEventListener("beforeunload", (e) => { if (dirty) e.preventDefault(); });
+
+async function save() {
+  const out = { ...T, status: "checked", checked_by: "Moritz", checked_at: new Date().toISOString().slice(0, 16).replace("T", " ") };
+  delete out.saved_from;
+  const r = await fetch(`/speichern/${vid}`, { method: "POST", body: JSON.stringify(out) }).catch(() => null);
+  if (r && r.ok) { T = out; dirty = false; localStorage.removeItem(draftKey(vid)); status(); toast("Gespeichert in tests/wahrheit/" + vid + ".json"); }
+  else { // no server (opened as a file): download instead
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 1)], { type: "application/json" }));
+    a.download = `${vid}.json`; a.click(); toast("Kein Server – Datei heruntergeladen, bitte nach tests/wahrheit/ legen");
+  }
+}
+$("#save").onclick = save;
+load(IDS[0]);
+</script>
+</body>
+</html>

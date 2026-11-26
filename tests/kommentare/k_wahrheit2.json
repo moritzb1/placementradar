@@ -1,0 +1,518 @@
+{
+ "note": "Held-out hand labels for test K (sample 2, drawn and labelled after the rules were tuned on sample 1; rules not changed afterwards) - proposal by Claude (24 Nov 2026), to be checked by Moritz.",
+ "items": [
+  {
+   "n": 1,
+   "video": "-pTGc7cIBIA",
+   "i": 18,
+   "cats": [
+    "critic",
+    "praise"
+   ],
+   "brands": [
+    "Google"
+   ],
+   "text_start": "I have a Pixel 6 Pro too, and I thought I was taking crazy p"
+  },
+  {
+   "n": 2,
+   "video": "y1LUkfpTtu0",
+   "i": 97,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "Watching fixing espresso machines is a nice beginning of a d"
+  },
+  {
+   "n": 3,
+   "video": "2CqNFIn1AEo",
+   "i": 12,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "hiii\ndas war ein super video\nhäufig ist es nicht ganz greifb"
+  },
+  {
+   "n": 4,
+   "video": "2CqNFIn1AEo",
+   "i": 3,
+   "cats": [
+    "question"
+   ],
+   "brands": [],
+   "text_start": "Was ist mit den Sony WH-1000XM6?"
+  },
+  {
+   "n": 5,
+   "video": "-pTGc7cIBIA",
+   "i": 52,
+   "cats": [],
+   "brands": [],
+   "text_start": "My Every day waiting your video."
+  },
+  {
+   "n": 6,
+   "video": "-pTGc7cIBIA",
+   "i": 42,
+   "cats": [],
+   "brands": [],
+   "text_start": "Imagine having a whole edition to your name, what a FLEX !"
+  },
+  {
+   "n": 7,
+   "video": "2CqNFIn1AEo",
+   "i": 71,
+   "cats": [
+    "question"
+   ],
+   "brands": [],
+   "text_start": "Wird der EarFun Wave Pro X der kostengünstigste Kopfhörer se"
+  },
+  {
+   "n": 8,
+   "video": "-pTGc7cIBIA",
+   "i": 22,
+   "cats": [],
+   "brands": [],
+   "text_start": "I’d love to see a video that talks about how you manage cont"
+  },
+  {
+   "n": 9,
+   "video": "y1LUkfpTtu0",
+   "i": 92,
+   "cats": [
+    "critic"
+   ],
+   "brands": [],
+   "text_start": "I just started my first 'real' espresso setup (I used to use"
+  },
+  {
+   "n": 10,
+   "video": "y1LUkfpTtu0",
+   "i": 30,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "The best thing about this video is, I learned that the phras"
+  },
+  {
+   "n": 11,
+   "video": "-pTGc7cIBIA",
+   "i": 7,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Trove"
+   ],
+   "text_start": "great video of the great YouTube legend Marques, I liked tha"
+  },
+  {
+   "n": 12,
+   "video": "y1LUkfpTtu0",
+   "i": 80,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "I’ve always been fascinated how this channel keeps me engage"
+  },
+  {
+   "n": 13,
+   "video": "2CqNFIn1AEo",
+   "i": 26,
+   "cats": [
+    "question",
+    "critic",
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "Die besten over ear Kopfhörer und Sony und Apple sind nicht "
+  },
+  {
+   "n": 14,
+   "video": "-pTGc7cIBIA",
+   "i": 95,
+   "cats": [
+    "question"
+   ],
+   "brands": [],
+   "text_start": "When are you to do this for 2023?"
+  },
+  {
+   "n": 15,
+   "video": "y1LUkfpTtu0",
+   "i": 49,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Gaggia"
+   ],
+   "text_start": "Found a Gaggia classic at a garage sale 3 years ago for $40."
+  },
+  {
+   "n": 16,
+   "video": "y1LUkfpTtu0",
+   "i": 71,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "Me: I should be posting my next video on Korean Fried-- JAME"
+  },
+  {
+   "n": 17,
+   "video": "-pTGc7cIBIA",
+   "i": 35,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "He didn’t have to tell us he got his water bottle from his f"
+  },
+  {
+   "n": 18,
+   "video": "y1LUkfpTtu0",
+   "i": 96,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "For a used grinder the Baratza line is fantastic. Baratza ha"
+  },
+  {
+   "n": 19,
+   "video": "-pTGc7cIBIA",
+   "i": 33,
+   "cats": [],
+   "brands": [],
+   "text_start": "Can't wait for the Linus tech tips backpack they are putting"
+  },
+  {
+   "n": 20,
+   "video": "WK5s-gDideg",
+   "i": 13,
+   "cats": [],
+   "brands": [],
+   "text_start": "Wenn mir so viele Pakete zugrschikt werden eürde ich soooooo"
+  },
+  {
+   "n": 21,
+   "video": "2CqNFIn1AEo",
+   "i": 81,
+   "cats": [],
+   "brands": [],
+   "text_start": "Bitte bitte teste die Loewe Leo. Inklusive Vergleich zu den "
+  },
+  {
+   "n": 22,
+   "video": "-pTGc7cIBIA",
+   "i": 98,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "Osmos was in the first Humble Indie Bundle that I bought lik"
+  },
+  {
+   "n": 23,
+   "video": "2CqNFIn1AEo",
+   "i": 41,
+   "cats": [
+    "question"
+   ],
+   "brands": [
+    "Bose"
+   ],
+   "text_start": "Was ist eigentlich mit den Bose Quite Comfort Ultra? Das ist"
+  },
+  {
+   "n": 24,
+   "video": "y1LUkfpTtu0",
+   "i": 37,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "me getting into coffee and watching every vid in 2 days thin"
+  },
+  {
+   "n": 25,
+   "video": "2CqNFIn1AEo",
+   "i": 9,
+   "cats": [
+    "praise",
+    "critic"
+   ],
+   "brands": [],
+   "text_start": "Vielen Dank für den Vergleich zum perfekten Zeitpunkt!\nSehr "
+  },
+  {
+   "n": 26,
+   "video": "-pTGc7cIBIA",
+   "i": 81,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Opal"
+   ],
+   "text_start": "Love how you are transparent with the fact that you are a in"
+  },
+  {
+   "n": 27,
+   "video": "2CqNFIn1AEo",
+   "i": 23,
+   "cats": [
+    "question"
+   ],
+   "brands": [],
+   "text_start": "Was ist mit Sennheiser? Momentum oder HDB-630?"
+  },
+  {
+   "n": 28,
+   "video": "2CqNFIn1AEo",
+   "i": 84,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Beats"
+   ],
+   "text_start": "Also ich habe die Beats vorhin mal angetestet im Store. Ich "
+  },
+  {
+   "n": 29,
+   "video": "WK5s-gDideg",
+   "i": 91,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "Jeah, bald 500k liebe Ally 😍😍 ich liebe PR-Unboxing, da fixt"
+  },
+  {
+   "n": 30,
+   "video": "2CqNFIn1AEo",
+   "i": 13,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Bowers & Wilkins"
+   ],
+   "text_start": "Ich LIEBE meine PX7 S3... ♥ Klanglich absolut angenehm und i"
+  },
+  {
+   "n": 31,
+   "video": "-pTGc7cIBIA",
+   "i": 24,
+   "cats": [],
+   "brands": [
+    "Peak Design",
+    "Apple",
+    "Canon",
+    "Realme",
+    "Opal",
+    "Trove",
+    "Google"
+   ],
+   "text_start": "0:00-Intro\n0:37-Backpack\n1:40-16-Inch MacBook Pro/M1 Max\n2:2",
+   "correction": "labelled from a 220-character preview first; the full chapter list also names Wallet (Trove) and Pixel 6 Pro (Google)"
+  },
+  {
+   "n": 32,
+   "video": "-pTGc7cIBIA",
+   "i": 21,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "Really appreciate these EDC videos from you, Marques. Realis"
+  },
+  {
+   "n": 33,
+   "video": "y1LUkfpTtu0",
+   "i": 84,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "Great video.   I loved how you bought and cleaned /Repaired "
+  },
+  {
+   "n": 34,
+   "video": "y1LUkfpTtu0",
+   "i": 39,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Gaggia"
+   ],
+   "text_start": "My £147 second hand Gaggia Classic was 3 years old when I bo"
+  },
+  {
+   "n": 35,
+   "video": "-pTGc7cIBIA",
+   "i": 2,
+   "cats": [
+    "question"
+   ],
+   "brands": [],
+   "text_start": "where’s 2024?"
+  },
+  {
+   "n": 36,
+   "video": "-pTGc7cIBIA",
+   "i": 64,
+   "cats": [
+    "buy",
+    "praise"
+   ],
+   "brands": [
+    "Peak Design"
+   ],
+   "text_start": "oh man I wish I had that bag, too cool! 😎"
+  },
+  {
+   "n": 37,
+   "video": "-pTGc7cIBIA",
+   "i": 15,
+   "cats": [],
+   "brands": [
+    "Peak Design"
+   ],
+   "text_start": "His backpack is worth more than my room"
+  },
+  {
+   "n": 38,
+   "video": "y1LUkfpTtu0",
+   "i": 2,
+   "cats": [],
+   "brands": [],
+   "text_start": "Imagine you’re the guy getting outbid by Hoffmann on a used "
+  },
+  {
+   "n": 39,
+   "video": "-pTGc7cIBIA",
+   "i": 58,
+   "cats": [],
+   "brands": [],
+   "text_start": "Hey MKBHD, would love if you could do more stuff on budget i"
+  },
+  {
+   "n": 40,
+   "video": "-pTGc7cIBIA",
+   "i": 23,
+   "cats": [],
+   "brands": [],
+   "text_start": "I'm using a photography backpack as a daily bag too. My frie"
+  },
+  {
+   "n": 41,
+   "video": "y1LUkfpTtu0",
+   "i": 62,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Gaggia"
+   ],
+   "text_start": "5 years ago: Gaggia Classic (2006) + Gaggia MDF grinder\nOPV "
+  },
+  {
+   "n": 42,
+   "video": "y1LUkfpTtu0",
+   "i": 68,
+   "cats": [],
+   "brands": [],
+   "text_start": "I'm part way through a used espresso gear journey. I bought "
+  },
+  {
+   "n": 43,
+   "video": "2CqNFIn1AEo",
+   "i": 27,
+   "cats": [
+    "question"
+   ],
+   "brands": [],
+   "text_start": "Was ist mit den Anker Soundcore Space Pro 2?"
+  },
+  {
+   "n": 44,
+   "video": "2CqNFIn1AEo",
+   "i": 85,
+   "cats": [
+    "praise",
+    "question"
+   ],
+   "brands": [],
+   "text_start": "Das Intro ist einfach ein Kinofilm😁. Was ist mit den Sony WH"
+  },
+  {
+   "n": 45,
+   "video": "2CqNFIn1AEo",
+   "i": 7,
+   "cats": [
+    "question"
+   ],
+   "brands": [],
+   "text_start": "Und die Sony WH1000mx6?"
+  },
+  {
+   "n": 46,
+   "video": "y1LUkfpTtu0",
+   "i": 18,
+   "cats": [],
+   "brands": [],
+   "text_start": "Would love to see a video that takes a look at the minimum y"
+  },
+  {
+   "n": 47,
+   "video": "2CqNFIn1AEo",
+   "i": 10,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Bowers & Wilkins"
+   ],
+   "text_start": "Man merkt, dass hier vieles geschmackssache ist. Ich habe mi"
+  },
+  {
+   "n": 48,
+   "video": "y1LUkfpTtu0",
+   "i": 25,
+   "cats": [],
+   "brands": [],
+   "text_start": "I would love to see a series of videos that have you go thro"
+  },
+  {
+   "n": 49,
+   "video": "2CqNFIn1AEo",
+   "i": 96,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Nothing"
+   ],
+   "text_start": "Netter Überblick, aber meine Favoriten sind nicht dabei.\nMit"
+  },
+  {
+   "n": 50,
+   "video": "-pTGc7cIBIA",
+   "i": 28,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "Absolutely love TickTick, it's super easy to divide the task"
+  }
+ ]
+}

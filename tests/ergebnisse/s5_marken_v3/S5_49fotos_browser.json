@@ -1,0 +1,34 @@
+{
+ "original": {
+  "n": 49,
+  "ocrOnly": 39,
+  "ownSureRight": 27,
+  "ownSureWrong": 0,
+  "cascadeRight": 42,
+  "cascadeWrong": 1,
+  "ownMedMs": 237
+ },
+ "webcam": {
+  "n": 49,
+  "ocrOnly": 39,
+  "ownSureRight": 25,
+  "ownSureWrong": 0,
+  "cascadeRight": 42,
+  "cascadeWrong": 1,
+  "ownMedMs": 237
+ },
+ "addedByOwn": [
+  "original 3073781106497 Babybel",
+  "original 5000112639445 Coca-Cola",
+  "webcam 5000112639445 Coca-Cola",
+  "webcam 7622210585639 Milka",
+  "original 7622300744663 Oreo",
+  "webcam 7622300744663 Oreo"
+ ],
+ "lostByOwn": [],
+ "cascadeWrongList": [
+  "original 7622210616241 shown=oreo,philadelphia truth=Philadelphia",
+  "webcam 7622210616241 shown=oreo,philadelphia truth=Philadelphia"
+ ],
+ "wrongByOwn": []
+}

@@ -1,0 +1,124 @@
+{
+  "video": "wtDyhM_18Yo",
+  "model": "gemini-3.8-flash",
+  "seconds": 159.4,
+  "http": 200,
+  "meta": {
+    "title": "2019 BMW X5 vs 2019 Volvo XC90 - CRASH TEST",
+    "channel": "MEDCARS",
+    "view_count": 65621417,
+    "duration": 113,
+    "upload_date": "20190510",
+    "description": "2016 Volvo XC90 40 mph driver-side small overlap IIHS crash test\n\nOverall evaluation: Good\n\n\n\n2019 BMW X5 40 mph driver-side small overlap IIHS crash test\n\nOverall evaluation: Good\n\n\n#CrashTest #BMWX5 #VolvoXC90\n\n\"SUBSCRIBE NOW\""
+  },
+  "usage": {
+    "promptTokenCount": 10395,
+    "candidatesTokenCount": 846,
+    "totalTokenCount": 12005,
+    "promptTokensDetails": [
+      {
+        "modality": "VIDEO",
+        "tokenCount": 10296
+      },
+      {
+        "modality": "TEXT",
+        "tokenCount": 99
+      }
+    ],
+    "thoughtsTokenCount": 764,
+    "serviceTier": "standard"
+  },
+  "result": {
+    "brands": [
+      {
+        "brand": "BMW",
+        "appearances": [
+          {
+            "start_s": 0.0,
+            "end_s": 14.5,
+            "channel": "visual",
+            "evidence": "BMW X5 vehicle and on-screen label",
+            "in_use": true,
+            "position": "center",
+            "size": "large"
+          },
+          {
+            "start_s": 32.0,
+            "end_s": 57.5,
+            "channel": "visual",
+            "evidence": "BMW X5 crash test angles showing vehicle and BMW roundel logo",
+            "in_use": true,
+            "position": "center",
+            "size": "large"
+          },
+          {
+            "start_s": 125.0,
+            "end_s": 130.5,
+            "channel": "visual",
+            "evidence": "2019 BMW X5 safety rating scorecard",
+            "in_use": false,
+            "position": "center",
+            "size": "large"
+          },
+          {
+            "start_s": 137.0,
+            "end_s": 140.5,
+            "channel": "visual",
+            "evidence": "BMW X5 crash test split screen and 'X5' text",
+            "in_use": true,
+            "position": "edge",
+            "size": "medium"
+          }
+        ],
+        "category": "Vehicles",
+        "product": "BMW X5"
+      },
+      {
+        "brand": "Volvo",
+        "appearances": [
+          {
+            "start_s": 15.0,
+            "end_s": 31.5,
+            "channel": "visual",
+            "evidence": "Volvo XC90 vehicle and on-screen text",
+            "in_use": true,
+            "position": "center",
+            "size": "large"
+          },
+          {
+            "start_s": 58.0,
+            "end_s": 124.5,
+            "channel": "visual",
+            "evidence": "Volvo XC90 crash test views showing vehicle and Volvo logo on grille/steering wheel",
+            "in_use": true,
+            "position": "center",
+            "size": "large"
+          },
+          {
+            "start_s": 131.0,
+            "end_s": 136.5,
+            "channel": "visual",
+            "evidence": "2016 Volvo XC90 safety rating scorecard",
+            "in_use": false,
+            "position": "center",
+            "size": "large"
+          },
+          {
+            "start_s": 137.0,
+            "end_s": 140.5,
+            "channel": "visual",
+            "evidence": "Volvo XC90 crash test split screen and 'XC90' text",
+            "in_use": true,
+            "position": "edge",
+            "size": "medium"
+          }
+        ],
+        "category": "Vehicles",
+        "product": "Volvo XC90"
+      }
+    ],
+    "disclosures": [],
+    "looks_like_paid_promotion": false,
+    "reasoning": "The video is an informational crash test comparison compilation using publicly available IIHS test footage comparing the BMW X5 and Volvo XC90. There is no evidence of brand sponsorship or commercial endorsement."
+  }
+}

@@ -1,0 +1,535 @@
+[
+ {
+  "channel": "Alycia Marie",
+  "input": "https://youtu.be/WK5s-gDideg",
+  "source": "youtube-page",
+  "units": 0,
+  "gemini": 0,
+  "seconds": 0,
+  "uploads": 25,
+  "analysed": 1,
+  "in_latest": 0,
+  "brands": 10,
+  "recurring": [],
+  "groups": [
+   "Other 80%",
+   "Beauty & care 20%"
+  ],
+  "disclosure": {
+   "commercial": 1,
+   "labelled": 1,
+   "weak": 0,
+   "unlabelled": 0
+  },
+  "months": [
+   {
+    "month": "2017-12",
+    "videos": 1,
+    "value": [
+     5480,
+     21718
+    ],
+    "sponsors": [
+     "Benefit (paid)",
+     "BH Cosmetics (paid)",
+     "Zoeva (paid)",
+     "beautyblender (paid)"
+    ]
+   }
+  ],
+  "candidates": 4,
+  "preselected": [
+   "ad hint in the description · shop links"
+  ],
+  "fits": [
+   {
+    "brand": "Sonos",
+    "field": "Audio",
+    "field_from": "library (3)",
+    "score": 19,
+    "verdict": "Weak fit",
+    "confidence": "low",
+    "gate": 0.5,
+    "parts": {
+     "category": 0,
+     "competition": null,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Bose",
+    "field": "Audio",
+    "field_from": "library (1)",
+    "score": 19,
+    "verdict": "Weak fit",
+    "confidence": "low",
+    "gate": 0.5,
+    "parts": {
+     "category": 0,
+     "competition": null,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Apple",
+    "field": "Tech & electronics",
+    "field_from": "library (6)",
+    "score": 19,
+    "verdict": "Weak fit",
+    "confidence": "low",
+    "gate": 0.5,
+    "parts": {
+     "category": 0,
+     "competition": null,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Logitech",
+    "field": "Tech & electronics",
+    "field_from": "library (1)",
+    "score": 19,
+    "verdict": "Weak fit",
+    "confidence": "low",
+    "gate": 0.5,
+    "parts": {
+     "category": 0,
+     "competition": null,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Benefit",
+    "field": "Beauty & care",
+    "field_from": "library (2)",
+    "score": 94,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 75,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [
+     "Maybelline",
+     "Anastasia Beverly Hills"
+    ],
+    "already": 1
+   },
+   {
+    "brand": "Prozis",
+    "field": "Food & drink",
+    "field_from": "picked by the visitor",
+    "score": 19,
+    "verdict": "Weak fit",
+    "confidence": "low",
+    "gate": 0.5,
+    "parts": {
+     "category": 0,
+     "competition": null,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Anker",
+    "field": "Tech & electronics",
+    "field_from": "picked by the visitor",
+    "score": 19,
+    "verdict": "Weak fit",
+    "confidence": "low",
+    "gate": 0.5,
+    "parts": {
+     "category": 0,
+     "competition": null,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   }
+  ]
+ },
+ {
+  "channel": "Sascha Huber",
+  "input": "https://www.youtube.com/watch?v=YAEVnzbyq40",
+  "source": "youtube-page",
+  "units": 0,
+  "gemini": 0,
+  "seconds": 0,
+  "uploads": 25,
+  "analysed": 1,
+  "in_latest": 0,
+  "brands": 1,
+  "recurring": [],
+  "groups": [
+   "Other 100%"
+  ],
+  "disclosure": {
+   "commercial": 1,
+   "labelled": 1,
+   "weak": 0,
+   "unlabelled": 0
+  },
+  "months": [
+   {
+    "month": "2019-12",
+    "videos": 1,
+    "value": [
+     894,
+     4178
+    ],
+    "sponsors": [
+     "Prozis (paid)"
+    ]
+   }
+  ],
+  "candidates": 8,
+  "preselected": [
+   "ad hint in the description",
+   "ad hint in the description",
+   "ad hint in the description"
+  ],
+  "fits": [
+   {
+    "brand": "Sonos",
+    "field": "Audio",
+    "field_from": "library (3)",
+    "score": null,
+    "verdict": null,
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": null,
+     "competition": null,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Bose",
+    "field": "Audio",
+    "field_from": "library (1)",
+    "score": null,
+    "verdict": null,
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": null,
+     "competition": null,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Apple",
+    "field": "Tech & electronics",
+    "field_from": "library (6)",
+    "score": null,
+    "verdict": null,
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": null,
+     "competition": null,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Logitech",
+    "field": "Tech & electronics",
+    "field_from": "library (1)",
+    "score": null,
+    "verdict": null,
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": null,
+     "competition": null,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Benefit",
+    "field": "Beauty & care",
+    "field_from": "library (2)",
+    "score": null,
+    "verdict": null,
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": null,
+     "competition": null,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Prozis",
+    "field": "Food & drink",
+    "field_from": "picked by the visitor",
+    "score": null,
+    "verdict": null,
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": null,
+     "competition": null,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 1
+   },
+   {
+    "brand": "Anker",
+    "field": "Tech & electronics",
+    "field_from": "picked by the visitor",
+    "score": null,
+    "verdict": null,
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": null,
+     "competition": null,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   }
+  ]
+ },
+ {
+  "channel": "iKnowReview",
+  "input": "@iKnowReview",
+  "source": "youtube-page",
+  "units": 0,
+  "gemini": 0,
+  "seconds": 0,
+  "uploads": 25,
+  "analysed": 2,
+  "in_latest": 1,
+  "brands": 10,
+  "recurring": [
+   "Sonos"
+  ],
+  "groups": [
+   "Audio 64%",
+   "Tech & electronics 27%",
+   "Fashion & accessories 9%"
+  ],
+  "disclosure": {
+   "commercial": 2,
+   "labelled": 1,
+   "weak": 0,
+   "unlabelled": 1
+  },
+  "months": [
+   {
+    "month": "2025-05",
+    "videos": 1,
+    "value": [
+     5297,
+     20794
+    ],
+    "sponsors": [
+     "Sony (paid)",
+     "3Dio (paid)",
+     "Carhartt (paid)",
+     "Apple (paid)"
+    ]
+   },
+   {
+    "month": "2026-10",
+    "videos": 1,
+    "value": [
+     3822,
+     15020
+    ],
+    "sponsors": []
+   }
+  ],
+  "candidates": 8,
+  "preselected": [
+   "ad hint in the description · shop links",
+   "ad hint in the description · shop links",
+   "ad hint in the description · shop links"
+  ],
+  "fits": [
+   {
+    "brand": "Sonos",
+    "field": "Audio",
+    "field_from": "channel",
+    "score": 74,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 50,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [
+     "Sony",
+     "3Dio",
+     "Nothing",
+     "Bose",
+     "Apple"
+    ],
+    "already": 2
+   },
+   {
+    "brand": "Bose",
+    "field": "Audio",
+    "field_from": "channel",
+    "score": 74,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 50,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [
+     "Sony",
+     "3Dio",
+     "Nothing",
+     "Apple",
+     "Sonos"
+    ],
+    "already": 1
+   },
+   {
+    "brand": "Apple",
+    "field": "Audio",
+    "field_from": "channel",
+    "score": 74,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 50,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [
+     "Sony",
+     "3Dio",
+     "Nothing",
+     "Bose",
+     "Sonos"
+    ],
+    "already": 1
+   },
+   {
+    "brand": "Logitech",
+    "field": "Tech & electronics",
+    "field_from": "library (1)",
+    "score": 79,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 75,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [
+     "Sonos",
+     "Beats",
+     "Bowers & Wilkins"
+    ],
+    "already": 0
+   },
+   {
+    "brand": "Benefit",
+    "field": "Beauty & care",
+    "field_from": "library (2)",
+    "score": 10,
+    "verdict": "Weak fit",
+    "confidence": "low",
+    "gate": 0.5,
+    "parts": {
+     "category": 0,
+     "competition": null,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Prozis",
+    "field": "Food & drink",
+    "field_from": "picked by the visitor",
+    "score": 10,
+    "verdict": "Weak fit",
+    "confidence": "low",
+    "gate": 0.5,
+    "parts": {
+     "category": 0,
+     "competition": null,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Anker",
+    "field": "Tech & electronics",
+    "field_from": "picked by the visitor",
+    "score": 79,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 75,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [
+     "Sonos",
+     "Beats",
+     "Bowers & Wilkins"
+    ],
+    "already": 0
+   }
+  ]
+ }
+]

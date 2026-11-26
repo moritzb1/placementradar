@@ -1,0 +1,2860 @@
+{
+ "video": {
+  "id": "eLAVGYQCkQI",
+  "title": "What\u2019s on My Desk 2025 | Clean, Modern & Productive Setup",
+  "channel": "JB",
+  "views": 10789,
+  "duration_s": 462,
+  "upload_date": "2025-10-19",
+  "description": "My 2025 desk setup is finally complete. This space has become my creative zone \u2014 built for productivity, comfort, and clean aesthetics. From the Mac Mini M4 powering it all to the 43-inch LG smart monitor and a few simple details that make it personal, every piece here has a purpose.\n\nI\u2019ll walk you through everything on my desk \u2014 what I use daily for editing, creating, and staying inspired. Whether you\u2019re setting up your own workspace or just love a good clean setup, hopefully this gives you some ideas to elevate yours.\n\n\u2733\ufe0f SHOP MY DESK SETUP (Affiliate Links Below)\n\nMac Mini M4: https://amzn.to/4nVicJL\n43\u201d LG Smart Monitor: \nQuntis Monitor Light Bar: https://amzn.to/48DUBsq\nUnder Desk Foot Rest: https://amzn.to/3JkAuoO\n2TB SSD Drive (Working Drive): https://amzn.to/3KYMYmv\nSeagate 8TB External Hard Drive: https://amzn.to/3JjALID\nKeychron K3 Keyboard: https://amzn.to/3WxPtyZ\nMagic Mouse 2: https://amzn.to/3JhRfkq\nSennheiser Profile USB Mic: https://amzn.to/42K66uH\nSonos One Speakers: https://amzn.to/3Wg1Kb1\nLEGO Orchid: https://amzn.to/4qgs1DF\n\nlinks  \ud83d\udc47\ud83c\udffe\nAMAZON STOREFRONT \nhttps://www.amazon.com/shop/johnthebaptistla\n\nMore Places to find me \ud83d\udc47\ud83c\udffe\nInstagram | www.instagram.com/johnthebaptistla/\nTik Tok | https://tiktok.com/@JohnBaptistla\n\n\nhttps://www.amazon.com/shop/johnthebaptistla\n\n\n\n\nBusiness inquiries and collabs: info@johnthebaptistla.com",
+  "source": "watch:200:OK:views+duration_s+description"
+ },
+ "brands": [
+  {
+   "brand": "LG",
+   "product": "43\u201d LG Smart Monitor",
+   "products": [
+    "43\u201d LG Smart Monitor"
+   ],
+   "category": "Computers & Electronics",
+   "appearances": [
+    {
+     "start_s": 0,
+     "end_s": 2,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "large monitor on the desk",
+     "product": "43\u201d LG Smart Monitor",
+     "basis": "design",
+     "confidence": 0.99,
+     "recheck": true,
+     "track": [
+      {
+       "t": 0,
+       "box": [
+        321,
+        404,
+        705,
+        683
+       ]
+      },
+      {
+       "t": 1,
+       "box": [
+        321,
+        404,
+        705,
+        683
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 10,
+     "end_s": 64,
+     "channel": "visual",
+     "size": "medium",
+     "position": "edge",
+     "in_use": true,
+     "evidence": "monitor on desk to the right \u00b7 monitor on desk in wide shot \u00b7 monitor to right of speaker \u00b7 monitor behind presenter at standing desk \u00b7 monitor on desk as user stands",
+     "product": "43\u201d LG Smart Monitor",
+     "background": true,
+     "basis": "design",
+     "confidence": 0.95,
+     "parts": 5,
+     "recheck": true,
+     "track": [
+      {
+       "t": 10,
+       "box": [
+        193,
+        731,
+        804,
+        1000
+       ]
+      },
+      {
+       "t": 13,
+       "box": [
+        193,
+        731,
+        804,
+        1000
+       ]
+      },
+      {
+       "t": 16,
+       "box": [
+        193,
+        731,
+        804,
+        1000
+       ]
+      },
+      {
+       "t": 19,
+       "box": [
+        193,
+        731,
+        804,
+        1000
+       ]
+      },
+      {
+       "t": 22,
+       "box": [
+        193,
+        731,
+        804,
+        1000
+       ]
+      },
+      {
+       "t": 24,
+       "box": [
+        193,
+        731,
+        804,
+        1000
+       ]
+      },
+      {
+       "t": 29,
+       "box": [
+        193,
+        731,
+        804,
+        1000
+       ]
+      },
+      {
+       "t": 32,
+       "box": [
+        193,
+        731,
+        804,
+        1000
+       ]
+      },
+      {
+       "t": 35,
+       "box": [
+        193,
+        731,
+        804,
+        1000
+       ]
+      },
+      {
+       "t": 38,
+       "box": [
+        193,
+        731,
+        804,
+        1000
+       ]
+      },
+      {
+       "t": 41,
+       "box": [
+        193,
+        731,
+        804,
+        1000
+       ]
+      },
+      {
+       "t": 44,
+       "box": [
+        193,
+        731,
+        804,
+        1000
+       ]
+      },
+      {
+       "t": 48,
+       "box": [
+        193,
+        731,
+        804,
+        1000
+       ]
+      },
+      {
+       "t": 56,
+       "box": [
+        357,
+        398,
+        654,
+        608
+       ]
+      },
+      {
+       "t": 61,
+       "box": [
+        354,
+        398,
+        654,
+        608
+       ]
+      },
+      {
+       "t": 64,
+       "box": [
+        354,
+        398,
+        654,
+        608
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 85,
+     "end_s": 90,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "LG monitor lower half visible",
+     "product": "43\u201d LG Smart Monitor",
+     "background": true,
+     "basis": "design",
+     "confidence": 0.99,
+     "recheck": true,
+     "track": [
+      {
+       "t": 87,
+       "box": [
+        0,
+        83,
+        620,
+        1000
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 108,
+     "end_s": 112,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "LG monitor in wide view",
+     "product": "43\u201d LG Smart Monitor",
+     "background": true,
+     "basis": "design",
+     "confidence": 0.99,
+     "recheck": true,
+     "no_box": true
+    },
+    {
+     "start_s": 160,
+     "end_s": 169,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "43-inch smart LG monitor mentioned in speech",
+     "product": "43\u201d LG Smart Monitor",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 161,
+     "end_s": 169,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "43 inch LG smart monitor prominently featured \u00b7 43-inch LG Smart Monitor on desk",
+     "product": "43\u201d LG Smart Monitor",
+     "basis": "design",
+     "confidence": 0.99,
+     "parts": 2,
+     "track": [
+      {
+       "t": 162,
+       "box": [
+        292,
+        336,
+        772,
+        796
+       ]
+      },
+      {
+       "t": 165,
+       "box": [
+        292,
+        336,
+        772,
+        796
+       ]
+      },
+      {
+       "t": 168,
+       "box": [
+        292,
+        336,
+        772,
+        796
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 178,
+     "end_s": 190,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "monitor on desk",
+     "product": "43\u201d LG Smart Monitor",
+     "basis": "design",
+     "confidence": 0.99,
+     "recheck": true,
+     "no_box": true
+    },
+    {
+     "start_s": 200,
+     "end_s": 216,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "LG monitor streaming content while presenter sits back \u00b7 close angle of LG monitor displaying wallpaper",
+     "product": "43\u201d LG Smart Monitor",
+     "basis": "design",
+     "confidence": 0.99,
+     "parts": 2,
+     "recheck": true,
+     "track": [
+      {
+       "t": 201,
+       "box": [
+        376,
+        509,
+        663,
+        764
+       ]
+      },
+      {
+       "t": 205,
+       "box": [
+        376,
+        509,
+        663,
+        764
+       ]
+      },
+      {
+       "t": 209,
+       "box": [
+        376,
+        509,
+        663,
+        764
+       ]
+      },
+      {
+       "t": 213,
+       "box": [
+        278,
+        269,
+        1000,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 222,
+     "end_s": 227,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "LG monitor in top angled view",
+     "product": "43\u201d LG Smart Monitor",
+     "background": true,
+     "basis": "design",
+     "confidence": 0.99,
+     "recheck": true,
+     "track": [
+      {
+       "t": 223,
+       "box": [
+        278,
+        384,
+        692,
+        638
+       ]
+      },
+      {
+       "t": 226,
+       "box": [
+        278,
+        384,
+        692,
+        638
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 245,
+     "end_s": 250,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "LG monitor wide view",
+     "product": "43\u201d LG Smart Monitor",
+     "background": true,
+     "basis": "design",
+     "confidence": 0.99,
+     "recheck": true,
+     "no_box": true
+    },
+    {
+     "start_s": 359,
+     "end_s": 366,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "LG monitor in desk setup overview",
+     "product": "43\u201d LG Smart Monitor",
+     "basis": "design",
+     "confidence": 0.99,
+     "recheck": true,
+     "track": [
+      {
+       "t": 360,
+       "box": [
+        278,
+        384,
+        692,
+        638
+       ]
+      },
+      {
+       "t": 364,
+       "box": [
+        278,
+        384,
+        692,
+        638
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 393,
+     "end_s": 399,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "LG monitor centered on desk",
+     "product": "43\u201d LG Smart Monitor",
+     "background": true,
+     "basis": "design",
+     "confidence": 0.99,
+     "recheck": true,
+     "no_box": true
+    }
+   ],
+   "frames": [
+    {
+     "t": 0,
+     "box": [
+      321,
+      404,
+      705,
+      683
+     ]
+    },
+    {
+     "t": 1,
+     "box": [
+      321,
+      404,
+      705,
+      683
+     ]
+    },
+    {
+     "t": 10,
+     "box": [
+      193,
+      731,
+      804,
+      1000
+     ]
+    },
+    {
+     "t": 13,
+     "box": [
+      193,
+      731,
+      804,
+      1000
+     ]
+    },
+    {
+     "t": 16,
+     "box": [
+      193,
+      731,
+      804,
+      1000
+     ]
+    },
+    {
+     "t": 19,
+     "box": [
+      193,
+      731,
+      804,
+      1000
+     ]
+    },
+    {
+     "t": 22,
+     "box": [
+      193,
+      731,
+      804,
+      1000
+     ]
+    },
+    {
+     "t": 24,
+     "box": [
+      193,
+      731,
+      804,
+      1000
+     ]
+    },
+    {
+     "t": 29,
+     "box": [
+      193,
+      731,
+      804,
+      1000
+     ]
+    },
+    {
+     "t": 32,
+     "box": [
+      193,
+      731,
+      804,
+      1000
+     ]
+    },
+    {
+     "t": 35,
+     "box": [
+      193,
+      731,
+      804,
+      1000
+     ]
+    },
+    {
+     "t": 38,
+     "box": [
+      193,
+      731,
+      804,
+      1000
+     ]
+    },
+    {
+     "t": 41,
+     "box": [
+      193,
+      731,
+      804,
+      1000
+     ]
+    },
+    {
+     "t": 44,
+     "box": [
+      193,
+      731,
+      804,
+      1000
+     ]
+    },
+    {
+     "t": 48,
+     "box": [
+      193,
+      731,
+      804,
+      1000
+     ]
+    },
+    {
+     "t": 56,
+     "box": [
+      357,
+      398,
+      654,
+      608
+     ]
+    },
+    {
+     "t": 61,
+     "box": [
+      354,
+      398,
+      654,
+      608
+     ]
+    },
+    {
+     "t": 64,
+     "box": [
+      354,
+      398,
+      654,
+      608
+     ]
+    },
+    {
+     "t": 87,
+     "box": [
+      0,
+      83,
+      620,
+      1000
+     ]
+    },
+    {
+     "t": 162,
+     "box": [
+      292,
+      336,
+      772,
+      796
+     ]
+    },
+    {
+     "t": 165,
+     "box": [
+      292,
+      336,
+      772,
+      796
+     ]
+    },
+    {
+     "t": 168,
+     "box": [
+      292,
+      336,
+      772,
+      796
+     ]
+    },
+    {
+     "t": 201,
+     "box": [
+      376,
+      509,
+      663,
+      764
+     ]
+    },
+    {
+     "t": 205,
+     "box": [
+      376,
+      509,
+      663,
+      764
+     ]
+    },
+    {
+     "t": 209,
+     "box": [
+      376,
+      509,
+      663,
+      764
+     ]
+    },
+    {
+     "t": 213,
+     "box": [
+      278,
+      269,
+      1000,
+      788
+     ]
+    },
+    {
+     "t": 223,
+     "box": [
+      278,
+      384,
+      692,
+      638
+     ]
+    },
+    {
+     "t": 226,
+     "box": [
+      278,
+      384,
+      692,
+      638
+     ]
+    },
+    {
+     "t": 360,
+     "box": [
+      278,
+      384,
+      692,
+      638
+     ]
+    },
+    {
+     "t": 364,
+     "box": [
+      278,
+      384,
+      692,
+      638
+     ]
+    }
+   ],
+   "model_from_description": true
+  },
+  {
+   "brand": "Apple",
+   "product": "Mac Mini M4",
+   "products": [
+    "Mac Mini M4"
+   ],
+   "category": "Computers & Electronics",
+   "appearances": [
+    {
+     "start_s": 8,
+     "end_s": 48,
+     "channel": "visual",
+     "size": "small",
+     "position": "edge",
+     "in_use": true,
+     "evidence": "Apple logo on Mac Mini M4 \u00b7 under monitor behind the presenter on the right \u00b7 under the monitor on the desk \u00b7 under monitor to the right of presenter",
+     "product": "Mac Mini M4",
+     "background": true,
+     "basis": "design",
+     "confidence": 0.9,
+     "parts": 4,
+     "track": [
+      {
+       "t": 9,
+       "box": [
+        534,
+        403,
+        764,
+        599
+       ]
+      },
+      {
+       "t": 10,
+       "box": [
+        804,
+        762,
+        856,
+        843
+       ]
+      },
+      {
+       "t": 13,
+       "box": [
+        804,
+        762,
+        856,
+        843
+       ]
+      },
+      {
+       "t": 17,
+       "box": [
+        804,
+        762,
+        856,
+        843
+       ]
+      },
+      {
+       "t": 20,
+       "box": [
+        804,
+        762,
+        856,
+        843
+       ]
+      },
+      {
+       "t": 24,
+       "box": [
+        804,
+        762,
+        856,
+        843
+       ]
+      },
+      {
+       "t": 25,
+       "box": [
+        680,
+        439,
+        706,
+        483
+       ]
+      },
+      {
+       "t": 28,
+       "box": [
+        680,
+        439,
+        706,
+        483
+       ]
+      },
+      {
+       "t": 29,
+       "box": [
+        805,
+        762,
+        855,
+        842
+       ]
+      },
+      {
+       "t": 32,
+       "box": [
+        805,
+        762,
+        855,
+        842
+       ]
+      },
+      {
+       "t": 35,
+       "box": [
+        805,
+        762,
+        855,
+        842
+       ]
+      },
+      {
+       "t": 38,
+       "box": [
+        805,
+        762,
+        855,
+        842
+       ]
+      },
+      {
+       "t": 41,
+       "box": [
+        805,
+        762,
+        855,
+        842
+       ]
+      },
+      {
+       "t": 44,
+       "box": [
+        805,
+        762,
+        855,
+        842
+       ]
+      },
+      {
+       "t": 48,
+       "box": [
+        805,
+        762,
+        855,
+        842
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 85,
+     "end_s": 91,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "Mac Mini M4 mentioned in speech",
+     "product": "Mac Mini M4",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 86,
+     "end_s": 90,
+     "channel": "visual",
+     "size": "small",
+     "position": "center",
+     "in_use": true,
+     "evidence": "centered under monitor, Mac Mini M4 \u00b7 Apple logo on Mac Mini",
+     "product": "Mac Mini M4",
+     "basis": "design",
+     "confidence": 0.99,
+     "parts": 2,
+     "track": [
+      {
+       "t": 87,
+       "box": [
+        556,
+        429,
+        659,
+        608
+       ]
+      },
+      {
+       "t": 90,
+       "box": [
+        556,
+        429,
+        659,
+        608
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 100,
+     "end_s": 117,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "close-up of Apple Mac Mini M4 with Apple logo \u00b7 Apple logo on Mac Mini M4 \u00b7 under monitor in wide desk shot \u00b7 under monitor, close-up with logo visible",
+     "product": "Mac Mini M4",
+     "basis": "logo",
+     "confidence": 0.99,
+     "parts": 5,
+     "track": [
+      {
+       "t": 101,
+       "box": [
+        186,
+        399,
+        362,
+        638
+       ]
+      },
+      {
+       "t": 104,
+       "box": [
+        186,
+        399,
+        362,
+        638
+       ]
+      },
+      {
+       "t": 110,
+       "box": [
+        662,
+        439,
+        693,
+        492
+       ]
+      },
+      {
+       "t": 113,
+       "box": [
+        272,
+        401,
+        461,
+        650
+       ]
+      },
+      {
+       "t": 114,
+       "box": [
+        514,
+        403,
+        746,
+        584
+       ]
+      },
+      {
+       "t": 116,
+       "box": [
+        272,
+        401,
+        461,
+        650
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 128,
+     "end_s": 138,
+     "channel": "visual",
+     "size": "small",
+     "position": "center",
+     "in_use": true,
+     "evidence": "under monitor in background behind SSD drive \u00b7 under monitor behind SSD drive",
+     "product": "Mac Mini M4",
+     "background": true,
+     "basis": "design",
+     "confidence": 0.95,
+     "parts": 2,
+     "recheck": true,
+     "track": [
+      {
+       "t": 129,
+       "box": [
+        343,
+        627,
+        435,
+        775
+       ]
+      },
+      {
+       "t": 133,
+       "box": [
+        337,
+        626,
+        431,
+        775
+       ]
+      },
+      {
+       "t": 136,
+       "box": [
+        363,
+        630,
+        442,
+        772
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 296,
+     "end_s": 301,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Apple logo on Magic Mouse 2",
+     "product": "Mac Mini M4",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 298,
+       "box": [
+        504,
+        308,
+        804,
+        532
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 296,
+     "end_s": 308,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "Magic Mouse 2 mentioned in speech",
+     "product": "Mac Mini M4",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": [
+    {
+     "t": 9,
+     "box": [
+      534,
+      403,
+      764,
+      599
+     ]
+    },
+    {
+     "t": 10,
+     "box": [
+      804,
+      762,
+      856,
+      843
+     ]
+    },
+    {
+     "t": 13,
+     "box": [
+      804,
+      762,
+      856,
+      843
+     ]
+    },
+    {
+     "t": 17,
+     "box": [
+      804,
+      762,
+      856,
+      843
+     ]
+    },
+    {
+     "t": 20,
+     "box": [
+      804,
+      762,
+      856,
+      843
+     ]
+    },
+    {
+     "t": 24,
+     "box": [
+      804,
+      762,
+      856,
+      843
+     ]
+    },
+    {
+     "t": 25,
+     "box": [
+      680,
+      439,
+      706,
+      483
+     ]
+    },
+    {
+     "t": 28,
+     "box": [
+      680,
+      439,
+      706,
+      483
+     ]
+    },
+    {
+     "t": 29,
+     "box": [
+      805,
+      762,
+      855,
+      842
+     ]
+    },
+    {
+     "t": 32,
+     "box": [
+      805,
+      762,
+      855,
+      842
+     ]
+    },
+    {
+     "t": 35,
+     "box": [
+      805,
+      762,
+      855,
+      842
+     ]
+    },
+    {
+     "t": 38,
+     "box": [
+      805,
+      762,
+      855,
+      842
+     ]
+    },
+    {
+     "t": 41,
+     "box": [
+      805,
+      762,
+      855,
+      842
+     ]
+    },
+    {
+     "t": 44,
+     "box": [
+      805,
+      762,
+      855,
+      842
+     ]
+    },
+    {
+     "t": 48,
+     "box": [
+      805,
+      762,
+      855,
+      842
+     ]
+    },
+    {
+     "t": 87,
+     "box": [
+      556,
+      429,
+      659,
+      608
+     ]
+    },
+    {
+     "t": 90,
+     "box": [
+      556,
+      429,
+      659,
+      608
+     ]
+    },
+    {
+     "t": 101,
+     "box": [
+      186,
+      399,
+      362,
+      638
+     ]
+    },
+    {
+     "t": 104,
+     "box": [
+      186,
+      399,
+      362,
+      638
+     ]
+    },
+    {
+     "t": 110,
+     "box": [
+      662,
+      439,
+      693,
+      492
+     ]
+    },
+    {
+     "t": 113,
+     "box": [
+      272,
+      401,
+      461,
+      650
+     ]
+    },
+    {
+     "t": 114,
+     "box": [
+      514,
+      403,
+      746,
+      584
+     ]
+    },
+    {
+     "t": 116,
+     "box": [
+      272,
+      401,
+      461,
+      650
+     ]
+    },
+    {
+     "t": 129,
+     "box": [
+      343,
+      627,
+      435,
+      775
+     ]
+    },
+    {
+     "t": 133,
+     "box": [
+      337,
+      626,
+      431,
+      775
+     ]
+    },
+    {
+     "t": 136,
+     "box": [
+      363,
+      630,
+      442,
+      772
+     ]
+    },
+    {
+     "t": 298,
+     "box": [
+      504,
+      308,
+      804,
+      532
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "Mac Mini M4",
+     "url": "https://amzn.to/4nVicJL"
+    }
+   ],
+   "link": "https://amzn.to/4nVicJL",
+   "model_from_description": true
+  },
+  {
+   "brand": "Sonos",
+   "product": "One Speakers",
+   "products": [
+    "One Speakers"
+   ],
+   "category": "Audio Gear",
+   "appearances": [
+    {
+     "start_s": 0,
+     "end_s": 5,
+     "channel": "visual",
+     "size": "small",
+     "position": "edge",
+     "in_use": true,
+     "evidence": "Sonos One speaker on right side of desk \u00b7 Sonos speaker next to lamp",
+     "product": "One Speakers",
+     "basis": "design",
+     "confidence": 0.95,
+     "parts": 3,
+     "recheck": true,
+     "track": [
+      {
+       "t": 0,
+       "box": [
+        664,
+        622,
+        755,
+        674
+       ]
+      },
+      {
+       "t": 3,
+       "box": [
+        816,
+        680,
+        1000,
+        856
+       ]
+      },
+      {
+       "t": 4,
+       "box": [
+        556,
+        237,
+        693,
+        312
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 239,
+     "end_s": 243,
+     "channel": "visual",
+     "size": "small",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sonos speaker next to Ikea lamp",
+     "product": "One Speakers",
+     "basis": "design",
+     "confidence": 0.95,
+     "recheck": true,
+     "track": [
+      {
+       "t": 240,
+       "box": [
+        735,
+        417,
+        856,
+        497
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 359,
+     "end_s": 365,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "Sonos One Gen 2 mentioned in speech",
+     "product": "One Speakers",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 368,
+     "end_s": 391,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sonos One speaker with Sonos logo \u00b7 Sonos text logo on speaker \u00b7 Sonos One speaker close up \u00b7 Sonos text logo on speaker next to plant \u00b7 Sonos speaker next to Lego orchid",
+     "product": "One Speakers",
+     "basis": "logo",
+     "confidence": 0.99,
+     "parts": 5,
+     "track": [
+      {
+       "t": 369,
+       "box": [
+        463,
+        498,
+        770,
+        663
+       ]
+      },
+      {
+       "t": 370,
+       "box": [
+        415,
+        442,
+        888,
+        642
+       ]
+      },
+      {
+       "t": 373,
+       "box": [
+        463,
+        498,
+        770,
+        663
+       ]
+      },
+      {
+       "t": 376,
+       "box": [
+        463,
+        498,
+        770,
+        663
+       ]
+      },
+      {
+       "t": 381,
+       "box": [
+        465,
+        458,
+        775,
+        638
+       ]
+      },
+      {
+       "t": 382,
+       "box": [
+        438,
+        417,
+        883,
+        622
+       ]
+      },
+      {
+       "t": 384,
+       "box": [
+        465,
+        458,
+        775,
+        638
+       ]
+      },
+      {
+       "t": 388,
+       "box": [
+        569,
+        509,
+        747,
+        597
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 401,
+     "end_s": 405,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sonos One speaker on desk beside Lego orchid",
+     "product": "One Speakers",
+     "basis": "design",
+     "confidence": 0.95,
+     "recheck": true,
+     "track": [
+      {
+       "t": 402,
+       "box": [
+        570,
+        594,
+        755,
+        730
+       ]
+      }
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "t": 0,
+     "box": [
+      664,
+      622,
+      755,
+      674
+     ]
+    },
+    {
+     "t": 3,
+     "box": [
+      816,
+      680,
+      1000,
+      856
+     ]
+    },
+    {
+     "t": 4,
+     "box": [
+      556,
+      237,
+      693,
+      312
+     ]
+    },
+    {
+     "t": 240,
+     "box": [
+      735,
+      417,
+      856,
+      497
+     ]
+    },
+    {
+     "t": 369,
+     "box": [
+      463,
+      498,
+      770,
+      663
+     ]
+    },
+    {
+     "t": 370,
+     "box": [
+      415,
+      442,
+      888,
+      642
+     ]
+    },
+    {
+     "t": 373,
+     "box": [
+      463,
+      498,
+      770,
+      663
+     ]
+    },
+    {
+     "t": 376,
+     "box": [
+      463,
+      498,
+      770,
+      663
+     ]
+    },
+    {
+     "t": 381,
+     "box": [
+      465,
+      458,
+      775,
+      638
+     ]
+    },
+    {
+     "t": 382,
+     "box": [
+      438,
+      417,
+      883,
+      622
+     ]
+    },
+    {
+     "t": 384,
+     "box": [
+      465,
+      458,
+      775,
+      638
+     ]
+    },
+    {
+     "t": 388,
+     "box": [
+      569,
+      509,
+      747,
+      597
+     ]
+    },
+    {
+     "t": 402,
+     "box": [
+      570,
+      594,
+      755,
+      730
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "One Speakers",
+     "url": "https://amzn.to/3Wg1Kb1"
+    }
+   ],
+   "link": "https://amzn.to/3Wg1Kb1",
+   "model_from_description": true
+  },
+  {
+   "brand": "LEGO",
+   "product": "Orchid",
+   "products": [
+    "Orchid"
+   ],
+   "category": "Toys & Hobbies",
+   "appearances": [
+    {
+     "start_s": 2,
+     "end_s": 4,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "LEGO Orchid build on desk \u00b7 Lego Orchid botanical set in pot on desk",
+     "product": "Orchid",
+     "basis": "design",
+     "confidence": 1,
+     "parts": 2,
+     "track": [
+      {
+       "t": 2,
+       "box": [
+        130,
+        203,
+        1000,
+        712
+       ]
+      },
+      {
+       "t": 3,
+       "box": [
+        226,
+        175,
+        936,
+        607
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 142,
+     "end_s": 147,
+     "channel": "visual",
+     "size": "small",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Lego orchid in background behind hard drive",
+     "product": "Orchid",
+     "background": true,
+     "basis": "design",
+     "confidence": 0.95,
+     "recheck": true,
+     "track": [
+      {
+       "t": 143,
+       "box": [
+        386,
+        452,
+        608,
+        558
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 368,
+     "end_s": 392,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Lego Orchid flowers behind Sonos speaker \u00b7 Lego orchid on left behind speaker \u00b7 Lego Orchid botanical set on desk \u00b7 LEGO Orchid build beside speaker",
+     "product": "Orchid",
+     "background": true,
+     "basis": "design",
+     "confidence": 0.99,
+     "parts": 4,
+     "track": [
+      {
+       "t": 369,
+       "box": [
+        130,
+        442,
+        638,
+        626
+       ]
+      },
+      {
+       "t": 374,
+       "box": [
+        130,
+        442,
+        638,
+        626
+       ]
+      },
+      {
+       "t": 381,
+       "box": [
+        130,
+        396,
+        644,
+        574
+       ]
+      },
+      {
+       "t": 388,
+       "box": [
+        389,
+        442,
+        692,
+        571
+       ]
+      },
+      {
+       "t": 389,
+       "box": [
+        330,
+        396,
+        735,
+        545
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 386,
+     "end_s": 388,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "LEGO Orchid mentioned in speech",
+     "product": "Orchid",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 401,
+     "end_s": 405,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "close view of Lego Orchid plant in fluted pot \u00b7 LEGO Orchid build close-up",
+     "product": "Orchid",
+     "basis": "design",
+     "confidence": 0.99,
+     "parts": 2,
+     "track": [
+      {
+       "t": 402,
+       "box": [
+        318,
+        381,
+        781,
+        608
+       ]
+      },
+      {
+       "t": 403,
+       "box": [
+        182,
+        175,
+        874,
+        552
+       ]
+      }
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "t": 2,
+     "box": [
+      130,
+      203,
+      1000,
+      712
+     ]
+    },
+    {
+     "t": 3,
+     "box": [
+      226,
+      175,
+      936,
+      607
+     ]
+    },
+    {
+     "t": 143,
+     "box": [
+      386,
+      452,
+      608,
+      558
+     ]
+    },
+    {
+     "t": 369,
+     "box": [
+      130,
+      442,
+      638,
+      626
+     ]
+    },
+    {
+     "t": 374,
+     "box": [
+      130,
+      442,
+      638,
+      626
+     ]
+    },
+    {
+     "t": 381,
+     "box": [
+      130,
+      396,
+      644,
+      574
+     ]
+    },
+    {
+     "t": 388,
+     "box": [
+      389,
+      442,
+      692,
+      571
+     ]
+    },
+    {
+     "t": 389,
+     "box": [
+      330,
+      396,
+      735,
+      545
+     ]
+    },
+    {
+     "t": 402,
+     "box": [
+      318,
+      381,
+      781,
+      608
+     ]
+    },
+    {
+     "t": 403,
+     "box": [
+      182,
+      175,
+      874,
+      552
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "Orchid",
+     "url": "https://amzn.to/4qgs1DF"
+    }
+   ],
+   "link": "https://amzn.to/4qgs1DF",
+   "model_from_description": true
+  },
+  {
+   "brand": "Sennheiser",
+   "product": "Profile USB Mic",
+   "products": [
+    "Profile USB Mic"
+   ],
+   "category": "Computers & Electronics",
+   "appearances": [
+    {
+     "start_s": 85,
+     "end_s": 90,
+     "channel": "visual",
+     "size": "medium",
+     "position": "edge",
+     "in_use": false,
+     "evidence": "microphone body on left edge",
+     "product": "Profile USB Mic",
+     "basis": "design",
+     "confidence": 0.95,
+     "recheck": true,
+     "track": [
+      {
+       "t": 87,
+       "box": [
+        465,
+        0,
+        786,
+        128
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 128,
+     "end_s": 134,
+     "channel": "visual",
+     "size": "medium",
+     "position": "edge",
+     "in_use": false,
+     "evidence": "Sennheiser microphone on left of frame",
+     "product": "Profile USB Mic",
+     "basis": "design",
+     "confidence": 0.95,
+     "recheck": true,
+     "track": [
+      {
+       "t": 129,
+       "box": [
+        471,
+        0,
+        804,
+        150
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 334,
+     "end_s": 355,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Sennheiser Profile USB microphone on stand with logo \u00b7 Sennheiser logo on profile USB mic \u00b7 top angle of Sennheiser Profile USB microphone \u00b7 Sennheiser logo on USB mic top view \u00b7 close-up of Sennheiser Profile microphone controls and logo \u00b7 Sennheiser logo on USB mic close up",
+     "product": "Profile USB Mic",
+     "basis": "logo",
+     "confidence": 0.99,
+     "parts": 6,
+     "track": [
+      {
+       "t": 335,
+       "box": [
+        454,
+        439,
+        735,
+        538
+       ]
+      },
+      {
+       "t": 339,
+       "box": [
+        454,
+        439,
+        735,
+        538
+       ]
+      },
+      {
+       "t": 343,
+       "box": [
+        471,
+        417,
+        725,
+        538
+       ]
+      },
+      {
+       "t": 344,
+       "box": [
+        337,
+        332,
+        929,
+        608
+       ]
+      },
+      {
+       "t": 349,
+       "box": [
+        435,
+        434,
+        764,
+        563
+       ]
+      },
+      {
+       "t": 350,
+       "box": [
+        188,
+        381,
+        936,
+        677
+       ]
+      },
+      {
+       "t": 352,
+       "box": [
+        435,
+        434,
+        764,
+        563
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 334,
+     "end_s": 340,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "Sennheiser Profile USB mic mentioned in speech",
+     "product": "Profile USB Mic",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": [
+    {
+     "t": 87,
+     "box": [
+      465,
+      0,
+      786,
+      128
+     ]
+    },
+    {
+     "t": 129,
+     "box": [
+      471,
+      0,
+      804,
+      150
+     ]
+    },
+    {
+     "t": 335,
+     "box": [
+      454,
+      439,
+      735,
+      538
+     ]
+    },
+    {
+     "t": 339,
+     "box": [
+      454,
+      439,
+      735,
+      538
+     ]
+    },
+    {
+     "t": 343,
+     "box": [
+      471,
+      417,
+      725,
+      538
+     ]
+    },
+    {
+     "t": 344,
+     "box": [
+      337,
+      332,
+      929,
+      608
+     ]
+    },
+    {
+     "t": 349,
+     "box": [
+      435,
+      434,
+      764,
+      563
+     ]
+    },
+    {
+     "t": 350,
+     "box": [
+      188,
+      381,
+      936,
+      677
+     ]
+    },
+    {
+     "t": 352,
+     "box": [
+      435,
+      434,
+      764,
+      563
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "Profile USB Mic",
+     "url": "https://amzn.to/42K66uH"
+    }
+   ],
+   "link": "https://amzn.to/42K66uH",
+   "model_from_description": true
+  },
+  {
+   "brand": "Keychron",
+   "product": "K3 Keyboard",
+   "products": [
+    "K3 Keyboard"
+   ],
+   "category": "Computers & Electronics",
+   "appearances": [
+    {
+     "start_s": 0,
+     "end_s": 2,
+     "channel": "visual",
+     "size": "small",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Keychron keyboard on desk mat",
+     "product": "K3 Keyboard",
+     "basis": "design",
+     "confidence": 0.95,
+     "recheck": true,
+     "track": [
+      {
+       "t": 0,
+       "box": [
+        712,
+        384,
+        781,
+        482
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 253,
+     "end_s": 264,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "typing on Keychron K3 mechanical keyboard \u00b7 Keychron K3 keyboard being typed on \u00b7 Keychron K3 mechanical keyboard on desk pad \u00b7 Keychron K3 keyboard on desk",
+     "product": "K3 Keyboard",
+     "basis": "design",
+     "confidence": 0.99,
+     "parts": 4,
+     "track": [
+      {
+       "t": 254,
+       "box": [
+        665,
+        417,
+        856,
+        597
+       ]
+      },
+      {
+       "t": 255,
+       "box": [
+        468,
+        439,
+        747,
+        720
+       ]
+      },
+      {
+       "t": 258,
+       "box": [
+        647,
+        347,
+        891,
+        576
+       ]
+      },
+      {
+       "t": 262,
+       "box": [
+        647,
+        347,
+        891,
+        576
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 253,
+     "end_s": 257,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "Keychron K3 keyboard mentioned in speech",
+     "product": "K3 Keyboard",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 292,
+     "end_s": 295,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Keychron K3 keyboard on black desk mat \u00b7 Keychron K3 keyboard on desk mat",
+     "product": "K3 Keyboard",
+     "basis": "design",
+     "confidence": 0.99,
+     "parts": 2,
+     "track": [
+      {
+       "t": 293,
+       "box": [
+        647,
+        347,
+        891,
+        576
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 303,
+     "end_s": 313,
+     "channel": "visual",
+     "size": "small",
+     "position": "center",
+     "in_use": true,
+     "evidence": "typing on Keychron K3 keyboard \u00b7 typing on Keychron K3 keyboard in top down view",
+     "product": "K3 Keyboard",
+     "basis": "design",
+     "confidence": 0.95,
+     "parts": 2,
+     "recheck": true,
+     "track": [
+      {
+       "t": 304,
+       "box": [
+        770,
+        269,
+        934,
+        434
+       ]
+      },
+      {
+       "t": 310,
+       "box": [
+        763,
+        305,
+        938,
+        483
+       ]
+      }
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "t": 0,
+     "box": [
+      712,
+      384,
+      781,
+      482
+     ]
+    },
+    {
+     "t": 254,
+     "box": [
+      665,
+      417,
+      856,
+      597
+     ]
+    },
+    {
+     "t": 255,
+     "box": [
+      468,
+      439,
+      747,
+      720
+     ]
+    },
+    {
+     "t": 258,
+     "box": [
+      647,
+      347,
+      891,
+      576
+     ]
+    },
+    {
+     "t": 262,
+     "box": [
+      647,
+      347,
+      891,
+      576
+     ]
+    },
+    {
+     "t": 293,
+     "box": [
+      647,
+      347,
+      891,
+      576
+     ]
+    },
+    {
+     "t": 304,
+     "box": [
+      770,
+      269,
+      934,
+      434
+     ]
+    },
+    {
+     "t": 310,
+     "box": [
+      763,
+      305,
+      938,
+      483
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "K3 Keyboard",
+     "url": "https://amzn.to/3WxPtyZ"
+    }
+   ],
+   "link": "https://amzn.to/3WxPtyZ",
+   "model_from_description": true
+  },
+  {
+   "brand": "Quntis",
+   "product": "Monitor Light Bar",
+   "products": [
+    "Monitor Light Bar"
+   ],
+   "category": "Computers & Electronics",
+   "appearances": [
+    {
+     "start_s": 161,
+     "end_s": 168,
+     "channel": "visual",
+     "size": "small",
+     "position": "center",
+     "in_use": true,
+     "evidence": "light bar on top of the monitor",
+     "product": "Monitor Light Bar",
+     "basis": "design",
+     "confidence": 0.95,
+     "recheck": true,
+     "track": [
+      {
+       "t": 162,
+       "box": [
+        278,
+        484,
+        303,
+        649
+       ]
+      },
+      {
+       "t": 166,
+       "box": [
+        278,
+        484,
+        303,
+        649
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 212,
+     "end_s": 220,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Monitor light bar above monitor \u00b7 Quntis light bar on top of monitor close-up \u00b7 wireless control dial for Quntis light bar on desk",
+     "product": "Monitor Light Bar",
+     "basis": "design",
+     "confidence": 0.95,
+     "parts": 3,
+     "track": [
+      {
+       "t": 213,
+       "box": [
+        140,
+        203,
+        401,
+        620
+       ]
+      },
+      {
+       "t": 216,
+       "box": [
+        277,
+        368,
+        387,
+        597
+       ]
+      },
+      {
+       "t": 218,
+       "box": [
+        638,
+        706,
+        750,
+        843
+       ]
+      },
+      {
+       "t": 220,
+       "box": [
+        638,
+        706,
+        750,
+        843
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 212,
+     "end_s": 217,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "Quntis monitor light bar mentioned in speech",
+     "product": "Monitor Light Bar",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": [
+    {
+     "t": 162,
+     "box": [
+      278,
+      484,
+      303,
+      649
+     ]
+    },
+    {
+     "t": 166,
+     "box": [
+      278,
+      484,
+      303,
+      649
+     ]
+    },
+    {
+     "t": 213,
+     "box": [
+      140,
+      203,
+      401,
+      620
+     ]
+    },
+    {
+     "t": 216,
+     "box": [
+      277,
+      368,
+      387,
+      597
+     ]
+    },
+    {
+     "t": 218,
+     "box": [
+      638,
+      706,
+      750,
+      843
+     ]
+    },
+    {
+     "t": 220,
+     "box": [
+      638,
+      706,
+      750,
+      843
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "Monitor Light Bar",
+     "url": "https://amzn.to/48DUBsq"
+    }
+   ],
+   "link": "https://amzn.to/48DUBsq",
+   "model_from_description": true
+  },
+  {
+   "brand": "Samsung",
+   "product": "2TB SSD Drive (Working Drive)",
+   "products": [
+    "2TB SSD Drive (Working Drive)"
+   ],
+   "category": "Computers & Electronics",
+   "appearances": [
+    {
+     "start_s": 129,
+     "end_s": 139,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Samsung text logo on SSD drive \u00b7 held in hand, Samsung SSD drive \u00b7 held in hand showing Samsung text",
+     "product": "2TB SSD Drive (Working Drive)",
+     "basis": "text",
+     "confidence": 1,
+     "parts": 4,
+     "track": [
+      {
+       "t": 129,
+       "box": [
+        496,
+        439,
+        874,
+        582
+       ]
+      },
+      {
+       "t": 133,
+       "box": [
+        471,
+        497,
+        729,
+        659
+       ]
+      },
+      {
+       "t": 136,
+       "box": [
+        476,
+        498,
+        735,
+        661
+       ]
+      },
+      {
+       "t": 138,
+       "box": [
+        476,
+        498,
+        735,
+        661
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 129,
+     "end_s": 134,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "2TB SSD drive mentioned in speech",
+     "product": "2TB SSD Drive (Working Drive)",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": [
+    {
+     "t": 129,
+     "box": [
+      496,
+      439,
+      874,
+      582
+     ]
+    },
+    {
+     "t": 133,
+     "box": [
+      471,
+      497,
+      729,
+      659
+     ]
+    },
+    {
+     "t": 136,
+     "box": [
+      476,
+      498,
+      735,
+      661
+     ]
+    },
+    {
+     "t": 138,
+     "box": [
+      476,
+      498,
+      735,
+      661
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "2TB SSD Drive (Working Drive)",
+     "url": "https://amzn.to/3KYMYmv"
+    }
+   ],
+   "link": "https://amzn.to/3KYMYmv",
+   "model_from_description": true
+  },
+  {
+   "brand": "Seagate",
+   "product": "8TB External Hard Drive",
+   "products": [
+    "8TB External Hard Drive"
+   ],
+   "category": "Computers & Electronics",
+   "appearances": [
+    {
+     "start_s": 142,
+     "end_s": 149,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Seagate logo on external hard drive \u00b7 Seagate 8TB external drive on desk with Seagate logo",
+     "product": "8TB External Hard Drive",
+     "basis": "logo",
+     "confidence": 1,
+     "parts": 2,
+     "track": [
+      {
+       "t": 143,
+       "box": [
+        389,
+        314,
+        883,
+        564
+       ]
+      },
+      {
+       "t": 146,
+       "box": [
+        447,
+        437,
+        768,
+        680
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 142,
+     "end_s": 147,
+     "channel": "audio",
+     "size": null,
+     "position": null,
+     "in_use": null,
+     "evidence": "Seagate 8TB drive mentioned in speech",
+     "product": "8TB External Hard Drive",
+     "basis": "speech",
+     "confidence": 1
+    }
+   ],
+   "frames": [
+    {
+     "t": 143,
+     "box": [
+      389,
+      314,
+      883,
+      564
+     ]
+    },
+    {
+     "t": 146,
+     "box": [
+      447,
+      437,
+      768,
+      680
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "8TB External Hard Drive",
+     "url": "https://amzn.to/3JjALID"
+    }
+   ],
+   "link": "https://amzn.to/3JjALID",
+   "model_from_description": true
+  }
+ ],
+ "unidentified": [],
+ "disclosures": [],
+ "paid": {
+  "looks_like_paid_promotion": false,
+  "reasoning": "The creator is showcasing their personal desk setup and reviewing various tech accessories they own. Although affiliate links are provided in the video description, there are no explicit paid sponsorship disclosures or indications of a brand-funded video."
+ },
+ "authenticity": [],
+ "source": {
+  "engine": "gemini",
+  "models": [
+   "gemini-3.5-flash",
+   "gemini-3.8-flash"
+  ],
+  "analyzed_at": "2026-11-22",
+  "usage": [
+   {
+    "call": "timeline",
+    "model": "gemini-3.5-flash",
+    "prompt": 43344,
+    "output": 4671,
+    "thoughts": 0,
+    "total": 48015
+   },
+   {
+    "call": "recheck",
+    "model": "gemini-3.8-flash",
+    "prompt": 42708,
+    "output": 13622,
+    "thoughts": 0,
+    "total": 56330
+   }
+  ],
+  "recheck": {
+   "model": "gemini-3.8-flash",
+   "products": 9,
+   "spans": 71,
+   "seconds": 221,
+   "filter": {
+    "spans_in": 71,
+    "rubber_stamp": true,
+    "low_conf": 0,
+    "copied_dropped": 15,
+    "copied_kept_no_box": 0,
+    "template_keys": 12,
+    "stacked_keys": 0,
+    "no_conf": 0,
+    "no_box": 5,
+    "spans_out": 56
+   },
+   "visual_raw": 21,
+   "visual_before": 16,
+   "visual_after": 35,
+   "seconds_before": 102,
+   "seconds_after": 361
+  }
+ }
+}

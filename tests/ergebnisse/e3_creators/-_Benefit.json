@@ -1,0 +1,1206 @@
+[
+ {
+  "t": 0,
+  "ev": "step",
+  "data": {
+   "id": "field",
+   "status": "run",
+   "title": "Working out the product field",
+   "detail": "",
+   "at_s": 0
+  }
+ },
+ {
+  "t": 0,
+  "ev": "step",
+  "data": {
+   "id": "field",
+   "status": "done",
+   "title": "Product field",
+   "detail": "Beauty & care (from Benefit in 2 of our analyses) · topic words: beauty & care · searches: “makeup review”, “best makeup”",
+   "at_s": 0,
+   "group": "beauty",
+   "queries": [
+    "makeup review",
+    "best makeup"
+   ]
+  }
+ },
+ {
+  "t": 0,
+  "ev": "step",
+  "data": {
+   "id": "search:makeup review",
+   "status": "run",
+   "title": "Searching YouTube for “makeup review”",
+   "detail": "",
+   "at_s": 0
+  }
+ },
+ {
+  "t": 1,
+  "ev": "step",
+  "data": {
+   "id": "search:makeup review",
+   "status": "done",
+   "title": "Searched YouTube for “makeup review”",
+   "detail": "0 videos · 0 quota units · YouTube search page",
+   "at_s": 1
+  }
+ },
+ {
+  "t": 1,
+  "ev": "step",
+  "data": {
+   "id": "search:best makeup",
+   "status": "run",
+   "title": "Searching YouTube for “best makeup”",
+   "detail": "",
+   "at_s": 1
+  }
+ },
+ {
+  "t": 2,
+  "ev": "step",
+  "data": {
+   "id": "search:best makeup",
+   "status": "done",
+   "title": "Searched YouTube for “best makeup”",
+   "detail": "20 videos · 0 quota units · YouTube search page",
+   "at_s": 2
+  }
+ },
+ {
+  "t": 2,
+  "ev": "step",
+  "data": {
+   "id": "group",
+   "status": "done",
+   "title": "Grouping by channel",
+   "detail": "20 videos from 16 channels · 8 looked at closely (most search hits × views) · Benefit's own channel left out",
+   "at_s": 2
+  }
+ },
+ {
+  "t": 2,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "1 of 8: Makeup By Nikki La Rose",
+   "at_s": 2
+  }
+ },
+ {
+  "t": 3,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "2 of 8: Morgan Turner",
+   "at_s": 3
+  }
+ },
+ {
+  "t": 3,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "3 of 8: HopeScope",
+   "at_s": 3
+  }
+ },
+ {
+  "t": 3,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "4 of 8: Jean Watts",
+   "at_s": 3
+  }
+ },
+ {
+  "t": 4,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "5 of 8: Zhirelle",
+   "at_s": 4
+  }
+ },
+ {
+  "t": 4,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "6 of 8: Haley Kim",
+   "at_s": 4
+  }
+ },
+ {
+  "t": 5,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "7 of 8: James Charles",
+   "at_s": 5
+  }
+ },
+ {
+  "t": 5,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "8 of 8: Tina Yong",
+   "at_s": 5
+  }
+ },
+ {
+  "t": 6,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "done",
+   "title": "Read the candidates' channels",
+   "detail": "8 channels, latest 25 uploads each · 0 from the 6-hour cache · 0 quota units",
+   "at_s": 6
+  }
+ },
+ {
+  "t": 6,
+  "ev": "step",
+  "data": {
+   "id": "library",
+   "status": "run",
+   "title": "Checking analyses we already have of these channels",
+   "detail": "",
+   "at_s": 6
+  }
+ },
+ {
+  "t": 6,
+  "ev": "step",
+  "data": {
+   "id": "library",
+   "status": "done",
+   "title": "Analyses we already have",
+   "detail": "none of these channels is analysed yet – the scores rest on titles, views and dates only",
+   "at_s": 6
+  }
+ },
+ {
+  "t": 6,
+  "ev": "step",
+  "data": {
+   "id": "score",
+   "status": "done",
+   "title": "Ranking",
+   "detail": "8 creators · 0 with analysed videos, the rest on metadata only",
+   "at_s": 6
+  }
+ },
+ {
+  "t": 6,
+  "ev": "confirm",
+  "data": {
+   "candidates": [
+    {
+     "id": "b1aAEUGLyCc",
+     "title": "I TRIED THAI MAKEUP FOR THE FIRST TIME!",
+     "views": 139000,
+     "duration_s": 1011,
+     "published": "2025-11-25",
+     "channel": "Haley Kim",
+     "why": "most-viewed on-topic upload of Haley Kim"
+    }
+   ],
+   "preselected": [],
+   "quota": {
+    "models": 4,
+    "exhausted": 0,
+    "used_requests": 0,
+    "left_requests": 80,
+    "free_per_model": 20,
+    "visitor_left": 10,
+    "visitor_cap": 10,
+    "reset_in_s": 60460,
+    "blocked": null
+   },
+   "max_new": 3,
+   "per_video_requests": 3
+  }
+ },
+ {
+  "t": 6,
+  "ev": "step",
+  "data": {
+   "id": "confirm",
+   "status": "skip",
+   "title": "Optional: analyse one video each",
+   "detail": "one on-topic video of each of the top 3 – adds competitors and ad labels to their scores; nothing is analysed without your OK",
+   "at_s": 6
+  }
+ },
+ {
+  "t": 6,
+  "ev": "report",
+  "data": {
+   "query": {
+    "product": "",
+    "brand": "Benefit",
+    "lang": "any",
+    "group": "beauty",
+    "group_label": "Beauty & care",
+    "field_from": "Benefit in 2 of our analyses",
+    "queries": [
+     "makeup review",
+     "best makeup"
+    ],
+    "words": []
+   },
+   "shortlist": [
+    {
+     "channel": {
+      "id": "UCucot-Zp428OwkyRm2I7v2Q",
+      "title": "James Charles",
+      "handle": "@JamesCharles",
+      "avatar": "https://yt3.googleusercontent.com/6WC8rRE_1ME7Sza7y-Z75g_wGahOKlyRevH2hOE9DNMrHM37ZYCmNGBnJpJWqhUpy0-c05xQcjk=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "23.6M subscribers",
+      "video_count": 761,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:19.871Z"
+     },
+     "score": 100,
+     "verdict": "Strong candidate",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 100,
+       "text": "15 of the latest 25 uploads are about Beauty & care (60 %); half or more = 100. Found 1× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 100,
+       "text": "Median 1.1M views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "25 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "15 of 25 latest uploads about Beauty & care · ~1.1M views per video · 25 uploads in 3 months",
+     "value": {
+      "low": 2449.341124999999,
+      "mid": 4825.285208333333,
+      "high": 8909.790312500001
+     },
+     "median_views": 1100000,
+     "recent": 25,
+     "on_topic": 15,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "beauty",
+       "label": "Beauty & care",
+       "uploads": 15
+      },
+      {
+       "group": "retail",
+       "label": "Retail & services",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "Ga1pzxWUtOs",
+       "title": "I Bought Every BEST-SELLING Makeup Product On Amazon!",
+       "views": 1576876,
+       "published": null,
+       "duration_s": 1721
+      }
+     ],
+     "best_video": null,
+     "examples": [
+      {
+       "id": "axwpX_OTfzE",
+       "title": "Full Face Of Temu's BEST SELLING Makeup Products...",
+       "views": 1000000,
+       "published": "2026-11-20"
+      },
+      {
+       "id": "yYA7tRxcz4E",
+       "title": "FULL FACE of KEYCHAIN Makeup!",
+       "views": 1100000,
+       "published": "2026-11-13"
+      },
+      {
+       "id": "mQX70gobY34",
+       "title": "BRUTAL HONEST Review of Beauty Advent Calendars!",
+       "views": 3700000,
+       "published": "2026-11-06"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCCydBRF6RjrT58FV6KO-wwg",
+      "title": "Makeup By Nikki La Rose",
+      "handle": "@Makeupbynikkilarose",
+      "avatar": "https://yt3.googleusercontent.com/oeQfpqyTCBbCfFpEODIMvuzLDJp1AlNhlPH_V5rqSR1ifO41LrCT7i0zvsm5h41nWrh3Bpai=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "594K subscribers",
+      "video_count": 1700,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:17.110Z"
+     },
+     "score": 92,
+     "verdict": "Strong candidate",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 100,
+       "text": "17 of the latest 25 uploads are about Beauty & care (68 %); half or more = 100. Found 4× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 77,
+       "text": "Median 206k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "25 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "17 of 25 latest uploads about Beauty & care · ~206k views per video · 25 uploads in 3 months",
+     "value": {
+      "low": 458.6947924999999,
+      "mid": 903.6443208333333,
+      "high": 1668.5607312500001
+     },
+     "median_views": 206000,
+     "recent": 25,
+     "on_topic": 17,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "beauty",
+       "label": "Beauty & care",
+       "uploads": 17
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "aATJoj_a8Lk",
+       "title": "Allure Best of Beauty 2026: What They Got RIGHT & WRONG",
+       "views": 375556,
+       "published": null,
+       "duration_s": 3415
+      },
+      {
+       "id": "mktzZZPYA9Y",
+       "title": "My DRUGSTORE Holy Grails!!!",
+       "views": 101978,
+       "published": null,
+       "duration_s": 3340
+      },
+      {
+       "id": "xyDfD8e70Ag",
+       "title": "BEST OF AMAZON BEAUTY! The Products Actually Worth Buying | Pro Makeup Artist Picks",
+       "views": 156895,
+       "published": null,
+       "duration_s": 2068
+      }
+     ],
+     "best_video": null,
+     "examples": [
+      {
+       "id": "xyDfD8e70Ag",
+       "title": "BEST OF AMAZON BEAUTY! The Products Actually Worth Buying | Pro Makeup Artist Picks",
+       "views": 156000,
+       "published": "2026-11-21"
+      },
+      {
+       "id": "4hFS1rP-iEQ",
+       "title": "Everything I'm Loving Right Now: Makeup, Skincare, Fashion!",
+       "views": 161000,
+       "published": "2026-11-17"
+      },
+      {
+       "id": "2LCtXbKtKok",
+       "title": "VICTORIA’S SECRET ANGEL MAKEUP! | Using Affordable Makeup Only ",
+       "views": 109000,
+       "published": "2026-11-10"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCOzVEwcVSu_2xDQFyMReDRA",
+      "title": "Haley Kim",
+      "handle": "@HaleyKimaking",
+      "avatar": "https://yt3.googleusercontent.com/ytc/AIdro_nQyiiYXT05jpOCJhXdpFMdg2GCRdIUtJwE4HGNxBXKPg8=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "1.37M subscribers",
+      "video_count": 439,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:19.453Z"
+     },
+     "score": 83,
+     "verdict": "Strong candidate",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 100,
+       "text": "16 of the latest 25 uploads are about Beauty & care (64 %); half or more = 100. Found 1× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 66,
+       "text": "Median 93k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 70,
+       "text": "5 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "16 of 25 latest uploads about Beauty & care · ~93k views per video · 5 uploads in 3 months",
+     "value": {
+      "low": 207.08065874999997,
+      "mid": 407.95593125,
+      "high": 753.2822718750001
+     },
+     "median_views": 93000,
+     "recent": 5,
+     "on_topic": 16,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "beauty",
+       "label": "Beauty & care",
+       "uploads": 16
+      },
+      {
+       "group": "health",
+       "label": "Health",
+       "uploads": 1
+      },
+      {
+       "group": "fashion",
+       "label": "Fashion & accessories",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "28hORw5luY4",
+       "title": "Beginner Makeup Starter Kit • all drugstore & easy to use",
+       "views": 2002596,
+       "published": null,
+       "duration_s": 826
+      }
+     ],
+     "best_video": {
+      "id": "b1aAEUGLyCc",
+      "title": "I TRIED THAI MAKEUP FOR THE FIRST TIME!",
+      "views": 139000,
+      "duration_s": 1011,
+      "published": "2025-11-25"
+     },
+     "examples": [
+      {
+       "id": "5M-Fgb7YE64",
+       "title": "The ultimate pink flush • Hailey Bieber French show makeup",
+       "views": 80000,
+       "published": "2026-10-24"
+      },
+      {
+       "id": "GnGhTrrmDQ8",
+       "title": "The BEST Fall Makeup Recommendations: Foundation, Blush & Lips!",
+       "views": 49000,
+       "published": "2026-10-26"
+      },
+      {
+       "id": "4pWV3eazyxI",
+       "title": "my soft brown fall makeup (no foundation)",
+       "views": 53000,
+       "published": "2026-10-26"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCCnngeLwoZCSSuSs9ePuDqA",
+      "title": "Morgan Turner",
+      "handle": "@MorganTurnerMakeup",
+      "avatar": "https://yt3.googleusercontent.com/ytc/AIdro_mxZ_eTxauokrAFsWipQ17tBaE8U39U-gYDbnCgF2-kqw=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "380K subscribers",
+      "video_count": 3000,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:17.485Z"
+     },
+     "score": 82,
+     "verdict": "Strong candidate",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 96,
+       "text": "12 of the latest 25 uploads are about Beauty & care (48 %); half or more = 100. Found 2× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 57,
+       "text": "Median 50k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "25 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "12 of 25 latest uploads about Beauty & care · ~50k views per video · 25 uploads in 3 months",
+     "value": {
+      "low": 111.33368749999998,
+      "mid": 219.33114583333335,
+      "high": 404.99046875
+     },
+     "median_views": 50000,
+     "recent": 25,
+     "on_topic": 12,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "beauty",
+       "label": "Beauty & care",
+       "uploads": 12
+      },
+      {
+       "group": "retail",
+       "label": "Retail & services",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "hQ4zTJbP5NA",
+       "title": "THE BEST MAKEUP OF 2025! (and I tried 400 products...)",
+       "views": 62476,
+       "published": null,
+       "duration_s": 2729
+      },
+      {
+       "id": "XMWvYoaE4Hg",
+       "title": "BEST MAKEUP OF 2026...so far",
+       "views": 76805,
+       "published": null,
+       "duration_s": 2443
+      }
+     ],
+     "best_video": {
+      "id": "M3QbQaF9m3s",
+      "title": "I Tested 41 VIRAL New Makeup Products… Watch Before You Buy 👀 Speed Reviews Pt. 1",
+      "views": 53000,
+      "duration_s": 1080,
+      "published": "2026-10-26"
+     },
+     "examples": [
+      {
+       "id": "2Mk37O1bZcw",
+       "title": "NEW Makeup TESTED!! Holy Grail Found 👀",
+       "views": 38000,
+       "published": "2026-11-21"
+      },
+      {
+       "id": "MfryzK0NukU",
+       "title": "15 Everyday Makeup Favorites you NEED!!!",
+       "views": 27000,
+       "published": "2026-11-19"
+      },
+      {
+       "id": "8r90cPQJNfw",
+       "title": "i wasted my $$ on some of these... Testing NEW Luxury Makeup So You Don't Have To 👀",
+       "views": 40000,
+       "published": "2026-11-17"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCg6wZlw_FMB75Rty7vM42bg",
+      "title": "Jean Watts",
+      "handle": "@JeanWatts",
+      "avatar": "https://yt3.googleusercontent.com/s2gDDhMXg_grbWQHInCTkwy20iacmNAXuKP4lZyfzLFqYu22KLJ6WdJaAatAvt0xU6dcaPn0ESo=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "383K subscribers",
+      "video_count": 244,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:18.310Z"
+     },
+     "score": 70,
+     "verdict": "Strong candidate",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 100,
+       "text": "17 of the latest 25 uploads are about Beauty & care (68 %); half or more = 100. Found 1× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 45,
+       "text": "Median 22k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 40,
+       "text": "2 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "17 of 25 latest uploads about Beauty & care · ~22k views per video · 2 uploads in 3 months",
+     "value": {
+      "low": 48.986822499999995,
+      "mid": 96.50570416666667,
+      "high": 178.19580625
+     },
+     "median_views": 22000,
+     "recent": 2,
+     "on_topic": 17,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "beauty",
+       "label": "Beauty & care",
+       "uploads": 17
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "JPUbSvsxjsY",
+       "title": "‘Clean Girl’ Makeup Tutorial & Hydrated Skincare Routine",
+       "views": 5412869,
+       "published": null,
+       "duration_s": 1426
+      }
+     ],
+     "best_video": {
+      "id": "pOSCH-jWep4",
+      "title": "Flirty Makeup Tutorial",
+      "views": 615000,
+      "duration_s": 756,
+      "published": "2024-11-25"
+     },
+     "examples": [
+      {
+       "id": "onOkKbZulno",
+       "title": "2026 Morning Skincare Routine",
+       "views": 11000,
+       "published": "2026-11-23"
+      },
+      {
+       "id": "219HUqeYrJc",
+       "title": "2026 Nighttime Skincare Routine",
+       "views": 12000,
+       "published": "2026-11-14"
+      },
+      {
+       "id": "GtPYDE2FvJc",
+       "title": "Supermodel Y2K | DIY Blowout Look | w/ Vibrastrait PRO 1” Hair Straightener",
+       "views": 22000,
+       "published": "2026-06-23"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UC0ng0jJflTuJBBH5DGvr1Pw",
+      "title": "Tina Yong",
+      "handle": "@tina_yong",
+      "avatar": "https://yt3.googleusercontent.com/sIUXzlemVLMaKv3y9yGNmsIFRDZmj28ikUEXJAfgYnfEbeXbb9MZiw1PrTUukha2f6RG_rRj=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "3.91M subscribers",
+      "video_count": 1100,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:20.370Z"
+     },
+     "score": 55,
+     "verdict": "Worth a look",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 56,
+       "text": "7 of the latest 25 uploads are about Beauty & care (28 %); half or more = 100. Found 1× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 73,
+       "text": "Median 153k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "25 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "7 of 25 latest uploads about Beauty & care · ~153k views per video · 25 uploads in 3 months",
+     "value": {
+      "low": 340.6810837499999,
+      "mid": 671.15330625,
+      "high": 1239.270834375
+     },
+     "median_views": 153000,
+     "recent": 25,
+     "on_topic": 7,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "beauty",
+       "label": "Beauty & care",
+       "uploads": 7
+      },
+      {
+       "group": "fashion",
+       "label": "Fashion & accessories",
+       "uploads": 2
+      },
+      {
+       "group": "home",
+       "label": "Home & living",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "TA9F2mmT_aE",
+       "title": "⁠I Tried the Most Viral Sephora Products… Are They Actually Worth It?",
+       "views": 721071,
+       "published": null,
+       "duration_s": 1490
+      }
+     ],
+     "best_video": null,
+     "examples": [
+      {
+       "id": "vxfRIMPb5Ps",
+       "title": "I Asked a Makeup Artist to Make Me Look Expensive",
+       "views": 74000,
+       "published": "2026-11-24"
+      },
+      {
+       "id": "iLT-3aHtmMg",
+       "title": "Are These Viral K-Beauty Products Actually Worth the Hype?",
+       "views": 292000,
+       "published": "2026-11-11"
+      },
+      {
+       "id": "O-onwwOobho",
+       "title": "Are Viral Japanese Beauty Products Actually Worth the Hype?",
+       "views": 312000,
+       "published": "2026-10-26"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCAM2fyCjEdROyELretVTiiw",
+      "title": "HopeScope",
+      "handle": "@hopescope",
+      "avatar": "https://yt3.googleusercontent.com/4Hengefk-DSrHxXq_5Z1Sre26C__TChab3_FurREkrfbkdM-S6Cl57XfgSHv6brw0LvvyU0UrA=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "9.12M subscribers",
+      "video_count": 559,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:17.889Z"
+     },
+     "score": 40,
+     "verdict": "Weak match",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 24,
+       "text": "3 of the latest 25 uploads are about Beauty & care (12 %); half or more = 100. Found 1× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 100,
+       "text": "Median 4.2M views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "7 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "3 of 25 latest uploads about Beauty & care · ~4.2M views per video · 7 uploads in 3 months",
+     "value": {
+      "low": 9352.029749999998,
+      "mid": 18423.81625,
+      "high": 34019.199375
+     },
+     "median_views": 4200000,
+     "recent": 7,
+     "on_topic": 3,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "beauty",
+       "label": "Beauty & care",
+       "uploads": 3
+      },
+      {
+       "group": "food",
+       "label": "Food & drink",
+       "uploads": 2
+      },
+      {
+       "group": "fashion",
+       "label": "Fashion & accessories",
+       "uploads": 1
+      },
+      {
+       "group": "toys",
+       "label": "Toys & hobby",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "r9vZItoI7yI",
+       "title": "I Tested BEST vs WORST Selling SEPHORA Products",
+       "views": 7418442,
+       "published": null,
+       "duration_s": 1566
+      }
+     ],
+     "best_video": null,
+     "examples": [
+      {
+       "id": "Nut8nAwIJR0",
+       "title": "I Tested EVERY Beauty Product made by FOOD Brands",
+       "views": 3100000,
+       "published": "2026-08-08"
+      },
+      {
+       "id": "8IMGHAlMSiM",
+       "title": "I Bought MISS A vs DOLLAR TREE vs PRIMARK Beauty Products",
+       "views": 4100000,
+       "published": "2026-05-29"
+      },
+      {
+       "id": "TQuGaui14Zg",
+       "title": "I Bought 25 SATISFYING Beauty Products",
+       "views": 5000000,
+       "published": "2026-04-29"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCGoiclUrJhOA14waY85_D5w",
+      "title": "Zhirelle",
+      "handle": "@Zhirelle",
+      "avatar": "https://yt3.googleusercontent.com/rTmh7KYI9SPzvqgp7zUJEaXYt0_0be5d5Ur3dgyDw_t8Qddz2krE4uH8Q3SYWFJXoHwusZ7s=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "1.38M subscribers",
+      "video_count": 500,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:18.951Z"
+     },
+     "score": 31,
+     "verdict": "Weak match",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 16,
+       "text": "2 of the latest 25 uploads are about Beauty & care (8 %); half or more = 100. Found 1× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 79,
+       "text": "Median 240k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "12 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "2 of 25 latest uploads about Beauty & care · ~240k views per video · 12 uploads in 3 months",
+     "value": {
+      "low": 534.4016999999999,
+      "mid": 1052.7894999999999,
+      "high": 1943.9542500000002
+     },
+     "median_views": 240000,
+     "recent": 12,
+     "on_topic": 2,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "home",
+       "label": "Home & living",
+       "uploads": 7
+      },
+      {
+       "group": "mobility",
+       "label": "Cars & mobility",
+       "uploads": 4
+      },
+      {
+       "group": "retail",
+       "label": "Retail & services",
+       "uploads": 3
+      },
+      {
+       "group": "food",
+       "label": "Food & drink",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "s6HdyZZljCI",
+       "title": "RESTOCKING MY ROUTINE | shopping for makeup, hair, skincare products (empties & haul!)",
+       "views": 2515113,
+       "published": null,
+       "duration_s": 1545
+      }
+     ],
+     "best_video": {
+      "id": "f1EYN1Xl6V4",
+      "title": "RESTOCKING MY ROUTINE | shopping for makeup, hair & shower products (haul & new routine)",
+      "views": 497000,
+      "duration_s": 1063,
+      "published": "2026-07-28"
+     },
+     "examples": [
+      {
+       "id": "3r4Q32x65lk",
+       "title": "☆ my ENTIRE routine ☆ everything i do (morning + night) for my skin, hair, makeup & shower routine!",
+       "views": 298000,
+       "published": "2026-10-16"
+      },
+      {
+       "id": "f1EYN1Xl6V4",
+       "title": "RESTOCKING MY ROUTINE | shopping for makeup, hair & shower products (haul & new routine)",
+       "views": 497000,
+       "published": "2026-07-28"
+      }
+     ]
+    }
+   ],
+   "cost": {
+    "search_units": 0,
+    "channel_units": 0,
+    "searches_cached": 0,
+    "channels_cached": 0,
+    "gemini_requests": 0,
+    "new_analyses": 0,
+    "kv_reads": 0
+   },
+   "pending": 1,
+   "seconds": 6,
+   "generated_at": "2026-11-25T15:12:20.386Z"
+  }
+ }
+]

@@ -1,0 +1,706 @@
+{
+  "video": "dhFY1yo83d4",
+  "lauf": "1",
+  "model": "gemini-3.8-flash",
+  "seconds": 294.3,
+  "usage": {
+    "promptTokenCount": 45044,
+    "candidatesTokenCount": 4045,
+    "totalTokenCount": 49949,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 367
+      },
+      {
+        "modality": "VIDEO",
+        "tokenCount": 44677
+      }
+    ],
+    "thoughtsTokenCount": 860,
+    "serviceTier": "standard"
+  },
+  "versuch": 1,
+  "result": {
+    "brands": [
+      {
+        "brand": "Louis Vuitton",
+        "appearances": [
+          {
+            "start": "00:00",
+            "end": "01:34",
+            "channel": "visual",
+            "box_2d": [
+              7,
+              85,
+              785,
+              755
+            ],
+            "frame_time": "00:25",
+            "in_use": true,
+            "start_s": 0.0,
+            "end_s": 94.0,
+            "frame_s": 25.0
+          },
+          {
+            "start": "00:22",
+            "end": "00:26",
+            "channel": "audio",
+            "start_s": 22.0,
+            "end_s": 26.0
+          },
+          {
+            "start": "01:36",
+            "end": "03:06",
+            "channel": "visual",
+            "box_2d": [
+              386,
+              281,
+              680,
+              574
+            ],
+            "frame_time": "01:38",
+            "in_use": true,
+            "start_s": 96.0,
+            "end_s": 186.0,
+            "frame_s": 98.0
+          },
+          {
+            "start": "01:39",
+            "end": "01:41",
+            "channel": "audio",
+            "start_s": 99.0,
+            "end_s": 101.0
+          },
+          {
+            "start": "06:15",
+            "end": "08:10",
+            "channel": "visual",
+            "box_2d": [
+              18,
+              255,
+              768,
+              775
+            ],
+            "frame_time": "07:54",
+            "in_use": true,
+            "start_s": 375.0,
+            "end_s": 490.0,
+            "frame_s": 474.0
+          }
+        ],
+        "product": "Palm Springs Mini Backpack"
+      },
+      {
+        "brand": "Tarte",
+        "appearances": [
+          {
+            "start": "03:26",
+            "end": "03:28",
+            "channel": "visual",
+            "box_2d": [
+              342,
+              63,
+              622,
+              532
+            ],
+            "frame_time": "03:26",
+            "in_use": false,
+            "start_s": 206.0,
+            "end_s": 208.0,
+            "frame_s": 206.0
+          },
+          {
+            "start": "03:41",
+            "end": "03:43",
+            "channel": "visual",
+            "box_2d": [
+              376,
+              529,
+              642,
+              792
+            ],
+            "frame_time": "03:42",
+            "in_use": false,
+            "start_s": 221.0,
+            "end_s": 223.0,
+            "frame_s": 222.0
+          },
+          {
+            "start": "04:26",
+            "end": "04:28",
+            "channel": "visual",
+            "box_2d": [
+              374,
+              381,
+              597,
+              606
+            ],
+            "frame_time": "04:27",
+            "in_use": false,
+            "start_s": 266.0,
+            "end_s": 268.0,
+            "frame_s": 267.0
+          }
+        ],
+        "product": "Cosmetics"
+      },
+      {
+        "brand": "Anastasia Beverly Hills",
+        "appearances": [
+          {
+            "start": "03:28",
+            "end": "03:30",
+            "channel": "visual",
+            "box_2d": [
+              538,
+              203,
+              659,
+              788
+            ],
+            "frame_time": "03:28",
+            "in_use": false,
+            "start_s": 208.0,
+            "end_s": 210.0,
+            "frame_s": 208.0
+          },
+          {
+            "start": "03:28",
+            "end": "03:30",
+            "channel": "audio",
+            "start_s": 208.0,
+            "end_s": 210.0
+          }
+        ],
+        "product": "Brow Pencil"
+      },
+      {
+        "brand": "Glow Recipe",
+        "appearances": [
+          {
+            "start": "03:30",
+            "end": "03:40",
+            "channel": "visual",
+            "box_2d": [
+              344,
+              461,
+              747,
+              590
+            ],
+            "frame_time": "03:31",
+            "in_use": true,
+            "start_s": 210.0,
+            "end_s": 220.0,
+            "frame_s": 211.0
+          },
+          {
+            "start": "03:30",
+            "end": "03:33",
+            "channel": "audio",
+            "start_s": 210.0,
+            "end_s": 213.0
+          }
+        ],
+        "product": "Watermelon Glow Niacinamide Dew Drops"
+      },
+      {
+        "brand": "Rare Beauty",
+        "appearances": [
+          {
+            "start": "03:59",
+            "end": "04:02",
+            "channel": "visual",
+            "box_2d": [
+              437,
+              439,
+              715,
+              608
+            ],
+            "frame_time": "04:00",
+            "in_use": true,
+            "start_s": 239.0,
+            "end_s": 242.0,
+            "frame_s": 240.0
+          },
+          {
+            "start": "03:59",
+            "end": "04:01",
+            "channel": "audio",
+            "start_s": 239.0,
+            "end_s": 241.0
+          },
+          {
+            "start": "04:22",
+            "end": "04:25",
+            "channel": "visual",
+            "box_2d": [
+              448,
+              549,
+              725,
+              777
+            ],
+            "frame_time": "04:23",
+            "in_use": false,
+            "start_s": 262.0,
+            "end_s": 265.0,
+            "frame_s": 263.0
+          },
+          {
+            "start": "04:22",
+            "end": "04:25",
+            "channel": "audio",
+            "start_s": 262.0,
+            "end_s": 265.0
+          }
+        ],
+        "product": "Lipstick and Blush"
+      },
+      {
+        "brand": "Benefit Cosmetics",
+        "appearances": [
+          {
+            "start": "04:03",
+            "end": "04:05",
+            "channel": "visual",
+            "box_2d": [
+              426,
+              477,
+              720,
+              649
+            ],
+            "frame_time": "04:04",
+            "in_use": false,
+            "start_s": 243.0,
+            "end_s": 245.0,
+            "frame_s": 244.0
+          },
+          {
+            "start": "04:03",
+            "end": "04:05",
+            "channel": "audio",
+            "start_s": 243.0,
+            "end_s": 245.0
+          }
+        ],
+        "product": "Gimme Brow"
+      },
+      {
+        "brand": "Josie Maran",
+        "appearances": [
+          {
+            "start": "04:05",
+            "end": "04:21",
+            "channel": "visual",
+            "box_2d": [
+              418,
+              303,
+              765,
+              597
+            ],
+            "frame_time": "04:06",
+            "in_use": false,
+            "start_s": 245.0,
+            "end_s": 261.0,
+            "frame_s": 246.0
+          },
+          {
+            "start": "04:05",
+            "end": "04:07",
+            "channel": "audio",
+            "start_s": 245.0,
+            "end_s": 247.0
+          }
+        ],
+        "product": "Whipped Argan Oil Body Butter"
+      },
+      {
+        "brand": "Wet Ones",
+        "appearances": [
+          {
+            "start": "04:51",
+            "end": "04:53",
+            "channel": "visual",
+            "box_2d": [
+              417,
+              401,
+              764,
+              595
+            ],
+            "frame_time": "04:52",
+            "in_use": false,
+            "start_s": 291.0,
+            "end_s": 293.0,
+            "frame_s": 292.0
+          },
+          {
+            "start": "04:52",
+            "end": "04:54",
+            "channel": "audio",
+            "start_s": 292.0,
+            "end_s": 294.0
+          }
+        ],
+        "product": "Wipes"
+      },
+      {
+        "brand": "Miss Mouth's Messy Eater",
+        "appearances": [
+          {
+            "start": "04:54",
+            "end": "04:57",
+            "channel": "visual",
+            "box_2d": [
+              400,
+              314,
+              735,
+              668
+            ],
+            "frame_time": "04:55",
+            "in_use": false,
+            "start_s": 294.0,
+            "end_s": 297.0,
+            "frame_s": 295.0
+          },
+          {
+            "start": "04:54",
+            "end": "04:57",
+            "channel": "audio",
+            "start_s": 294.0,
+            "end_s": 297.0
+          }
+        ],
+        "product": "Stain Treater Wipe"
+      },
+      {
+        "brand": "Midol",
+        "appearances": [
+          {
+            "start": "04:58",
+            "end": "05:00",
+            "channel": "visual",
+            "box_2d": [
+              403,
+              501,
+              729,
+              786
+            ],
+            "frame_time": "04:59",
+            "in_use": false,
+            "start_s": 298.0,
+            "end_s": 300.0,
+            "frame_s": 299.0
+          },
+          {
+            "start": "04:59",
+            "end": "05:01",
+            "channel": "audio",
+            "start_s": 299.0,
+            "end_s": 301.0
+          }
+        ],
+        "product": "Complete"
+      },
+      {
+        "brand": "Tide",
+        "appearances": [
+          {
+            "start": "05:00",
+            "end": "05:01",
+            "channel": "visual",
+            "box_2d": [
+              390,
+              483,
+              626,
+              755
+            ],
+            "frame_time": "05:00",
+            "in_use": false,
+            "start_s": 300.0,
+            "end_s": 301.0,
+            "frame_s": 300.0
+          },
+          {
+            "start": "05:00",
+            "end": "05:02",
+            "channel": "audio",
+            "start_s": 300.0,
+            "end_s": 302.0
+          }
+        ],
+        "product": "Tide to Go Wipes"
+      },
+      {
+        "brand": "Shout",
+        "appearances": [
+          {
+            "start": "05:01",
+            "end": "05:02",
+            "channel": "visual",
+            "box_2d": [
+              458,
+              481,
+              680,
+              718
+            ],
+            "frame_time": "05:01",
+            "in_use": false,
+            "start_s": 301.0,
+            "end_s": 302.0,
+            "frame_s": 301.0
+          },
+          {
+            "start": "05:01",
+            "end": "05:02",
+            "channel": "audio",
+            "start_s": 301.0,
+            "end_s": 302.0
+          }
+        ],
+        "product": "Wipe & Go"
+      },
+      {
+        "brand": "Teazen",
+        "appearances": [
+          {
+            "start": "05:02",
+            "end": "05:12",
+            "channel": "visual",
+            "box_2d": [
+              426,
+              303,
+              631,
+              794
+            ],
+            "frame_time": "05:04",
+            "in_use": false,
+            "start_s": 302.0,
+            "end_s": 312.0,
+            "frame_s": 304.0
+          }
+        ],
+        "product": "V Fit Matcha Lemon"
+      },
+      {
+        "brand": "Acuvue",
+        "appearances": [
+          {
+            "start": "05:14",
+            "end": "05:16",
+            "channel": "visual",
+            "box_2d": [
+              453,
+              442,
+              607,
+              617
+            ],
+            "frame_time": "05:15",
+            "in_use": false,
+            "start_s": 314.0,
+            "end_s": 316.0,
+            "frame_s": 315.0
+          }
+        ],
+        "product": "Vita Contact Lenses"
+      },
+      {
+        "brand": "GuruNanda",
+        "appearances": [
+          {
+            "start": "05:17",
+            "end": "05:19",
+            "channel": "visual",
+            "box_2d": [
+              337,
+              363,
+              642,
+              707
+            ],
+            "frame_time": "05:18",
+            "in_use": false,
+            "start_s": 317.0,
+            "end_s": 319.0,
+            "frame_s": 318.0
+          }
+        ],
+        "product": "Disposable Toothbrush"
+      },
+      {
+        "brand": "Summer's Eve",
+        "appearances": [
+          {
+            "start": "06:01",
+            "end": "06:03",
+            "channel": "visual",
+            "box_2d": [
+              469,
+              444,
+              696,
+              642
+            ],
+            "frame_time": "06:02",
+            "in_use": false,
+            "start_s": 361.0,
+            "end_s": 363.0,
+            "frame_s": 362.0
+          },
+          {
+            "start": "06:01",
+            "end": "06:03",
+            "channel": "audio",
+            "start_s": 361.0,
+            "end_s": 363.0
+          }
+        ],
+        "product": "Cleansing Cloths"
+      },
+      {
+        "brand": "Purell",
+        "appearances": [
+          {
+            "start": "06:04",
+            "end": "06:06",
+            "channel": "visual",
+            "box_2d": [
+              497,
+              439,
+              691,
+              626
+            ],
+            "frame_time": "06:05",
+            "in_use": false,
+            "start_s": 364.0,
+            "end_s": 366.0,
+            "frame_s": 365.0
+          }
+        ],
+        "product": "Sanitizing Wipe"
+      },
+      {
+        "brand": "Apple",
+        "appearances": [
+          {
+            "start": "07:18",
+            "end": "07:23",
+            "channel": "visual",
+            "box_2d": [
+              486,
+              448,
+              645,
+              680
+            ],
+            "frame_time": "07:21",
+            "in_use": true,
+            "start_s": 438.0,
+            "end_s": 443.0,
+            "frame_s": 441.0
+          },
+          {
+            "start": "07:19",
+            "end": "07:22",
+            "channel": "audio",
+            "start_s": 439.0,
+            "end_s": 442.0
+          },
+          {
+            "start": "07:31",
+            "end": "07:34",
+            "channel": "visual",
+            "box_2d": [
+              447,
+              433,
+              614,
+              574
+            ],
+            "frame_time": "07:33",
+            "in_use": true,
+            "start_s": 451.0,
+            "end_s": 454.0,
+            "frame_s": 453.0
+          },
+          {
+            "start": "07:32",
+            "end": "07:34",
+            "channel": "audio",
+            "start_s": 452.0,
+            "end_s": 454.0
+          }
+        ],
+        "product": "AirPods & AirTag"
+      },
+      {
+        "brand": "Orbit",
+        "appearances": [
+          {
+            "start": "07:44",
+            "end": "07:46",
+            "channel": "visual",
+            "box_2d": [
+              435,
+              417,
+              638,
+              775
+            ],
+            "frame_time": "07:45",
+            "in_use": false,
+            "start_s": 464.0,
+            "end_s": 466.0,
+            "frame_s": 465.0
+          },
+          {
+            "start": "07:44",
+            "end": "07:46",
+            "channel": "audio",
+            "start_s": 464.0,
+            "end_s": 466.0
+          }
+        ],
+        "product": "Chewing Gum"
+      }
+    ],
+    "authenticity": [
+      {
+        "brand": "Louis Vuitton",
+        "overall": 84,
+        "verdict": "The creator clearly enjoys and genuinely uses the backpack in her daily routine, providing realistic personal anecdotes despite it being a sent/gifted item.",
+        "use_shown": {
+          "score": 90,
+          "evidence": "Backpack is packed to capacity with personal items and everyday essentials, demonstrating active real-life use.",
+          "time": "01:34"
+        },
+        "balance": {
+          "score": 68,
+          "evidence": "Humorously shares that a child remarked the backpack made her look like Dora the Explorer, though offers minimal functional critique.",
+          "time": "00:46"
+        },
+        "specificity": {
+          "score": 88,
+          "evidence": "Highlights specific pocket dimensions, flap protrusion, straps adjustability, and exact fitting of essentials.",
+          "time": "01:12"
+        },
+        "delivery": {
+          "score": 92,
+          "evidence": "Conversational, natural, and candid pacing without reading from scripted talking points.",
+          "time": "00:36"
+        },
+        "body_language": {
+          "score": 86,
+          "evidence": "Handles the bag naturally, demonstrating interior compartments and hardware up close.",
+          "time": "07:54"
+        },
+        "sales_pressure": {
+          "score": 82,
+          "evidence": "Mentions that she will provide a link to purchase because it was sent to her, but does not exert urgent calls to action or discount pushing.",
+          "time": "00:58"
+        },
+        "product": "Palm Springs Mini Backpack"
+      }
+    ],
+    "disclosures": [
+      {
+        "kind": "spoken",
+        "text": "This bag was actually kindly sent to me, they wanted me to do a review, so I'll list the link to where you can purchase this bag.",
+        "time": "00:55"
+      }
+    ]
+  }
+}

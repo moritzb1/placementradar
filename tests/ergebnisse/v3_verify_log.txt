@@ -1,0 +1,61 @@
+  [error] Failed to load resource: the server responded with a status of 404 (File not found)
+  [error] [0;93m2026-11-25 04:03:30.515800 [W:onnxruntime:, session_state.cc:1168 VerifyEachNodeIsAssignedToAnEp] Some nodes were not assigned to the preferred execution providers which may or may not have an 
+  [error] [0;93m2026-11-25 04:03:30.516400 [W:onnxruntime:, session_state.cc:1170 VerifyEachNodeIsAssignedToAnEp] Rerunning with verbose output on a non-minimal build will show node assignments.[m
+  [error] [0;93m2026-11-25 04:03:30.639800 [W:onnxruntime:, session_state.cc:1168 VerifyEachNodeIsAssignedToAnEp] Some nodes were not assigned to the preferred execution providers which may or may not have an 
+  [error] [0;93m2026-11-25 04:03:30.639900 [W:onnxruntime:, session_state.cc:1170 VerifyEachNodeIsAssignedToAnEp] Rerunning with verbose output on a non-minimal build will show node assignments.[m
+  [error] [0;93m2026-11-25 04:03:30.932600 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.0/token_
+  [error] [0;93m2026-11-25 04:03:30.933500 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.1/token_
+  [error] [0;93m2026-11-25 04:03:30.933700 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.2/token_
+  [error] [0;93m2026-11-25 04:03:30.933900 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.3/token_
+  [error] [0;93m2026-11-25 04:03:30.940500 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.3/token_
+  [error] [0;93m2026-11-25 04:03:30.940600 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.2/token_
+  [error] [0;93m2026-11-25 04:03:30.940700 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.1/token_
+  [error] [0;93m2026-11-25 04:03:30.940800 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.0/token_
+eLAVGYQCkQI capture: [ 'running', 'element', '' ] models ready after 0.9 s
+    t=0.0 state=5 frames=0 0 ms 
+    t=55.8 state=1 frames=3 2183 ms 
+  jb_0055_totale: 7 frames checked while playing 50→61 s (12 s), last frame 2638 ms
+    not_checkable Apple – Mac Mini M4 [desktop computer] 0/7 {} · type rank 21 on estimate: monitor light bar 0.254, shelf 0.244, soundbar 0.237
+    not_seen      LEGO – Orchid [plant] 1/7 {"object":1} · measured vs. estimate: IoU 0, centre 34.3 % (1)
+    not_checkable Sonos – One Speakers [speaker] 1/7 {"type":1} · type rank 4 on estimate: dark background 0.229, desktop computer tower 0.222, wall 0.217
+    confirmed     LG – 43” Smart Monitor [monitor] 6/7 {"object":5,"type":1} · measured vs. estimate: IoU 0.32, centre 8 % (5)
+    not_checkable Quntis – Monitor Light Bar [lamp] 0/7 {} · type rank 9 on estimate: tablet computer 0.248, text on a screen 0.241, drawing tablet 0.240
+    tiles: {"tilesRun":10,"lastMs":281,"boxes":3} · found on screen (whole run so far): –
+    t=55.0 state=2 frames=7 2638 ms 
+    t=205.8 state=1 frames=10 1676 ms 
+  jb_0325_nah: 8 frames checked while playing 200→211 s (12 s), last frame 2469 ms
+    not_checkable Apple – Mac Mini M4 [desktop computer] 0/7 {} · type rank 90 on estimate: face 0.248, person 0.231, hand 0.220
+    confirmed     LEGO – Orchid [plant] 3/7 {"object":3} · measured vs. estimate: IoU 0, centre 10 % (3) · type rank 69 on estimate: person 0.267, t-shirt 0.264, hoodie 0.248
+    not_checkable Sonos – One Speakers [speaker] 0/7 {} · type rank 36 on estimate: hoodie 0.271, t-shirt 0.253, jacket 0.233
+    not_seen      Keychron – K3 Keyboard [keyboard] 0/7 {} · type rank 73 on estimate: hand 0.279, trackpad 0.241, person 0.230
+    confirmed     LG – 43” Smart Monitor [monitor] 5/7 {"object":4,"type":1} · measured vs. estimate: IoU 0, centre 34.3 % (4)
+    tiles: {"tilesRun":21,"lastMs":272,"boxes":1} · found on screen (whole run so far): –
+  vs. hand-marked truth (frames × products): {"tp":16,"fp":0,"fn":42,"tn":12} · without 'unsure' seconds: {"tp":3,"fp":0,"fn":0,"tn":12}
+    Apple {"tp":0,"fp":0,"fn":11,"tn":3} | LEGO {"tp":4,"fp":0,"fn":7,"tn":3} | Sonos {"tp":1,"fp":0,"fn":10,"tn":3} | LG {"tp":11,"fp":0,"fn":3,"tn":0} | Quntis {"tp":0,"fp":0,"fn":6,"tn":1} | Keychron {"tp":0,"fp":0,"fn":5,"tn":2}
+  [error] Failed to load resource: the server responded with a status of 404 (File not found)
+  replay after stop: [ 'LEGO 501,452,603,489', 'LG 82,756,824,1000' ] · after reload: {"c":3,"n":2,"f":15}
+  [error] Failed to load resource: the server responded with a status of 404 (File not found)
+  [error] [0;93m2026-11-25 04:04:05.987100 [W:onnxruntime:, session_state.cc:1168 VerifyEachNodeIsAssignedToAnEp] Some nodes were not assigned to the preferred execution providers which may or may not have an 
+  [error] [0;93m2026-11-25 04:04:05.987800 [W:onnxruntime:, session_state.cc:1170 VerifyEachNodeIsAssignedToAnEp] Rerunning with verbose output on a non-minimal build will show node assignments.[m
+  [error] [0;93m2026-11-25 04:04:06.071800 [W:onnxruntime:, session_state.cc:1168 VerifyEachNodeIsAssignedToAnEp] Some nodes were not assigned to the preferred execution providers which may or may not have an 
+  [error] [0;93m2026-11-25 04:04:06.071899 [W:onnxruntime:, session_state.cc:1170 VerifyEachNodeIsAssignedToAnEp] Rerunning with verbose output on a non-minimal build will show node assignments.[m
+  [error] [0;93m2026-11-25 04:04:06.280199 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.0/token_
+  [error] [0;93m2026-11-25 04:04:06.280699 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.1/token_
+  [error] [0;93m2026-11-25 04:04:06.280899 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.2/token_
+  [error] [0;93m2026-11-25 04:04:06.281199 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.3/token_
+  [error] [0;93m2026-11-25 04:04:06.287100 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.3/token_
+  [error] [0;93m2026-11-25 04:04:06.287199 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.2/token_
+  [error] [0;93m2026-11-25 04:04:06.287199 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.1/token_
+  [error] [0;93m2026-11-25 04:04:06.287500 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.0/token_
+-pTGc7cIBIA capture: [ 'running', 'element', '' ] models ready after 0.7 s
+    t=0.0 state=5 frames=0 0 ms 
+    t=370.9 state=1 frames=9 502 ms 
+  mkbhd_0610_rucksack: 21 frames checked while playing 366→375 s (10 s), last frame 1381 ms
+    on screen only: backpack → Peak Design; camera → Canon
+    tiles: {"tilesRun":29,"lastMs":244,"boxes":3} · found on screen (whole run so far): Canon 19× {"look":19} (listed)
+  vs. hand-marked truth (frames × products): {"tp":0,"fp":0,"fn":0,"tn":0} · without 'unsure' seconds: {"tp":0,"fp":0,"fn":0,"tn":0}
+    
+  Products → Found on screen: Found on screen 1 i Canon recognised by its look (own model) · 19 frames found on screen 9 s on screen (checked frames) Gemini lists Canon at other moments – not counted twice 6:07 Added by the models on your device, not by Gemini. Only seconds that were actually checked count, so the screen time is
+  [error] Failed to load resource: the server responded with a status of 404 (File not found)
+  replay after stop: [] · after reload: {"c":0,"n":0,"f":21}
+→ <repo>/tests/ergebnisse/v3_verify/v_verify.json

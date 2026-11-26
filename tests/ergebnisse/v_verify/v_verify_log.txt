@@ -1,0 +1,199 @@
+== eLAVGYQCkQI try 1 (DPR=2)
+  [error] Failed to load resource: the server responded with a status of 404 (File not found)
+  [error] [0;93m2026-11-23 19:55:25.753000 [W:onnxruntime:, session_state.cc:1168 VerifyEachNodeIsAssignedToAnEp] Some nodes were not assigned to the preferred execution providers which may or may not have an 
+  [error] [0;93m2026-11-23 19:55:25.753800 [W:onnxruntime:, session_state.cc:1170 VerifyEachNodeIsAssignedToAnEp] Rerunning with verbose output on a non-minimal build will show node assignments.[m
+  [error] [0;93m2026-11-23 19:55:25.886199 [W:onnxruntime:, session_state.cc:1168 VerifyEachNodeIsAssignedToAnEp] Some nodes were not assigned to the preferred execution providers which may or may not have an 
+  [error] [0;93m2026-11-23 19:55:25.886399 [W:onnxruntime:, session_state.cc:1170 VerifyEachNodeIsAssignedToAnEp] Rerunning with verbose output on a non-minimal build will show node assignments.[m
+  [error] [0;93m2026-11-23 19:55:26.205599 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.0/token_
+  [error] [0;93m2026-11-23 19:55:26.206000 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.1/token_
+  [error] [0;93m2026-11-23 19:55:26.206300 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.2/token_
+  [error] [0;93m2026-11-23 19:55:26.206500 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.3/token_
+  [error] [0;93m2026-11-23 19:55:26.212699 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.3/token_
+  [error] [0;93m2026-11-23 19:55:26.212899 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.2/token_
+  [error] [0;93m2026-11-23 19:55:26.213099 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.1/token_
+  [error] [0;93m2026-11-23 19:55:26.213099 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.0/token_
+eLAVGYQCkQI capture: [ 'running', 'element', '' ] models ready after 1.2 s
+    t=0.0 state=5 frames=0 0 ms 
+    t=54.4 state=1 frames=3 1943 ms 
+  jb_0055_totale: 8 frames checked while playing 50→61 s (13 s), last frame 2421 ms
+    not_checkable Apple – Mac Mini M4 [desktop computer] 0/8 {} · type rank 23 on estimate: monitor light bar 0.253, shelf 0.247, soundbar 0.243
+    not_seen      LEGO – Orchid [plant] 0/8 {} · type rank 60 on estimate: hoodie 0.281, t-shirt 0.245, belt 0.235
+    confirmed     Sonos – One Speakers [speaker] 5/8 {"type":5} · type rank 3 on estimate: dark background 0.228, desktop computer tower 0.223, soundbar 0.211
+    confirmed     LG – 43” Smart Monitor [monitor] 4/8 {"object":4} · measured vs. estimate: IoU 0.16, centre 21.45 % (4) · type rank 4 on estimate: desk 0.212, desk lamp 0.187, drawing tablet 0.178
+    not_checkable Quntis – Monitor Light Bar [lamp] 0/8 {} · type rank 11 on estimate: tablet computer 0.253, drawing tablet 0.240, text on a screen 0.238
+    t=55.0 state=2 frames=8 2421 ms 
+    t=205.9 state=1 frames=11 1970 ms 
+  jb_0325_nah: 8 frames checked while playing 200→211 s (12 s), last frame 1973 ms
+    not_checkable Apple – Mac Mini M4 [desktop computer] 0/7 {} · type rank 84 on estimate: face 0.235, person 0.225, hand 0.215
+    confirmed     LEGO – Orchid [plant] 3/7 {"object":3} · measured vs. estimate: IoU 0, centre 10 % (3) · type rank 73 on estimate: person 0.268, t-shirt 0.265, face 0.235
+    not_checkable Sonos – One Speakers [speaker] 0/7 {} · type rank 33 on estimate: hoodie 0.239, t-shirt 0.233, jacket 0.224
+    not_seen      Keychron – K3 Keyboard [keyboard] 0/7 {} · type rank 79 on estimate: hand 0.277, trackpad 0.238, hoodie 0.233
+    confirmed     LG – 43” Smart Monitor [monitor] 6/7 {"object":4,"type":2} · measured vs. estimate: IoU 0, centre 34.5 % (4)
+  vs. hand-marked truth (frames × products): {"tp":18,"fp":0,"fn":41,"tn":16} · without 'unsure' seconds: {"tp":4,"fp":0,"fn":0,"tn":16}
+    Apple {"tp":0,"fp":0,"fn":11,"tn":4} | LEGO {"tp":3,"fp":0,"fn":8,"tn":4} | Sonos {"tp":5,"fp":0,"fn":6,"tn":4} | LG {"tp":10,"fp":0,"fn":5,"tn":0} | Quntis {"tp":0,"fp":0,"fn":6,"tn":2} | Keychron {"tp":0,"fp":0,"fn":5,"tn":2}
+  [error] Failed to load resource: the server responded with a status of 404 (File not found)
+  replay after stop: [ 'LEGO 502,453,603,490', 'LG 118,761,815,1000' ] · after reload: {"c":4,"n":2,"f":16}
+→ <repo>/tests/ergebnisse/v_verify/v_verify.json
+== -pTGc7cIBIA try 1 (DPR=2)
+  [error] Failed to load resource: the server responded with a status of 404 (File not found)
+  [error] [0;93m2026-11-23 19:56:13.597399 [W:onnxruntime:, session_state.cc:1168 VerifyEachNodeIsAssignedToAnEp] Some nodes were not assigned to the preferred execution providers which may or may not have an 
+  [error] [0;93m2026-11-23 19:56:13.598199 [W:onnxruntime:, session_state.cc:1170 VerifyEachNodeIsAssignedToAnEp] Rerunning with verbose output on a non-minimal build will show node assignments.[m
+  [error] [0;93m2026-11-23 19:56:13.730699 [W:onnxruntime:, session_state.cc:1168 VerifyEachNodeIsAssignedToAnEp] Some nodes were not assigned to the preferred execution providers which may or may not have an 
+  [error] [0;93m2026-11-23 19:56:13.731000 [W:onnxruntime:, session_state.cc:1170 VerifyEachNodeIsAssignedToAnEp] Rerunning with verbose output on a non-minimal build will show node assignments.[m
+  [error] [0;93m2026-11-23 19:56:14.064399 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.0/token_
+  [error] [0;93m2026-11-23 19:56:14.065300 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.1/token_
+  [error] [0;93m2026-11-23 19:56:14.065500 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.2/token_
+  [error] [0;93m2026-11-23 19:56:14.065699 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.3/token_
+  [error] [0;93m2026-11-23 19:56:14.071899 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.3/token_
+  [error] [0;93m2026-11-23 19:56:14.072100 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.2/token_
+  [error] [0;93m2026-11-23 19:56:14.072100 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.1/token_
+  [error] [0;93m2026-11-23 19:56:14.072199 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.0/token_
+-pTGc7cIBIA capture: [ 'running', 'element', '' ] models ready after 1.1 s
+    t=0.0 state=5 frames=0 0 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+    t=366.0 state=-1 frames=1 407 ms 
+file://~/Documents/Studium/Marketing%20Intelligence%20(M.Sc.)/3%20WiSe2627/KI-Kurs_Aufgaben/7_Finales_Projekt/tests/test_v_verify.mjs:75
+      if (i > 360) throw new Error("player did not reach the end of the scene");
+                         ^
+
+Error: player did not reach the end of the scene
+    at file://~/Documents/Studium/Marketing%20Intelligence%20(M.Sc.)/3%20WiSe2627/KI-Kurs_Aufgaben/7_Finales_Projekt/tests/test_v_verify.mjs:75:26
+
+Node.js v25.9.0
+== -pTGc7cIBIA try 2 (DPR=2)
+  [error] Failed to load resource: the server responded with a status of 404 (File not found)
+  [error] [0;93m2026-11-23 19:59:18.981000 [W:onnxruntime:, session_state.cc:1168 VerifyEachNodeIsAssignedToAnEp] Some nodes were not assigned to the preferred execution providers which may or may not have an 
+  [error] [0;93m2026-11-23 19:59:18.981800 [W:onnxruntime:, session_state.cc:1170 VerifyEachNodeIsAssignedToAnEp] Rerunning with verbose output on a non-minimal build will show node assignments.[m
+  [error] [0;93m2026-11-23 19:59:19.083900 [W:onnxruntime:, session_state.cc:1168 VerifyEachNodeIsAssignedToAnEp] Some nodes were not assigned to the preferred execution providers which may or may not have an 
+  [error] [0;93m2026-11-23 19:59:19.084300 [W:onnxruntime:, session_state.cc:1170 VerifyEachNodeIsAssignedToAnEp] Rerunning with verbose output on a non-minimal build will show node assignments.[m
+  [error] [0;93m2026-11-23 19:59:19.425100 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.0/token_
+  [error] [0;93m2026-11-23 19:59:19.426100 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.1/token_
+  [error] [0;93m2026-11-23 19:59:19.426400 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.2/token_
+  [error] [0;93m2026-11-23 19:59:19.426600 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.3/token_
+  [error] [0;93m2026-11-23 19:59:19.432600 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.3/token_
+  [error] [0;93m2026-11-23 19:59:19.432699 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.2/token_
+  [error] [0;93m2026-11-23 19:59:19.432800 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.1/token_
+  [error] [0;93m2026-11-23 19:59:19.432900 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.0/token_
+-pTGc7cIBIA capture: [ 'running', 'element', '' ] models ready after 1.1 s
+    t=0.0 state=5 frames=0 0 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+    t=366.0 state=-1 frames=1 404 ms 
+file://~/Documents/Studium/Marketing%20Intelligence%20(M.Sc.)/3%20WiSe2627/KI-Kurs_Aufgaben/7_Finales_Projekt/tests/test_v_verify.mjs:75
+      if (i > 360) throw new Error("player did not reach the end of the scene");
+                         ^
+
+Error: player did not reach the end of the scene
+    at file://~/Documents/Studium/Marketing%20Intelligence%20(M.Sc.)/3%20WiSe2627/KI-Kurs_Aufgaben/7_Finales_Projekt/tests/test_v_verify.mjs:75:26
+
+Node.js v25.9.0
+== -pTGc7cIBIA try 3 (DPR=2)
+  [error] Failed to load resource: the server responded with a status of 404 (File not found)
+  [error] [0;93m2026-11-23 20:02:24.517100 [W:onnxruntime:, session_state.cc:1168 VerifyEachNodeIsAssignedToAnEp] Some nodes were not assigned to the preferred execution providers which may or may not have an 
+  [error] [0;93m2026-11-23 20:02:24.517900 [W:onnxruntime:, session_state.cc:1170 VerifyEachNodeIsAssignedToAnEp] Rerunning with verbose output on a non-minimal build will show node assignments.[m
+  [error] [0;93m2026-11-23 20:02:24.625100 [W:onnxruntime:, session_state.cc:1168 VerifyEachNodeIsAssignedToAnEp] Some nodes were not assigned to the preferred execution providers which may or may not have an 
+  [error] [0;93m2026-11-23 20:02:24.625199 [W:onnxruntime:, session_state.cc:1170 VerifyEachNodeIsAssignedToAnEp] Rerunning with verbose output on a non-minimal build will show node assignments.[m
+  [error] [0;93m2026-11-23 20:02:24.938600 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.0/token_
+  [error] [0;93m2026-11-23 20:02:24.941300 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.1/token_
+  [error] [0;93m2026-11-23 20:02:24.941600 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.2/token_
+  [error] [0;93m2026-11-23 20:02:24.941800 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.3/token_
+  [error] [0;93m2026-11-23 20:02:24.947699 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.3/token_
+  [error] [0;93m2026-11-23 20:02:24.947800 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.2/token_
+  [error] [0;93m2026-11-23 20:02:24.947900 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.1/token_
+  [error] [0;93m2026-11-23 20:02:24.948000 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.0/token_
+-pTGc7cIBIA capture: [ 'running', 'element', '' ] models ready after 1.1 s
+    t=0.0 state=5 frames=0 0 ms 
+    t=369.1 state=1 frames=12 42 ms 
+    t=373.3 state=1 frames=28 166 ms 
+  mkbhd_0610_rucksack: 38 frames checked while playing 366→375 s (11 s), last frame 438 ms
+    on screen only: backpack → Peak Design; camera → Canon
+  vs. hand-marked truth (frames × products): {"tp":0,"fp":0,"fn":0,"tn":0} · without 'unsure' seconds: {"tp":0,"fp":0,"fn":0,"tn":0}
+    
+  [error] Failed to load resource: the server responded with a status of 404 (File not found)
+  replay after stop: [] · after reload: {"c":0,"n":0,"f":38}
+→ <repo>/tests/ergebnisse/v_verify/v_verify.json

@@ -1,0 +1,90 @@
+# Vorschlag (Claude, Raster alle 2 s, 200-px-Bilder) – Sekunde(n): Produkte. Bereiche a-b inklusiv, Schritt 2 s. "?" = unsicher.
+# B=Peak Design Everyday Backpack  U=Under Armour Sweatshirt (wenn getragen und im Bild)  MB=Apple MacBook Pro 16"
+# C=Canon EOS R5  T=Trove Wallet  R=Realme SuperDart Ladegerät  OP=Opal C1 Webcam  P=Google Pixel 6 Pro  I=Apple iPhone  AP=Apple AirPods
+# (23.11. neu geschrieben: erste Fassung hatte ab 1:40 m:ss falsch in Sekunden umgerechnet)
+0-2: -
+4-50: B U
+52-54: B
+56-98: B U
+100-110: B U MB
+112-120: B U
+122-124: MB U
+126-128: MB
+130-132: B U MB
+134-136: B U
+138-150: B U MB
+152-156: B U
+158-162: B U MB
+164-170: B U MB AP
+172-178: AP U
+180-182: B U MB
+184-190: B U
+192: B U MB
+194-200: B U MB OP
+202-204: B U OP
+206-210: OP
+212: B U
+214-228: B U MB
+230-238: B U MB C
+240-244: -
+246-256: B U MB C
+258-262: B U C
+264-274: B U MB C
+276-280: ?
+282-286: P
+288-294: B U MB C
+296-300: B U
+302-306: B U MB C
+308-310: B U R
+312-322: R
+324-326: B U MB C R
+328-330: B U MB C
+332: -
+334-344: B U
+346-356: B U MB C
+358-362: B U
+364-394: B U MB C
+396-400: B U
+402: T P ?
+404: U T
+406-414: T P ?
+416-418: U T
+420-424: T P ?
+426-434: U T P ?
+436-440: T P ?
+442-446: U T
+448-454: U
+456-464: I P
+466-476: U
+478-482: I P
+484-490: U P
+492-498: I P
+500-512: U P
+514-526: I P
+528-558: U P
+560-566: I P
+568-588: U P
+590-592: I P
+594-602: U P
+604-628: I P
+630-648: U P
+650-656: I P
+658-666: U P
+668-680: I P
+682-686: U
+688-694: I P
+696-706: U
+708-710: U I
+712-738: I
+740-744: U
+746-762: I
+764-774: U
+776-784: I
+786-804: U I
+806-814: U
+816-818: I
+820-826: I P
+828-842: U
+844-846: I P
+848-854: U
+856-858: -

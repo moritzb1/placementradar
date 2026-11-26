@@ -1,0 +1,52 @@
+[
+  {
+    "bild": "cam_kPkLDnBByZE.jpg",
+    "soll": "Babybel",
+    "soll_produkt": "Cheese",
+    "top1": "coca-cola",
+    "top1_produkt": "Coca-Cola",
+    "top1_sim": 0.709,
+    "top5_mehrheit": "coca-cola",
+    "richtig_top1": false
+  },
+  {
+    "bild": "cam_kPkLDnBByZE.jpg",
+    "soll": "Grafschafter",
+    "soll_produkt": "Toast",
+    "top1": "coca-cola",
+    "top1_produkt": "Coca-Cola",
+    "top1_sim": 0.731,
+    "top5_mehrheit": "coca-cola",
+    "richtig_top1": false
+  },
+  {
+    "bild": "cam_kPkLDnBByZE.jpg",
+    "soll": "Grafschafter",
+    "soll_produkt": "Vollkorn Toast",
+    "top1": "coca-cola",
+    "top1_produkt": "Coca-Cola",
+    "top1_sim": 0.736,
+    "top5_mehrheit": "coca-cola",
+    "richtig_top1": false
+  },
+  {
+    "bild": "cam_kPkLDnBByZE.jpg",
+    "soll": "Babybel",
+    "soll_produkt": "Cheese",
+    "top1": "coca-cola",
+    "top1_produkt": "Coca-Cola",
+    "top1_sim": 0.745,
+    "top5_mehrheit": "coca-cola",
+    "richtig_top1": false
+  },
+  {
+    "bild": "cam_kPkLDnBByZE.jpg",
+    "soll": "Milbona",
+    "soll_produkt": "High Protein Pudding",
+    "top1": "nutella",
+    "top1_produkt": "nutella",
+    "top1_sim": 0.698,
+    "top5_mehrheit": "milbona",
+    "richtig_top1": false
+  }
+]

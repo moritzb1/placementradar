@@ -1,0 +1,900 @@
+{
+  "segmente": [
+    {
+      "von": 0.0,
+      "bis": 122.75,
+      "info": {
+        "model": "gemini-3.6-flash",
+        "seconds": 98.8,
+        "usage": {
+          "promptTokenCount": 11237,
+          "candidatesTokenCount": 643,
+          "totalTokenCount": 13223,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 133
+            },
+            {
+              "modality": "VIDEO",
+              "tokenCount": 11104
+            }
+          ],
+          "thoughtsTokenCount": 1343,
+          "serviceTier": "standard"
+        },
+        "versuch": 4
+      },
+      "result": {
+        "brands": [
+          {
+            "brand": "Louis Vuitton",
+            "appearances": [
+              {
+                "start": "00:01",
+                "end": "02:02",
+                "channel": "visual",
+                "evidence": "Louis Vuitton Monogram backpack and wallet displayed on screen",
+                "in_use": true,
+                "position": "center",
+                "size": "large",
+                "start_s": 1.0,
+                "end_s": 122.0
+              },
+              {
+                "start": "00:22",
+                "end": "00:25",
+                "channel": "audio",
+                "evidence": "Louis Vuitton Monogram Canvas Palm Springs Backpack",
+                "start_s": 22.0,
+                "end_s": 25.0
+              },
+              {
+                "start": "01:38",
+                "end": "01:40",
+                "channel": "audio",
+                "evidence": "Louis Vuitton card wallet",
+                "start_s": 98.0,
+                "end_s": 100.0
+              },
+              {
+                "start": "01:45",
+                "end": "01:48",
+                "channel": "text",
+                "evidence": "LOUIS VUITTON PARIS made in France",
+                "in_use": true,
+                "position": "center",
+                "size": "small",
+                "start_s": 105.0,
+                "end_s": 108.0
+              }
+            ],
+            "category": "Fashion",
+            "product": "Palm Springs Mini Backpack & Card Holder"
+          },
+          {
+            "brand": "Sanrio",
+            "appearances": [
+              {
+                "start": "00:03",
+                "end": "00:04",
+                "channel": "visual",
+                "evidence": "Hello Kitty card inside wallet",
+                "in_use": true,
+                "position": "center",
+                "size": "small",
+                "start_s": 3.0,
+                "end_s": 4.0
+              },
+              {
+                "start": "00:14",
+                "end": "00:15",
+                "channel": "visual",
+                "evidence": "My Melody hand sanitizer holder",
+                "in_use": true,
+                "position": "center",
+                "size": "small",
+                "start_s": 14.0,
+                "end_s": 15.0
+              }
+            ],
+            "category": "Merchandise",
+            "product": "Hello Kitty Card & My Melody Holder"
+          }
+        ],
+        "disclosures": [
+          {
+            "kind": "spoken_disclosure",
+            "text": "This bag was actually kindly sent to me, they wanted me to do a review, so I'll list the link to where you can purchase this bag.",
+            "time": "00:54"
+          }
+        ],
+        "looks_like_paid_promotion": true,
+        "reasoning": "The creator verbally states that the Louis Vuitton backpack was sent to her for free by a seller/brand in exchange for a review and promotion."
+      },
+      "zeiten_min_max": [
+        1.0,
+        105.0
+      ]
+    },
+    {
+      "von": 122.75,
+      "bis": 245.5,
+      "info": {
+        "model": "gemini-3.6-flash",
+        "seconds": 86.6,
+        "usage": {
+          "promptTokenCount": 11328,
+          "candidatesTokenCount": 1417,
+          "totalTokenCount": 14584,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 135
+            },
+            {
+              "modality": "VIDEO",
+              "tokenCount": 11193
+            }
+          ],
+          "thoughtsTokenCount": 1839,
+          "serviceTier": "standard"
+        },
+        "versuch": 2
+      },
+      "result": {
+        "brands": [
+          {
+            "brand": "Louis Vuitton",
+            "appearances": [
+              {
+                "start": "02:02",
+                "end": "03:07",
+                "channel": "visual",
+                "evidence": "Louis Vuitton Monogram wallet and backpack visible on camera",
+                "in_use": true,
+                "position": "center",
+                "size": "large",
+                "start_s": 122.0,
+                "end_s": 187.0
+              }
+            ],
+            "category": "Fashion & Accessories",
+            "product": "Wallet and Backpack"
+          },
+          {
+            "brand": "Miniso",
+            "appearances": [
+              {
+                "start": "03:14",
+                "end": "03:22",
+                "channel": "audio",
+                "evidence": "Spoken mention of purchasing pouches from Miniso",
+                "start_s": 194.0,
+                "end_s": 202.0
+              }
+            ],
+            "category": "Retail"
+          },
+          {
+            "brand": "Daiso",
+            "appearances": [
+              {
+                "start": "03:18",
+                "end": "03:21",
+                "channel": "audio",
+                "evidence": "Spoken mention of Daiso",
+                "start_s": 198.0,
+                "end_s": 201.0
+              }
+            ],
+            "category": "Retail"
+          },
+          {
+            "brand": "Tesso",
+            "appearances": [
+              {
+                "start": "03:20",
+                "end": "03:22",
+                "channel": "audio",
+                "evidence": "Spoken mention of Tesso",
+                "start_s": 200.0,
+                "end_s": 202.0
+              }
+            ],
+            "category": "Retail"
+          },
+          {
+            "brand": "Tarte Cosmetics",
+            "appearances": [
+              {
+                "start": "03:25",
+                "end": "03:28",
+                "channel": "visual",
+                "evidence": "tarte Lights, Camera, Lashes Platinum Mascara packaging",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 205.0,
+                "end_s": 208.0
+              },
+              {
+                "start": "03:41",
+                "end": "03:43",
+                "channel": "visual",
+                "evidence": "tarte Shape Tape Concealer tube",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 221.0,
+                "end_s": 223.0
+              }
+            ],
+            "category": "Beauty",
+            "product": "Cosmetics"
+          },
+          {
+            "brand": "Anastasia Beverly Hills",
+            "appearances": [
+              {
+                "start": "03:28",
+                "end": "03:30",
+                "channel": "visual",
+                "evidence": "Anastasia Beverly Hills Brow Pencil packaging",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 208.0,
+                "end_s": 210.0
+              }
+            ],
+            "category": "Beauty",
+            "product": "Brow Pencil"
+          },
+          {
+            "brand": "Glow Recipe",
+            "appearances": [
+              {
+                "start": "03:30",
+                "end": "03:40",
+                "channel": "visual",
+                "evidence": "Glow Recipe Watermelon Glow Niacinamide Dew Drops product bottle shown and tested",
+                "in_use": true,
+                "position": "center",
+                "size": "medium",
+                "start_s": 210.0,
+                "end_s": 220.0
+              }
+            ],
+            "category": "Beauty",
+            "product": "Skincare Serum"
+          },
+          {
+            "brand": "Hello Kitty",
+            "appearances": [
+              {
+                "start": "02:30",
+                "end": "02:35",
+                "channel": "visual",
+                "evidence": "Hello Kitty design on credit card sticker",
+                "in_use": true,
+                "position": "center",
+                "size": "medium",
+                "start_s": 150.0,
+                "end_s": 155.0
+              },
+              {
+                "start": "02:53",
+                "end": "03:00",
+                "channel": "visual",
+                "evidence": "Hello Kitty micro SD card holder",
+                "in_use": true,
+                "position": "center",
+                "size": "small",
+                "start_s": 173.0,
+                "end_s": 180.0
+              },
+              {
+                "start": "03:43",
+                "end": "03:55",
+                "channel": "visual",
+                "evidence": "Hello Kitty tweezers shown",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 223.0,
+                "end_s": 235.0
+              }
+            ],
+            "category": "Accessories",
+            "product": "Personal Accessories"
+          },
+          {
+            "brand": "Rare Beauty",
+            "appearances": [
+              {
+                "start": "03:59",
+                "end": "04:03",
+                "channel": "visual",
+                "evidence": "Rare Beauty lipstick tube shown",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 239.0,
+                "end_s": 243.0
+              }
+            ],
+            "category": "Beauty",
+            "product": "Lipstick"
+          },
+          {
+            "brand": "Benefit Cosmetics",
+            "appearances": [
+              {
+                "start": "04:03",
+                "end": "04:06",
+                "channel": "visual",
+                "evidence": "Benefit Gimme Brow+ product tube shown",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 243.0,
+                "end_s": 246.0
+              }
+            ],
+            "category": "Beauty",
+            "product": "Brow Gel"
+          }
+        ],
+        "disclosures": [],
+        "looks_like_paid_promotion": false,
+        "reasoning": "The creator is showcasing items inside her everyday bag (a 'What's In My Bag' style video) and mentioning personal items and preferences without explicit sponsorship markers or endorsement language."
+      },
+      "zeiten_min_max": [
+        122.0,
+        243.0
+      ]
+    },
+    {
+      "von": 245.5,
+      "bis": 368.25,
+      "info": {
+        "model": "gemini-3.6-flash",
+        "seconds": 54.7,
+        "usage": {
+          "promptTokenCount": 11329,
+          "candidatesTokenCount": 2134,
+          "totalTokenCount": 15322,
+          "promptTokensDetails": [
+            {
+              "modality": "VIDEO",
+              "tokenCount": 11194
+            },
+            {
+              "modality": "TEXT",
+              "tokenCount": 135
+            }
+          ],
+          "thoughtsTokenCount": 1859,
+          "serviceTier": "standard"
+        },
+        "versuch": 1
+      },
+      "result": {
+        "brands": [
+          {
+            "brand": "Josie Maran",
+            "appearances": [
+              {
+                "start": "04:05",
+                "end": "04:21",
+                "channel": "visual",
+                "evidence": "Josie Maran Body Butter sample packet displayed on screen",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 245.0,
+                "end_s": 261.0
+              }
+            ],
+            "category": "Beauty",
+            "product": "Body Butter"
+          },
+          {
+            "brand": "Rare Beauty",
+            "appearances": [
+              {
+                "start": "04:22",
+                "end": "04:25",
+                "channel": "visual",
+                "evidence": "Rare Beauty liquid blush held up to camera",
+                "in_use": false,
+                "position": "center",
+                "size": "small",
+                "start_s": 262.0,
+                "end_s": 265.0
+              },
+              {
+                "start": "04:23",
+                "end": "04:25",
+                "channel": "audio",
+                "evidence": "my Rare Beauty blush",
+                "in_use": false,
+                "position": "center",
+                "size": "small",
+                "start_s": 263.0,
+                "end_s": 265.0
+              }
+            ],
+            "category": "Beauty",
+            "product": "Liquid Blush"
+          },
+          {
+            "brand": "Tarte",
+            "appearances": [
+              {
+                "start": "04:26",
+                "end": "04:28",
+                "channel": "visual",
+                "evidence": "Tarte Maracuja Juicy Lip Tint tube held up to camera",
+                "in_use": false,
+                "position": "center",
+                "size": "small",
+                "start_s": 266.0,
+                "end_s": 268.0
+              },
+              {
+                "start": "04:26",
+                "end": "04:28",
+                "channel": "audio",
+                "evidence": "tarte lip tint",
+                "in_use": false,
+                "position": "center",
+                "size": "small",
+                "start_s": 266.0,
+                "end_s": 268.0
+              }
+            ],
+            "category": "Beauty",
+            "product": "Lip Tint"
+          },
+          {
+            "brand": "Wet Ones",
+            "appearances": [
+              {
+                "start": "04:51",
+                "end": "04:53",
+                "channel": "visual",
+                "evidence": "Wet Ones wipe packet held up to camera",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 291.0,
+                "end_s": 293.0
+              },
+              {
+                "start": "04:51",
+                "end": "04:53",
+                "channel": "audio",
+                "evidence": "Wet Ones",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 291.0,
+                "end_s": 293.0
+              }
+            ],
+            "category": "Personal Care",
+            "product": "Wipes"
+          },
+          {
+            "brand": "Miss Mouth's Messy Eater",
+            "appearances": [
+              {
+                "start": "04:54",
+                "end": "04:57",
+                "channel": "visual",
+                "evidence": "Miss Mouth's Messy Eater stain treater wipe packet held up to camera",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 294.0,
+                "end_s": 297.0
+              }
+            ],
+            "category": "Household",
+            "product": "Stain Remover Wipe"
+          },
+          {
+            "brand": "Midol",
+            "appearances": [
+              {
+                "start": "04:58",
+                "end": "04:59",
+                "channel": "visual",
+                "evidence": "Midol packet held up to camera",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 298.0,
+                "end_s": 299.0
+              },
+              {
+                "start": "04:58",
+                "end": "04:59",
+                "channel": "audio",
+                "evidence": "Midol",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 298.0,
+                "end_s": 299.0
+              }
+            ],
+            "category": "Healthcare",
+            "product": "Pain Reliever"
+          },
+          {
+            "brand": "Tide",
+            "appearances": [
+              {
+                "start": "05:00",
+                "end": "05:00",
+                "channel": "visual",
+                "evidence": "Tide to Go Wipe packet held up to camera",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 300.0,
+                "end_s": 300.0
+              },
+              {
+                "start": "05:00",
+                "end": "05:00",
+                "channel": "audio",
+                "evidence": "Tide to go wipes",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 300.0,
+                "end_s": 300.0
+              }
+            ],
+            "category": "Household",
+            "product": "Stain Remover Wipe"
+          },
+          {
+            "brand": "Shout",
+            "appearances": [
+              {
+                "start": "05:01",
+                "end": "05:01",
+                "channel": "visual",
+                "evidence": "Shout Wipe & Go packet held up to camera",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 301.0,
+                "end_s": 301.0
+              },
+              {
+                "start": "05:01",
+                "end": "05:01",
+                "channel": "audio",
+                "evidence": "Shout wipes",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 301.0,
+                "end_s": 301.0
+              }
+            ],
+            "category": "Household",
+            "product": "Stain Remover Wipe"
+          },
+          {
+            "brand": "Teazen",
+            "appearances": [
+              {
+                "start": "05:02",
+                "end": "05:13",
+                "channel": "visual",
+                "evidence": "Teazen V Fit Matcha Lemon stick pack held up to camera",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 302.0,
+                "end_s": 313.0
+              }
+            ],
+            "category": "Food & Beverage",
+            "product": "Drink Mix"
+          },
+          {
+            "brand": "Acuvue",
+            "appearances": [
+              {
+                "start": "05:14",
+                "end": "05:15",
+                "channel": "visual",
+                "evidence": "Acuvue Vita contact lens pack held up to camera",
+                "in_use": false,
+                "position": "center",
+                "size": "small",
+                "start_s": 314.0,
+                "end_s": 315.0
+              }
+            ],
+            "category": "Healthcare",
+            "product": "Contact Lenses"
+          },
+          {
+            "brand": "GuruNanda",
+            "appearances": [
+              {
+                "start": "05:18",
+                "end": "05:19",
+                "channel": "visual",
+                "evidence": "GuruNanda Butter on Gums disposable toothbrush packet shown",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 318.0,
+                "end_s": 319.0
+              }
+            ],
+            "category": "Personal Care",
+            "product": "Toothbrush"
+          },
+          {
+            "brand": "Summer's Eve",
+            "appearances": [
+              {
+                "start": "06:01",
+                "end": "06:03",
+                "channel": "visual",
+                "evidence": "Summer's Eve daily refreshing cloth sachet shown to camera",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 361.0,
+                "end_s": 363.0
+              }
+            ],
+            "category": "Personal Care",
+            "product": "Feminine Wipes"
+          },
+          {
+            "brand": "Purell",
+            "appearances": [
+              {
+                "start": "06:04",
+                "end": "06:06",
+                "channel": "visual",
+                "evidence": "Purell Hand Sanitizing Wipe sachet shown to camera",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 364.0,
+                "end_s": 366.0
+              }
+            ],
+            "category": "Personal Care",
+            "product": "Sanitizing Wipe"
+          }
+        ],
+        "disclosures": [],
+        "looks_like_paid_promotion": false,
+        "reasoning": "The creator is showcasing items inside her cosmetic pouches in a 'What's In My Bag' style video without sponsor disclosures or overt promotional scripting."
+      },
+      "zeiten_min_max": [
+        245.0,
+        364.0
+      ]
+    },
+    {
+      "von": 368.25,
+      "bis": 491.0,
+      "info": {
+        "model": "gemini-3.6-flash",
+        "seconds": 62.7,
+        "usage": {
+          "promptTokenCount": 11323,
+          "candidatesTokenCount": 1006,
+          "totalTokenCount": 13164,
+          "promptTokensDetails": [
+            {
+              "modality": "TEXT",
+              "tokenCount": 135
+            },
+            {
+              "modality": "VIDEO",
+              "tokenCount": 11188
+            }
+          ],
+          "thoughtsTokenCount": 835,
+          "serviceTier": "standard"
+        },
+        "versuch": 1
+      },
+      "result": {
+        "brands": [
+          {
+            "brand": "Louis Vuitton",
+            "appearances": [
+              {
+                "start": "06:15",
+                "end": "08:10",
+                "channel": "visual",
+                "evidence": "Louis Vuitton Monogram Backpack shown continuously",
+                "in_use": true,
+                "position": "center",
+                "size": "large",
+                "start_s": 375.0,
+                "end_s": 490.0
+              },
+              {
+                "start": "07:55",
+                "end": "07:57",
+                "channel": "audio",
+                "evidence": "Spoken: 'like it says Louis Vuitton right here'",
+                "start_s": 475.0,
+                "end_s": 477.0
+              }
+            ],
+            "category": "Bags & Accessories",
+            "product": "Backpack"
+          },
+          {
+            "brand": "Sanrio",
+            "appearances": [
+              {
+                "start": "06:23",
+                "end": "06:36",
+                "channel": "visual",
+                "evidence": "My Melody character first aid kit",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 383.0,
+                "end_s": 396.0
+              },
+              {
+                "start": "06:27",
+                "end": "06:28",
+                "channel": "audio",
+                "evidence": "Spoken: 'it's My Melody'",
+                "start_s": 387.0,
+                "end_s": 388.0
+              }
+            ],
+            "category": "Accessories",
+            "product": "My Melody First Aid Kit"
+          },
+          {
+            "brand": "Amazon",
+            "appearances": [
+              {
+                "start": "06:42",
+                "end": "06:44",
+                "channel": "audio",
+                "evidence": "Spoken: 'I purchased this from Amazon'",
+                "start_s": 402.0,
+                "end_s": 404.0
+              }
+            ],
+            "category": "E-Commerce",
+            "product": "Online Retail Store"
+          },
+          {
+            "brand": "Apple",
+            "appearances": [
+              {
+                "start": "07:18",
+                "end": "07:23",
+                "channel": "visual",
+                "evidence": "AirPods (3rd Generation)",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 438.0,
+                "end_s": 443.0
+              },
+              {
+                "start": "07:19",
+                "end": "07:23",
+                "channel": "audio",
+                "evidence": "Spoken: 'my AirPods, this is a third generation AirPods'",
+                "start_s": 439.0,
+                "end_s": 443.0
+              },
+              {
+                "start": "07:31",
+                "end": "07:34",
+                "channel": "visual",
+                "evidence": "Apple AirTag",
+                "in_use": false,
+                "position": "center",
+                "size": "small",
+                "start_s": 451.0,
+                "end_s": 454.0
+              },
+              {
+                "start": "07:32",
+                "end": "07:34",
+                "channel": "audio",
+                "evidence": "Spoken: 'holds my AirTags'",
+                "start_s": 452.0,
+                "end_s": 454.0
+              }
+            ],
+            "category": "Electronics",
+            "product": "AirPods & AirTag"
+          },
+          {
+            "brand": "Orbit",
+            "appearances": [
+              {
+                "start": "07:44",
+                "end": "07:46",
+                "channel": "visual",
+                "evidence": "Orbit Spearmint Gum packet",
+                "in_use": false,
+                "position": "center",
+                "size": "medium",
+                "start_s": 464.0,
+                "end_s": 466.0
+              },
+              {
+                "start": "07:44",
+                "end": "07:46",
+                "channel": "audio",
+                "evidence": "Spoken: 'Orbit chewing gum'",
+                "start_s": 464.0,
+                "end_s": 466.0
+              }
+            ],
+            "category": "Food & Beverage",
+            "product": "Chewing Gum"
+          }
+        ],
+        "disclosures": [],
+        "looks_like_paid_promotion": false,
+        "reasoning": "The creator is sharing the contents of her personal bag in a 'What's In My Bag' style video, featuring everyday items and accessories. No signs of sponsored promotion or paid placements were detected."
+      },
+      "zeiten_min_max": [
+        375.0,
+        475.0
+      ]
+    }
+  ],
+  "gesamt_s": 98.8,
+  "marken": [
+    "acuvue",
+    "amazon",
+    "anastasia beverly hills",
+    "apple",
+    "benefit cosmetics",
+    "daiso",
+    "glow recipe",
+    "gurunanda",
+    "hello kitty",
+    "josie maran",
+    "louis vuitton",
+    "midol",
+    "miniso",
+    "miss mouth's messy eater",
+    "orbit",
+    "purell",
+    "rare beauty",
+    "sanrio",
+    "shout",
+    "summer's eve",
+    "tarte",
+    "tarte cosmetics",
+    "teazen",
+    "tesso",
+    "tide",
+    "wet ones"
+  ]
+}

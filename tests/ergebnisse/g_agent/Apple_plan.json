@@ -1,0 +1,1105 @@
+{
+ "request": {
+  "brand": "Apple",
+  "lang": "any",
+  "period": "any"
+ },
+ "events": [
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "plan",
+    "status": "done",
+    "title": "Plan",
+    "detail": "1 · look in the analyses we already have · 2 · search YouTube for “Apple” · 3 · keep videos: length 1–20 min, ≥ 1,000 views, not Apple's own channel (owned media, no placement) · 4 · use cached analyses first, at most 3 new ones and only with your OK · 5 · combine everything into one brand report",
+    "at_s": 0,
+    "plan": {
+     "brand": "Apple",
+     "lang": "any",
+     "period": "any",
+     "max": 8,
+     "max_new": 3,
+     "queries": [
+      "Apple"
+     ],
+     "rules": [
+      "length 1–20 min",
+      "≥ 1,000 views",
+      "not Apple's own channel (owned media, no placement)"
+     ]
+    }
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "library",
+    "status": "run",
+    "title": "Checking analyses we already have",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "library",
+    "status": "done",
+    "title": "Analyses we already have",
+    "detail": "5 of 12 analysed videos contain Apple (3 examples, 2 saved by visitors) – 0 requests",
+    "at_s": 0,
+    "videos": [
+     {
+      "id": "-pTGc7cIBIA",
+      "title": "My Everyday Tech: 2022!",
+      "channel": "Marques Brownlee"
+     },
+     {
+      "id": "dhFY1yo83d4",
+      "title": "What's in my Bag? These are the essentials",
+      "channel": "Brandy Nicholl"
+     },
+     {
+      "id": "VnBZfauMR5M",
+      "title": "What’s in my Bag 🎀✨ 45 Must Haves aus meiner Handtasche!",
+      "channel": "Rebecca"
+     },
+     {
+      "id": "6DMUMgQyVtc",
+      "title": "The ULTIMATE PC Gaming & Mac Desk Setup - 2025",
+      "channel": "Side of Tech"
+     },
+     {
+      "id": "eLAVGYQCkQI",
+      "title": "What’s on My Desk 2025 | Clean, Modern & Productive Setup",
+      "channel": "JB"
+     }
+    ]
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "search:Apple",
+    "status": "run",
+    "title": "Searching YouTube for “Apple”",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "search:Apple",
+    "status": "done",
+    "title": "Searched YouTube for “Apple”",
+    "detail": "20 videos · from today's search cache, 0 units · YouTube search page",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "filter",
+    "status": "done",
+    "title": "Filtering",
+    "detail": "15 of 20 kept – left out: 1 longer than 20 min, 3 Apple's own channel, 1 under 1,000 views",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "pick",
+    "status": "done",
+    "title": "Choosing videos",
+    "detail": "5 from the cache · 6 new candidates, ranked by brand in title, views and recency",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "confirm",
+   "data": {
+    "candidates": [
+     {
+      "id": "rr7m9nBqDdo",
+      "title": "We Took Apart Apple’s Homeview. It Got Ugly.",
+      "channel": "iFixit",
+      "channel_id": "UCHbx9IUW7eCeJsC4sBCTNBA",
+      "views": 1091077,
+      "duration_s": 554,
+      "published": null,
+      "description": "Apple's HomeView looks like a familiar mix of iPad and HomePod. Inside, stubborn adhesive and fragile connectors turn this ...",
+      "live": false,
+      "score": 10,
+      "why": "brand in title · 1.1M views"
+     },
+     {
+      "id": "RsX_R4FOfw4",
+      "title": "Apple is JUST Getting Started..",
+      "channel": "Max Tech",
+      "channel_id": "UCptwuAv0XQHo1OQUSaO6NHw",
+      "views": 371333,
+      "duration_s": 623,
+      "published": null,
+      "description": "Apple's NEW Product Lineup in 2027 is gonna be BIGGER than you think.. Download Wispr Flow Pro today and get a FREE ...",
+      "live": false,
+      "score": 9.6,
+      "why": "brand in title · 371k views"
+     },
+     {
+      "id": "tk1yvlitBps",
+      "title": "You Can Finally Watch YouTube on Apple CarPlay (Officially Complete)",
+      "channel": "HotshotTek",
+      "channel_id": "UClQQoervgLHV2pAOxHJ16NA",
+      "views": 89754,
+      "duration_s": 524,
+      "published": null,
+      "description": "CarScreen is officially out of beta and available directly on the App Store! In this video, we cover how to watch YouTube on Apple ...",
+      "live": false,
+      "score": 9,
+      "why": "brand in title · 90k views"
+     },
+     {
+      "id": "s7_Vck0CgGA",
+      "title": "Apple Just Put a LIMIT on Siri… Here's Why",
+      "channel": "9to5Mac",
+      "channel_id": "UChjRM_qQAaOAiLNbOGbYcRA",
+      "views": 81603,
+      "duration_s": 542,
+      "published": null,
+      "description": "Best Apple Black Friday Deals 2026 AirPods Pro 3: $179 (Save $70) — https://link.amazon/B081aK1jF AirPods Max 2: ...",
+      "live": false,
+      "score": 8.9,
+      "why": "brand in title · 82k views"
+     },
+     {
+      "id": "v9gpkZz7RNo",
+      "title": "15+ NEW Apple Products Coming in 2027!",
+      "channel": "9to5Mac",
+      "channel_id": "UChjRM_qQAaOAiLNbOGbYcRA",
+      "views": 54219,
+      "duration_s": 599,
+      "published": null,
+      "description": "iPad mini OLED; https://link.amazon/B0iCLBAA3 iPad mini Folio CAse; https://link.amazon/B02dL7NYx ✏️ Apple Pencil Pro: ...",
+      "live": false,
+      "score": 8.7,
+      "why": "brand in title · 54k views"
+     },
+     {
+      "id": "Ip5EiqbuBpE",
+      "title": "Mac Gaming is Solved But Not By Apple",
+      "channel": "Linus Tech Tips",
+      "channel_id": "UCXuqSBlHAE6Xw-yeJA0Tunw",
+      "views": 155993,
+      "duration_s": 1149,
+      "published": null,
+      "description": "Buy the brand new Tech Sling and earphone pouch and get a $30 LTT Gift card!",
+      "live": false,
+      "score": 8.2,
+      "why": "brand in title · 156k views"
+     }
+    ],
+    "preselected": [
+     "rr7m9nBqDdo",
+     "RsX_R4FOfw4",
+     "tk1yvlitBps"
+    ],
+    "quota": {
+     "models": 4,
+     "exhausted": 0,
+     "used_requests": 0,
+     "left_requests": 80,
+     "free_per_model": 20,
+     "visitor_left": 10,
+     "visitor_cap": 10,
+     "reset_in_s": 64521,
+     "blocked": null
+    },
+    "max_new": 3,
+    "per_video_requests": 3
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "confirm",
+    "status": "skip",
+    "title": "Waiting for your OK",
+    "detail": "up to 3 new analyses (≈ 3 Gemini requests each) – the report below uses cached analyses only until you confirm",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "aggregate",
+    "status": "run",
+    "title": "Combining the results",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "aggregate",
+    "status": "done",
+    "title": "Combined the results",
+    "detail": "5 videos with Apple · 2 findings to check",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "report",
+   "data": {
+    "summary": {
+     "query": "Apple",
+     "generated_at": "2026-11-24T14:04:39.070Z",
+     "spread": 0.5,
+     "totals": {
+      "videos": 5,
+      "checked": 5,
+      "not_found": 0,
+      "views": 5886186,
+      "screen_s": 136,
+      "screen_range": {
+       "low": 68,
+       "high": 204
+      },
+      "spoken_s": 52,
+      "mentions": 10,
+      "value": {
+       "low": 6777.214996094362,
+       "mid": 27247.28904396037,
+       "high": 77022.33216621554
+      },
+      "in_use": 4,
+      "commercial": 5,
+      "paid": 3,
+      "labelled": 2,
+      "weak": 2,
+      "unlabelled": 1,
+      "no_signals": 0
+     },
+     "videos": [
+      {
+       "id": "-pTGc7cIBIA",
+       "title": "My Everyday Tech: 2022!",
+       "channel": "Marques Brownlee",
+       "views": 5706365,
+       "duration_s": 859,
+       "upload_date": "2022-01-07",
+       "analyzed_at": "2026-11-21",
+       "found": true,
+       "brands": [
+        "Apple"
+       ],
+       "products": [
+        "MacBook Pro 16\" M1 Max"
+       ],
+       "category": "Electronics",
+       "screen_s": 42,
+       "screen_range": {
+        "low": 21,
+        "high": 63
+       },
+       "spoken_s": 19,
+       "text_s": 0,
+       "mentions": 3,
+       "shown": true,
+       "in_use": true,
+       "background_only": false,
+       "value": {
+        "low": 13464.07604542273,
+        "mid": 27058.715914246208,
+        "high": 50979.89950808807
+       },
+       "value_range": {
+        "low": 6732.038022711365,
+        "mid": 27058.715914246208,
+        "high": 76469.8492621321
+       },
+       "paid": false,
+       "disclosure": {
+        "level": "orange",
+        "label": "Weak label",
+        "title": "Check disclosure",
+        "signals": [
+         "Shop / affiliate link in description (\"amzn.to\")"
+        ]
+       },
+       "others": [
+        "Peak Design",
+        "Canon",
+        "Trove",
+        "Realme",
+        "Opal",
+        "Google"
+       ],
+       "source": "demo"
+      },
+      {
+       "id": "6DMUMgQyVtc",
+       "title": "The ULTIMATE PC Gaming & Mac Desk Setup - 2025",
+       "channel": "Side of Tech",
+       "views": 128432,
+       "duration_s": 788,
+       "upload_date": "2025-04-15",
+       "analyzed_at": "2026-11-21",
+       "found": true,
+       "brands": [
+        "Apple"
+       ],
+       "products": [
+        "MacBook Pro"
+       ],
+       "category": "Electronics",
+       "screen_s": 8,
+       "screen_range": {
+        "low": 4,
+        "high": 12
+       },
+       "spoken_s": 8,
+       "text_s": 0,
+       "mentions": 2,
+       "shown": true,
+       "in_use": true,
+       "background_only": false,
+       "value": {
+        "low": 65.69925564689083,
+        "mid": 138.43609441148473,
+        "high": 272.76314536722714
+       },
+       "value_range": {
+        "low": 32.84962782344542,
+        "mid": 138.43609441148473,
+        "high": 409.1447180508407
+       },
+       "paid": true,
+       "disclosure": {
+        "level": "green",
+        "label": "Labelled",
+        "title": "Disclosure found",
+        "signals": [
+         "Gemini rates the video as paid or gifted promotion",
+         "Shop / affiliate link in description (\"bit.ly\")",
+         "Products are actively recommended"
+        ]
+       },
+       "others": [
+        "Razer",
+        "ASUS",
+        "Vernal",
+        "GravaStar",
+        "Philips Hue",
+        "Edifier",
+        "Divoom",
+        "NZXT",
+        "LG",
+        "Keychron",
+        "Logitech",
+        "CalDigit",
+        "Graywind",
+        "Nanoleaf",
+        "Focusrite",
+        "RØDE",
+        "beyerdynamic"
+       ],
+       "source": "store"
+      },
+      {
+       "id": "eLAVGYQCkQI",
+       "title": "What’s on My Desk 2025 | Clean, Modern & Productive Setup",
+       "channel": "JB",
+       "views": 10789,
+       "duration_s": 462,
+       "upload_date": "2025-10-19",
+       "analyzed_at": "2026-11-22",
+       "found": true,
+       "brands": [
+        "Apple"
+       ],
+       "products": [
+        "Mac Mini M4"
+       ],
+       "category": "Computers & Electronics",
+       "screen_s": 76,
+       "screen_range": {
+        "low": 38,
+        "high": 114
+       },
+       "spoken_s": 18,
+       "text_s": 0,
+       "mentions": 2,
+       "shown": true,
+       "in_use": true,
+       "background_only": false,
+       "value": {
+        "low": 21.099935425426132,
+        "mid": 42.3176431048769,
+        "high": 79.56640379794032
+       },
+       "value_range": {
+        "low": 10.549967712713066,
+        "mid": 42.3176431048769,
+        "high": 119.34960569691049
+       },
+       "paid": false,
+       "disclosure": {
+        "level": "red",
+        "label": "Not labelled",
+        "title": "No disclosure found",
+        "signals": [
+         "Shop / affiliate link in description (\"Affiliate\")"
+        ]
+       },
+       "others": [
+        "LG",
+        "Sonos",
+        "LEGO",
+        "Sennheiser",
+        "Keychron",
+        "Quntis",
+        "Samsung",
+        "Seagate"
+       ],
+       "source": "store"
+      },
+      {
+       "id": "dhFY1yo83d4",
+       "title": "What's in my Bag? These are the essentials",
+       "channel": "Brandy Nicholl",
+       "views": 9023,
+       "duration_s": 491,
+       "upload_date": "20261117",
+       "analyzed_at": "2026-11-19",
+       "found": true,
+       "brands": [
+        "Apple"
+       ],
+       "products": [
+        "AirPods & AirTag"
+       ],
+       "category": "Technology & Electronics",
+       "screen_s": 10,
+       "screen_range": {
+        "low": 5,
+        "high": 15
+       },
+       "spoken_s": 6,
+       "text_s": 0,
+       "mentions": 2,
+       "shown": true,
+       "in_use": true,
+       "background_only": false,
+       "value": {
+        "low": 2.752592720086557,
+        "mid": 6.206155158477595,
+        "high": 12.950859143966392
+       },
+       "value_range": {
+        "low": 1.3762963600432785,
+        "mid": 6.206155158477595,
+        "high": 19.42628871594959
+       },
+       "paid": true,
+       "disclosure": {
+        "level": "orange",
+        "label": "Weak label",
+        "title": "Check disclosure",
+        "signals": [
+         "Gemini rates the video as paid or gifted promotion",
+         "Shop / affiliate link in description (\"coupon\")",
+         "Products are actively recommended"
+        ]
+       },
+       "others": [
+        "Louis Vuitton",
+        "Sanrio",
+        "Josie Maran",
+        "Glow Recipe",
+        "Rare Beauty",
+        "Tarte Cosmetics",
+        "Teazen",
+        "Miniso",
+        "Anastasia Beverly Hills",
+        "Benefit Cosmetics",
+        "Wet Ones",
+        "Orbit",
+        "The Hate Stains Co.",
+        "Midol",
+        "Tide",
+        "Shout",
+        "Acuvue",
+        "GuruNanda",
+        "Summer's Eve",
+        "Purell",
+        "Daiso",
+        "Miss Mouth's Messy Eater"
+       ],
+       "source": "demo"
+      },
+      {
+       "id": "VnBZfauMR5M",
+       "title": "What’s in my Bag 🎀✨ 45 Must Haves aus meiner Handtasche!",
+       "channel": "Rebecca",
+       "views": 31577,
+       "duration_s": 755,
+       "upload_date": "2025-06-01",
+       "analyzed_at": "2026-11-20",
+       "found": true,
+       "brands": [
+        "Apple"
+       ],
+       "products": [
+        "Headphones"
+       ],
+       "category": "Electronics",
+       "screen_s": 0,
+       "screen_range": {
+        "low": 0,
+        "high": 0
+       },
+       "spoken_s": 1,
+       "text_s": 0,
+       "mentions": 1,
+       "shown": false,
+       "in_use": false,
+       "background_only": false,
+       "value": {
+        "low": 0.8021629735927152,
+        "mid": 1.6132370393211921,
+        "high": 3.0415277464817883
+       },
+       "value_range": {
+        "low": 0.4010814867963576,
+        "mid": 1.6132370393211921,
+        "high": 4.562291619722682
+       },
+       "paid": true,
+       "disclosure": {
+        "level": "green",
+        "label": "Labelled",
+        "title": "Disclosure found",
+        "signals": [
+         "Gemini rates the video as paid or gifted promotion",
+         "Shop / affiliate link in description (\"Affiliate\")"
+        ]
+       },
+       "others": [
+        "GUESS",
+        "TREK",
+        "Lotus Biscoff",
+        "Plackers",
+        "Yves Saint Laurent",
+        "Typology",
+        "e.l.f.",
+        "bebe",
+        "Doonails",
+        "Wrigley's Extra",
+        "trend !t up",
+        "SOS",
+        "Maybelline",
+        "Bioré",
+        "essence",
+        "H&M",
+        "ebelin",
+        "Anastasia Beverly Hills",
+        "KAPTEN & SON",
+        "Manhattan",
+        "Zara",
+        "dm"
+       ],
+       "source": "demo"
+      }
+     ],
+     "not_found": [],
+     "creators": [
+      {
+       "channel": "Marques Brownlee",
+       "videos": 1,
+       "views": 5706365,
+       "screen_s": 42,
+       "value_mid": 27058.715914246208,
+       "labelled": 0,
+       "unlabelled": 0
+      },
+      {
+       "channel": "Side of Tech",
+       "videos": 1,
+       "views": 128432,
+       "screen_s": 8,
+       "value_mid": 138.43609441148473,
+       "labelled": 1,
+       "unlabelled": 0
+      },
+      {
+       "channel": "JB",
+       "videos": 1,
+       "views": 10789,
+       "screen_s": 76,
+       "value_mid": 42.3176431048769,
+       "labelled": 0,
+       "unlabelled": 1
+      },
+      {
+       "channel": "Brandy Nicholl",
+       "videos": 1,
+       "views": 9023,
+       "screen_s": 10,
+       "value_mid": 6.206155158477595,
+       "labelled": 0,
+       "unlabelled": 0
+      },
+      {
+       "channel": "Rebecca",
+       "videos": 1,
+       "views": 31577,
+       "screen_s": 0,
+       "value_mid": 1.6132370393211921,
+       "labelled": 1,
+       "unlabelled": 0
+      }
+     ],
+     "months": [
+      {
+       "month": "2022-01",
+       "videos": 1,
+       "value_mid": 27058.715914246208,
+       "labelled": 0,
+       "unlabelled": 0
+      },
+      {
+       "month": "2025-04",
+       "videos": 1,
+       "value_mid": 138.43609441148473,
+       "labelled": 1,
+       "unlabelled": 0
+      },
+      {
+       "month": "2025-06",
+       "videos": 1,
+       "value_mid": 1.6132370393211921,
+       "labelled": 1,
+       "unlabelled": 0
+      },
+      {
+       "month": "2025-10",
+       "videos": 1,
+       "value_mid": 42.3176431048769,
+       "labelled": 0,
+       "unlabelled": 1
+      },
+      {
+       "month": "2026-11",
+       "videos": 1,
+       "value_mid": 6.206155158477595,
+       "labelled": 0,
+       "unlabelled": 0
+      }
+     ],
+     "next_to": [
+      {
+       "brand": "LG",
+       "category": "Electronics",
+       "videos": 2,
+       "screen_s": 127
+      },
+      {
+       "brand": "Keychron",
+       "category": "Electronics",
+       "videos": 2,
+       "screen_s": 29
+      },
+      {
+       "brand": "Anastasia Beverly Hills",
+       "category": "Cosmetics",
+       "videos": 2,
+       "screen_s": 4
+      },
+      {
+       "brand": "Louis Vuitton",
+       "category": "Luxury & Fashion",
+       "videos": 1,
+       "screen_s": 257
+      },
+      {
+       "brand": "GUESS",
+       "category": "Clothing & Fashion",
+       "videos": 1,
+       "screen_s": 157
+      },
+      {
+       "brand": "Peak Design",
+       "category": "Bags & Luggage",
+       "videos": 1,
+       "screen_s": 45
+      },
+      {
+       "brand": "Sonos",
+       "category": "Audio Gear",
+       "videos": 1,
+       "screen_s": 36
+      },
+      {
+       "brand": "Sanrio",
+       "category": "Character Goods & Accessories",
+       "videos": 1,
+       "screen_s": 35
+      },
+      {
+       "brand": "LEGO",
+       "category": "Toys & Hobbies",
+       "videos": 1,
+       "screen_s": 35
+      },
+      {
+       "brand": "Sennheiser",
+       "category": "Computers & Electronics",
+       "videos": 1,
+       "screen_s": 32
+      },
+      {
+       "brand": "Canon",
+       "category": "Cameras & Optics",
+       "videos": 1,
+       "screen_s": 25
+      },
+      {
+       "brand": "Trove",
+       "category": "Wallets & Card Cases",
+       "videos": 1,
+       "screen_s": 24
+      },
+      {
+       "brand": "Realme",
+       "category": "Electronics Accessories",
+       "videos": 1,
+       "screen_s": 18
+      },
+      {
+       "brand": "Josie Maran",
+       "category": "Skincare",
+       "videos": 1,
+       "screen_s": 17
+      },
+      {
+       "brand": "Opal",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 16
+      },
+      {
+       "brand": "Quntis",
+       "category": "Computers & Electronics",
+       "videos": 1,
+       "screen_s": 15
+      },
+      {
+       "brand": "TREK",
+       "category": "Food & Beverage",
+       "videos": 1,
+       "screen_s": 11
+      },
+      {
+       "brand": "Glow Recipe",
+       "category": "Skincare",
+       "videos": 1,
+       "screen_s": 10
+      },
+      {
+       "brand": "Teazen",
+       "category": "Food & Beverage",
+       "videos": 1,
+       "screen_s": 10
+      },
+      {
+       "brand": "Razer",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 10
+      },
+      {
+       "brand": "Samsung",
+       "category": "Computers & Electronics",
+       "videos": 1,
+       "screen_s": 10
+      },
+      {
+       "brand": "Lotus Biscoff",
+       "category": "Food & Beverage",
+       "videos": 1,
+       "screen_s": 8
+      },
+      {
+       "brand": "Plackers",
+       "category": "Beauty & Personal Care",
+       "videos": 1,
+       "screen_s": 8
+      },
+      {
+       "brand": "Yves Saint Laurent",
+       "category": "Beauty & Personal Care",
+       "videos": 1,
+       "screen_s": 8
+      },
+      {
+       "brand": "ASUS",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 8
+      },
+      {
+       "brand": "Typology",
+       "category": "Beauty & Personal Care",
+       "videos": 1,
+       "screen_s": 7
+      },
+      {
+       "brand": "Seagate",
+       "category": "Computers & Electronics",
+       "videos": 1,
+       "screen_s": 7
+      },
+      {
+       "brand": "Rare Beauty",
+       "category": "Cosmetics",
+       "videos": 1,
+       "screen_s": 6
+      },
+      {
+       "brand": "Tarte Cosmetics",
+       "category": "Cosmetics",
+       "videos": 1,
+       "screen_s": 6
+      },
+      {
+       "brand": "e.l.f.",
+       "category": "Beauty & Personal Care",
+       "videos": 1,
+       "screen_s": 6
+      },
+      {
+       "brand": "bebe",
+       "category": "Beauty & Personal Care",
+       "videos": 1,
+       "screen_s": 6
+      },
+      {
+       "brand": "Vernal",
+       "category": "Furniture",
+       "videos": 1,
+       "screen_s": 6
+      },
+      {
+       "brand": "Doonails",
+       "category": "Beauty & Personal Care",
+       "videos": 1,
+       "screen_s": 5
+      },
+      {
+       "brand": "Wrigley's Extra",
+       "category": "Food & Beverage",
+       "videos": 1,
+       "screen_s": 5
+      },
+      {
+       "brand": "trend !t up",
+       "category": "Beauty & Personal Care",
+       "videos": 1,
+       "screen_s": 5
+      },
+      {
+       "brand": "Google",
+       "category": "Smartphones",
+       "videos": 1,
+       "screen_s": 4
+      },
+      {
+       "brand": "SOS",
+       "category": "Beauty & Personal Care",
+       "videos": 1,
+       "screen_s": 4
+      },
+      {
+       "brand": "Maybelline",
+       "category": "Beauty & Personal Care",
+       "videos": 1,
+       "screen_s": 4
+      },
+      {
+       "brand": "Bioré",
+       "category": "Beauty & Personal Care",
+       "videos": 1,
+       "screen_s": 4
+      },
+      {
+       "brand": "GravaStar",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 4
+      }
+     ],
+     "findings": [
+      {
+       "kind": "warn",
+       "id": "unlabelled",
+       "title": "1 of 5 videos with ad signals but no label",
+       "text": "Gemini or the description point to paid, gifted or affiliate content, but no ad label was found in title, description, image or speech (§ 5a (4) UWG, § 22 MStV – screening aid, not legal advice).",
+       "videos": [
+        {
+         "id": "eLAVGYQCkQI",
+         "title": "What’s on My Desk 2025 | Clean, Modern & Productive Setup",
+         "channel": "JB"
+        }
+       ]
+      },
+      {
+       "kind": "warn",
+       "id": "weak_label",
+       "title": "2 videos with only a weak label",
+       "text": "A label exists, but only spoken late or further down the description.",
+       "videos": [
+        {
+         "id": "-pTGc7cIBIA",
+         "title": "My Everyday Tech: 2022!",
+         "channel": "Marques Brownlee"
+        },
+        {
+         "id": "dhFY1yo83d4",
+         "title": "What's in my Bag? These are the essentials",
+         "channel": "Brandy Nicholl"
+        }
+       ]
+      },
+      {
+       "kind": "info",
+       "id": "paid_labelled",
+       "title": "2 paid or gifted videos, labelled correctly",
+       "text": "Commercial content with a clear label.",
+       "videos": [
+        {
+         "id": "6DMUMgQyVtc",
+         "title": "The ULTIMATE PC Gaming & Mac Desk Setup - 2025",
+         "channel": "Side of Tech"
+        },
+        {
+         "id": "VnBZfauMR5M",
+         "title": "What’s in my Bag 🎀✨ 45 Must Haves aus meiner Handtasche!",
+         "channel": "Rebecca"
+        }
+       ]
+      },
+      {
+       "kind": "info",
+       "id": "in_use",
+       "title": "Shown in use in 4 of 5",
+       "text": "Hands-on use is the strongest form of placement (×1.25 in the media value).",
+       "videos": [
+        {
+         "id": "-pTGc7cIBIA",
+         "title": "My Everyday Tech: 2022!",
+         "channel": "Marques Brownlee"
+        },
+        {
+         "id": "6DMUMgQyVtc",
+         "title": "The ULTIMATE PC Gaming & Mac Desk Setup - 2025",
+         "channel": "Side of Tech"
+        },
+        {
+         "id": "eLAVGYQCkQI",
+         "title": "What’s on My Desk 2025 | Clean, Modern & Productive Setup",
+         "channel": "JB"
+        },
+        {
+         "id": "dhFY1yo83d4",
+         "title": "What's in my Bag? These are the essentials",
+         "channel": "Brandy Nicholl"
+        }
+       ]
+      },
+      {
+       "kind": "info",
+       "id": "spoken_only",
+       "title": "Only mentioned, never shown: 1",
+       "text": "The brand is named in speech or text, but Gemini did not see it in the picture.",
+       "videos": [
+        {
+         "id": "VnBZfauMR5M",
+         "title": "What’s in my Bag 🎀✨ 45 Must Haves aus meiner Handtasche!",
+         "channel": "Rebecca"
+        }
+       ]
+      },
+      {
+       "kind": "info",
+       "id": "concentration",
+       "title": "One video holds 99 % of the value",
+       "text": "\"My Everyday Tech: 2022!\" (Marques Brownlee) – the total depends mostly on its view count.",
+       "videos": [
+        {
+         "id": "-pTGc7cIBIA",
+         "title": "My Everyday Tech: 2022!",
+         "channel": "Marques Brownlee"
+        }
+       ]
+      },
+      {
+       "kind": "info",
+       "id": "next_to",
+       "title": "Seen next to",
+       "text": "LG (2 videos), Keychron (2 videos), Anastasia Beverly Hills (2 videos), Louis Vuitton (1 video), GUESS (1 video).",
+       "videos": []
+      },
+      {
+       "kind": "note",
+       "id": "spread",
+       "title": "Screen time and value are ranges",
+       "text": "Two analyses of the same video agree on only about half of the on-screen seconds (test M4), so one run's numbers carry about ±50 %. Totals are shown with that range; video counts and disclosure verdicts are more stable.",
+       "videos": []
+      }
+     ]
+    },
+    "plan": {
+     "brand": "Apple",
+     "lang": "any",
+     "period": "any",
+     "max": 8,
+     "max_new": 3,
+     "queries": [
+      "Apple"
+     ],
+     "rules": [
+      "length 1–20 min",
+      "≥ 1,000 views",
+      "not Apple's own channel (owned media, no placement)"
+     ],
+     "search_ok": true,
+     "search_source": "youtube-page"
+    },
+    "cost": {
+     "search_units": 0,
+     "search_cached": true,
+     "gemini_requests": 0,
+     "new_analyses": 0,
+     "kv_reads": 2
+    },
+    "pending": 6,
+    "seconds": 0
+   }
+  }
+ ]
+}

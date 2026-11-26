@@ -1,0 +1,28 @@
+  [error] Failed to load resource: the server responded with a status of 404 (File not found)
+  [error] [0;93m2026-11-25 04:04:23.727000 [W:onnxruntime:, session_state.cc:1168 VerifyEachNodeIsAssignedToAnEp] Some nodes were not assigned to the preferred execution providers which may or may not have an 
+  [error] [0;93m2026-11-25 04:04:23.727699 [W:onnxruntime:, session_state.cc:1170 VerifyEachNodeIsAssignedToAnEp] Rerunning with verbose output on a non-minimal build will show node assignments.[m
+  [error] [0;93m2026-11-25 04:04:23.824899 [W:onnxruntime:, session_state.cc:1168 VerifyEachNodeIsAssignedToAnEp] Some nodes were not assigned to the preferred execution providers which may or may not have an 
+  [error] [0;93m2026-11-25 04:04:23.825099 [W:onnxruntime:, session_state.cc:1170 VerifyEachNodeIsAssignedToAnEp] Rerunning with verbose output on a non-minimal build will show node assignments.[m
+  [error] [0;93m2026-11-25 04:04:24.085699 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.0/token_
+  [error] [0;93m2026-11-25 04:04:24.087099 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.1/token_
+  [error] [0;93m2026-11-25 04:04:24.087300 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.2/token_
+  [error] [0;93m2026-11-25 04:04:24.087599 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.3/token_
+  [error] [0;93m2026-11-25 04:04:24.093500 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.3/token_
+  [error] [0;93m2026-11-25 04:04:24.093599 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.2/token_
+  [error] [0;93m2026-11-25 04:04:24.093800 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.1/token_
+  [error] [0;93m2026-11-25 04:04:24.093800 [W:onnxruntime:, constant_folding.cc:268 ApplyImpl] Could not find a CPU kernel and hence can't constant fold Sqrt node '/visual/trunk/stages.3/blocks/blocks.0/token_
+2CqNFIn1AEo capture: [ 'running', 'element', '' ] models ready after 0.8 s
+    t=0.0 state=5 frames=0 0 ms 
+    t=105.7 state=1 frames=11 306 ms 
+    t=110.0 state=1 frames=23 293 ms 
+  kh_0101_sonos_entfernt: 38 frames checked while playing 101→114 s (14 s), last frame 716 ms
+    not_checkable Bowers & Wilkins – Px7 S3 [no type] 0/2 {}
+    tiles: {"tilesRun":66,"lastMs":268,"boxes":0} · found on screen (whole run so far): Sonos 4× {"text":3,"look":1}
+  vs. hand-marked truth (frames × products): {"tp":0,"fp":0,"fn":0,"tn":2} · without 'unsure' seconds: {"tp":0,"fp":0,"fn":0,"tn":2}
+    Bowers & Wilkins {"tp":0,"fp":0,"fn":0,"tn":2}
+  Products → Found on screen: Found on screen 1 i Sonos brand read “SONOS” · recognised by its look (own model) · 4 frames found on screen 4 s on screen (checked frames) €28 – €101 ad cost eq. 1:44 Added by the models on your device, not by Gemini. Only seconds that were actually checked count, so the screen time is a lower boun
+  [error] Failed to load resource: the server responded with a status of 404 (File not found)
+  replay after stop: [] · after reload: {"c":0,"n":0,"f":38}
+  value: ["Sonos found on screen brand read “SONOS” · recognised by its look (own model) · 4 frames · score 1 €28 – €101"] 
+  report: [] ["Sonos (found on screen)"]
+→ <repo>/tests/ergebnisse/v3_verify_c3/v_verify.json

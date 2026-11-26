@@ -1,0 +1,19 @@
+{
+  "video": "wtDyhM_18Yo",
+  "model": "gemini-flash-latest",
+  "seconds": 6.5,
+  "http": 503,
+  "meta": {
+    "title": "2019 BMW X5 vs 2019 Volvo XC90 - CRASH TEST",
+    "channel": "MEDCARS",
+    "view_count": 65621411,
+    "duration": 113,
+    "upload_date": "20190510",
+    "description": "2016 Volvo XC90 40 mph driver-side small overlap IIHS crash test\n\nOverall evaluation: Good\n\n\n\n2019 BMW X5 40 mph driver-side small overlap IIHS crash test\n\nOverall evaluation: Good\n\n\n#CrashTest #BMWX5 #VolvoXC90\n\n\"SUBSCRIBE NOW\""
+  },
+  "error": {
+    "code": 503,
+    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+    "status": "UNAVAILABLE"
+  }
+}

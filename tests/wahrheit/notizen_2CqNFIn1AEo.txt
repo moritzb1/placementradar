@@ -1,0 +1,77 @@
+# Vorschlag (Claude, Raster alle 2 s, 200-px-Bilder) – Sekunde(n): Produkte. Bereiche a-b inklusiv, Schritt 2 s. "?" = unsicher, bitte prüfen.
+# N=Nothing Headphone (1)  SO=Sonos Ace  BE=Beats Studio Pro/360  BO=Bose QuietComfort  BW=Bowers & Wilkins Px7 S3
+# ALL = alle fünf (Übersichtsbild)
+0: -
+2-32: ?
+34-46: ALL
+48-62: N
+64-78: N ?
+80-100: BO
+102-114: SO
+116-126: BW
+128: BW
+130-142: BE
+144-168: BE ?
+170-184: ALL
+186-194: BW ?
+196: BO
+198-208: SO
+210-212: -
+214-220: ALL
+222-226: N ?
+228-242: N
+244-248: ALL
+250-254: N ?
+256-274: N
+276-282: BW ?
+284-288: BW
+290-302: BO
+304-310: SO
+312-316: SO ?
+318-328: BE
+330-338: ALL
+340-350: -
+352-366: ALL
+368-370: -
+372-374: ALL
+376: BE
+378-382: ALL
+384: ALL
+386: -
+388-390: BW
+392: BE
+394-396: SO
+398-400: BO
+402: N
+404: -
+406-408: SO ?
+410-412: ?
+414-420: -
+422-426: BE
+428-432: SO
+434-438: N
+440-442: BO
+444-448: BW
+450-470: ALL
+472-478: ?
+480-482: N ?
+484-486: ?
+488-490: ALL
+492: BO
+494: ?
+496: BO ?
+498-500: BE
+502: SO
+504-506: -
+508-510: ALL
+512-516: ALL
+518-524: BE
+526: ALL
+528-530: N
+532-536: N
+538-554: ALL
+556-558: BO
+560-564: ALL
+566-570: SO
+572-574: SO
+576-588: ALL

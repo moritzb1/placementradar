@@ -1,0 +1,557 @@
+{
+ "at": "2026-11-24T18:26:51.202Z",
+ "chrome": "Chrome/158.0.8127.88",
+ "cases": [
+  {
+   "id": "2CqNFIn1AEo",
+   "mode": "element",
+   "loadS": 1.077,
+   "scenes": [
+    {
+     "name": "kh_0080_bose_entfernt",
+     "from": 80,
+     "to": 100,
+     "shot": 90,
+     "found": [],
+     "foundAt": [],
+     "tiles": {
+      "tilesRun": 88,
+      "lastMs": 248,
+      "boxes": 2
+     },
+     "frames": 57,
+     "msLastFrame": 1462,
+     "apps": [],
+     "unclaimed": [],
+     "measuredAtShot": [],
+     "screenshot": "ergebnisse/v2c_found/kh_0080_bose_entfernt.png"
+    },
+    {
+     "name": "kh_0101_sonos",
+     "from": 101,
+     "to": 114,
+     "shot": 108,
+     "found": [],
+     "foundAt": [],
+     "tiles": {
+      "tilesRun": 172,
+      "lastMs": 248,
+      "boxes": 0
+     },
+     "frames": 44,
+     "msLastFrame": 699,
+     "apps": [
+      {
+       "key": "Sonos|101|114",
+       "brand": "Sonos",
+       "product": "Ace Ultra",
+       "type": null,
+       "status": "not_checkable",
+       "checks": 44,
+       "hits": 4,
+       "kind": "text",
+       "read": [
+        "SONOS"
+       ],
+       "checkable": false,
+       "zs": null,
+       "how": {
+        "text": 4
+       },
+       "dev": [
+        [
+         101.51,
+         0.37,
+         7.2
+        ],
+        [
+         102.94,
+         0.14,
+         4.8
+        ],
+        [
+         103.69,
+         0.08,
+         21.8
+        ],
+        [
+         103.91,
+         0.05,
+         11
+        ],
+        [
+         104.37,
+         0.03,
+         11.2
+        ],
+        [
+         105.24,
+         0.03,
+         9.5
+        ],
+        [
+         107.25,
+         0.14,
+         21.1
+        ],
+        [
+         107.62,
+         0.18,
+         23.9
+        ],
+        [
+         107.74,
+         0.21,
+         24.8
+        ],
+        [
+         107.96,
+         0.24,
+         24.7
+        ],
+        [
+         109.1,
+         0.28,
+         26
+        ],
+        [
+         109.23,
+         0.4,
+         22.3
+        ],
+        [
+         109.44,
+         0.1,
+         28.3
+        ],
+        [
+         109.66,
+         0.05,
+         30.1
+        ],
+        [
+         109.97,
+         0.04,
+         32
+        ],
+        [
+         110.32,
+         0.04,
+         32.4
+        ],
+        [
+         110.43,
+         0.05,
+         32.1
+        ],
+        [
+         110.64,
+         0.05,
+         31.6
+        ],
+        [
+         110.97,
+         0.06,
+         31.2
+        ],
+        [
+         111.63,
+         0.01,
+         40.3
+        ],
+        [
+         112.3,
+         0.04,
+         26.1
+        ],
+        [
+         112.77,
+         0.08,
+         22.1
+        ],
+        [
+         112.88,
+         0.23,
+         16.3
+        ],
+        [
+         113.43,
+         0.07,
+         19.8
+        ],
+        [
+         114.21,
+         0.06,
+         21.1
+        ],
+        [
+         114.43,
+         0.03,
+         24.5
+        ]
+       ],
+       "meas": [
+        [
+         101.51,
+         429,
+         339,
+         727,
+         540
+        ],
+        [
+         102.94,
+         514,
+         495,
+         742,
+         595
+        ],
+        [
+         103.69,
+         293,
+         406,
+         685,
+         573
+        ],
+        [
+         103.91,
+         491,
+         495,
+         735,
+         605
+        ],
+        [
+         104.37,
+         516,
+         507,
+         706,
+         597
+        ],
+        [
+         105.24,
+         544,
+         506,
+         716,
+         593
+        ],
+        [
+         107.25,
+         461,
+         612,
+         867,
+         789
+        ],
+        [
+         107.62,
+         207,
+         475,
+         802,
+         765
+        ],
+        [
+         107.74,
+         153,
+         444,
+         826,
+         783
+        ],
+        [
+         107.96,
+         122,
+         424,
+         855,
+         795
+        ],
+        [
+         109.1,
+         81,
+         398,
+         870,
+         827
+        ],
+        [
+         109.23,
+         92,
+         149,
+         877,
+         832
+        ],
+        [
+         109.44,
+         242,
+         492,
+         667,
+         751
+        ],
+        [
+         109.66,
+         263,
+         549,
+         608,
+         700
+        ],
+        [
+         109.97,
+         240,
+         556,
+         597,
+         710
+        ],
+        [
+         110.32,
+         242,
+         565,
+         591,
+         709
+        ],
+        [
+         110.43,
+         239,
+         557,
+         599,
+         715
+        ],
+        [
+         110.64,
+         241,
+         550,
+         607,
+         718
+        ],
+        [
+         110.97,
+         241,
+         545,
+         614,
+         718
+        ],
+        [
+         111.63,
+         194,
+         539,
+         459,
+         715
+        ],
+        [
+         112.3,
+         294,
+         551,
+         552,
+         670
+        ],
+        [
+         112.77,
+         352,
+         529,
+         578,
+         668
+        ],
+        [
+         112.88,
+         377,
+         482,
+         689,
+         665
+        ],
+        [
+         113.43,
+         422,
+         436,
+         644,
+         579
+        ],
+        [
+         114.21,
+         389,
+         434,
+         665,
+         558
+        ],
+        [
+         114.43,
+         363,
+         430,
+         610,
+         551
+        ]
+       ],
+       "devMedian": {
+        "iou": 0.065,
+        "dist": 24.2
+       }
+      },
+      {
+       "key": "Bowers & Wilkins|114|128",
+       "brand": "Bowers & Wilkins",
+       "product": "Px7 S3",
+       "type": null,
+       "status": "checking",
+       "checks": 4,
+       "hits": 1,
+       "kind": "text",
+       "read": [
+        "fur die Kabel. Die Bowers & Wilkins PX7"
+       ],
+       "checkable": false,
+       "zs": null,
+       "how": {
+        "text": 1
+       },
+       "dev": [
+        [
+         114.43,
+         0,
+         32.6
+        ]
+       ],
+       "meas": [
+        [
+         114.43,
+         904,
+         324,
+         942,
+         658
+        ]
+       ],
+       "devMedian": {
+        "iou": 0,
+        "dist": 32.6
+       }
+      }
+     ],
+     "unclaimed": [],
+     "measuredAtShot": [],
+     "screenshot": "ergebnisse/v2c_found/kh_0101_sonos.png"
+    }
+   ],
+   "vsTruth": {
+    "all": {
+     "tp": 4,
+     "fp": 1,
+     "fn": 40,
+     "tn": 3
+    },
+    "sure": {
+     "tp": 4,
+     "fp": 1,
+     "fn": 40,
+     "tn": 3
+    },
+    "perBrand": {
+     "Sonos": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 40,
+      "tn": 0
+     },
+     "Bowers & Wilkins": {
+      "tp": 0,
+      "fp": 1,
+      "fn": 0,
+      "tn": 3
+     }
+    }
+   },
+   "summary": {
+    "confirmed": 0,
+    "not_seen": 0,
+    "not_checkable": 1,
+    "checking": 1,
+    "unchecked": 25,
+    "frames": 101,
+    "checked": 2,
+    "dev": {
+     "n": 27,
+     "iou": 0.06,
+     "dist": 24.5
+    }
+   },
+   "replayAfterStop": [
+    "Sonos 120.5614035087717,423.0877192982455,855.5263157894738,796.122807017544"
+   ],
+   "afterReload": {
+    "confirmed": 0,
+    "not_seen": 0,
+    "not_checkable": 1,
+    "checking": 1,
+    "unchecked": 25,
+    "frames": 101,
+    "checked": 2,
+    "dev": {
+     "n": 27,
+     "iou": 0.06,
+     "dist": 24.5
+    }
+   }
+  },
+  {
+   "id": "-pTGc7cIBIA",
+   "mode": "element",
+   "loadS": 0.98,
+   "scenes": [
+    {
+     "name": "mkbhd_0228_canon_entfernt",
+     "from": 228,
+     "to": 253,
+     "shot": 240,
+     "found": [],
+     "foundAt": [],
+     "tiles": {
+      "tilesRun": 89,
+      "lastMs": 247,
+      "boxes": 1
+     },
+     "frames": 66,
+     "msLastFrame": 1188,
+     "apps": [],
+     "unclaimed": [],
+     "measuredAtShot": [],
+     "screenshot": "ergebnisse/v2c_found/mkbhd_0228_canon_entfernt.png"
+    }
+   ],
+   "vsTruth": {
+    "all": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "sure": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 0
+    },
+    "perBrand": {}
+   },
+   "summary": {
+    "confirmed": 0,
+    "not_seen": 0,
+    "not_checkable": 0,
+    "checking": 0,
+    "unchecked": 9,
+    "frames": 66,
+    "checked": 0,
+    "dev": {
+     "n": 0,
+     "iou": null,
+     "dist": null
+    }
+   },
+   "replayAfterStop": [],
+   "afterReload": {
+    "confirmed": 0,
+    "not_seen": 0,
+    "not_checkable": 0,
+    "checking": 0,
+    "unchecked": 9,
+    "frames": 66,
+    "checked": 0,
+    "dev": {
+     "n": 0,
+     "iou": null,
+     "dist": null
+    }
+   }
+  }
+ ]
+}

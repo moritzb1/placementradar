@@ -1,0 +1,1294 @@
+[
+ {
+  "t": 0,
+  "ev": "step",
+  "data": {
+   "id": "field",
+   "status": "run",
+   "title": "Working out the product field",
+   "detail": "",
+   "at_s": 0
+  }
+ },
+ {
+  "t": 0,
+  "ev": "step",
+  "data": {
+   "id": "field",
+   "status": "done",
+   "title": "Product field",
+   "detail": "Audio (from product words) · topic words: headphones, audio · searches: “headphones review”, “best headphones”",
+   "at_s": 0,
+   "group": "audio",
+   "queries": [
+    "headphones review",
+    "best headphones"
+   ]
+  }
+ },
+ {
+  "t": 0,
+  "ev": "step",
+  "data": {
+   "id": "search:headphones review",
+   "status": "run",
+   "title": "Searching YouTube for “headphones review”",
+   "detail": "",
+   "at_s": 0
+  }
+ },
+ {
+  "t": 0,
+  "ev": "step",
+  "data": {
+   "id": "search:headphones review",
+   "status": "done",
+   "title": "Searched YouTube for “headphones review”",
+   "detail": "20 videos · from today's search cache, 0 units · YouTube search page",
+   "at_s": 0
+  }
+ },
+ {
+  "t": 0,
+  "ev": "step",
+  "data": {
+   "id": "search:best headphones",
+   "status": "run",
+   "title": "Searching YouTube for “best headphones”",
+   "detail": "",
+   "at_s": 0
+  }
+ },
+ {
+  "t": 1,
+  "ev": "step",
+  "data": {
+   "id": "search:best headphones",
+   "status": "done",
+   "title": "Searched YouTube for “best headphones”",
+   "detail": "20 videos · 0 quota units · YouTube search page",
+   "at_s": 1
+  }
+ },
+ {
+  "t": 1,
+  "ev": "step",
+  "data": {
+   "id": "group",
+   "status": "done",
+   "title": "Grouping by channel",
+   "detail": "32 videos from 23 channels · 8 looked at closely (most search hits × views) · Sonos's own channel left out",
+   "at_s": 1
+  }
+ },
+ {
+  "t": 1,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "1 of 8: The Headphone Show",
+   "at_s": 1
+  }
+ },
+ {
+  "t": 1,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "2 of 8: Marques Brownlee",
+   "at_s": 1
+  }
+ },
+ {
+  "t": 1,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "3 of 8: RecordingNOW",
+   "at_s": 1
+  }
+ },
+ {
+  "t": 1,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "4 of 8: This is Tech Today",
+   "at_s": 1
+  }
+ },
+ {
+  "t": 1,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "5 of 8: CEONTHEMAKING",
+   "at_s": 1
+  }
+ },
+ {
+  "t": 1,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "6 of 8: Mark Ellis Reviews",
+   "at_s": 1
+  }
+ },
+ {
+  "t": 1,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "7 of 8: GadgetryTech",
+   "at_s": 1
+  }
+ },
+ {
+  "t": 2,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "run",
+   "title": "Reading the candidates' channels",
+   "detail": "8 of 8: Mike O'Brien",
+   "at_s": 2
+  }
+ },
+ {
+  "t": 2,
+  "ev": "step",
+  "data": {
+   "id": "channels",
+   "status": "done",
+   "title": "Read the candidates' channels",
+   "detail": "8 channels, latest 25 uploads each · 6 from the 6-hour cache · 0 quota units",
+   "at_s": 2
+  }
+ },
+ {
+  "t": 2,
+  "ev": "step",
+  "data": {
+   "id": "library",
+   "status": "run",
+   "title": "Checking analyses we already have of these channels",
+   "detail": "",
+   "at_s": 2
+  }
+ },
+ {
+  "t": 2,
+  "ev": "step",
+  "data": {
+   "id": "library",
+   "status": "done",
+   "title": "Analyses we already have",
+   "detail": "1 analysed video of 1 of these channels – used for competitors and ad labels",
+   "at_s": 2
+  }
+ },
+ {
+  "t": 2,
+  "ev": "step",
+  "data": {
+   "id": "score",
+   "status": "done",
+   "title": "Ranking",
+   "detail": "8 creators · 1 with analysed videos, the rest on metadata only",
+   "at_s": 2
+  }
+ },
+ {
+  "t": 2,
+  "ev": "confirm",
+  "data": {
+   "candidates": [
+    {
+     "id": "rLcN8Y1N9hU",
+     "title": "Best Noise Cancelling Headphones under $100 in 2026",
+     "views": 148000,
+     "duration_s": 1067,
+     "published": "2026-08-27",
+     "channel": "RecordingNOW",
+     "why": "most-viewed on-topic upload of RecordingNOW"
+    },
+    {
+     "id": "-mN1Y4neaag",
+     "title": "Nothing Headphone (1) Pro: This Was a Mistake",
+     "views": 142000,
+     "duration_s": 845,
+     "published": "2026-10-26",
+     "channel": "The Headphone Show",
+     "why": "most-viewed on-topic upload of The Headphone Show"
+    },
+    {
+     "id": "6cuUmsl3dZg",
+     "title": "AUDIO ENGINEER Tests the Shokz OpenFit Pro: OPEN EAR Noise Reduction?!",
+     "views": 534000,
+     "duration_s": 556,
+     "published": "2026-01-29",
+     "channel": "This is Tech Today",
+     "why": "most-viewed on-topic upload of This is Tech Today"
+    }
+   ],
+   "preselected": [],
+   "quota": {
+    "models": 4,
+    "exhausted": 0,
+    "used_requests": 0,
+    "left_requests": 80,
+    "free_per_model": 20,
+    "visitor_left": 10,
+    "visitor_cap": 10,
+    "reset_in_s": 60471,
+    "blocked": null
+   },
+   "max_new": 3,
+   "per_video_requests": 3
+  }
+ },
+ {
+  "t": 2,
+  "ev": "step",
+  "data": {
+   "id": "confirm",
+   "status": "skip",
+   "title": "Optional: analyse one video each",
+   "detail": "one on-topic video of each of the top 3 – adds competitors and ad labels to their scores; nothing is analysed without your OK",
+   "at_s": 2
+  }
+ },
+ {
+  "t": 2,
+  "ev": "report",
+  "data": {
+   "query": {
+    "product": "headphones",
+    "brand": "Sonos",
+    "lang": "en",
+    "group": "audio",
+    "group_label": "Audio",
+    "field_from": "product words",
+    "queries": [
+     "headphones review",
+     "best headphones"
+    ],
+    "words": [
+     "headphones"
+    ]
+   },
+   "shortlist": [
+    {
+     "channel": {
+      "id": "UCEBwTpSyPuawdo2ysD5iypQ",
+      "title": "RecordingNOW",
+      "handle": "@recordingnow",
+      "avatar": "https://yt3.googleusercontent.com/XyiJ_G5g40yAOLZPhOFgaoMdaVO8JbSuKxyvqZQsqBEULH-rgiANVf6V6G-U_Pu-nBxpFnWk4w=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "33.2K subscribers",
+      "video_count": 158,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:11:53.496Z"
+     },
+     "score": 85,
+     "verdict": "Strong candidate",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 100,
+       "text": "13 of the latest 25 uploads are about headphones (52 %); half or more = 100. Found 3× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 55,
+       "text": "Median 45k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "22 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "13 of 25 latest uploads about headphones · ~45k views per video · 22 uploads in 3 months",
+     "value": {
+      "low": 100.20031874999998,
+      "mid": 197.39803124999997,
+      "high": 364.491421875
+     },
+     "median_views": 45000,
+     "recent": 22,
+     "on_topic": 13,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "audio",
+       "label": "Audio",
+       "uploads": 13
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "iJokWqA8QhM",
+       "title": "Best Noise Cancelling Headphones Under $200 in 2026",
+       "views": 16487,
+       "published": null,
+       "duration_s": 1194
+      },
+      {
+       "id": "js_Ff0aLj-g",
+       "title": "I Tested EVERY Sony Headphone - here's my pick!",
+       "views": 59416,
+       "published": null,
+       "duration_s": 1896
+      },
+      {
+       "id": "5mimMbfcNn0",
+       "title": "BEST Noise Cancelling Headphones of 2026 (Awards)",
+       "views": 578,
+       "published": null,
+       "duration_s": 1875
+      }
+     ],
+     "best_video": {
+      "id": "rLcN8Y1N9hU",
+      "title": "Best Noise Cancelling Headphones under $100 in 2026",
+      "views": 148000,
+      "duration_s": 1067,
+      "published": "2026-08-27"
+     },
+     "examples": [
+      {
+       "id": "5mimMbfcNn0",
+       "title": "BEST Noise Cancelling Headphones of 2026 (Awards)",
+       "views": 575,
+       "published": "2026-11-25"
+      },
+      {
+       "id": "iJokWqA8QhM",
+       "title": "Best Noise Cancelling Headphones Under $200 in 2026",
+       "views": 16000,
+       "published": "2026-11-23"
+      },
+      {
+       "id": "eZZy1HuL6dk",
+       "title": "Best Noise Cancelling Earbuds 2026 - Watch Before You Buy!",
+       "views": 18000,
+       "published": "2026-11-19"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCt44wdefZzrhNDYYAyEy3Xg",
+      "title": "The Headphone Show",
+      "handle": "@TheHEADPHONEShow",
+      "avatar": "https://yt3.googleusercontent.com/mFHCIucWJyVyiZjfSYzxPs68woF38eXiYTw2x_QzS0whQLCpItxtS7V20gGgpVY97G7Hga74OA=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "277K subscribers",
+      "video_count": 1200,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:11:53.859Z"
+     },
+     "score": 81,
+     "verdict": "Strong candidate",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 96,
+       "text": "12 of the latest 25 uploads are about headphones (48 %); half or more = 100. Found 4× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 53,
+       "text": "Median 40k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "25 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "12 of 25 latest uploads about headphones · ~40k views per video · 25 uploads in 3 months",
+     "value": {
+      "low": 89.06694999999998,
+      "mid": 175.46491666666665,
+      "high": 323.99237500000004
+     },
+     "median_views": 40000,
+     "recent": 25,
+     "on_topic": 12,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "audio",
+       "label": "Audio",
+       "uploads": 12
+      },
+      {
+       "group": "gaming",
+       "label": "Gaming",
+       "uploads": 2
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "UvI9aKxj2VY",
+       "title": "HEDDphone DX Review - A better D1?",
+       "views": 31556,
+       "published": null,
+       "duration_s": 956
+      },
+      {
+       "id": "fQoUA03PqZ8",
+       "title": "FiiO EH13 Review - The best bad headphone.",
+       "views": 21856,
+       "published": null,
+       "duration_s": 903
+      },
+      {
+       "id": "TdmdvDkwZtM",
+       "title": "The Best Value in Audiophile Headphones",
+       "views": 642139,
+       "published": null,
+       "duration_s": 1416
+      }
+     ],
+     "best_video": {
+      "id": "-mN1Y4neaag",
+      "title": "Nothing Headphone (1) Pro: This Was a Mistake",
+      "views": 142000,
+      "duration_s": 845,
+      "published": "2026-10-26"
+     },
+     "examples": [
+      {
+       "id": "fQoUA03PqZ8",
+       "title": "FiiO EH13 Review - The best bad headphone.",
+       "views": 21000,
+       "published": "2026-11-22"
+      },
+      {
+       "id": "akcYId6ZqtY",
+       "title": "One of the worst headphones I've tested - Noble Artemis Review",
+       "views": 30000,
+       "published": "2026-11-11"
+      },
+      {
+       "id": "6bHE2IpVie8",
+       "title": "Fiio EH11 - The first on-ear headphone I actually like.",
+       "views": 65000,
+       "published": "2026-11-01"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCEAMLkMKtq6YhmaZdUT1ywA",
+      "title": "This is Tech Today",
+      "handle": "@ThisIsTechToday",
+      "avatar": "https://yt3.googleusercontent.com/ytc/AIdro_kjnBLcgqKrgDM_Hfp6xks9dkbBdgDTLtv57ClrUkGrRQ=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "508K subscribers",
+      "video_count": 1300,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:11:53.055Z"
+     },
+     "score": 63,
+     "verdict": "Worth a look",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 72,
+       "text": "9 of the latest 25 uploads are about headphones (36 %); half or more = 100. Found 2× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 60,
+       "text": "Median 64k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "6 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "9 of 25 latest uploads about headphones · ~64k views per video · 6 uploads in 3 months",
+     "value": {
+      "low": 142.50712,
+      "mid": 280.74386666666663,
+      "high": 518.3878000000001
+     },
+     "median_views": 64000,
+     "recent": 6,
+     "on_topic": 9,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "audio",
+       "label": "Audio",
+       "uploads": 9
+      },
+      {
+       "group": "tech",
+       "label": "Tech & electronics",
+       "uploads": 5
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "zakPRMGlRbw",
+       "title": "The BEST Headphones of the Year: An AUDIO ENGINEER's Review",
+       "views": 502249,
+       "published": null,
+       "duration_s": 742
+      },
+      {
+       "id": "e8iK56cd0v4",
+       "title": "AUDIO ENGINEER Tries the WORLD'S BEST HEADPHONES for the First Time | Sennheiser HE-1",
+       "views": 3527566,
+       "published": null,
+       "duration_s": 647
+      }
+     ],
+     "best_video": {
+      "id": "6cuUmsl3dZg",
+      "title": "AUDIO ENGINEER Tests the Shokz OpenFit Pro: OPEN EAR Noise Reduction?!",
+      "views": 534000,
+      "duration_s": 556,
+      "published": "2026-01-29"
+     },
+     "examples": [
+      {
+       "id": "k0m8qa9Ulqo",
+       "title": "soundcore Space 2 Pro vs AeroClip 2 vs Liberty Buds 2: 100dB Mic Test",
+       "views": 47000,
+       "published": "2026-10-26"
+      },
+      {
+       "id": "t1rMN9ZBIRw",
+       "title": "EPIC AUDIO ENGINEER COMPARISON: soundcore Liberty 5 Pro Max, AirPods Pro 3, Sony XM6, Bose, Samsung",
+       "views": 268000,
+       "published": "2026-06-28"
+      },
+      {
+       "id": "mBC41SFU8nc",
+       "title": "AUDIO ENGINEER Tests the soundcore Space 2",
+       "views": 76000,
+       "published": "2026-05-29"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCZZ4ivUawsXRktLKej8d6Xw",
+      "title": "Mike O'Brien",
+      "handle": "@MikeOBrienMedia",
+      "avatar": "https://yt3.googleusercontent.com/ytc/AIdro_mSh7FIrnxkpscWtyWhHVfvQxAzwtwdtEZ-kJ6xcAGZBoE=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "669K subscribers",
+      "video_count": 808,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:11:54.198Z"
+     },
+     "score": 60,
+     "verdict": "Worth a look",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 64,
+       "text": "8 of the latest 25 uploads are about headphones (32 %); half or more = 100. Found 1× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 69,
+       "text": "Median 115k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "25 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "8 of 25 latest uploads about headphones · ~115k views per video · 25 uploads in 3 months",
+     "value": {
+      "low": 256.06748124999996,
+      "mid": 504.46163541666664,
+      "high": 931.4780781250001
+     },
+     "median_views": 115000,
+     "recent": 25,
+     "on_topic": 8,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "audio",
+       "label": "Audio",
+       "uploads": 8
+      },
+      {
+       "group": "fashion",
+       "label": "Fashion & accessories",
+       "uploads": 3
+      },
+      {
+       "group": "tech",
+       "label": "Tech & electronics",
+       "uploads": 2
+      },
+      {
+       "group": "home",
+       "label": "Home & living",
+       "uploads": 2
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "mEqN-1droPE",
+       "title": "Best Premium Headphones 2026 [Tested & Compared!] - AirPods Max vs Bose vs Sony vs Sennheiser..",
+       "views": 688604,
+       "published": null,
+       "duration_s": 2546
+      }
+     ],
+     "best_video": {
+      "id": "ywIcNRqv1TE",
+      "title": "Sony's Shocking New Product (MDR-3R Retro Wired Headphones)",
+      "views": 669000,
+      "duration_s": 667,
+      "published": "2026-11-05"
+     },
+     "examples": [
+      {
+       "id": "YdJh6QdOGME",
+       "title": "I Tried 100 Earbuds, THESE Are The Best!",
+       "views": 353000,
+       "published": "2026-11-17"
+      },
+      {
+       "id": "M_HXNcFapKM",
+       "title": "Bluetooth Speaker Awards 2026! (Best by Category)",
+       "views": 71000,
+       "published": "2026-11-16"
+      },
+      {
+       "id": "ywIcNRqv1TE",
+       "title": "Sony's Shocking New Product (MDR-3R Retro Wired Headphones)",
+       "views": 669000,
+       "published": "2026-11-05"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCULadXL9c5fjMXRsXUuM-cw",
+      "title": "CEONTHEMAKING",
+      "handle": "@CEONTHEMAKING",
+      "avatar": "https://yt3.googleusercontent.com/uFGquA6tfrn3AgQhVVtdkGZAhHKTbVxkKgmCYOm7H-gCqfk5aL28bX3j-c9k3QoI_it8kCes3w=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "179K subscribers",
+      "video_count": 962,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:08.432Z"
+     },
+     "score": 39,
+     "verdict": "Weak match",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 40,
+       "text": "5 of the latest 25 uploads are about headphones (20 %); half or more = 100. Found 2× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 51,
+       "text": "Median 35k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "25 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "5 of 25 latest uploads about headphones · ~35k views per video · 25 uploads in 3 months",
+     "value": {
+      "low": 77.93358124999999,
+      "mid": 153.5318020833333,
+      "high": 283.49332812500006
+     },
+     "median_views": 35000,
+     "recent": 25,
+     "on_topic": 5,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "audio",
+       "label": "Audio",
+       "uploads": 5
+      },
+      {
+       "group": "fashion",
+       "label": "Fashion & accessories",
+       "uploads": 4
+      },
+      {
+       "group": "tech",
+       "label": "Tech & electronics",
+       "uploads": 3
+      },
+      {
+       "group": "food",
+       "label": "Food & drink",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "Ph3FCc3SxAk",
+       "title": "Best Headphones of 2026 — Apple, Sony, Bose & More!",
+       "views": 76223,
+       "published": null,
+       "duration_s": 882
+      },
+      {
+       "id": "U358E_318NE",
+       "title": "I Tried Them All — Best Headphones of 2025!",
+       "views": 340971,
+       "published": null,
+       "duration_s": 600
+      }
+     ],
+     "best_video": {
+      "id": "pWJXjxZktao",
+      "title": "Anker soundcore Sleep Earbuds 4 | The BEST sleep Earbuds Just Got Better!",
+      "views": 198000,
+      "duration_s": 436,
+      "published": "2026-11-10"
+     },
+     "examples": [
+      {
+       "id": "pWJXjxZktao",
+       "title": "Anker soundcore Sleep Earbuds 4 | The BEST sleep Earbuds Just Got Better!",
+       "views": 198000,
+       "published": "2026-11-10"
+      },
+      {
+       "id": "Ph3FCc3SxAk",
+       "title": "Best Headphones of 2026 — Apple, Sony, Bose & More!",
+       "views": 76000,
+       "published": "2026-11-04"
+      },
+      {
+       "id": "hli5HP-V95I",
+       "title": "Bose Wired ANC Earbuds vs QC Ultra 2 Earbuds | Unboxing!",
+       "views": 46000,
+       "published": "2026-10-26"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCLU3L9RznREsypblMiNZLuQ",
+      "title": "GadgetryTech",
+      "handle": "@GadgetryTech",
+      "avatar": "https://yt3.googleusercontent.com/bMyKRYJUjqJ7YJmzr20PCd_9rLMhf5KmuMltVro7UfTG4QwakBmGaYt04De5nzGzv7CKN00fYA=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "132K subscribers",
+      "video_count": 562,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:12:08.831Z"
+     },
+     "score": 38,
+     "verdict": "Weak match",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 48,
+       "text": "6 of the latest 25 uploads are about headphones (24 %); half or more = 100. Found 1× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 45,
+       "text": "Median 23k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 70,
+       "text": "4 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "6 of 25 latest uploads about headphones · ~23k views per video · 4 uploads in 3 months",
+     "value": {
+      "low": 51.21349624999999,
+      "mid": 100.89232708333334,
+      "high": 186.295615625
+     },
+     "median_views": 23000,
+     "recent": 4,
+     "on_topic": 6,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "audio",
+       "label": "Audio",
+       "uploads": 6
+      },
+      {
+       "group": "gaming",
+       "label": "Gaming",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "9Sxo4-J5DY0",
+       "title": "Best Wireless Headsets at EVERY Price! - 2026 Edition",
+       "views": 708383,
+       "published": null,
+       "duration_s": 2087
+      }
+     ],
+     "best_video": {
+      "id": "9PBZpHjypFw",
+      "title": "Some Unique Audio Discoveries at CanJam NYC 2026!",
+      "views": 11000,
+      "duration_s": 650,
+      "published": "2026-03-30"
+     },
+     "examples": [
+      {
+       "id": "nFqLGAk-U84",
+       "title": "The new Logitech Pro X3 LIGHTSPEED has an insane mic",
+       "views": 210000,
+       "published": "2026-09-29"
+      },
+      {
+       "id": "d7ldqhndFVQ",
+       "title": "Aune AR9000 Headphone Review - The sum of many greats",
+       "views": 27000,
+       "published": "2026-08-25"
+      },
+      {
+       "id": "Qef59lEtOI4",
+       "title": "Dan Clark Audio Noire X Review - Still Great",
+       "views": 11000,
+       "published": "2026-08-08"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCBJycsmduvYEL83R_U4JriQ",
+      "title": "Marques Brownlee",
+      "handle": "@mkbhd",
+      "avatar": "https://yt3.googleusercontent.com/qu4TmIaYUlS41-dJ9gZ7DUR3nilvmB5_11i6OKSdvNnBNiyOusZP1bMN6ICnuxtjFBb6ioKgRQ=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "21.5M subscribers",
+      "video_count": 1800,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T14:55:34.889Z"
+     },
+     "score": 33,
+     "verdict": "Weak match",
+     "basis": "metadata + 1 analysed video",
+     "analysed": 1,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 8,
+       "text": "1 of the latest 25 uploads are about headphones (4 %); half or more = 100. Found 2× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 100,
+       "text": "Median 7.0M views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "25 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": 50,
+       "text": "1 of 1 analysed videos show ad signals: 0 labelled, 1 weakly, 0 not labelled (labelled = 1, weak = ½, none = 0). A paying brand shares the risk of unlabelled ads (§ 5a (4) UWG)."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": 100,
+       "text": "No other Audio brand on this channel, only related fields – room to stand out."
+      }
+     ],
+     "why": "1 of 25 latest uploads about headphones · ~7.0M views per video · 25 uploads in 3 months",
+     "value": {
+      "low": 15586.716249999996,
+      "mid": 30706.360416666663,
+      "high": 56698.66562500001
+     },
+     "median_views": 7000000,
+     "recent": 25,
+     "on_topic": 1,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "tech",
+       "label": "Tech & electronics",
+       "uploads": 2
+      },
+      {
+       "group": "home",
+       "label": "Home & living",
+       "uploads": 1
+      },
+      {
+       "group": "audio",
+       "label": "Audio",
+       "uploads": 1
+      },
+      {
+       "group": "fashion",
+       "label": "Fashion & accessories",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "XbXXKhfvSF0",
+       "title": "Sony WH-1000XM6 Review: Back on the Throne!",
+       "views": 5238681,
+       "published": null,
+       "duration_s": 557
+      },
+      {
+       "id": "rayrrXot17M",
+       "title": "Nothing Headphone 1 Pro: They Copied the Wrong Thing!",
+       "views": 6345733,
+       "published": null,
+       "duration_s": 860
+      }
+     ],
+     "best_video": {
+      "id": "rayrrXot17M",
+      "title": "Nothing Headphone 1 Pro: They Copied the Wrong Thing!",
+      "views": 6300000,
+      "duration_s": 860,
+      "published": "2026-09-29"
+     },
+     "examples": [
+      {
+       "id": "rayrrXot17M",
+       "title": "Nothing Headphone 1 Pro: They Copied the Wrong Thing!",
+       "views": 6300000,
+       "published": "2026-09-29"
+      }
+     ]
+    },
+    {
+     "channel": {
+      "id": "UCwwuSBYcErVlOpveYubHv4g",
+      "title": "Mark Ellis Reviews",
+      "handle": "@MarkEllisReviews",
+      "avatar": "https://yt3.googleusercontent.com/ytc/AIdro_nIw2H3CEqOBG2B3ZJfKfzfAhsQ5UcnDxyEdcnQXfsTpQ=s160-c-k-c0x00ffffff-no-rj",
+      "subscribers": "324K subscribers",
+      "video_count": 1400,
+      "source": "youtube-page",
+      "fetched_at": "2026-11-25T15:11:54.476Z"
+     },
+     "score": 32,
+     "verdict": "Weak match",
+     "basis": "metadata only",
+     "analysed": 0,
+     "parts": [
+      {
+       "id": "topic",
+       "label": "Topic match",
+       "weight": 35,
+       "score": 24,
+       "text": "3 of the latest 25 uploads are about headphones (12 %); half or more = 100. Found 2× by the search."
+      },
+      {
+       "id": "reach",
+       "label": "Reach",
+       "weight": 25,
+       "score": 60,
+       "text": "Median 63k views over the latest uploads; log scale, 1,000 views → 0, 1 million → 100."
+      },
+      {
+       "id": "activity",
+       "label": "Activity",
+       "weight": 15,
+       "score": 100,
+       "text": "25 uploads in the last 90 days (dates of older uploads are approximate); ≥ 6 → 100, 3–5 → 70, 1–2 → 40."
+      },
+      {
+       "id": "disclosure",
+       "label": "Labels its ads",
+       "weight": 15,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      },
+      {
+       "id": "competition",
+       "label": "Room next to competitors",
+       "weight": 10,
+       "score": null,
+       "text": "Unknown – none of this channel's videos is analysed yet."
+      }
+     ],
+     "why": "3 of 25 latest uploads about headphones · ~63k views per video · 25 uploads in 3 months",
+     "value": {
+      "low": 140.28044624999998,
+      "mid": 276.35724375,
+      "high": 510.287990625
+     },
+     "median_views": 63000,
+     "recent": 25,
+     "on_topic": 3,
+     "uploads": 25,
+     "topics": [
+      {
+       "group": "tech",
+       "label": "Tech & electronics",
+       "uploads": 3
+      },
+      {
+       "group": "audio",
+       "label": "Audio",
+       "uploads": 3
+      },
+      {
+       "group": "home",
+       "label": "Home & living",
+       "uploads": 2
+      },
+      {
+       "group": "beauty",
+       "label": "Beauty & care",
+       "uploads": 1
+      }
+     ],
+     "competitors": [],
+     "already": 0,
+     "hits": [
+      {
+       "id": "ljV1iOJmE_E",
+       "title": "The Only ANC Headphones Worth Buying in 2026",
+       "views": 261595,
+       "published": null,
+       "duration_s": 1117
+      },
+      {
+       "id": "FgbtOfF1siI",
+       "title": "The Best Premium Headphones of 2026 - Apple vs Sony vs B&W vs Sennheiser",
+       "views": 140144,
+       "published": null,
+       "duration_s": 908
+      }
+     ],
+     "best_video": {
+      "id": "z0WwPmqm8nY",
+      "title": "Bose ANC Wired Earbuds Review: A Revelation!",
+      "views": 267000,
+      "duration_s": 795,
+      "published": "2026-10-26"
+     },
+     "examples": [
+      {
+       "id": "j0X-mEwjjdc",
+       "title": "The ANC Headphones Audiophiles Wanted (Audio Technica ATH-AL5NC)",
+       "views": 19000,
+       "published": "2026-11-06"
+      },
+      {
+       "id": "z0WwPmqm8nY",
+       "title": "Bose ANC Wired Earbuds Review: A Revelation!",
+       "views": 267000,
+       "published": "2026-10-26"
+      },
+      {
+       "id": "q7FHCBj-7tM",
+       "title": "Nothing Headphone 1 Pro - I Didn't Expect This",
+       "views": 39000,
+       "published": "2026-10-26"
+      }
+     ]
+    }
+   ],
+   "cost": {
+    "search_units": 0,
+    "channel_units": 0,
+    "searches_cached": 1,
+    "channels_cached": 6,
+    "gemini_requests": 0,
+    "new_analyses": 0,
+    "kv_reads": 0
+   },
+   "pending": 3,
+   "seconds": 2,
+   "generated_at": "2026-11-25T15:12:08.856Z"
+  }
+ }
+]

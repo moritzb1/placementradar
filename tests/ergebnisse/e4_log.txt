@@ -1,0 +1,53 @@
+1 benparkes_running: ERROR busy – gemini-3.1-flash-lite-preview: HTTP 503 {
+  "error": {
+    "code": 503,
+    "message": "Th
+round 1 18:03: 0/6 done
+1 benparkes_running: high · gemini-3.1-flash-lite-preview · 50 s · partners 1 (dropped 0) · safety low_risk
+2 believeintherun_running: high · gemini-3.1-flash-lite-preview · 25 s · partners 1 (dropped 0) · safety low_risk
+3 averagejames_running: ERROR busy – gemini-3.1-flash-lite-preview: HTTP 503 {
+  "error": {
+    "code": 503,
+    "message": "Th
+round 2 18:45: 0/6 done
+1 benparkes_running: already done
+2 believeintherun_running: already done
+3 averagejames_running: high · gemini-3.1-flash-lite-preview · 6 s · partners 0 (dropped 0) · safety low_risk
+4 headphoneshow_sonos: ERROR busy – gemini-3.1-flash-lite-preview: HTTP 503 {
+  "error": {
+    "code": 503,
+    "message": "Th
+round 3 19:26: 0/6 done
+1 benparkes_running: already done
+2 believeintherun_running: already done
+3 averagejames_running: already done
+4 headphoneshow_sonos: ERROR busy – gemini-3.1-flash-lite-preview: HTTP 503 {
+  "error": {
+    "code": 503,
+    "message": "Th
+round 4 20:07: 0/6 done
+1 benparkes_running: already done
+2 believeintherun_running: already done
+3 averagejames_running: already done
+4 headphoneshow_sonos: high · gemini-3.1-flash-lite-preview · 57 s · partners 1 (dropped 0) · safety low_risk
+5 mkbhd_sonos: ERROR busy – gemini-3.1-flash-lite-preview: HTTP 503 {
+  "error": {
+    "code": 503,
+    "message": "Th
+round 5 20:48: 0/6 done
+1 benparkes_running: already done
+2 believeintherun_running: already done
+3 averagejames_running: already done
+4 headphoneshow_sonos: already done
+5 mkbhd_sonos: ERROR busy – gemini-3.1-flash-lite-preview: HTTP 503 {
+  "error": {
+    "code": 503,
+    "message": "Th
+round 6 21:29: 0/6 done
+1 benparkes_running: already done
+2 believeintherun_running: already done
+3 averagejames_running: already done
+4 headphoneshow_sonos: already done
+5 mkbhd_sonos: high · gemini-3.1-flash-lite-preview · 5 s · partners 3 (dropped 0) · safety low_risk
+6 benparkes_running_repeat: high · gemini-3.1-flash-lite-preview · 5 s · partners 1 (dropped 0) · safety low_risk
+round 7 22:09: 0/6 done

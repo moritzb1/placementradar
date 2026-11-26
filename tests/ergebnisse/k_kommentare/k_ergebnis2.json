@@ -1,0 +1,81 @@
+{
+ "n": 50,
+ "categories": {
+  "buy": {
+   "tp": 1,
+   "fp": 1,
+   "fn": 0,
+   "precision": 0.5,
+   "recall": 1
+  },
+  "question": {
+   "tp": 10,
+   "fp": 2,
+   "fn": 0,
+   "precision": 0.83,
+   "recall": 1
+  },
+  "praise": {
+   "tp": 20,
+   "fp": 8,
+   "fn": 7,
+   "precision": 0.71,
+   "recall": 0.74
+  },
+  "critic": {
+   "tp": 1,
+   "fp": 2,
+   "fn": 3,
+   "precision": 0.33,
+   "recall": 0.25
+  },
+  "ad_doubt": {
+   "tp": 0,
+   "fp": 1,
+   "fn": 0,
+   "precision": 0,
+   "recall": null
+  }
+ },
+ "brand_assignment": {
+  "tp": 13,
+  "fp": 1,
+  "fn": 7,
+  "precision": 0.93,
+  "recall": 0.65
+ },
+ "errors": [
+  "#8 praise too much",
+  "#9 buy too much",
+  "#9 praise too much",
+  "#9 critic missed",
+  "#9 brand Gaggia too much",
+  "#11 brand Trove missed",
+  "#12 praise missed",
+  "#13 praise missed",
+  "#13 critic missed",
+  "#15 question too much",
+  "#15 praise missed",
+  "#15 critic too much",
+  "#16 praise missed",
+  "#19 praise too much",
+  "#24 praise missed",
+  "#25 critic missed",
+  "#30 brand Bowers & Wilkins missed",
+  "#31 brand Peak Design missed",
+  "#31 brand Opal missed",
+  "#31 brand Trove missed",
+  "#32 praise missed",
+  "#32 ad_doubt too much",
+  "#36 brand Peak Design missed",
+  "#37 brand Peak Design missed",
+  "#39 praise too much",
+  "#40 praise too much",
+  "#42 praise too much",
+  "#42 critic too much",
+  "#44 praise missed",
+  "#46 question too much",
+  "#46 praise too much",
+  "#48 praise too much"
+ ]
+}

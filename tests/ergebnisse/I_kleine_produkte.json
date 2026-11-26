@@ -1,0 +1,126 @@
+{
+  "A_standard": {
+    "info": {
+      "model": "gemini-3.6-flash",
+      "seconds": 9.0,
+      "usage": {
+        "promptTokenCount": 1328,
+        "candidatesTokenCount": 111,
+        "totalTokenCount": 2337,
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 52
+          },
+          {
+            "modality": "VIDEO",
+            "tokenCount": 1276
+          }
+        ],
+        "thoughtsTokenCount": 898,
+        "serviceTier": "standard"
+      },
+      "versuch": 1
+    },
+    "items": [
+      {
+        "category": "headphones",
+        "brand": "Bose",
+        "basis": "logo",
+        "confidence": 0.95,
+        "evidence": "Bose logo visible on the light blue headphone earcups",
+        "model": "QuietComfort",
+        "time": "01:30-01:40"
+      },
+      {
+        "category": "headphones",
+        "brand": "Sonos",
+        "basis": "logo",
+        "confidence": 0.98,
+        "evidence": "SONOS logo on the headphone earcup and mentioned in speech",
+        "model": "Ace",
+        "time": "01:41-01:45"
+      }
+    ]
+  },
+  "B_inventar_hoch": {
+    "info": {
+      "model": "gemini-3.6-flash",
+      "seconds": 90.9,
+      "usage": {
+        "promptTokenCount": 2310,
+        "candidatesTokenCount": 571,
+        "totalTokenCount": 4431,
+        "promptTokensDetails": [
+          {
+            "modality": "VIDEO",
+            "tokenCount": 2176
+          },
+          {
+            "modality": "TEXT",
+            "tokenCount": 134
+          }
+        ],
+        "thoughtsTokenCount": 1550,
+        "serviceTier": "standard"
+      },
+      "versuch": 1
+    },
+    "items": [
+      {
+        "category": "headphones",
+        "brand": "Bose",
+        "basis": "text",
+        "confidence": 0.95,
+        "evidence": "BOSE text printed on earcup",
+        "model": "QuietComfort Headphones",
+        "time": "01:30.000 - 01:40.000"
+      },
+      {
+        "category": "headphone case",
+        "brand": "Bose",
+        "basis": "design",
+        "confidence": 0.85,
+        "evidence": "Carrying case designed for Bose QuietComfort headphones",
+        "model": "QuietComfort Case",
+        "time": "01:36.000 - 01:40.000"
+      },
+      {
+        "category": "smartwatch",
+        "brand": "unknown",
+        "basis": "unknown",
+        "confidence": 0.6,
+        "evidence": "Round smartwatch with metallic mesh band worn on wrist",
+        "model": "unknown",
+        "time": "01:36.000 - 01:39.000"
+      },
+      {
+        "category": "jacket",
+        "brand": "unknown",
+        "basis": "unknown",
+        "confidence": 0.6,
+        "evidence": "Brown canvas jacket worn by presenter",
+        "model": "unknown",
+        "time": "01:30.000 - 01:35.500"
+      },
+      {
+        "category": "headphones",
+        "brand": "Sonos",
+        "basis": "text",
+        "confidence": 0.98,
+        "evidence": "SONOS text visible on white earcup and spoken in audio",
+        "model": "Ace",
+        "time": "01:40.000 - 01:45.000"
+      },
+      {
+        "category": "sweatshirt",
+        "brand": "unknown",
+        "basis": "unknown",
+        "confidence": 0.6,
+        "evidence": "White sweatshirt worn by person holding Sonos headphones",
+        "model": "unknown",
+        "time": "01:41.000 - 01:45.000"
+      }
+    ]
+  }
+}

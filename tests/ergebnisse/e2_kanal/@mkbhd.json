@@ -1,0 +1,847 @@
+{
+ "events": [
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "resolve",
+    "status": "run",
+    "title": "Finding the channel",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "resolve",
+    "status": "done",
+    "title": "Marques Brownlee",
+    "detail": "@mkbhd · 21.5M subscribers · YouTube channel page + RSS feed · from the 6-hour cache, 0 units",
+    "at_s": 0,
+    "channel": {
+     "id": "UCBJycsmduvYEL83R_U4JriQ",
+     "title": "Marques Brownlee",
+     "handle": "@mkbhd",
+     "avatar": "https://yt3.googleusercontent.com/qu4TmIaYUlS41-dJ9gZ7DUR3nilvmB5_11i6OKSdvNnBNiyOusZP1bMN6ICnuxtjFBb6ioKgRQ=s160-c-k-c0x00ffffff-no-rj",
+     "subscribers": "21.5M subscribers",
+     "video_count": 1800,
+     "source": "youtube-page",
+     "fetched_at": "2026-11-25T14:55:34.889Z"
+    }
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "uploads",
+    "status": "done",
+    "title": "Latest uploads",
+    "detail": "25 videos, 2026-08-27 – 2026-11-23 · Shorts and live streams left out",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "library",
+    "status": "run",
+    "title": "Checking analyses we already have",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "library",
+    "status": "done",
+    "title": "Analyses we already have",
+    "detail": "1 analysed video of Marques Brownlee (0 among the latest 25) – 0 requests",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "audience",
+    "status": "done",
+    "title": "Audience reactions",
+    "detail": "no comments cached yet – open a video's Audience tab to load them (not done here, to save quota)",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "confirm",
+   "data": {
+    "candidates": [
+     {
+      "id": "Od6M0AXpcxQ",
+      "title": "iPhone 18 Pro/Duo Impressions: Mogged",
+      "views": 28000000,
+      "duration_s": 1034,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "DkUuOr21v4s",
+      "title": "Xiaomi 18 Pro Max: They've Done It Again!",
+      "views": 14000000,
+      "duration_s": 716,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "g6Die8gVFn0",
+      "title": "OLED iPad Mini is The Most Apple Product They've Ever Appled",
+      "views": 12000000,
+      "duration_s": 780,
+      "published": "2026-11-03",
+      "approx": false,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "2reQut8WNGc",
+      "title": "Macbook PROLED XDR Impressions: They Said They Wouldn't!",
+      "views": 12000000,
+      "duration_s": 654,
+      "published": "2026-10-29",
+      "approx": false,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "3iRUwVzRDZQ",
+      "title": "Xiaomi 18 Fold: How Does This Happen?",
+      "views": 12000000,
+      "duration_s": 647,
+      "published": "2026-10-02",
+      "approx": false,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "ohqxP8EEumo",
+      "title": "iPhone 18 Pro Review: All About that Chip",
+      "views": 12000000,
+      "duration_s": 996,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "6D__H_DO2Xk",
+      "title": "iPhone Duo: What We Missed!",
+      "views": 12000000,
+      "duration_s": 637,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "QVv3mQzlrN0",
+      "title": "Apple Homeview Impressions: Not Convinced!",
+      "views": 11000000,
+      "duration_s": 707,
+      "published": "2026-10-13",
+      "approx": false,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     }
+    ],
+    "preselected": [],
+    "quota": {
+     "models": 4,
+     "exhausted": 0,
+     "used_requests": 0,
+     "left_requests": 80,
+     "free_per_model": 20,
+     "visitor_left": 10,
+     "visitor_cap": 10,
+     "reset_in_s": 61354,
+     "blocked": null
+    },
+    "max_new": 3,
+    "per_video_requests": 3
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "confirm",
+    "status": "skip",
+    "title": "Waiting for your OK",
+    "detail": "up to 3 new analyses (≈ 3 Gemini requests each) – the report below uses analysed videos only until you confirm",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "aggregate",
+    "status": "run",
+    "title": "Combining the results",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "aggregate",
+    "status": "done",
+    "title": "Combined the results",
+    "detail": "1 analysed video · 7 brands · 2 product fields",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "report",
+   "data": {
+    "channel": {
+     "id": "UCBJycsmduvYEL83R_U4JriQ",
+     "title": "Marques Brownlee",
+     "handle": "@mkbhd",
+     "avatar": "https://yt3.googleusercontent.com/qu4TmIaYUlS41-dJ9gZ7DUR3nilvmB5_11i6OKSdvNnBNiyOusZP1bMN6ICnuxtjFBb6ioKgRQ=s160-c-k-c0x00ffffff-no-rj",
+     "subscribers": "21.5M subscribers",
+     "video_count": 1800,
+     "source": "youtube-page",
+     "fetched_at": "2026-11-25T14:55:34.889Z"
+    },
+    "uploads": [
+     {
+      "id": "cc5C8hRblBY",
+      "title": "I'm Starting Over",
+      "views": 4400000,
+      "duration_s": 1296,
+      "published": "2026-11-23",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "KTDJiVpSDTI",
+      "title": "Can You Trust MKBHD?",
+      "views": 3900000,
+      "duration_s": 859,
+      "published": "2026-11-17",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "hdMszZ2ah5Q",
+      "title": "Macbook PROLED Review: It's Not About That",
+      "views": 6700000,
+      "duration_s": 914,
+      "published": "2026-11-11",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "_x58r9TBois",
+      "title": "Meta VR Glasses: What Vision Pro 2 COULD Have Been!",
+      "views": 8000000,
+      "duration_s": 481,
+      "published": "2026-11-06",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "g6Die8gVFn0",
+      "title": "OLED iPad Mini is The Most Apple Product They've Ever Appled",
+      "views": 12000000,
+      "duration_s": 780,
+      "published": "2026-11-03",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "2reQut8WNGc",
+      "title": "Macbook PROLED XDR Impressions: They Said They Wouldn't!",
+      "views": 12000000,
+      "duration_s": 654,
+      "published": "2026-10-29",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "ESABTN4VtrA",
+      "title": "iPhone Duo Review: First Generation Fun!",
+      "views": 13000000,
+      "duration_s": 1745,
+      "published": "2026-10-21",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "scwlR0QHGOk",
+      "title": "The NEW Tesla Roadster: My Honest Reaction",
+      "views": 12000000,
+      "duration_s": 1365,
+      "published": "2026-10-17",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "QVv3mQzlrN0",
+      "title": "Apple Homeview Impressions: Not Convinced!",
+      "views": 11000000,
+      "duration_s": 707,
+      "published": "2026-10-13",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "_0G4OG39XjI",
+      "title": "WTF is a Googlebook?",
+      "views": 9200000,
+      "duration_s": 853,
+      "published": "2026-10-08",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "3iRUwVzRDZQ",
+      "title": "Xiaomi 18 Fold: How Does This Happen?",
+      "views": 12000000,
+      "duration_s": 647,
+      "published": "2026-10-02",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "e1q-TuHdc4Y",
+      "title": "Dear YouTube!",
+      "views": 5900000,
+      "duration_s": 743,
+      "published": "2026-09-30",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "rayrrXot17M",
+      "title": "Nothing Headphone 1 Pro: They Copied the Wrong Thing!",
+      "views": 6300000,
+      "duration_s": 860,
+      "published": "2026-09-29",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "DkUuOr21v4s",
+      "title": "Xiaomi 18 Pro Max: They've Done It Again!",
+      "views": 14000000,
+      "duration_s": 716,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "pOX1l1edBME",
+      "title": "The Apple Watch Has a Problem",
+      "views": 5600000,
+      "duration_s": 906,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "ohqxP8EEumo",
+      "title": "iPhone 18 Pro Review: All About that Chip",
+      "views": 12000000,
+      "duration_s": 996,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "6D__H_DO2Xk",
+      "title": "iPhone Duo: What We Missed!",
+      "views": 12000000,
+      "duration_s": 637,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "Od6M0AXpcxQ",
+      "title": "iPhone 18 Pro/Duo Impressions: Mogged",
+      "views": 28000000,
+      "duration_s": 1034,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "ANmTVYkEtLw",
+      "title": "Google Pixel 11/Pro Review: Poker Face",
+      "views": 5300000,
+      "duration_s": 748,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "fo-uubnajWM",
+      "title": "I Made a Bet with Tesla",
+      "views": 5500000,
+      "duration_s": 666,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "ngPkbaZliaU",
+      "title": "The Truth About the Bezelless Concept Phone",
+      "views": 7000000,
+      "duration_s": 389,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "mfmdXPT7nAM",
+      "title": "I Said Yes to Every Email for a Month! (Again)",
+      "views": 6100000,
+      "duration_s": 1851,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "o4SSoURPODY",
+      "title": "Google Pixel 11/Pro/Fold Impressions: It Is What It Is",
+      "views": 4000000,
+      "duration_s": 674,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "Z6z_feacXW8",
+      "title": "Galaxy Z Fold 8 Review: Honeymoon's Over",
+      "views": 6400000,
+      "duration_s": 696,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "_xjxwl1zLMc",
+      "title": "Framework 13 Pro: The Modular Laptop is Real!",
+      "views": 4200000,
+      "duration_s": 769,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     }
+    ],
+    "summary": {
+     "query": null,
+     "generated_at": "2026-11-25T14:57:25.848Z",
+     "spread": 0.5,
+     "totals": {
+      "videos": 1,
+      "checked": 1,
+      "not_found": 0,
+      "views": 5706365,
+      "screen_s": 174,
+      "screen_range": {
+       "low": 87,
+       "high": 261
+      },
+      "spoken_s": 58,
+      "mentions": 9,
+      "value": {
+       "low": 55455.19296560507,
+       "mid": 110263.0619515293,
+       "high": 205529.5086972158
+      },
+      "in_use": 1,
+      "commercial": 1,
+      "paid": 0,
+      "labelled": 0,
+      "weak": 1,
+      "unlabelled": 0,
+      "no_signals": 0
+     },
+     "videos": [
+      {
+       "id": "-pTGc7cIBIA",
+       "title": "My Everyday Tech: 2022!",
+       "channel": "Marques Brownlee",
+       "views": 5706365,
+       "duration_s": 859,
+       "upload_date": "2022-01-07",
+       "analyzed_at": "2026-11-21",
+       "found": true,
+       "brands": [
+        "Peak Design",
+        "Apple",
+        "Canon",
+        "Trove",
+        "Realme",
+        "Opal",
+        "Google"
+       ],
+       "products": [
+        "V2 Everyday Backpack 20L",
+        "MacBook Pro 16\" M1 Max",
+        "EOS R5",
+        "Slim Wallet",
+        "Mini SuperDart (50W)",
+        "C1 Webcam"
+       ],
+       "category": "Bags & Luggage",
+       "screen_s": 174,
+       "screen_range": {
+        "low": 87,
+        "high": 261
+       },
+       "spoken_s": 58,
+       "text_s": 0,
+       "mentions": 9,
+       "shown": true,
+       "in_use": true,
+       "background_only": false,
+       "value": {
+        "low": 55455.19296560507,
+        "mid": 110263.0619515293,
+        "high": 205529.5086972158
+       },
+       "value_range": {
+        "low": 55455.19296560507,
+        "mid": 110263.0619515293,
+        "high": 205529.5086972158
+       },
+       "paid": false,
+       "disclosure": {
+        "level": "orange",
+        "label": "Weak label",
+        "title": "Check disclosure",
+        "signals": [
+         "Shop / affiliate link in description (\"amzn.to\")"
+        ]
+       },
+       "others": [],
+       "sponsors": [
+        {
+         "brand": "Peak Design",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Apple",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Canon",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Trove",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Opal",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Google",
+         "kind": "affiliate"
+        }
+       ],
+       "source": "demo"
+      }
+     ],
+     "not_found": [],
+     "creators": [
+      {
+       "channel": "Marques Brownlee",
+       "videos": 1,
+       "views": 5706365,
+       "screen_s": 174,
+       "value_mid": 110263.0619515293,
+       "labelled": 0,
+       "unlabelled": 0
+      }
+     ],
+     "months": [
+      {
+       "month": "2022-01",
+       "videos": 1,
+       "value_mid": 110263.0619515293,
+       "value_low": 55455.19296560507,
+       "value_high": 205529.5086972158,
+       "labelled": 0,
+       "unlabelled": 0,
+       "sponsors": [
+        {
+         "brand": "Peak Design",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Apple",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Canon",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Trove",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Opal",
+         "kind": "affiliate"
+        },
+        {
+         "brand": "Google",
+         "kind": "affiliate"
+        }
+       ]
+      }
+     ],
+     "brands": [
+      {
+       "brand": "Peak Design",
+       "category": "Bags & Luggage",
+       "videos": 1,
+       "screen_s": 45
+      },
+      {
+       "brand": "Apple",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 42
+      },
+      {
+       "brand": "Canon",
+       "category": "Cameras & Optics",
+       "videos": 1,
+       "screen_s": 25
+      },
+      {
+       "brand": "Trove",
+       "category": "Wallets & Card Cases",
+       "videos": 1,
+       "screen_s": 24
+      },
+      {
+       "brand": "Realme",
+       "category": "Electronics Accessories",
+       "videos": 1,
+       "screen_s": 18
+      },
+      {
+       "brand": "Opal",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 16
+      },
+      {
+       "brand": "Google",
+       "category": "Smartphones",
+       "videos": 1,
+       "screen_s": 4
+      }
+     ],
+     "findings": [
+      {
+       "kind": "warn",
+       "id": "weak_label",
+       "title": "1 video with only a weak label",
+       "text": "A label exists, but only spoken late or further down the description.",
+       "videos": [
+        {
+         "id": "-pTGc7cIBIA",
+         "title": "My Everyday Tech: 2022!",
+         "channel": "Marques Brownlee"
+        }
+       ]
+      },
+      {
+       "kind": "info",
+       "id": "in_use",
+       "title": "Shown in use in 1 of 1",
+       "text": "Hands-on use is the strongest form of placement (×1.25 in the media value).",
+       "videos": [
+        {
+         "id": "-pTGc7cIBIA",
+         "title": "My Everyday Tech: 2022!",
+         "channel": "Marques Brownlee"
+        }
+       ]
+      },
+      {
+       "kind": "note",
+       "id": "spread",
+       "title": "Screen time and value are ranges",
+       "text": "Two analyses of the same video agree on only about half of the on-screen seconds (test M4), so screen time is shown ±50 %. The value range (cautious to generous scenario, as in each video's Media value view) is about as wide. Video counts and disclosure verdicts are more stable.",
+       "videos": []
+      }
+     ]
+    },
+    "placements": [
+     {
+      "id": "-pTGc7cIBIA",
+      "upload_date": "2022-01-07",
+      "brand": "Peak Design",
+      "category": "Bags & Luggage",
+      "group": "fashion",
+      "screen_s": 45,
+      "level": "orange",
+      "paid": false
+     },
+     {
+      "id": "-pTGc7cIBIA",
+      "upload_date": "2022-01-07",
+      "brand": "Apple",
+      "category": "Electronics",
+      "group": "tech",
+      "screen_s": 42,
+      "level": "orange",
+      "paid": false
+     },
+     {
+      "id": "-pTGc7cIBIA",
+      "upload_date": "2022-01-07",
+      "brand": "Canon",
+      "category": "Cameras & Optics",
+      "group": "tech",
+      "screen_s": 25,
+      "level": "orange",
+      "paid": false
+     },
+     {
+      "id": "-pTGc7cIBIA",
+      "upload_date": "2022-01-07",
+      "brand": "Trove",
+      "category": "Wallets & Card Cases",
+      "group": "fashion",
+      "screen_s": 24,
+      "level": "orange",
+      "paid": false
+     },
+     {
+      "id": "-pTGc7cIBIA",
+      "upload_date": "2022-01-07",
+      "brand": "Realme",
+      "category": "Electronics Accessories",
+      "group": "tech",
+      "screen_s": 18,
+      "level": "orange",
+      "paid": false
+     },
+     {
+      "id": "-pTGc7cIBIA",
+      "upload_date": "2022-01-07",
+      "brand": "Opal",
+      "category": "Electronics",
+      "group": "tech",
+      "screen_s": 16,
+      "level": "orange",
+      "paid": false
+     },
+     {
+      "id": "-pTGc7cIBIA",
+      "upload_date": "2022-01-07",
+      "brand": "Google",
+      "category": "Smartphones",
+      "group": "tech",
+      "screen_s": 4,
+      "level": "orange",
+      "paid": false
+     }
+    ],
+    "groups": [
+     {
+      "group": "tech",
+      "label": "Tech & electronics",
+      "placements": 5,
+      "share": 0.7142857142857143,
+      "brands": [
+       "Apple",
+       "Canon",
+       "Realme",
+       "Opal",
+       "Google"
+      ],
+      "videos": 1
+     },
+     {
+      "group": "fashion",
+      "label": "Fashion & accessories",
+      "placements": 2,
+      "share": 0.2857142857142857,
+      "brands": [
+       "Peak Design",
+       "Trove"
+      ],
+      "videos": 1
+     }
+    ],
+    "audience": {},
+    "cost": {
+     "units": 0,
+     "cached": true,
+     "gemini_requests": 0,
+     "new_analyses": 0,
+     "kv_reads": 0
+    },
+    "pending": 8,
+    "seconds": 0
+   }
+  }
+ ],
+ "seconds": 0
+}

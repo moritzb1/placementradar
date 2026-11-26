@@ -1,0 +1,105 @@
+{
+  "estimate": {
+    "audience": {
+      "age": "18-34",
+      "interests": [
+        "consumer electronics",
+        "smartphones",
+        "laptops",
+        "tech reviews"
+      ],
+      "language": "English",
+      "country": "USA",
+      "basis": "The channel description mentions NYC and the content focuses on consumer electronics and tech reviews."
+    },
+    "tone": {
+      "style": "Professional, polished, in-depth tech reviews",
+      "credibility": "high",
+      "basis": "The channel consistently produces high-quality, detailed analysis of consumer electronics."
+    },
+    "brand_safety": {
+      "level": "low_risk",
+      "topics": [],
+      "note": "The content is focused on consumer electronics and tech news with no sensitive topics identified."
+    },
+    "partners": [
+      {
+        "brand": "dbrand",
+        "kind": "sponsor",
+        "evidence": "Get dbrand’s Black Friday’s deals at https://dbrand.com/shop/black-friday",
+        "verified": true
+      },
+      {
+        "brand": "Ridge",
+        "kind": "sponsor",
+        "evidence": "Black Friday sale at Ridge and get up to 49% off at https://ridge.com/MKBHD",
+        "verified": true
+      },
+      {
+        "brand": "Asus",
+        "kind": "mentioned",
+        "evidence": "Asus Googlebook provided by Asus for review.",
+        "verified": true
+      }
+    ],
+    "fit": {
+      "level": "high",
+      "reasons": [
+        "The channel is dedicated to consumer electronics reviews.",
+        "The creator has a history of reviewing headphones, such as the 'Nothing Headphone 1 Pro'.",
+        "The channel has a massive reach with millions of views per video."
+      ],
+      "risk": "The high production value and scale of the channel may make the product integration feel like a standard commercial slot.",
+      "format": "Dedicated review or inclusion in a 'best headphones' comparison video."
+    },
+    "data_note": "The data provided is sufficient to assess the channel's focus on consumer electronics."
+  },
+  "checks": {
+    "partners_given": 3,
+    "dropped_partners": 0,
+    "dropped": [],
+    "topics_unverified": 0
+  },
+  "channel": {
+    "id": "UCBJycsmduvYEL83R_U4JriQ",
+    "title": "Marques Brownlee",
+    "handle": "@mkbhd",
+    "avatar": "https://yt3.googleusercontent.com/qu4TmIaYUlS41-dJ9gZ7DUR3nilvmB5_11i6OKSdvNnBNiyOusZP1bMN6ICnuxtjFBb6ioKgRQ=s160-c-k-c0x00ffffff-no-rj",
+    "subscribers": "21.5M subscribers",
+    "video_count": 1800,
+    "source": "youtube-page",
+    "fetched_at": "2026-11-25T21:09:14.624Z"
+  },
+  "brand": "Sonos",
+  "product": "headphones",
+  "input": {
+    "uploads": 25,
+    "with_description": 13,
+    "channel_description": true,
+    "analysed": 1,
+    "comments": 0,
+    "chars": 7571
+  },
+  "model": "gemini-3.1-flash-lite-preview",
+  "usage": {
+    "prompt": 2528,
+    "output": 502,
+    "thoughts": 1145,
+    "total": 4175
+  },
+  "seconds": 5,
+  "created_at": "2026-11-25T21:09:19.859Z",
+  "prompt_version": 1,
+  "cached": false,
+  "quota": {
+    "visitor_left": 3,
+    "visitor_cap": 10,
+    "models": [
+      "gemini-3.7-flash",
+      "gemini-3.1-flash-lite-preview"
+    ],
+    "left_requests": 0,
+    "free_per_model": 20,
+    "blocked": null
+  }
+}

@@ -1,0 +1,589 @@
+{
+ "request": {
+  "brand": "Sonos",
+  "lang": "any",
+  "period": "any"
+ },
+ "events": [
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "plan",
+    "status": "done",
+    "title": "Plan",
+    "detail": "1 · look in the analyses we already have · 2 · search YouTube for “Sonos” · 3 · keep videos: length 1–20 min, ≥ 1,000 views, not Sonos's own channel (owned media, no placement) · 4 · use cached analyses first, at most 3 new ones and only with your OK · 5 · combine everything into one brand report",
+    "at_s": 0,
+    "plan": {
+     "brand": "Sonos",
+     "lang": "any",
+     "period": "any",
+     "max": 8,
+     "max_new": 3,
+     "queries": [
+      "Sonos"
+     ],
+     "rules": [
+      "length 1–20 min",
+      "≥ 1,000 views",
+      "not Sonos's own channel (owned media, no placement)"
+     ]
+    }
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "library",
+    "status": "run",
+    "title": "Checking analyses we already have",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "library",
+    "status": "done",
+    "title": "Analyses we already have",
+    "detail": "2 of 12 analysed videos contain Sonos (1 example, 1 saved by visitors) – 0 requests",
+    "at_s": 0,
+    "videos": [
+     {
+      "id": "2CqNFIn1AEo",
+      "title": "Over-Ear Kopfhörer 2026: Welche lohnen sich wirklich?",
+      "channel": "iKnowReview"
+     },
+     {
+      "id": "eLAVGYQCkQI",
+      "title": "What’s on My Desk 2025 | Clean, Modern & Productive Setup",
+      "channel": "JB"
+     }
+    ]
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "search:Sonos",
+    "status": "run",
+    "title": "Searching YouTube for “Sonos”",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "search:Sonos",
+    "status": "done",
+    "title": "Searched YouTube for “Sonos”",
+    "detail": "20 videos · from today's search cache, 0 units · YouTube search page",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "filter",
+    "status": "done",
+    "title": "Filtering",
+    "detail": "16 of 20 kept – left out: 1 shorter than 1 min, 1 Sonos's own channel, 1 longer than 20 min, 1 under 1,000 views",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "pick",
+    "status": "done",
+    "title": "Choosing videos",
+    "detail": "2 from the cache · 6 new candidates, ranked by brand in title, views and recency",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "confirm",
+   "data": {
+    "candidates": [
+     {
+      "id": "LqOc3D0mFFo",
+      "title": "$600 HomePod Surround VS $1,000 Sonos Arc Ultra with Apple TV 4K!",
+      "channel": "AppleInsider",
+      "channel_id": "UCUUNkL6Wke6i0P6funa7wdQ",
+      "views": 238844,
+      "duration_s": 507,
+      "published": null,
+      "description": "I paired four HomePod mini 2s with the new Apple TV 4K and spent a week comparing them to my $1000 Sonos Arc Ultra.",
+      "live": false,
+      "score": 9.4,
+      "why": "brand in title · 239k views"
+     },
+     {
+      "id": "utTh5s-qvx0",
+      "title": "Ist SONOS wieder gut?",
+      "channel": "Spiel und Zeug",
+      "channel_id": "UCM1jNA8DM90LE4ywxBe8RmA",
+      "views": 193958,
+      "duration_s": 1019,
+      "published": null,
+      "description": "Ist alles wieder gut bei SONOS? Ich habe die neue Beam Ultra, die neuen Ace Ultra ausprobiert und geschaut, was es mit ...",
+      "live": false,
+      "score": 9.3,
+      "why": "brand in title · 194k views"
+     },
+     {
+      "id": "UA6DQXMctqI",
+      "title": "Home Theater Has Never Been This Easy! | Sonos Beam Ultra Review",
+      "channel": "Andrew Robinson",
+      "channel_id": "UCBABCFhPeGFwW8WdjoQjk3Q",
+      "views": 107933,
+      "duration_s": 849,
+      "published": null,
+      "description": "SONOS Beam Ultra Soundbar Review with new Play Speakers, Era 300 & Sub Gen 4. SONOS Beam Ultra ...",
+      "live": false,
+      "score": 9,
+      "why": "brand in title · 108k views"
+     },
+     {
+      "id": "QGNchuWHXs0",
+      "title": "Sonos Arc Ultra: I Almost Returned It",
+      "channel": "HiFi Brothers",
+      "channel_id": "UCDzger7X3jMfbWPa8lCqaGQ",
+      "views": 73055,
+      "duration_s": 342,
+      "published": null,
+      "description": "For the longest time I didn't feel the need to upgrade from the Sonos Arc to the Arc Ultra. My home theater setup already sounded ...",
+      "live": false,
+      "score": 8.9,
+      "why": "brand in title · 73k views"
+     },
+     {
+      "id": "jpMQNigafws",
+      "title": "Is Sonos Beam Ultra a worthy upgrade?",
+      "channel": "Eric Welander",
+      "channel_id": "UCAPeu_wnvIB5AkQ-xnkLOJA",
+      "views": 59670,
+      "duration_s": 492,
+      "published": null,
+      "description": "This Sonos Beam Ultra review covers dialogue clarity, music performance, and everyday TV use. Bluetooth playback adds ...",
+      "live": false,
+      "score": 8.8,
+      "why": "brand in title · 60k views"
+     },
+     {
+      "id": "6ASchsAUXhs",
+      "title": "Adding Sonos Surround Speakers: 3 Things You NEED to Know!",
+      "channel": "Smart Home Sounds",
+      "channel_id": "UCTIFIULcxN0sh8b3uXgDX6g",
+      "views": 55488,
+      "duration_s": 1003,
+      "published": null,
+      "description": "Looking to add surround speakers to your Sonos soundbar but not sure which ones to choose? In this Sonos surround sound ...",
+      "live": false,
+      "score": 8.7,
+      "why": "brand in title · 55k views"
+     }
+    ],
+    "preselected": [
+     "LqOc3D0mFFo",
+     "utTh5s-qvx0",
+     "UA6DQXMctqI"
+    ],
+    "quota": {
+     "models": 4,
+     "exhausted": 0,
+     "used_requests": 0,
+     "left_requests": 80,
+     "free_per_model": 20,
+     "visitor_left": 10,
+     "visitor_cap": 10,
+     "reset_in_s": 64521,
+     "blocked": null
+    },
+    "max_new": 3,
+    "per_video_requests": 3
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "confirm",
+    "status": "skip",
+    "title": "Waiting for your OK",
+    "detail": "up to 3 new analyses (≈ 3 Gemini requests each) – the report below uses cached analyses only until you confirm",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "aggregate",
+    "status": "run",
+    "title": "Combining the results",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "aggregate",
+    "status": "done",
+    "title": "Combined the results",
+    "detail": "2 videos with Sonos · 1 finding to check",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "report",
+   "data": {
+    "summary": {
+     "query": "Sonos",
+     "generated_at": "2026-11-24T14:04:38.931Z",
+     "spread": 0.5,
+     "totals": {
+      "videos": 2,
+      "checked": 2,
+      "not_found": 0,
+      "views": 264989,
+      "screen_s": 111,
+      "screen_range": {
+       "low": 56,
+       "high": 167
+      },
+      "spoken_s": 8,
+      "mentions": 2,
+      "value": {
+       "low": 369.58411014067906,
+       "mid": 1538.4646722397633,
+       "high": 4496.042542266032
+      },
+      "in_use": 2,
+      "commercial": 2,
+      "paid": 0,
+      "labelled": 0,
+      "weak": 0,
+      "unlabelled": 2,
+      "no_signals": 0
+     },
+     "videos": [
+      {
+       "id": "2CqNFIn1AEo",
+       "title": "Over-Ear Kopfhörer 2026: Welche lohnen sich wirklich?",
+       "channel": "iKnowReview",
+       "views": 254200,
+       "duration_s": 590,
+       "upload_date": "2026-10-14",
+       "analyzed_at": "2026-11-21",
+       "found": true,
+       "brands": [
+        "Sonos"
+       ],
+       "products": [
+        "Ace Ultra"
+       ],
+       "category": "Consumer Electronics",
+       "screen_s": 75,
+       "screen_range": {
+        "low": 38,
+        "high": 113
+       },
+       "spoken_s": 2,
+       "text_s": 0,
+       "mentions": 1,
+       "shown": true,
+       "in_use": true,
+       "background_only": false,
+       "value": {
+        "low": 727.806031668432,
+        "mid": 1513.8398652807198,
+        "high": 2947.6268760460807
+       },
+       "value_range": {
+        "low": 363.903015834216,
+        "mid": 1513.8398652807198,
+        "high": 4421.440314069121
+       },
+       "paid": false,
+       "disclosure": {
+        "level": "red",
+        "label": "Not labelled",
+        "title": "No disclosure found",
+        "signals": [
+         "Shop / affiliate link in description (\"link.amazon\")"
+        ]
+       },
+       "others": [
+        "Nothing",
+        "Beats",
+        "Bose",
+        "Bowers & Wilkins"
+       ],
+       "source": "demo"
+      },
+      {
+       "id": "eLAVGYQCkQI",
+       "title": "What’s on My Desk 2025 | Clean, Modern & Productive Setup",
+       "channel": "JB",
+       "views": 10789,
+       "duration_s": 462,
+       "upload_date": "2025-10-19",
+       "analyzed_at": "2026-11-22",
+       "found": true,
+       "brands": [
+        "Sonos"
+       ],
+       "products": [
+        "One Speakers"
+       ],
+       "category": "Audio Gear",
+       "screen_s": 36,
+       "screen_range": {
+        "low": 18,
+        "high": 54
+       },
+       "spoken_s": 6,
+       "text_s": 0,
+       "mentions": 1,
+       "shown": true,
+       "in_use": true,
+       "background_only": false,
+       "value": {
+        "low": 11.362188612926131,
+        "mid": 24.624806959043553,
+        "high": 49.734818797940335
+       },
+       "value_range": {
+        "low": 5.6810943064630655,
+        "mid": 24.624806959043553,
+        "high": 74.6022281969105
+       },
+       "paid": false,
+       "disclosure": {
+        "level": "red",
+        "label": "Not labelled",
+        "title": "No disclosure found",
+        "signals": [
+         "Shop / affiliate link in description (\"Affiliate\")"
+        ]
+       },
+       "others": [
+        "LG",
+        "Apple",
+        "LEGO",
+        "Sennheiser",
+        "Keychron",
+        "Quntis",
+        "Samsung",
+        "Seagate"
+       ],
+       "source": "store"
+      }
+     ],
+     "not_found": [],
+     "creators": [
+      {
+       "channel": "iKnowReview",
+       "videos": 1,
+       "views": 254200,
+       "screen_s": 75,
+       "value_mid": 1513.8398652807198,
+       "labelled": 0,
+       "unlabelled": 1
+      },
+      {
+       "channel": "JB",
+       "videos": 1,
+       "views": 10789,
+       "screen_s": 36,
+       "value_mid": 24.624806959043553,
+       "labelled": 0,
+       "unlabelled": 1
+      }
+     ],
+     "months": [
+      {
+       "month": "2025-10",
+       "videos": 1,
+       "value_mid": 24.624806959043553,
+       "labelled": 0,
+       "unlabelled": 1
+      },
+      {
+       "month": "2026-10",
+       "videos": 1,
+       "value_mid": 1513.8398652807198,
+       "labelled": 0,
+       "unlabelled": 1
+      }
+     ],
+     "next_to": [
+      {
+       "brand": "LG",
+       "category": "Computers & Electronics",
+       "videos": 1,
+       "screen_s": 124
+      },
+      {
+       "brand": "Nothing",
+       "category": "Consumer Electronics",
+       "videos": 1,
+       "screen_s": 85
+      },
+      {
+       "brand": "Apple",
+       "category": "Computers & Electronics",
+       "videos": 1,
+       "screen_s": 76
+      },
+      {
+       "brand": "Beats",
+       "category": "Consumer Electronics",
+       "videos": 1,
+       "screen_s": 63
+      },
+      {
+       "brand": "Bose",
+       "category": "Consumer Electronics",
+       "videos": 1,
+       "screen_s": 55
+      },
+      {
+       "brand": "Bowers & Wilkins",
+       "category": "Consumer Electronics",
+       "videos": 1,
+       "screen_s": 51
+      },
+      {
+       "brand": "LEGO",
+       "category": "Toys & Hobbies",
+       "videos": 1,
+       "screen_s": 35
+      },
+      {
+       "brand": "Sennheiser",
+       "category": "Computers & Electronics",
+       "videos": 1,
+       "screen_s": 32
+      },
+      {
+       "brand": "Keychron",
+       "category": "Computers & Electronics",
+       "videos": 1,
+       "screen_s": 26
+      },
+      {
+       "brand": "Quntis",
+       "category": "Computers & Electronics",
+       "videos": 1,
+       "screen_s": 15
+      },
+      {
+       "brand": "Samsung",
+       "category": "Computers & Electronics",
+       "videos": 1,
+       "screen_s": 10
+      },
+      {
+       "brand": "Seagate",
+       "category": "Computers & Electronics",
+       "videos": 1,
+       "screen_s": 7
+      }
+     ],
+     "findings": [
+      {
+       "kind": "warn",
+       "id": "unlabelled",
+       "title": "2 of 2 videos with ad signals but no label",
+       "text": "Gemini or the description point to paid, gifted or affiliate content, but no ad label was found in title, description, image or speech (§ 5a (4) UWG, § 22 MStV – screening aid, not legal advice).",
+       "videos": [
+        {
+         "id": "2CqNFIn1AEo",
+         "title": "Over-Ear Kopfhörer 2026: Welche lohnen sich wirklich?",
+         "channel": "iKnowReview"
+        },
+        {
+         "id": "eLAVGYQCkQI",
+         "title": "What’s on My Desk 2025 | Clean, Modern & Productive Setup",
+         "channel": "JB"
+        }
+       ]
+      },
+      {
+       "kind": "info",
+       "id": "in_use",
+       "title": "Shown in use in 2 of 2",
+       "text": "Hands-on use is the strongest form of placement (×1.25 in the media value).",
+       "videos": [
+        {
+         "id": "2CqNFIn1AEo",
+         "title": "Over-Ear Kopfhörer 2026: Welche lohnen sich wirklich?",
+         "channel": "iKnowReview"
+        },
+        {
+         "id": "eLAVGYQCkQI",
+         "title": "What’s on My Desk 2025 | Clean, Modern & Productive Setup",
+         "channel": "JB"
+        }
+       ]
+      },
+      {
+       "kind": "info",
+       "id": "next_to",
+       "title": "Seen next to",
+       "text": "LG (1 video), Nothing (1 video), Apple (1 video), Beats (1 video), Bose (1 video).",
+       "videos": []
+      },
+      {
+       "kind": "note",
+       "id": "spread",
+       "title": "Screen time and value are ranges",
+       "text": "Two analyses of the same video agree on only about half of the on-screen seconds (test M4), so one run's numbers carry about ±50 %. Totals are shown with that range; video counts and disclosure verdicts are more stable.",
+       "videos": []
+      }
+     ]
+    },
+    "plan": {
+     "brand": "Sonos",
+     "lang": "any",
+     "period": "any",
+     "max": 8,
+     "max_new": 3,
+     "queries": [
+      "Sonos"
+     ],
+     "rules": [
+      "length 1–20 min",
+      "≥ 1,000 views",
+      "not Sonos's own channel (owned media, no placement)"
+     ],
+     "search_ok": true,
+     "search_source": "youtube-page"
+    },
+    "cost": {
+     "search_units": 0,
+     "search_cached": true,
+     "gemini_requests": 0,
+     "new_analyses": 0,
+     "kv_reads": 2
+    },
+    "pending": 6,
+    "seconds": 0
+   }
+  }
+ ]
+}

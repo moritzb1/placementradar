@@ -1,0 +1,993 @@
+{
+ "events": [
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "resolve",
+    "status": "run",
+    "title": "Finding the channel",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "resolve",
+    "status": "done",
+    "title": "iKnowReview",
+    "detail": "@iKnowReview · 631K subscribers · YouTube channel page + RSS feed · from the 6-hour cache, 0 units",
+    "at_s": 0,
+    "channel": {
+     "id": "UCF_n906__yoMtxZQtmqmZbA",
+     "title": "iKnowReview",
+     "handle": "@iKnowReview",
+     "avatar": "https://yt3.googleusercontent.com/ytc/AIdro_nCH8Pq7u0ZAnfGvsfsHyGSS3Of4VoTxIWLaqnA2Y-meVo=s160-c-k-c0x00ffffff-no-rj",
+     "subscribers": "631K subscribers",
+     "video_count": 1300,
+     "source": "youtube-page",
+     "fetched_at": "2026-11-25T14:51:49.607Z"
+    }
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "uploads",
+    "status": "done",
+    "title": "Latest uploads",
+    "detail": "25 videos, 2026-08-27 – 2026-11-23 · Shorts and live streams left out",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "library",
+    "status": "run",
+    "title": "Checking analyses we already have",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "library",
+    "status": "done",
+    "title": "Analyses we already have",
+    "detail": "2 analysed videos of iKnowReview (1 among the latest 25) – 0 requests",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "audience",
+    "status": "done",
+    "title": "Audience reactions",
+    "detail": "no comments cached yet – open a video's Audience tab to load them (not done here, to save quota)",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "confirm",
+   "data": {
+    "candidates": [
+     {
+      "id": "HWWR5GPk640",
+      "title": "The Hard Truth: iPhone Duo Review!",
+      "views": 397000,
+      "duration_s": 961,
+      "published": "2026-11-01",
+      "approx": false,
+      "live": false,
+      "hint_score": 3,
+      "why": "ad hint in the description · shop links"
+     },
+     {
+      "id": "qtm5-WAbgkc",
+      "title": "Truly special: Xiaomi 18 Pro Max review!",
+      "views": 179000,
+      "duration_s": 802,
+      "published": "2026-11-21",
+      "approx": false,
+      "live": false,
+      "hint_score": 3,
+      "why": "ad hint in the description · shop links"
+     },
+     {
+      "id": "lY3dXHm4Kdg",
+      "title": "Testing a Next-Level Exoskeleton: Hypershell Halo!",
+      "views": 118000,
+      "duration_s": 397,
+      "published": "2026-11-23",
+      "approx": false,
+      "live": false,
+      "hint_score": 3,
+      "why": "ad hint in the description · shop links"
+     },
+     {
+      "id": "bj-C4GacC7o",
+      "title": "Why Your Smartphone Is So Expensive (A Look Inside the Factory)",
+      "views": 284000,
+      "duration_s": 1065,
+      "published": "2026-11-11",
+      "approx": false,
+      "live": false,
+      "hint_score": 2,
+      "why": "ad hint in the description"
+     },
+     {
+      "id": "ZGSD8PrpbR4",
+      "title": "iPhone Duo Unboxed & Tested!",
+      "views": 442000,
+      "duration_s": 536,
+      "published": "2026-10-21",
+      "approx": false,
+      "live": false,
+      "hint_score": 1,
+      "why": "shop links"
+     },
+     {
+      "id": "GqV10mu4Nro",
+      "title": "It beats everything: Oppo Find X10 Pro Max review!",
+      "views": 408000,
+      "duration_s": 814,
+      "published": "2026-10-22",
+      "approx": false,
+      "live": false,
+      "hint_score": 1,
+      "why": "shop links"
+     },
+     {
+      "id": "2VJLib_fsQ0",
+      "title": "Finally affordable? Eight Sleep Pod 6!",
+      "views": 256000,
+      "duration_s": 525,
+      "published": "2026-10-10",
+      "approx": false,
+      "live": false,
+      "hint_score": 1,
+      "why": "shop links"
+     },
+     {
+      "id": "r1djIYyxAzI",
+      "title": "My First Impressions! iPhone 18 Pro, iPhone Duo, Watch 12 & AirPods 5!",
+      "views": 824000,
+      "duration_s": 1032,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     }
+    ],
+    "preselected": [
+     "HWWR5GPk640",
+     "qtm5-WAbgkc",
+     "lY3dXHm4Kdg"
+    ],
+    "quota": {
+     "models": 4,
+     "exhausted": 0,
+     "used_requests": 0,
+     "left_requests": 80,
+     "free_per_model": 20,
+     "visitor_left": 10,
+     "visitor_cap": 10,
+     "reset_in_s": 61354,
+     "blocked": null
+    },
+    "max_new": 3,
+    "per_video_requests": 3
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "confirm",
+    "status": "skip",
+    "title": "Waiting for your OK",
+    "detail": "up to 3 new analyses (≈ 3 Gemini requests each) – the report below uses analysed videos only until you confirm",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "aggregate",
+    "status": "run",
+    "title": "Combining the results",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "aggregate",
+    "status": "done",
+    "title": "Combined the results",
+    "detail": "2 analysed videos · 10 brands · 3 product fields",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "report",
+   "data": {
+    "channel": {
+     "id": "UCF_n906__yoMtxZQtmqmZbA",
+     "title": "iKnowReview",
+     "handle": "@iKnowReview",
+     "avatar": "https://yt3.googleusercontent.com/ytc/AIdro_nCH8Pq7u0ZAnfGvsfsHyGSS3Of4VoTxIWLaqnA2Y-meVo=s160-c-k-c0x00ffffff-no-rj",
+     "subscribers": "631K subscribers",
+     "video_count": 1300,
+     "source": "youtube-page",
+     "fetched_at": "2026-11-25T14:51:49.607Z"
+    },
+    "uploads": [
+     {
+      "id": "lY3dXHm4Kdg",
+      "title": "Testing a Next-Level Exoskeleton: Hypershell Halo!",
+      "views": 118000,
+      "duration_s": 397,
+      "published": "2026-11-23",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "qtm5-WAbgkc",
+      "title": "Truly special: Xiaomi 18 Pro Max review!",
+      "views": 179000,
+      "duration_s": 802,
+      "published": "2026-11-21",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "bj-C4GacC7o",
+      "title": "Why Your Smartphone Is So Expensive (A Look Inside the Factory)",
+      "views": 284000,
+      "duration_s": 1065,
+      "published": "2026-11-11",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "HWWR5GPk640",
+      "title": "The Hard Truth: iPhone Duo Review!",
+      "views": 397000,
+      "duration_s": 961,
+      "published": "2026-11-01",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "GqV10mu4Nro",
+      "title": "It beats everything: Oppo Find X10 Pro Max review!",
+      "views": 408000,
+      "duration_s": 814,
+      "published": "2026-10-22",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "ZGSD8PrpbR4",
+      "title": "iPhone Duo Unboxed & Tested!",
+      "views": 442000,
+      "duration_s": 536,
+      "published": "2026-10-21",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "2CqNFIn1AEo",
+      "title": "Over-Ear Headphones 2026: Which Are Actually Worth It?",
+      "views": 261000,
+      "duration_s": 590,
+      "published": "2026-10-14",
+      "approx": false,
+      "live": false,
+      "analysed": "demo"
+     },
+     {
+      "id": "2VJLib_fsQ0",
+      "title": "Finally affordable? Eight Sleep Pod 6!",
+      "views": 256000,
+      "duration_s": 525,
+      "published": "2026-10-10",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "xejm3NdWFfY",
+      "title": "What everyone gets wrong about artificial intelligence...",
+      "views": 159000,
+      "duration_s": 792,
+      "published": "2026-10-07",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "DGs9vLySAkw",
+      "title": "The upgrade I've been waiting for: Apple Watch Series 12",
+      "views": 194000,
+      "duration_s": 743,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "xfML8A5-jZ0",
+      "title": "€1,600 for THIS? My iPhone 18 Pro review.",
+      "views": 534000,
+      "duration_s": 1005,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "zH0_lLFY7kE",
+      "title": "The $479 AI toothbrush from Dyson...",
+      "views": 358000,
+      "duration_s": 622,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "5cEdnyyf5nk",
+      "title": "iPhone Duo: I got to try it out!",
+      "views": 487000,
+      "duration_s": 705,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "XCn05-EVZdI",
+      "title": "AI Level Up: Is AGI Here?!",
+      "views": 452000,
+      "duration_s": 671,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "r1djIYyxAzI",
+      "title": "My First Impressions! iPhone 18 Pro, iPhone Duo, Watch 12 & AirPods 5!",
+      "views": 824000,
+      "duration_s": 1032,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "_dUN3wQj92g",
+      "title": "The Best (& Craziest) from IFA 2026!",
+      "views": 597000,
+      "duration_s": 945,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "JZ9O8j9860o",
+      "title": "10,000mAh Smartphone - How long does it last?",
+      "views": 211000,
+      "duration_s": 1053,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "mLf7yUKvssU",
+      "title": "Unrivaled? Google Pixel 11 review!",
+      "views": 188000,
+      "duration_s": 393,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "u9sfIOxgVf4",
+      "title": "Better than expected: Google Pixel Watch 5 review!",
+      "views": 140000,
+      "duration_s": 540,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "QLdd2eDZaAk",
+      "title": "My Google Pixel 11 Pro review!",
+      "views": 210000,
+      "duration_s": 780,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "vXJVZeMBx_w",
+      "title": "Actually better than OLED? RGB LED tested!",
+      "views": 267000,
+      "duration_s": 682,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "NDNEZNUOi40",
+      "title": "It’s Complicated: Google Pixel 11/Pro & Watch 5 First Impressions!",
+      "views": 162000,
+      "duration_s": 791,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "mvfgq3RdgLM",
+      "title": "A Major Problem: Samsung Watch 9 Review!",
+      "views": 82000,
+      "duration_s": 475,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "jXbLhy_rstw",
+      "title": "DJI Pocket 4P vs. Insta360 Luna Ultra – A Winner!",
+      "views": 195000,
+      "duration_s": 791,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "WKJY6vGiKWA",
+      "title": "THIS is the future: Samsung Fold 8 & 8 Ultra review!",
+      "views": 172000,
+      "duration_s": 660,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     }
+    ],
+    "summary": {
+     "query": null,
+     "generated_at": "2026-11-25T14:57:25.810Z",
+     "spread": 0.5,
+     "totals": {
+      "videos": 2,
+      "checked": 2,
+      "not_found": 0,
+      "views": 441957,
+      "screen_s": 1047,
+      "screen_range": {
+       "low": 524,
+       "high": 1571
+      },
+      "spoken_s": 11,
+      "mentions": 6,
+      "value": {
+       "low": 9118.848110547517,
+       "mid": 18669.276284470867,
+       "high": 35814.10565221255
+      },
+      "in_use": 2,
+      "commercial": 2,
+      "paid": 1,
+      "labelled": 1,
+      "weak": 0,
+      "unlabelled": 1,
+      "no_signals": 0
+     },
+     "videos": [
+      {
+       "id": "M3pGmhPNC7o",
+       "title": "Wieder Platz 1? Sony 1000X M6 Review + 3D Hörtest!",
+       "channel": "iKnowReview",
+       "views": 187757,
+       "duration_s": 540,
+       "upload_date": "2025-05-17",
+       "analyzed_at": "2026-11-25",
+       "found": true,
+       "brands": [
+        "Sony",
+        "3Dio",
+        "Carhartt",
+        "Apple",
+        "Sonos",
+        "Dyson"
+       ],
+       "products": [
+        "WH-1000XM6",
+        "WH-1000XM5",
+        "Free Space XLR Binaural Microphone",
+        "Jacket",
+        "AirPods Max",
+        "Ace"
+       ],
+       "category": "Headphones",
+       "screen_s": 718,
+       "screen_range": {
+        "low": 359,
+        "high": 1077
+       },
+       "spoken_s": 2,
+       "text_s": 0,
+       "mentions": 1,
+       "shown": true,
+       "in_use": true,
+       "background_only": false,
+       "value": {
+        "low": 5296.682434072942,
+        "mid": 10841.671557013242,
+        "high": 20793.70921102611
+       },
+       "value_range": {
+        "low": 5296.682434072942,
+        "mid": 10841.671557013242,
+        "high": 20793.70921102611
+       },
+       "paid": true,
+       "disclosure": {
+        "level": "green",
+        "label": "Labelled",
+        "title": "Disclosure found",
+        "signals": [
+         "Gemini rates the video as paid or gifted promotion",
+         "Shop / affiliate link in description (\"amzn.to\")",
+         "Products are actively recommended"
+        ]
+       },
+       "others": [],
+       "sponsors": [
+        {
+         "brand": "Sony",
+         "kind": "paid"
+        },
+        {
+         "brand": "3Dio",
+         "kind": "paid"
+        },
+        {
+         "brand": "Carhartt",
+         "kind": "paid"
+        },
+        {
+         "brand": "Apple",
+         "kind": "paid"
+        }
+       ],
+       "source": "store"
+      },
+      {
+       "id": "2CqNFIn1AEo",
+       "title": "Over-Ear Kopfhörer 2026: Welche lohnen sich wirklich?",
+       "channel": "iKnowReview",
+       "views": 254200,
+       "duration_s": 590,
+       "upload_date": "2026-10-14",
+       "analyzed_at": "2026-11-21",
+       "found": true,
+       "brands": [
+        "Nothing",
+        "Sonos",
+        "Beats",
+        "Bose",
+        "Bowers & Wilkins"
+       ],
+       "products": [
+        "Headphone (1) Pro",
+        "Ace Ultra",
+        "360",
+        "QuietComfort Headphones",
+        "Px7 S3"
+       ],
+       "category": "Consumer Electronics",
+       "screen_s": 329,
+       "screen_range": {
+        "low": 165,
+        "high": 494
+       },
+       "spoken_s": 9,
+       "text_s": 0,
+       "mentions": 5,
+       "shown": true,
+       "in_use": true,
+       "background_only": false,
+       "value": {
+        "low": 3822.1656764745753,
+        "mid": 7827.604727457626,
+        "high": 15020.39644118644
+       },
+       "value_range": {
+        "low": 3822.1656764745753,
+        "mid": 7827.604727457626,
+        "high": 15020.39644118644
+       },
+       "paid": false,
+       "disclosure": {
+        "level": "red",
+        "label": "Not labelled",
+        "title": "No disclosure found",
+        "signals": [
+         "Shop / affiliate link in description (\"link.amazon\")"
+        ]
+       },
+       "others": [],
+       "sponsors": [],
+       "source": "demo"
+      }
+     ],
+     "not_found": [],
+     "creators": [
+      {
+       "channel": "iKnowReview",
+       "videos": 2,
+       "views": 441957,
+       "screen_s": 1047,
+       "value_mid": 18669.276284470867,
+       "labelled": 1,
+       "unlabelled": 1
+      }
+     ],
+     "months": [
+      {
+       "month": "2025-05",
+       "videos": 1,
+       "value_mid": 10841.671557013242,
+       "value_low": 5296.682434072942,
+       "value_high": 20793.70921102611,
+       "labelled": 1,
+       "unlabelled": 0,
+       "sponsors": [
+        {
+         "brand": "Sony",
+         "kind": "paid"
+        },
+        {
+         "brand": "3Dio",
+         "kind": "paid"
+        },
+        {
+         "brand": "Carhartt",
+         "kind": "paid"
+        },
+        {
+         "brand": "Apple",
+         "kind": "paid"
+        }
+       ]
+      },
+      {
+       "month": "2026-10",
+       "videos": 1,
+       "value_mid": 7827.604727457626,
+       "value_low": 3822.1656764745753,
+       "value_high": 15020.39644118644,
+       "labelled": 0,
+       "unlabelled": 1,
+       "sponsors": []
+      }
+     ],
+     "brands": [
+      {
+       "brand": "Sonos",
+       "category": "Consumer Electronics",
+       "videos": 2,
+       "screen_s": 94
+      },
+      {
+       "brand": "Sony",
+       "category": "Headphones",
+       "videos": 1,
+       "screen_s": 453
+      },
+      {
+       "brand": "3Dio",
+       "category": "Microphones",
+       "videos": 1,
+       "screen_s": 122
+      },
+      {
+       "brand": "Nothing",
+       "category": "Consumer Electronics",
+       "videos": 1,
+       "screen_s": 85
+      },
+      {
+       "brand": "Carhartt",
+       "category": "Clothing",
+       "videos": 1,
+       "screen_s": 84
+      },
+      {
+       "brand": "Beats",
+       "category": "Consumer Electronics",
+       "videos": 1,
+       "screen_s": 63
+      },
+      {
+       "brand": "Bose",
+       "category": "Consumer Electronics",
+       "videos": 1,
+       "screen_s": 55
+      },
+      {
+       "brand": "Bowers & Wilkins",
+       "category": "Consumer Electronics",
+       "videos": 1,
+       "screen_s": 51
+      },
+      {
+       "brand": "Apple",
+       "category": "Headphones",
+       "videos": 1,
+       "screen_s": 35
+      },
+      {
+       "brand": "Dyson",
+       "category": "Headphones",
+       "videos": 1,
+       "screen_s": 5
+      }
+     ],
+     "findings": [
+      {
+       "kind": "warn",
+       "id": "unlabelled",
+       "title": "1 of 2 videos with ad signals but no label",
+       "text": "Gemini or the description point to paid, gifted or affiliate content, but no ad label was found in title, description, image or speech (§ 5a (4) UWG, § 22 MStV – screening aid, not legal advice).",
+       "videos": [
+        {
+         "id": "2CqNFIn1AEo",
+         "title": "Over-Ear Kopfhörer 2026: Welche lohnen sich wirklich?",
+         "channel": "iKnowReview"
+        }
+       ]
+      },
+      {
+       "kind": "info",
+       "id": "paid_labelled",
+       "title": "1 paid or gifted video, labelled correctly",
+       "text": "Commercial content with a clear label.",
+       "videos": [
+        {
+         "id": "M3pGmhPNC7o",
+         "title": "Wieder Platz 1? Sony 1000X M6 Review + 3D Hörtest!",
+         "channel": "iKnowReview"
+        }
+       ]
+      },
+      {
+       "kind": "info",
+       "id": "in_use",
+       "title": "Shown in use in 2 of 2",
+       "text": "Hands-on use is the strongest form of placement (×1.25 in the media value).",
+       "videos": [
+        {
+         "id": "M3pGmhPNC7o",
+         "title": "Wieder Platz 1? Sony 1000X M6 Review + 3D Hörtest!",
+         "channel": "iKnowReview"
+        },
+        {
+         "id": "2CqNFIn1AEo",
+         "title": "Over-Ear Kopfhörer 2026: Welche lohnen sich wirklich?",
+         "channel": "iKnowReview"
+        }
+       ]
+      },
+      {
+       "kind": "note",
+       "id": "spread",
+       "title": "Screen time and value are ranges",
+       "text": "Two analyses of the same video agree on only about half of the on-screen seconds (test M4), so screen time is shown ±50 %. The value range (cautious to generous scenario, as in each video's Media value view) is about as wide. Video counts and disclosure verdicts are more stable.",
+       "videos": []
+      }
+     ]
+    },
+    "placements": [
+     {
+      "id": "2CqNFIn1AEo",
+      "upload_date": "2026-10-14",
+      "brand": "Nothing",
+      "category": "Consumer Electronics",
+      "group": "audio",
+      "screen_s": 85,
+      "level": "red",
+      "paid": false
+     },
+     {
+      "id": "2CqNFIn1AEo",
+      "upload_date": "2026-10-14",
+      "brand": "Sonos",
+      "category": "Consumer Electronics",
+      "group": "tech",
+      "screen_s": 75,
+      "level": "red",
+      "paid": false
+     },
+     {
+      "id": "2CqNFIn1AEo",
+      "upload_date": "2026-10-14",
+      "brand": "Beats",
+      "category": "Consumer Electronics",
+      "group": "tech",
+      "screen_s": 63,
+      "level": "red",
+      "paid": false
+     },
+     {
+      "id": "2CqNFIn1AEo",
+      "upload_date": "2026-10-14",
+      "brand": "Bose",
+      "category": "Consumer Electronics",
+      "group": "audio",
+      "screen_s": 55,
+      "level": "red",
+      "paid": false
+     },
+     {
+      "id": "2CqNFIn1AEo",
+      "upload_date": "2026-10-14",
+      "brand": "Bowers & Wilkins",
+      "category": "Consumer Electronics",
+      "group": "tech",
+      "screen_s": 51,
+      "level": "red",
+      "paid": false
+     },
+     {
+      "id": "M3pGmhPNC7o",
+      "upload_date": "2025-05-17",
+      "brand": "Sony",
+      "category": "Headphones",
+      "group": "audio",
+      "screen_s": 453,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "M3pGmhPNC7o",
+      "upload_date": "2025-05-17",
+      "brand": "3Dio",
+      "category": "Microphones",
+      "group": "audio",
+      "screen_s": 122,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "M3pGmhPNC7o",
+      "upload_date": "2025-05-17",
+      "brand": "Carhartt",
+      "category": "Clothing",
+      "group": "fashion",
+      "screen_s": 84,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "M3pGmhPNC7o",
+      "upload_date": "2025-05-17",
+      "brand": "Apple",
+      "category": "Headphones",
+      "group": "audio",
+      "screen_s": 35,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "M3pGmhPNC7o",
+      "upload_date": "2025-05-17",
+      "brand": "Sonos",
+      "category": "Headphones",
+      "group": "audio",
+      "screen_s": 19,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "M3pGmhPNC7o",
+      "upload_date": "2025-05-17",
+      "brand": "Dyson",
+      "category": "Headphones",
+      "group": "audio",
+      "screen_s": 5,
+      "level": "green",
+      "paid": true
+     }
+    ],
+    "groups": [
+     {
+      "group": "audio",
+      "label": "Audio",
+      "placements": 7,
+      "share": 0.6363636363636364,
+      "brands": [
+       "Nothing",
+       "Bose",
+       "Sony",
+       "3Dio",
+       "Apple",
+       "Sonos",
+       "Dyson"
+      ],
+      "videos": 2
+     },
+     {
+      "group": "tech",
+      "label": "Tech & electronics",
+      "placements": 3,
+      "share": 0.2727272727272727,
+      "brands": [
+       "Sonos",
+       "Beats",
+       "Bowers & Wilkins"
+      ],
+      "videos": 1
+     },
+     {
+      "group": "fashion",
+      "label": "Fashion & accessories",
+      "placements": 1,
+      "share": 0.09090909090909091,
+      "brands": [
+       "Carhartt"
+      ],
+      "videos": 1
+     }
+    ],
+    "audience": {},
+    "cost": {
+     "units": 0,
+     "cached": true,
+     "gemini_requests": 0,
+     "new_analyses": 0,
+     "kv_reads": 1
+    },
+    "pending": 8,
+    "seconds": 0
+   }
+  }
+ ],
+ "seconds": 0
+}

@@ -1,0 +1,135 @@
+event: stage
+data: {"id":"meta"}
+
+event: meta
+data: {"id":"xRZSftRtB-s","title":"100€ FITNESS WOCHENEINKAUF 🛒 | Meine Empfehlung bei Rewe 🦾 | Arda Saatci","channel":"Arda Saatçi","views":1661543,"duration_s":1196,"upload_date":"2026-08-09","description":"Hier geht’s zur PDF Download. Einfach 0€ im Checkout eingeben:\n\nhttps://ardasaatci.gumroad.com/l/proteineinkauf\n\n\nDAY ONE: https://day-1.com/\nInstagram: https://www.instagram.com/ardasaatci/\nTwitch: https://www.twitch.tv/ardasaatci1\nTikTok: https://www.tiktok.com/@ardasaatci1?lang=de-DE\nStrava: https://strava.app.link/yQdFZk61TIb\n\n\nESN Code: ARDA - http://esn.com/discount/arda\nPerformAll - Elis und Ardas Training’s- und Ernährungspläne: https://apple.co/3uUYrZl\n\n\nNeuer Podcast von Arda - ein Abo da lassen wäre SÜPER: \nhttps://youtube.com/@257podcastAM?si=gx6QDRdX44WLECZi","source":"dataapi:200:ok"}
+
+event: stage
+data: {"id":"timeline"}
+
+event: model
+data: {"model":"gemini-3.8-flash"}
+
+event: ping
+data: {"s":5}
+
+event: ping
+data: {"s":10}
+
+event: retry
+data: {"model":"gemini-3.8-flash","status":503,"after_s":13}
+
+event: model
+data: {"model":"gemini-3.6-flash"}
+
+event: ping
+data: {"s":15}
+
+event: ping
+data: {"s":20}
+
+event: ping
+data: {"s":25}
+
+event: retry
+data: {"model":"gemini-3.6-flash","status":503,"after_s":16}
+
+event: model
+data: {"model":"gemini-3.5-flash"}
+
+event: ping
+data: {"s":30}
+
+event: ping
+data: {"s":35}
+
+event: stage
+data: {"id":"authenticity"}
+
+event: model
+data: {"model":"gemini-3.8-flash"}
+
+event: ping
+data: {"s":40}
+
+event: ping
+data: {"s":45}
+
+event: ping
+data: {"s":50}
+
+event: ping
+data: {"s":55}
+
+event: ping
+data: {"s":60}
+
+event: ping
+data: {"s":65}
+
+event: ping
+data: {"s":70}
+
+event: ping
+data: {"s":75}
+
+event: ping
+data: {"s":80}
+
+event: ping
+data: {"s":85}
+
+event: ping
+data: {"s":90}
+
+event: ping
+data: {"s":95}
+
+event: ping
+data: {"s":100}
+
+event: ping
+data: {"s":105}
+
+event: ping
+data: {"s":110}
+
+event: ping
+data: {"s":115}
+
+event: ping
+data: {"s":120}
+
+event: ping
+data: {"s":125}
+
+event: ping
+data: {"s":130}
+
+event: ping
+data: {"s":135}
+
+event: ping
+data: {"s":140}
+
+event: ping
+data: {"s":145}
+
+event: ping
+data: {"s":150}
+
+event: ping
+data: {"s":155}
+
+event: ping
+data: {"s":160}
+
+event: retry
+data: {"model":"gemini-3.8-flash","status":524,"after_s":125}
+
+event: stage
+data: {"id":"done"}
+
+event: result
+data: {"video":{"id":"xRZSftRtB-s","title":"100€ FITNESS WOCHENEINKAUF 🛒 | Meine Empfehlung bei Rewe 🦾 | Arda Saatci","channel":"Arda Saatçi","views":1661543,"duration_s":1196,"upload_date":"2026-08-09","description":"Hier geht’s zur PDF Download. Einfach 0€ im Checkout eingeben:\n\nhttps://ardasaatci.gumroad.com/l/proteineinkauf\n\n\nDAY ONE: https://day-1.com/\nInstagram: https://www.instagram.com/ardasaatci/\nTwitch: https://www.twitch.tv/ardasaatci1\nTikTok: https://www.tiktok.com/@ardasaatci1?lang=de-DE\nStrava: https://strava.app.link/yQdFZk61TIb\n\n\nESN Code: ARDA - http://esn.com/discount/arda\nPerformAll - Elis und Ardas Training’s- und Ernährungspläne: https://apple.co/3uUYrZl\n\n\nNeuer Podcast von Arda - ein Abo da lassen wäre SÜPER: \nhttps://youtube.com/@257podcastAM?si=gx6QDRdX44WLECZi","source":"dataapi:200:ok"},"brands":[{"brand":"ESN","product":"","category":"","appearances":[{"start_s":509,"end_s":513,"channel":"visual","size":"small","position":"edge","in_use":null,"evidence":""}],"frames":[]}],"disclosures":[{"time_s":1832429,"kind":"","text":""}],"paid":{"looks_like_paid_promotion":true,"reasoning":"The video includes a sponsored overlay with the label 'WERBUNG' promoting ESN Designer Whey Protein with a discount code."},"authenticity":[],"source":{"engine":"gemini","models":["gemini-3.5-flash"],"analyzed_at":"2026-11-20"}}
+

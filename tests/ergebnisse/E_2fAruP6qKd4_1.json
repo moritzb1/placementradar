@@ -1,0 +1,270 @@
+{
+  "video": "2fAruP6qKd4",
+  "lauf": "1",
+  "model": "gemini-3.8-flash",
+  "seconds": 239.7,
+  "usage": {
+    "promptTokenCount": 21297,
+    "candidatesTokenCount": 1567,
+    "totalTokenCount": 23597,
+    "promptTokensDetails": [
+      {
+        "modality": "VIDEO",
+        "tokenCount": 20930
+      },
+      {
+        "modality": "TEXT",
+        "tokenCount": 367
+      }
+    ],
+    "thoughtsTokenCount": 733,
+    "serviceTier": "standard"
+  },
+  "versuch": 1,
+  "result": {
+    "brands": [
+      {
+        "brand": "Glückstoff",
+        "appearances": [
+          {
+            "start": "00:08",
+            "end": "00:12",
+            "channel": "audio",
+            "start_s": 8.0,
+            "end_s": 12.0
+          },
+          {
+            "start": "00:08",
+            "end": "00:19",
+            "channel": "visual",
+            "box_2d": [
+              278,
+              482,
+              804,
+              764
+            ],
+            "frame_time": "00:15",
+            "in_use": true,
+            "start_s": 8.0,
+            "end_s": 19.0,
+            "frame_s": 15.0
+          },
+          {
+            "start": "00:32",
+            "end": "00:52",
+            "channel": "visual",
+            "box_2d": [
+              664,
+              735,
+              785,
+              874
+            ],
+            "frame_time": "00:37",
+            "in_use": true,
+            "start_s": 32.0,
+            "end_s": 52.0,
+            "frame_s": 37.0
+          },
+          {
+            "start": "00:56",
+            "end": "01:23",
+            "channel": "visual",
+            "box_2d": [
+              538,
+              775,
+              768,
+              929
+            ],
+            "frame_time": "01:20",
+            "in_use": true,
+            "start_s": 56.0,
+            "end_s": 83.0,
+            "frame_s": 80.0
+          },
+          {
+            "start": "01:18",
+            "end": "01:21",
+            "channel": "audio",
+            "start_s": 78.0,
+            "end_s": 81.0
+          },
+          {
+            "start": "01:24",
+            "end": "01:48",
+            "channel": "visual",
+            "box_2d": [
+              390,
+              680,
+              584,
+              866
+            ],
+            "frame_time": "01:26",
+            "in_use": true,
+            "start_s": 84.0,
+            "end_s": 108.0,
+            "frame_s": 86.0
+          },
+          {
+            "start": "02:08",
+            "end": "02:14",
+            "channel": "text",
+            "box_2d": [
+              735,
+              439,
+              792,
+              597
+            ],
+            "frame_time": "02:12",
+            "in_use": false,
+            "start_s": 128.0,
+            "end_s": 134.0,
+            "frame_s": 132.0
+          },
+          {
+            "start": "02:15",
+            "end": "02:24",
+            "channel": "visual",
+            "box_2d": [
+              759,
+              439,
+              876,
+              574
+            ],
+            "frame_time": "02:17",
+            "in_use": true,
+            "start_s": 135.0,
+            "end_s": 144.0,
+            "frame_s": 137.0
+          },
+          {
+            "start": "02:32",
+            "end": "02:37",
+            "channel": "visual",
+            "box_2d": [
+              773,
+              622,
+              984,
+              824
+            ],
+            "frame_time": "02:34",
+            "in_use": true,
+            "start_s": 152.0,
+            "end_s": 157.0,
+            "frame_s": 154.0
+          },
+          {
+            "start": "02:38",
+            "end": "02:41",
+            "channel": "audio",
+            "start_s": 158.0,
+            "end_s": 161.0
+          },
+          {
+            "start": "02:41",
+            "end": "02:51",
+            "channel": "visual",
+            "box_2d": [
+              561,
+              624,
+              797,
+              856
+            ],
+            "frame_time": "02:49",
+            "in_use": true,
+            "start_s": 161.0,
+            "end_s": 171.0,
+            "frame_s": 169.0
+          },
+          {
+            "start": "02:52",
+            "end": "02:59",
+            "channel": "visual",
+            "box_2d": [
+              363,
+              417,
+              727,
+              672
+            ],
+            "frame_time": "02:55",
+            "in_use": true,
+            "start_s": 172.0,
+            "end_s": 179.0,
+            "frame_s": 175.0
+          },
+          {
+            "start": "03:07",
+            "end": "03:09",
+            "channel": "visual",
+            "box_2d": [
+              469,
+              396,
+              794,
+              631
+            ],
+            "frame_time": "03:08",
+            "in_use": false,
+            "start_s": 187.0,
+            "end_s": 189.0,
+            "frame_s": 188.0
+          },
+          {
+            "start": "03:14",
+            "end": "03:38",
+            "channel": "visual",
+            "box_2d": [
+              386,
+              381,
+              761,
+              631
+            ],
+            "frame_time": "03:18",
+            "in_use": true,
+            "start_s": 194.0,
+            "end_s": 218.0,
+            "frame_s": 198.0
+          }
+        ],
+        "product": "Orthopädisches Kissen"
+      }
+    ],
+    "authenticity": [
+      {
+        "brand": "Glückstoff",
+        "overall": 86,
+        "verdict": "The creator provides a well-structured and balanced product test, openly addressing personal downsides such as stomach sleeping height.",
+        "use_shown": {
+          "score": 88,
+          "evidence": "Shows realistic testing across back, side, and stomach sleeping positions, measuring height with a folding ruler and demonstrating foam density.",
+          "time": "01:33"
+        },
+        "balance": {
+          "score": 85,
+          "evidence": "Explicitly notes that it is slightly too high for stomach sleeping and explains that no pillow suits everyone.",
+          "time": "01:25"
+        },
+        "specificity": {
+          "score": 88,
+          "evidence": "Highlights specific practical use cases, like headphone/earbud comfort due to the center recess and washing instructions for the cover.",
+          "time": "02:48"
+        },
+        "delivery": {
+          "score": 84,
+          "evidence": "Evenly paced narrative with clear instructional tone and conversational camera cutaways.",
+          "time": "03:12"
+        },
+        "body_language": {
+          "score": 86,
+          "evidence": "Direct eye contact, natural handling of the pillow, and demonstrative hand gestures explaining spine alignment.",
+          "time": "00:34"
+        },
+        "sales_pressure": {
+          "score": 90,
+          "evidence": "No urgent promo codes or high-pressure selling; viewers are simply referred to the video description for links and test updates.",
+          "time": "03:36"
+        },
+        "product": "Orthopädisches Kissen"
+      }
+    ],
+    "disclosures": []
+  }
+}

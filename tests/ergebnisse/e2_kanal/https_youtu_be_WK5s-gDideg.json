@@ -1,0 +1,827 @@
+{
+ "events": [
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "resolve",
+    "status": "run",
+    "title": "Finding the channel",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "resolve",
+    "status": "done",
+    "title": "Alycia Marie",
+    "detail": "@alyciamarie · 830K subscribers · YouTube channel page + RSS feed · from the 6-hour cache, 0 units",
+    "at_s": 0,
+    "channel": {
+     "id": "UCDAhDUmNuxVaH3N5yHOnL3g",
+     "title": "Alycia Marie",
+     "handle": "@alyciamarie",
+     "avatar": "https://yt3.googleusercontent.com/1OceXkB8jK8gSC1so4BV0FqCmtEuJAJPZI5ri5_SKb0KesmvkiEsJtlN0InseW91VMfHBo1UD0U=s160-c-k-c0x00ffffff-no-rj",
+     "subscribers": "830K subscribers",
+     "video_count": 819,
+     "source": "youtube-page",
+     "fetched_at": "2026-11-25T14:56:50.847Z"
+    }
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "uploads",
+    "status": "done",
+    "title": "Latest uploads",
+    "detail": "25 videos, 2026-09-26 – 2026-11-24 · Shorts and live streams left out",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "library",
+    "status": "run",
+    "title": "Checking analyses we already have",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "library",
+    "status": "done",
+    "title": "Analyses we already have",
+    "detail": "1 analysed video of Alycia Marie (0 among the latest 25) – 0 requests",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "audience",
+    "status": "done",
+    "title": "Audience reactions",
+    "detail": "no comments cached yet – open a video's Audience tab to load them (not done here, to save quota)",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "confirm",
+   "data": {
+    "candidates": [
+     {
+      "id": "obb3-5SesMA",
+      "title": "BACKROOMS Inspired Makeup Tutorial (yes, I’m disturbed too)",
+      "views": 68000,
+      "duration_s": 875,
+      "published": "2026-10-29",
+      "approx": false,
+      "live": false,
+      "hint_score": 3,
+      "why": "ad hint in the description · shop links"
+     },
+     {
+      "id": "O5BbdO2Rubo",
+      "title": "I'm testing €5 XXL HALLOWEEN MYSTERY BOXES from ROFU (lowkey nice???)",
+      "views": 98000,
+      "duration_s": 904,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "hUGJdN2QnKQ",
+      "title": "⛓ CHAINED UP ⛓ SFX Makeup Tutorial #SPOOKTOBER",
+      "views": 86000,
+      "duration_s": 1124,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "a4ubAXxJUmg",
+      "title": "ANGLER FISH 🐠 SFX Makeup Tutorial #SPOOKTOBER",
+      "views": 77000,
+      "duration_s": 923,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     }
+    ],
+    "preselected": [
+     "obb3-5SesMA"
+    ],
+    "quota": {
+     "models": 4,
+     "exhausted": 0,
+     "used_requests": 0,
+     "left_requests": 80,
+     "free_per_model": 20,
+     "visitor_left": 10,
+     "visitor_cap": 10,
+     "reset_in_s": 61360,
+     "blocked": null
+    },
+    "max_new": 3,
+    "per_video_requests": 3
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "confirm",
+    "status": "skip",
+    "title": "Waiting for your OK",
+    "detail": "up to 3 new analyses (≈ 3 Gemini requests each) – the report below uses analysed videos only until you confirm",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "aggregate",
+    "status": "run",
+    "title": "Combining the results",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "aggregate",
+    "status": "done",
+    "title": "Combined the results",
+    "detail": "1 analysed video · 10 brands · 2 product fields",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "report",
+   "data": {
+    "channel": {
+     "id": "UCDAhDUmNuxVaH3N5yHOnL3g",
+     "title": "Alycia Marie",
+     "handle": "@alyciamarie",
+     "avatar": "https://yt3.googleusercontent.com/1OceXkB8jK8gSC1so4BV0FqCmtEuJAJPZI5ri5_SKb0KesmvkiEsJtlN0InseW91VMfHBo1UD0U=s160-c-k-c0x00ffffff-no-rj",
+     "subscribers": "830K subscribers",
+     "video_count": 819,
+     "source": "youtube-page",
+     "fetched_at": "2026-11-25T14:56:50.847Z"
+    },
+    "uploads": [
+     {
+      "id": "q6pD5pnyUGU",
+      "title": "We’re testing NERD ADVENT CALENDARS (ft. my super-nerd boyfriend)",
+      "views": 32000,
+      "duration_s": 2312,
+      "published": "2026-11-24",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "KMX1lUOIONg",
+      "title": "I'm testing CREATIVE ADVENT CALENDARS 🎨 are they worth the money?!",
+      "views": 63000,
+      "duration_s": 2901,
+      "published": "2026-11-22",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "0DlWPaSPXBw",
+      "title": "These HAIR ADVENT CALENDARS leave me SPEECHLESS... 👀 Dejan Garz vs. NEWSHA",
+      "views": 74000,
+      "duration_s": 3109,
+      "published": "2026-11-19",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "TxCJjh0mWEQ",
+      "title": "I'm testing NAIL ADVENT CALENDARS from Neonail & Jolifin! 💅🏻",
+      "views": 83000,
+      "duration_s": 3366,
+      "published": "2026-11-17",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "xnB2V9pdtEI",
+      "title": "Testing the KIKO vs. NABLA Advent Calendars 🇮🇹 (I expected something different...🫣)",
+      "views": 79000,
+      "duration_s": 2929,
+      "published": "2026-11-15",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "_eXTlpQstJ4",
+      "title": "Testing XXL Beauty Advent Calendars from P.LOUISE and Made By Mitchell (you asked for this)",
+      "views": 98000,
+      "duration_s": 3965,
+      "published": "2026-11-13",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "9RitL8E4NI8",
+      "title": "Are These the CRAZIEST Advent Calendars of 2026?? 👀 ASOS, Lookfantastic & Flaconi Unboxing!",
+      "views": 122000,
+      "duration_s": 4553,
+      "published": "2026-11-12",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "7SenowTMjHs",
+      "title": "Testing K-BEAUTY ADVENT CALENDARS from YesStyle & The Baerry! 😍",
+      "views": 82000,
+      "duration_s": 2568,
+      "published": "2026-11-08",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "Os5q1MJDYAU",
+      "title": "Testing DOUGLAS vs. SEPHORA Advent Calendars! (um... I'm a little disappointed 🫣)",
+      "views": 150000,
+      "duration_s": 3056,
+      "published": "2026-11-04",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "i8-vPYjPj2U",
+      "title": "We NEVER could have known… OVERNIGHT GHOST HUNT at Satzvey Castle | #GHOSTED",
+      "views": 195000,
+      "duration_s": 5675,
+      "published": "2026-10-31",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "obb3-5SesMA",
+      "title": "BACKROOMS Inspired Makeup Tutorial (yes, I’m disturbed too)",
+      "views": 68000,
+      "duration_s": 875,
+      "published": "2026-10-29",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "QW082KwnmCA",
+      "title": "We CANNOT EXPLAIN what happened AFTER MIDNIGHT in the ABANDONED BARRACKS… | #GHOSTED",
+      "views": 167000,
+      "duration_s": 5104,
+      "published": "2026-10-28",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "RLUGjZ7Y3ms",
+      "title": "Testing VIRAL COLORING BOOK TRENDS... *Halloween Edition* 🦇 Will it work? 🎨",
+      "views": 188000,
+      "duration_s": 1837,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "PZcnQReBO7k",
+      "title": "The TOP 10 MOST HAUNTED Items in the World 💀",
+      "views": 115000,
+      "duration_s": 1575,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "VeVe6Map07g",
+      "title": "GHOST VOICE caught on camera?! OVERNIGHT in an ABANDONED SANATORIUM - #GHOSTED",
+      "views": 190000,
+      "duration_s": 3765,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "a4ubAXxJUmg",
+      "title": "ANGLER FISH 🐠 SFX Makeup Tutorial #SPOOKTOBER",
+      "views": 77000,
+      "duration_s": 923,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "O5BbdO2Rubo",
+      "title": "I'm testing €5 XXL HALLOWEEN MYSTERY BOXES from ROFU (lowkey nice???)",
+      "views": 98000,
+      "duration_s": 904,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "4e0nvTg2Gr8",
+      "title": "We are NOT WELCOME here… Alone at NIGHT in the BLOOD PRISON - #GHOSTED",
+      "views": 247000,
+      "duration_s": 4706,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "hUGJdN2QnKQ",
+      "title": "⛓ CHAINED UP ⛓ SFX Makeup Tutorial #SPOOKTOBER",
+      "views": 86000,
+      "duration_s": 1124,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "40t_EIPodN0",
+      "title": "I'm testing ALL the Halloween MYSTERY BOXES from Maskworld 💀 (I regret everything)",
+      "views": 153000,
+      "duration_s": 1643,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "c4-UBd0r-1Q",
+      "title": "Your discoveries from the Ghost Hunts are CRAZY! 🫣 #GHOSTED: Double Text",
+      "views": 155000,
+      "duration_s": 2208,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "wDp_DyT8nz4",
+      "title": "SFX for Beginners: Starter Kit + All Tips & Tricks!! 🦇 #SPOOKTOBER",
+      "views": 98000,
+      "duration_s": 1313,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "xoL_ZB-9e8Q",
+      "title": "I'm buying ALL the leftover products at SEPHORA ☠️ (and giving them to you)",
+      "views": 150000,
+      "duration_s": 1571,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "XWXWvOVETCQ",
+      "title": "I'm buying Amazon HALLOWEEN BESTSELLERS under $20 💸🎃 (WHO actually needs this?!)",
+      "views": 174000,
+      "duration_s": 1821,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "CyYfehL-Fmw",
+      "title": "I'm bringing viral AI slop TO LIFE 🫣 *AI vs. REALITY*",
+      "views": 161000,
+      "duration_s": 2739,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     }
+    ],
+    "summary": {
+     "query": null,
+     "generated_at": "2026-11-25T14:57:19.906Z",
+     "spread": 0.5,
+     "totals": {
+      "videos": 1,
+      "checked": 1,
+      "not_found": 0,
+      "views": 253094,
+      "screen_s": 766,
+      "screen_range": {
+       "low": 383,
+       "high": 1149
+      },
+      "spoken_s": 0,
+      "mentions": 0,
+      "value": {
+       "low": 5479.9695040958695,
+       "mid": 11271.31938122645,
+       "high": 21717.562039239674
+      },
+      "in_use": 0,
+      "commercial": 1,
+      "paid": 1,
+      "labelled": 1,
+      "weak": 0,
+      "unlabelled": 0,
+      "no_signals": 0
+     },
+     "videos": [
+      {
+       "id": "WK5s-gDideg",
+       "title": "OMG!! 😨 RIESIGES PR UNBOXING mit XXL ÜBERRASCHUNG! (Werbung, Markennennung)",
+       "channel": "Alycia Marie",
+       "views": 253094,
+       "duration_s": 1051,
+       "upload_date": "2017-12-08",
+       "analyzed_at": "2026-11-20",
+       "found": true,
+       "brands": [
+        "Benefit",
+        "BH Cosmetics",
+        "Zoeva",
+        "beautyblender",
+        "Lush",
+        "The Body Shop",
+        "Maybelline",
+        "Glossybox",
+        "Eyeko",
+        "Anastasia Beverly Hills"
+       ],
+       "products": [],
+       "category": null,
+       "screen_s": 766,
+       "screen_range": {
+        "low": 383,
+        "high": 1149
+       },
+       "spoken_s": 0,
+       "text_s": 0,
+       "mentions": 0,
+       "shown": true,
+       "in_use": false,
+       "background_only": false,
+       "value": {
+        "low": 5479.9695040958695,
+        "mid": 11271.31938122645,
+        "high": 21717.562039239674
+       },
+       "value_range": {
+        "low": 5479.9695040958695,
+        "mid": 11271.31938122645,
+        "high": 21717.562039239674
+       },
+       "paid": true,
+       "disclosure": {
+        "level": "green",
+        "label": "Labelled",
+        "title": "Disclosure found",
+        "signals": [
+         "Gemini rates the video as paid or gifted promotion",
+         "Shop / affiliate link in description (\"bit.ly\")",
+         "Products are actively recommended"
+        ]
+       },
+       "others": [],
+       "sponsors": [
+        {
+         "brand": "Benefit",
+         "kind": "paid"
+        },
+        {
+         "brand": "BH Cosmetics",
+         "kind": "paid"
+        },
+        {
+         "brand": "Zoeva",
+         "kind": "paid"
+        },
+        {
+         "brand": "beautyblender",
+         "kind": "paid"
+        }
+       ],
+       "source": "demo"
+      }
+     ],
+     "not_found": [],
+     "creators": [
+      {
+       "channel": "Alycia Marie",
+       "videos": 1,
+       "views": 253094,
+       "screen_s": 766,
+       "value_mid": 11271.31938122645,
+       "labelled": 1,
+       "unlabelled": 0
+      }
+     ],
+     "months": [
+      {
+       "month": "2017-12",
+       "videos": 1,
+       "value_mid": 11271.31938122645,
+       "value_low": 5479.9695040958695,
+       "value_high": 21717.562039239674,
+       "labelled": 1,
+       "unlabelled": 0,
+       "sponsors": [
+        {
+         "brand": "Benefit",
+         "kind": "paid"
+        },
+        {
+         "brand": "BH Cosmetics",
+         "kind": "paid"
+        },
+        {
+         "brand": "Zoeva",
+         "kind": "paid"
+        },
+        {
+         "brand": "beautyblender",
+         "kind": "paid"
+        }
+       ]
+      }
+     ],
+     "brands": [
+      {
+       "brand": "Benefit",
+       "category": null,
+       "videos": 1,
+       "screen_s": 160
+      },
+      {
+       "brand": "BH Cosmetics",
+       "category": null,
+       "videos": 1,
+       "screen_s": 130
+      },
+      {
+       "brand": "Zoeva",
+       "category": null,
+       "videos": 1,
+       "screen_s": 88
+      },
+      {
+       "brand": "beautyblender",
+       "category": null,
+       "videos": 1,
+       "screen_s": 87
+      },
+      {
+       "brand": "Lush",
+       "category": null,
+       "videos": 1,
+       "screen_s": 82
+      },
+      {
+       "brand": "The Body Shop",
+       "category": null,
+       "videos": 1,
+       "screen_s": 76
+      },
+      {
+       "brand": "Maybelline",
+       "category": null,
+       "videos": 1,
+       "screen_s": 44
+      },
+      {
+       "brand": "Glossybox",
+       "category": null,
+       "videos": 1,
+       "screen_s": 41
+      },
+      {
+       "brand": "Eyeko",
+       "category": null,
+       "videos": 1,
+       "screen_s": 30
+      },
+      {
+       "brand": "Anastasia Beverly Hills",
+       "category": null,
+       "videos": 1,
+       "screen_s": 28
+      }
+     ],
+     "findings": [
+      {
+       "kind": "info",
+       "id": "paid_labelled",
+       "title": "1 paid or gifted video, labelled correctly",
+       "text": "Commercial content with a clear label.",
+       "videos": [
+        {
+         "id": "WK5s-gDideg",
+         "title": "OMG!! 😨 RIESIGES PR UNBOXING mit XXL ÜBERRASCHUNG! (Werbung, Markennennung)",
+         "channel": "Alycia Marie"
+        }
+       ]
+      },
+      {
+       "kind": "note",
+       "id": "spread",
+       "title": "Screen time and value are ranges",
+       "text": "Two analyses of the same video agree on only about half of the on-screen seconds (test M4), so screen time is shown ±50 %. The value range (cautious to generous scenario, as in each video's Media value view) is about as wide. Video counts and disclosure verdicts are more stable.",
+       "videos": []
+      }
+     ]
+    },
+    "placements": [
+     {
+      "id": "WK5s-gDideg",
+      "upload_date": "2017-12-08",
+      "brand": "Benefit",
+      "category": "",
+      "group": "other",
+      "screen_s": 160,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "WK5s-gDideg",
+      "upload_date": "2017-12-08",
+      "brand": "BH Cosmetics",
+      "category": "",
+      "group": "other",
+      "screen_s": 130,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "WK5s-gDideg",
+      "upload_date": "2017-12-08",
+      "brand": "Zoeva",
+      "category": "",
+      "group": "other",
+      "screen_s": 88,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "WK5s-gDideg",
+      "upload_date": "2017-12-08",
+      "brand": "beautyblender",
+      "category": "",
+      "group": "other",
+      "screen_s": 87,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "WK5s-gDideg",
+      "upload_date": "2017-12-08",
+      "brand": "Lush",
+      "category": "",
+      "group": "other",
+      "screen_s": 82,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "WK5s-gDideg",
+      "upload_date": "2017-12-08",
+      "brand": "The Body Shop",
+      "category": "",
+      "group": "other",
+      "screen_s": 76,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "WK5s-gDideg",
+      "upload_date": "2017-12-08",
+      "brand": "Maybelline",
+      "category": "",
+      "group": "beauty",
+      "screen_s": 44,
+      "level": "green",
+      "paid": true,
+      "group_from": "library"
+     },
+     {
+      "id": "WK5s-gDideg",
+      "upload_date": "2017-12-08",
+      "brand": "Glossybox",
+      "category": "",
+      "group": "other",
+      "screen_s": 41,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "WK5s-gDideg",
+      "upload_date": "2017-12-08",
+      "brand": "Eyeko",
+      "category": "",
+      "group": "other",
+      "screen_s": 30,
+      "level": "green",
+      "paid": true
+     },
+     {
+      "id": "WK5s-gDideg",
+      "upload_date": "2017-12-08",
+      "brand": "Anastasia Beverly Hills",
+      "category": "",
+      "group": "beauty",
+      "screen_s": 28,
+      "level": "green",
+      "paid": true,
+      "group_from": "library"
+     }
+    ],
+    "groups": [
+     {
+      "group": "other",
+      "label": "Other",
+      "placements": 8,
+      "share": 0.8,
+      "brands": [
+       "Benefit",
+       "BH Cosmetics",
+       "Zoeva",
+       "beautyblender",
+       "Lush",
+       "The Body Shop",
+       "Glossybox",
+       "Eyeko"
+      ],
+      "videos": 1
+     },
+     {
+      "group": "beauty",
+      "label": "Beauty & care",
+      "placements": 2,
+      "share": 0.2,
+      "brands": [
+       "Maybelline",
+       "Anastasia Beverly Hills"
+      ],
+      "videos": 1
+     }
+    ],
+    "audience": {},
+    "cost": {
+     "units": 0,
+     "cached": true,
+     "gemini_requests": 0,
+     "new_analyses": 0,
+     "kv_reads": 0
+    },
+    "pending": 4,
+    "seconds": 0
+   }
+  }
+ ],
+ "seconds": 0
+}

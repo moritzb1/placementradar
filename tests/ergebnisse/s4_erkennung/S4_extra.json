@@ -1,0 +1,78 @@
+{
+ "ablation: clean photos only": {
+  "original": {
+   "n": 5189,
+   "answered": 0.476,
+   "right": 2423,
+   "wrong": 49,
+   "precision": 0.98,
+   "recall": 0.467
+  },
+  "webcam": {
+   "n": 5189,
+   "answered": 0.113,
+   "right": 558,
+   "wrong": 26,
+   "precision": 0.955,
+   "recall": 0.108
+  },
+  "false_alarm_unknown_v2": 0.024
+ },
+ "ablation: clean + 3 webcam views": {
+  "original": {
+   "n": 5189,
+   "answered": 0.451,
+   "right": 2265,
+   "wrong": 74,
+   "precision": 0.968,
+   "recall": 0.437
+  },
+  "webcam": {
+   "n": 5189,
+   "answered": 0.155,
+   "right": 767,
+   "wrong": 36,
+   "precision": 0.955,
+   "recall": 0.148
+  },
+  "false_alarm_unknown_v2": 0.037
+ },
+ "unknown_v1_with_real_brands": {
+  "v1": {
+   "no_brand_recorded": 53,
+   "no_brand_recorded_answered": 3,
+   "now_a_class_named_right": 0,
+   "now_a_class_named_wrong": 0,
+   "now_a_class_silent": 1,
+   "foreign_packs": 92,
+   "foreign_false_alarms": 7,
+   "false_alarm_list": [
+    "Naturis → Solevita",
+    "Schwartauer Corny → Corny",
+    "SugarLand, Sweet Corner → Coca-Cola",
+    "Old El Paso → Chio",
+    "Rewe → Rewe Bio",
+    "Freeway, MEG Weißenfels → Coca-Cola",
+    "Rewe → ja!"
+   ],
+   "false_alarm_rate": 0.076
+  },
+  "v2": {
+   "no_brand_recorded": 53,
+   "no_brand_recorded_answered": 13,
+   "now_a_class_named_right": 31,
+   "now_a_class_named_wrong": 0,
+   "now_a_class_silent": 23,
+   "foreign_packs": 39,
+   "foreign_false_alarms": 5,
+   "false_alarm_list": [
+    "Naturis → Solevita",
+    "Schwartauer Corny → Corny",
+    "M Classic → Nutella",
+    "Nestlé → Nesquik",
+    "Lidl → Select & Go"
+   ],
+   "false_alarm_rate": 0.128
+  }
+ }
+}

@@ -1,0 +1,200 @@
+{
+ "made": "2026-11-23",
+ "source": "sponsor.ajay.app (CC BY-NC-SA 4.0)",
+ "summary": {
+  "videos": 14,
+  "with_sponsorblock_entry": 4,
+  "sb_paid": 1,
+  "app_commercial_when_sb_paid": 1,
+  "sponsor_segments": 1,
+  "segments_with_app_disclosure": 1,
+  "app_commercial_without_sb": 12
+ },
+ "rows": [
+  {
+   "id": "-pTGc7cIBIA",
+   "src": "example",
+   "title": "My Everyday Tech: 2022!",
+   "sb": [
+    "selfpromo 13:58–14:04 (votes 0)"
+   ],
+   "sbPaid": false,
+   "selfpromo": true,
+   "app": "orange",
+   "gemini_paid": false,
+   "agree": null,
+   "timed": []
+  },
+  {
+   "id": "2CqNFIn1AEo",
+   "src": "example",
+   "title": "Over-Ear Kopfhörer 2026: Welche lohnen sich wirkli",
+   "sb": [
+    "selfpromo 5:28–5:40 (votes 0)"
+   ],
+   "sbPaid": false,
+   "selfpromo": true,
+   "app": "red",
+   "gemini_paid": false,
+   "agree": null,
+   "timed": []
+  },
+  {
+   "id": "2fAruP6qKd4",
+   "src": "example",
+   "title": "Glückstoff orthopädisches Kopfkissen im Test – Sch",
+   "sb": [],
+   "sbPaid": false,
+   "selfpromo": false,
+   "app": "red",
+   "gemini_paid": true,
+   "agree": null,
+   "timed": []
+  },
+  {
+   "id": "VnBZfauMR5M",
+   "src": "example",
+   "title": "What’s in my Bag 🎀✨ 45 Must Haves aus meiner Hand",
+   "sb": [],
+   "sbPaid": false,
+   "selfpromo": false,
+   "app": "green",
+   "gemini_paid": true,
+   "agree": null,
+   "timed": []
+  },
+  {
+   "id": "WK5s-gDideg",
+   "src": "example",
+   "title": "OMG!! 😨 RIESIGES PR UNBOXING mit XXL ÜBERRASCHUNG",
+   "sb": [],
+   "sbPaid": false,
+   "selfpromo": false,
+   "app": "green",
+   "gemini_paid": true,
+   "agree": null,
+   "timed": []
+  },
+  {
+   "id": "dhFY1yo83d4",
+   "src": "example",
+   "title": "What's in my Bag? These are the essentials",
+   "sb": [],
+   "sbPaid": false,
+   "selfpromo": false,
+   "app": "orange",
+   "gemini_paid": true,
+   "agree": null,
+   "timed": []
+  },
+  {
+   "id": "ip_R5z7tNvo",
+   "src": "example",
+   "title": "BIKE TEST: mein neues E Bike! Das Rose FILE PLUS",
+   "sb": [],
+   "sbPaid": false,
+   "selfpromo": false,
+   "app": "green",
+   "gemini_paid": true,
+   "agree": null,
+   "timed": []
+  },
+  {
+   "id": "irY6mKSCT0w",
+   "src": "example",
+   "title": "8 geniale Auto-Gadgets die 2025 ein MUSS für jeden",
+   "sb": [
+    "selfpromo 1:41–1:49 (votes 0)"
+   ],
+   "sbPaid": false,
+   "selfpromo": true,
+   "app": "red",
+   "gemini_paid": true,
+   "agree": null,
+   "timed": []
+  },
+  {
+   "id": "wtDyhM_18Yo",
+   "src": "example",
+   "title": "2019 BMW X5 vs 2019 Volvo XC90 - CRASH TEST",
+   "sb": [],
+   "sbPaid": false,
+   "selfpromo": false,
+   "app": "none",
+   "gemini_paid": false,
+   "agree": null,
+   "timed": []
+  },
+  {
+   "id": "y1LUkfpTtu0",
+   "src": "example",
+   "title": "The Best Cheap Espresso Setup (£250 Budget)",
+   "sb": [
+    "selfpromo 12:44–12:56 (votes 3)",
+    "sponsor 12:56–13:42 (votes 4)"
+   ],
+   "sbPaid": true,
+   "selfpromo": true,
+   "app": "orange",
+   "gemini_paid": true,
+   "agree": true,
+   "timed": [
+    {
+     "seg": [
+      776,
+      822
+     ],
+     "app_disclosure": "13:40 sponsor: Thanks to Morning Brew for sponsoring this video"
+    }
+   ]
+  },
+  {
+   "id": "6DMUMgQyVtc",
+   "src": "gallery",
+   "title": "The ULTIMATE PC Gaming & Mac Desk Setup - 2025",
+   "sb": [],
+   "sbPaid": false,
+   "selfpromo": false,
+   "app": "green",
+   "gemini_paid": true,
+   "agree": null,
+   "timed": []
+  },
+  {
+   "id": "YAEVnzbyq40",
+   "src": "gallery",
+   "title": "Mein echter 7 Tage Fitness Einkauf für Muskelaufba",
+   "sb": [],
+   "sbPaid": false,
+   "selfpromo": false,
+   "app": "green",
+   "gemini_paid": true,
+   "agree": null,
+   "timed": []
+  },
+  {
+   "id": "eLAVGYQCkQI",
+   "src": "gallery",
+   "title": "What’s on My Desk 2025 | Clean, Modern & Productiv",
+   "sb": [],
+   "sbPaid": false,
+   "selfpromo": false,
+   "app": "red",
+   "gemini_paid": false,
+   "agree": null,
+   "timed": []
+  },
+  {
+   "id": "xRZSftRtB-s",
+   "src": "gallery",
+   "title": "100€ FITNESS WOCHENEINKAUF 🛒 | Meine Empfehlung b",
+   "sb": [],
+   "sbPaid": false,
+   "selfpromo": false,
+   "app": "orange",
+   "gemini_paid": true,
+   "agree": null,
+   "timed": []
+  }
+ ]
+}

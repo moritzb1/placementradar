@@ -1,0 +1,85 @@
+# Vorschlag (Claude, Raster alle 2 s, 200-px-Bilder) – Sekunde(n): Produkte. Bereiche a-b inklusiv, Schritt 2 s.
+# L=LG 43" Monitor  A=Apple Mac mini  S=Sonos Lautsprecher  K=Keychron Tastatur  O=LEGO Orchidee  Q=Quntis Lichtleiste
+# M=Sennheiser Profile Mikro  D=Samsung SSD  H=Seagate HDD   W = Totale = L S Q A O K   T = Sprecher vor Monitor = L
+0-2: W ?
+4: S
+6: L Q
+8: S L
+10: M A L
+12-24: L
+26-28: W ?
+30-48: L
+50-58: W ?
+60: L
+62-64: W ?
+66: L
+68-70: -
+72: L
+74-78: -
+80-86: L
+88-90: A M L
+92: L
+94-96: K L S
+98-100: L
+102-106: A L M
+108: L
+110: W ?
+112: L
+114-116: A L
+118-126: L
+128: L
+130-134: D M A L
+136: L
+138: D M A L
+140-142: L
+144-148: H O M L
+150-160: L
+162-170: W ?
+172-178: L
+180-190: W ?
+192-200: L
+202: W ?
+204: L
+206-210: W ?
+212: L
+214-216: L Q
+218-220: A L
+222: L
+224-228: W ?
+230: L
+232-238: K S
+240: L
+242-244: S K L
+246: L
+248-250: W ?
+252: L
+254: K
+256: K L A
+258-264: K A L S
+266-292: L
+294: K
+296: L
+298-300: K
+302: L
+304-306: K L M S
+308: L
+310-314: K L M S
+316-334: L
+336-340: M A L S
+342: L
+344-346: M A
+348: L
+350-354: M A L S
+356-358: L
+360-366: W ?
+368: L
+370-378: S O L A
+380: L
+382: O S L
+384-386: O S M A L
+388-390: O S M A L
+392: L
+394-400: W ?
+402: L
+404-406: O S M L
+408-462: L

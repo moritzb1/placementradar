@@ -1,0 +1,676 @@
+{
+ "events": [
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "resolve",
+    "status": "run",
+    "title": "Finding the channel",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "resolve",
+    "status": "done",
+    "title": "Sascha Huber",
+    "detail": "@SaschaHuber · 1.79M subscribers · YouTube channel page + RSS feed · from the 6-hour cache, 0 units",
+    "at_s": 0,
+    "channel": {
+     "id": "UCl5_liU7CWXwkGU3Vf3UGNQ",
+     "title": "Sascha Huber",
+     "handle": "@SaschaHuber",
+     "avatar": "https://yt3.googleusercontent.com/ytc/AIdro_n5MEnO-3No4HVIiLnI5YoxZmpR61-qXy-qVg0rF4ZkVNxo=s160-c-k-c0x00ffffff-no-rj",
+     "subscribers": "1.79M subscribers",
+     "video_count": 706,
+     "source": "youtube-page",
+     "fetched_at": "2026-11-25T14:56:51.353Z"
+    }
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "uploads",
+    "status": "done",
+    "title": "Latest uploads",
+    "detail": "25 videos, 2026-04-29 – 2026-11-22 · Shorts and live streams left out",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "library",
+    "status": "run",
+    "title": "Checking analyses we already have",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "library",
+    "status": "done",
+    "title": "Analyses we already have",
+    "detail": "1 analysed video of Sascha Huber (0 among the latest 25) – 0 requests",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "audience",
+    "status": "done",
+    "title": "Audience reactions",
+    "detail": "no comments cached yet – open a video's Audience tab to load them (not done here, to save quota)",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "confirm",
+   "data": {
+    "candidates": [
+     {
+      "id": "NsyI29znUU4",
+      "title": "I'm competing in the lumberjack world championship! 🇦🇹",
+      "views": 99000,
+      "duration_s": 646,
+      "published": "2026-11-04",
+      "approx": false,
+      "live": false,
+      "hint_score": 2,
+      "why": "ad hint in the description"
+     },
+     {
+      "id": "NffP05mDP8M",
+      "title": "Protein Kaiserschmarrn like on the mountain pasture 🇦🇹 | 60g protein, 4 ingredients",
+      "views": 50000,
+      "duration_s": 471,
+      "published": "2026-11-22",
+      "approx": false,
+      "live": false,
+      "hint_score": 2,
+      "why": "ad hint in the description"
+     },
+     {
+      "id": "VUF4Jezu54Y",
+      "title": "10 Min Stability Workout | Hips, Knees, and Spine",
+      "views": 30000,
+      "duration_s": 842,
+      "published": "2026-11-11",
+      "approx": false,
+      "live": false,
+      "hint_score": 2,
+      "why": "ad hint in the description"
+     },
+     {
+      "id": "K-TV8fMn2xg",
+      "title": "10 Men Believe They Have a Chance Against a Pro Sprinter",
+      "views": 995000,
+      "duration_s": 997,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "G-wNftEUjJY",
+      "title": "I’m Testing Tom Holland’s Viral 20-Minute Workout (Spider-Man)",
+      "views": 254000,
+      "duration_s": 814,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "CMvQp718sxA",
+      "title": "100 days wasn't enough...",
+      "views": 127000,
+      "duration_s": 941,
+      "published": "2026-06-28",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "h8z5luVtNtQ",
+      "title": "10 Min. HIIT Workout at Home | Solo or With a Partner | Sascha Huber + Paulina Wallner",
+      "views": 95000,
+      "duration_s": 785,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     },
+     {
+      "id": "gB5dESQuy-E",
+      "title": "100 Days of Cold Showers Every Morning - This Is What Really Happened!",
+      "views": 87000,
+      "duration_s": 667,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "hint_score": 0,
+      "why": "latest upload"
+     }
+    ],
+    "preselected": [
+     "NsyI29znUU4",
+     "NffP05mDP8M",
+     "VUF4Jezu54Y"
+    ],
+    "quota": {
+     "models": 4,
+     "exhausted": 0,
+     "used_requests": 0,
+     "left_requests": 80,
+     "free_per_model": 20,
+     "visitor_left": 10,
+     "visitor_cap": 10,
+     "reset_in_s": 61360,
+     "blocked": null
+    },
+    "max_new": 3,
+    "per_video_requests": 3
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "confirm",
+    "status": "skip",
+    "title": "Waiting for your OK",
+    "detail": "up to 3 new analyses (≈ 3 Gemini requests each) – the report below uses analysed videos only until you confirm",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "aggregate",
+    "status": "run",
+    "title": "Combining the results",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "aggregate",
+    "status": "done",
+    "title": "Combined the results",
+    "detail": "1 analysed video · 1 brands · 1 product field",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "report",
+   "data": {
+    "channel": {
+     "id": "UCl5_liU7CWXwkGU3Vf3UGNQ",
+     "title": "Sascha Huber",
+     "handle": "@SaschaHuber",
+     "avatar": "https://yt3.googleusercontent.com/ytc/AIdro_n5MEnO-3No4HVIiLnI5YoxZmpR61-qXy-qVg0rF4ZkVNxo=s160-c-k-c0x00ffffff-no-rj",
+     "subscribers": "1.79M subscribers",
+     "video_count": 706,
+     "source": "youtube-page",
+     "fetched_at": "2026-11-25T14:56:51.353Z"
+    },
+    "uploads": [
+     {
+      "id": "NffP05mDP8M",
+      "title": "Protein Kaiserschmarrn like on the mountain pasture 🇦🇹 | 60g protein, 4 ingredients",
+      "views": 50000,
+      "duration_s": 471,
+      "published": "2026-11-22",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "kRdL1HzU2Ew",
+      "title": "10 Men Who Think They Stand a Chance Against a Pro Arm Wrestler",
+      "views": 271000,
+      "duration_s": 1829,
+      "published": "2026-11-15",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "VUF4Jezu54Y",
+      "title": "10 Min Stability Workout | Hips, Knees, and Spine",
+      "views": 30000,
+      "duration_s": 842,
+      "published": "2026-11-11",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "cI7Lq4vLFDs",
+      "title": "Pepper spray and hand-to-hand combat with the Military Police!",
+      "views": 254000,
+      "duration_s": 1573,
+      "published": "2026-11-08",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "NsyI29znUU4",
+      "title": "I'm competing in the lumberjack world championship! 🇦🇹",
+      "views": 99000,
+      "duration_s": 646,
+      "published": "2026-11-04",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "Uf3Evrn4QOs",
+      "title": "Firefight and Arrest | 1 Day with the Military Police | Episode 2",
+      "views": 472000,
+      "duration_s": 2566,
+      "published": "2026-11-01",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "iqqc55B6gpU",
+      "title": "4,000 burpees across a Formula 1 track | World record",
+      "views": 148000,
+      "duration_s": 1487,
+      "published": "2026-10-28",
+      "approx": false,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "xIboCzv4qPs",
+      "title": "1 Day with the Military Police | Personal Security and Driver Training",
+      "views": 438000,
+      "duration_s": 1560,
+      "published": "2026-10-28",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "peBy8anhuho",
+      "title": "I'm hunting for the sickest home gym | Episode 1",
+      "views": 80000,
+      "duration_s": 1610,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "h8z5luVtNtQ",
+      "title": "10 Min. HIIT Workout at Home | Solo or With a Partner | Sascha Huber + Paulina Wallner",
+      "views": 95000,
+      "duration_s": 785,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "K-TV8fMn2xg",
+      "title": "10 Men Believe They Have a Chance Against a Pro Sprinter",
+      "views": 995000,
+      "duration_s": 997,
+      "published": "2026-10-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "Jmm3Smbp9KM",
+      "title": "10-Minute Athletic & Explosive Workout | PLYO HIIT",
+      "views": 61000,
+      "duration_s": 873,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "UhaeAyIVn78",
+      "title": "100 Days from Gym Bro to Ironman | The Documentary",
+      "views": 603000,
+      "duration_s": 2888,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "hELrCjVGexY",
+      "title": "RedBullSecretWorkoutTour VLOG v4 UHD",
+      "views": 52000,
+      "duration_s": 2398,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "FW_lL9-jiU8",
+      "title": "From Gym Rat to Ballerina | Sascha Huber Tries Ballet",
+      "views": 308000,
+      "duration_s": 1612,
+      "published": "2026-09-26",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "gB5dESQuy-E",
+      "title": "100 Days of Cold Showers Every Morning - This Is What Really Happened!",
+      "views": 87000,
+      "duration_s": 667,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "G-wNftEUjJY",
+      "title": "I’m Testing Tom Holland’s Viral 20-Minute Workout (Spider-Man)",
+      "views": 254000,
+      "duration_s": 814,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "RQQcElKUqG0",
+      "title": "DON'T BUY WHEY! This is the cheapest alternative",
+      "views": 40000,
+      "duration_s": 974,
+      "published": "2026-08-27",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "NGejhyMYjao",
+      "title": "Ironman - The battle begins!",
+      "views": 154000,
+      "duration_s": 2169,
+      "published": "2026-06-28",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "CMvQp718sxA",
+      "title": "100 days wasn't enough...",
+      "views": 127000,
+      "duration_s": 941,
+      "published": "2026-06-28",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "r1pavB_Pq4A",
+      "title": "I can't take it anymore! How am I supposed to do this?",
+      "views": 43000,
+      "duration_s": 763,
+      "published": "2026-05-29",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "WcdAfpJJLUA",
+      "title": "The first endurance test: Half marathon before the Ironman",
+      "views": 49000,
+      "duration_s": 890,
+      "published": "2026-05-29",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "1r4Z1Ii5UPw",
+      "title": "I'm testing the best/worst fitness gadgets!",
+      "views": 31000,
+      "duration_s": 859,
+      "published": "2026-05-29",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "hjpK_rn4Hrc",
+      "title": "The hardest run of my life broke me...",
+      "views": 54000,
+      "duration_s": 1344,
+      "published": "2026-05-29",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     },
+     {
+      "id": "FbTeKplhdi0",
+      "title": "48 HOURS IN HELL - Ultimate Run escalates completely!",
+      "views": 69000,
+      "duration_s": 1252,
+      "published": "2026-04-29",
+      "approx": true,
+      "live": false,
+      "analysed": null
+     }
+    ],
+    "summary": {
+     "query": null,
+     "generated_at": "2026-11-25T14:57:19.990Z",
+     "spread": 0.5,
+     "totals": {
+      "videos": 1,
+      "checked": 1,
+      "not_found": 0,
+      "views": 1249548,
+      "screen_s": 21,
+      "screen_range": {
+       "low": 11,
+       "high": 32
+      },
+      "spoken_s": 21,
+      "mentions": 1,
+      "value": {
+       "low": 893.945846779054,
+       "mid": 2008.1597776317565,
+       "high": 4178.302240697636
+      },
+      "in_use": 0,
+      "commercial": 1,
+      "paid": 1,
+      "labelled": 1,
+      "weak": 0,
+      "unlabelled": 0,
+      "no_signals": 0
+     },
+     "videos": [
+      {
+       "id": "YAEVnzbyq40",
+       "title": "Mein echter 7 Tage Fitness Einkauf für Muskelaufbau | Gesund & Günstig bei Aldi",
+       "channel": "Sascha Huber",
+       "views": 1249548,
+       "duration_s": 666,
+       "upload_date": "2019-12-18",
+       "analyzed_at": "2026-11-20",
+       "found": true,
+       "brands": [
+        "Prozis"
+       ],
+       "products": [],
+       "category": null,
+       "screen_s": 21,
+       "screen_range": {
+        "low": 11,
+        "high": 32
+       },
+       "spoken_s": 21,
+       "text_s": 0,
+       "mentions": 1,
+       "shown": true,
+       "in_use": false,
+       "background_only": false,
+       "value": {
+        "low": 893.945846779054,
+        "mid": 2008.1597776317565,
+        "high": 4178.302240697636
+       },
+       "value_range": {
+        "low": 893.945846779054,
+        "mid": 2008.1597776317565,
+        "high": 4178.302240697636
+       },
+       "paid": true,
+       "disclosure": {
+        "level": "green",
+        "label": "Labelled",
+        "title": "Disclosure found",
+        "signals": [
+         "Gemini rates the video as paid or gifted promotion",
+         "Shop / affiliate link in description (\"bit.ly\")",
+         "Products are actively recommended"
+        ]
+       },
+       "others": [],
+       "sponsors": [
+        {
+         "brand": "Prozis",
+         "kind": "paid"
+        }
+       ],
+       "source": "store"
+      }
+     ],
+     "not_found": [],
+     "creators": [
+      {
+       "channel": "Sascha Huber",
+       "videos": 1,
+       "views": 1249548,
+       "screen_s": 21,
+       "value_mid": 2008.1597776317565,
+       "labelled": 1,
+       "unlabelled": 0
+      }
+     ],
+     "months": [
+      {
+       "month": "2019-12",
+       "videos": 1,
+       "value_mid": 2008.1597776317565,
+       "value_low": 893.945846779054,
+       "value_high": 4178.302240697636,
+       "labelled": 1,
+       "unlabelled": 0,
+       "sponsors": [
+        {
+         "brand": "Prozis",
+         "kind": "paid"
+        }
+       ]
+      }
+     ],
+     "brands": [
+      {
+       "brand": "Prozis",
+       "category": null,
+       "videos": 1,
+       "screen_s": 21
+      }
+     ],
+     "findings": [
+      {
+       "kind": "info",
+       "id": "paid_labelled",
+       "title": "1 paid or gifted video, labelled correctly",
+       "text": "Commercial content with a clear label.",
+       "videos": [
+        {
+         "id": "YAEVnzbyq40",
+         "title": "Mein echter 7 Tage Fitness Einkauf für Muskelaufbau | Gesund & Günstig bei Aldi",
+         "channel": "Sascha Huber"
+        }
+       ]
+      },
+      {
+       "kind": "note",
+       "id": "spread",
+       "title": "Screen time and value are ranges",
+       "text": "Two analyses of the same video agree on only about half of the on-screen seconds (test M4), so screen time is shown ±50 %. The value range (cautious to generous scenario, as in each video's Media value view) is about as wide. Video counts and disclosure verdicts are more stable.",
+       "videos": []
+      }
+     ]
+    },
+    "placements": [
+     {
+      "id": "YAEVnzbyq40",
+      "upload_date": "2019-12-18",
+      "brand": "Prozis",
+      "category": "",
+      "group": "other",
+      "screen_s": 21,
+      "level": "green",
+      "paid": true
+     }
+    ],
+    "groups": [
+     {
+      "group": "other",
+      "label": "Other",
+      "placements": 1,
+      "share": 1,
+      "brands": [
+       "Prozis"
+      ],
+      "videos": 1
+     }
+    ],
+    "audience": {},
+    "cost": {
+     "units": 0,
+     "cached": true,
+     "gemini_requests": 0,
+     "new_analyses": 0,
+     "kv_reads": 2
+    },
+    "pending": 8,
+    "seconds": 0
+   }
+  }
+ ],
+ "seconds": 0
+}

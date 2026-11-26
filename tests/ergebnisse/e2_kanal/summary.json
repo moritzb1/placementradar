@@ -1,0 +1,586 @@
+[
+ {
+  "channel": "iKnowReview",
+  "input": "@iKnowReview",
+  "source": "youtube-page",
+  "units": 0,
+  "gemini": 0,
+  "seconds": 0,
+  "uploads": 25,
+  "analysed": 2,
+  "in_latest": 1,
+  "brands": 10,
+  "recurring": [
+   "Sonos"
+  ],
+  "groups": [
+   "Audio 64%",
+   "Tech & electronics 27%",
+   "Fashion & accessories 9%"
+  ],
+  "disclosure": {
+   "commercial": 2,
+   "labelled": 1,
+   "weak": 0,
+   "unlabelled": 1
+  },
+  "months": [
+   {
+    "month": "2025-05",
+    "videos": 1,
+    "value": [
+     5297,
+     20794
+    ],
+    "sponsors": [
+     "Sony (paid)",
+     "3Dio (paid)",
+     "Carhartt (paid)",
+     "Apple (paid)"
+    ]
+   },
+   {
+    "month": "2026-10",
+    "videos": 1,
+    "value": [
+     3822,
+     15020
+    ],
+    "sponsors": []
+   }
+  ],
+  "candidates": 8,
+  "preselected": [
+   "ad hint in the description · shop links",
+   "ad hint in the description · shop links",
+   "ad hint in the description · shop links"
+  ],
+  "fits": [
+   {
+    "brand": "Sonos",
+    "field": "Audio",
+    "field_from": "channel",
+    "score": 74,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 50,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [
+     "Sony",
+     "3Dio",
+     "Nothing",
+     "Bose",
+     "Apple"
+    ],
+    "already": 2
+   },
+   {
+    "brand": "Bose",
+    "field": "Audio",
+    "field_from": "channel",
+    "score": 74,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 50,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [
+     "Sony",
+     "3Dio",
+     "Nothing",
+     "Apple",
+     "Sonos"
+    ],
+    "already": 1
+   },
+   {
+    "brand": "Apple",
+    "field": "Audio",
+    "field_from": "channel",
+    "score": 74,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 50,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [
+     "Sony",
+     "3Dio",
+     "Nothing",
+     "Bose",
+     "Sonos"
+    ],
+    "already": 1
+   },
+   {
+    "brand": "Logitech",
+    "field": "Tech & electronics",
+    "field_from": "library (1)",
+    "score": 79,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 75,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [
+     "Sonos",
+     "Beats",
+     "Bowers & Wilkins"
+    ],
+    "already": 0
+   },
+   {
+    "brand": "Benefit",
+    "field": "Beauty & care",
+    "field_from": "library (2)",
+    "score": 10,
+    "verdict": "Weak fit",
+    "confidence": "low",
+    "gate": 0.5,
+    "parts": {
+     "category": 0,
+     "competition": null,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Prozis",
+    "field": "Food & drink",
+    "field_from": "picked by the visitor",
+    "score": 10,
+    "verdict": "Weak fit",
+    "confidence": "low",
+    "gate": 0.5,
+    "parts": {
+     "category": 0,
+     "competition": null,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Anker",
+    "field": "Tech & electronics",
+    "field_from": "picked by the visitor",
+    "score": 79,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 75,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [
+     "Sonos",
+     "Beats",
+     "Bowers & Wilkins"
+    ],
+    "already": 0
+   }
+  ]
+ },
+ {
+  "channel": "Marques Brownlee",
+  "input": "@mkbhd",
+  "source": "youtube-page",
+  "units": 0,
+  "gemini": 0,
+  "seconds": 0,
+  "uploads": 25,
+  "analysed": 1,
+  "in_latest": 0,
+  "brands": 7,
+  "recurring": [],
+  "groups": [
+   "Tech & electronics 71%",
+   "Fashion & accessories 29%"
+  ],
+  "disclosure": {
+   "commercial": 1,
+   "labelled": 0,
+   "weak": 1,
+   "unlabelled": 0
+  },
+  "months": [
+   {
+    "month": "2022-01",
+    "videos": 1,
+    "value": [
+     55455,
+     205530
+    ],
+    "sponsors": [
+     "Peak Design (affiliate)",
+     "Apple (affiliate)",
+     "Canon (affiliate)",
+     "Trove (affiliate)",
+     "Opal (affiliate)",
+     "Google (affiliate)"
+    ]
+   }
+  ],
+  "candidates": 8,
+  "preselected": [],
+  "fits": [
+   {
+    "brand": "Sonos",
+    "field": "Audio",
+    "field_from": "library (3)",
+    "score": 85,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 100,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Bose",
+    "field": "Audio",
+    "field_from": "library (1)",
+    "score": 85,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 100,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Apple",
+    "field": "Tech & electronics",
+    "field_from": "channel",
+    "score": 79,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 75,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [
+     "Canon",
+     "Realme",
+     "Opal",
+     "Google"
+    ],
+    "already": 1
+   },
+   {
+    "brand": "Logitech",
+    "field": "Tech & electronics",
+    "field_from": "library (1)",
+    "score": 79,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 75,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [
+     "Apple",
+     "Canon",
+     "Realme",
+     "Opal",
+     "Google"
+    ],
+    "already": 0
+   },
+   {
+    "brand": "Benefit",
+    "field": "Beauty & care",
+    "field_from": "library (2)",
+    "score": 10,
+    "verdict": "Weak fit",
+    "confidence": "low",
+    "gate": 0.5,
+    "parts": {
+     "category": 0,
+     "competition": null,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Prozis",
+    "field": "Food & drink",
+    "field_from": "picked by the visitor",
+    "score": 10,
+    "verdict": "Weak fit",
+    "confidence": "low",
+    "gate": 0.5,
+    "parts": {
+     "category": 0,
+     "competition": null,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Anker",
+    "field": "Tech & electronics",
+    "field_from": "picked by the visitor",
+    "score": 79,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 75,
+     "disclosure": 50,
+     "audience": null
+    },
+    "competitors": [
+     "Apple",
+     "Canon",
+     "Realme",
+     "Opal",
+     "Google"
+    ],
+    "already": 0
+   }
+  ]
+ },
+ {
+  "channel": "Side of Tech",
+  "input": "https://www.youtube.com/watch?v=6DMUMgQyVtc",
+  "source": "youtube-page",
+  "units": 0,
+  "gemini": 0,
+  "seconds": 0,
+  "uploads": 25,
+  "analysed": 1,
+  "in_latest": 1,
+  "brands": 18,
+  "recurring": [],
+  "groups": [
+   "Tech & electronics 56%",
+   "Home & living 22%",
+   "Audio 22%"
+  ],
+  "disclosure": {
+   "commercial": 1,
+   "labelled": 1,
+   "weak": 0,
+   "unlabelled": 0
+  },
+  "months": [
+   {
+    "month": "2025-04",
+    "videos": 1,
+    "value": [
+     600,
+     2404
+    ],
+    "sponsors": [
+     "Razer (paid)",
+     "ASUS (paid)",
+     "Apple (paid)",
+     "Philips Hue (paid)",
+     "Vernal (affiliate)",
+     "GravaStar (affiliate)",
+     "Edifier (affiliate)",
+     "Divoom (affiliate)",
+     "LG (affiliate)",
+     "Keychron (affiliate)",
+     "Logitech (affiliate)",
+     "CalDigit (affiliate)"
+    ]
+   }
+  ],
+  "candidates": 8,
+  "preselected": [],
+  "fits": [
+   {
+    "brand": "Sonos",
+    "field": "Audio",
+    "field_from": "library (3)",
+    "score": 94,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 75,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [
+     "Edifier",
+     "Focusrite",
+     "RØDE",
+     "beyerdynamic"
+    ],
+    "already": 0
+   },
+   {
+    "brand": "Bose",
+    "field": "Audio",
+    "field_from": "library (1)",
+    "score": 94,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 75,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [
+     "Edifier",
+     "Focusrite",
+     "RØDE",
+     "beyerdynamic"
+    ],
+    "already": 0
+   },
+   {
+    "brand": "Apple",
+    "field": "Tech & electronics",
+    "field_from": "channel",
+    "score": 94,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 75,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [
+     "Razer",
+     "ASUS",
+     "GravaStar",
+     "Divoom",
+     "NZXT"
+    ],
+    "already": 1
+   },
+   {
+    "brand": "Logitech",
+    "field": "Tech & electronics",
+    "field_from": "channel",
+    "score": 94,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 75,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [
+     "Razer",
+     "ASUS",
+     "Apple",
+     "GravaStar",
+     "Divoom"
+    ],
+    "already": 1
+   },
+   {
+    "brand": "Benefit",
+    "field": "Beauty & care",
+    "field_from": "library (2)",
+    "score": 19,
+    "verdict": "Weak fit",
+    "confidence": "low",
+    "gate": 0.5,
+    "parts": {
+     "category": 0,
+     "competition": null,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Prozis",
+    "field": "Food & drink",
+    "field_from": "picked by the visitor",
+    "score": 19,
+    "verdict": "Weak fit",
+    "confidence": "low",
+    "gate": 0.5,
+    "parts": {
+     "category": 0,
+     "competition": null,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [],
+    "already": 0
+   },
+   {
+    "brand": "Anker",
+    "field": "Tech & electronics",
+    "field_from": "picked by the visitor",
+    "score": 94,
+    "verdict": "Strong fit",
+    "confidence": "low",
+    "gate": 1,
+    "parts": {
+     "category": 100,
+     "competition": 75,
+     "disclosure": 100,
+     "audience": null
+    },
+    "competitors": [
+     "Razer",
+     "ASUS",
+     "Apple",
+     "GravaStar",
+     "Divoom"
+    ],
+    "already": 0
+   }
+  ]
+ }
+]

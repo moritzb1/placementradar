@@ -1,0 +1,30 @@
+{
+  "n": 49,
+  "galerie": 377,
+  "ergebnis": {
+    "CLIP ViT-B/32 (Allzweck) | Handyfoto": {
+      "marke_top1": 0.959,
+      "produkt_top1": 0.837,
+      "produkt_top5": 0.898,
+      "ms_pro_bild": 8
+    },
+    "CLIP ViT-B/32 (Allzweck) | Webcam-Qualität": {
+      "marke_top1": 0.918,
+      "produkt_top1": 0.714,
+      "produkt_top5": 0.918,
+      "ms_pro_bild": 8
+    },
+    "Marqo-Ecommerce-B | Handyfoto": {
+      "marke_top1": 1.0,
+      "produkt_top1": 0.898,
+      "produkt_top5": 0.959,
+      "ms_pro_bild": 27
+    },
+    "Marqo-Ecommerce-B | Webcam-Qualität": {
+      "marke_top1": 1.0,
+      "produkt_top1": 0.898,
+      "produkt_top5": 0.959,
+      "ms_pro_bild": 28
+    }
+  }
+}

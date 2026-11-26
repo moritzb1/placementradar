@@ -1,0 +1,26 @@
+{
+ "video": "y1LUkfpTtu0",
+ "fetched": "2026-11-23T18:29:53.563Z",
+ "segments": [
+  {
+   "category": "selfpromo",
+   "actionType": "skip",
+   "segment": [
+    763.6878,
+    776.2647
+   ],
+   "votes": 3,
+   "locked": 0
+  },
+  {
+   "category": "sponsor",
+   "actionType": "skip",
+   "segment": [
+    776.1536,
+    821.8651
+   ],
+   "votes": 4,
+   "locked": 0
+  }
+ ]
+}

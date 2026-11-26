@@ -1,0 +1,468 @@
+{
+ "made": "2026-11-26",
+ "videos": {
+  "-pTGc7cIBIA (MKBHD, 14:19)": {
+   "runs": [
+    {
+     "label": "first run 19 Nov",
+     "model": "3.x",
+     "brands": 7,
+     "brand_seconds": 141
+    },
+    {
+     "label": "re-run 21 Nov (example)",
+     "model": "3.6",
+     "brands": 7,
+     "brand_seconds": 174
+    },
+    {
+     "label": "W run 1 22 Nov",
+     "model": "3.6",
+     "brands": 6,
+     "brand_seconds": 285
+    },
+    {
+     "label": "W run 2 22 Nov",
+     "model": "3.6",
+     "brands": 7,
+     "brand_seconds": 167
+    }
+   ],
+   "pairs": [
+    {
+     "a": "first run 19 Nov",
+     "b": "re-run 21 Nov (example)",
+     "clean": false,
+     "brands": 0.75,
+     "seconds": 0.5909090909090909,
+     "shared_brand_seconds": 0.7005988023952096,
+     "shared_brands": 6
+    },
+    {
+     "a": "first run 19 Nov",
+     "b": "W run 1 22 Nov",
+     "clean": false,
+     "brands": 0.8571428571428571,
+     "seconds": 0.4589041095890411,
+     "shared_brand_seconds": 0.47017543859649125,
+     "shared_brands": 6
+    },
+    {
+     "a": "first run 19 Nov",
+     "b": "W run 2 22 Nov",
+     "clean": false,
+     "brands": 1,
+     "seconds": 0.13653136531365315,
+     "shared_brand_seconds": 0.13653136531365315,
+     "shared_brands": 7
+    },
+    {
+     "a": "re-run 21 Nov (example)",
+     "b": "W run 1 22 Nov",
+     "clean": false,
+     "brands": 0.8571428571428571,
+     "seconds": 0.4758842443729904,
+     "shared_brand_seconds": 0.5156794425087108,
+     "shared_brands": 6
+    },
+    {
+     "a": "re-run 21 Nov (example)",
+     "b": "W run 2 22 Nov",
+     "clean": false,
+     "brands": 0.75,
+     "seconds": 0.15202702702702703,
+     "shared_brand_seconds": 0.28846153846153844,
+     "shared_brands": 6
+    },
+    {
+     "a": "W run 1 22 Nov",
+     "b": "W run 2 22 Nov",
+     "clean": true,
+     "brands": 0.8571428571428571,
+     "seconds": 0.12718204488778054,
+     "shared_brand_seconds": 0.17894736842105263,
+     "shared_brands": 6
+    }
+   ]
+  },
+  "eLAVGYQCkQI (JB desk, 7:42)": {
+   "runs": [
+    {
+     "label": "online 22 Nov",
+     "model": "3.6",
+     "brands": 9,
+     "brand_seconds": 200
+    },
+    {
+     "label": "local 22 Nov",
+     "model": "3.5",
+     "brands": 9,
+     "brand_seconds": 187
+    }
+   ],
+   "pairs": [
+    {
+     "a": "online 22 Nov",
+     "b": "local 22 Nov",
+     "clean": false,
+     "brands": 1,
+     "seconds": 0.4827586206896552,
+     "shared_brand_seconds": 0.4827586206896552,
+     "shared_brands": 9
+    }
+   ]
+  },
+  "2CqNFIn1AEo (headphones, 9:50)": {
+   "runs": [
+    {
+     "label": "older example 20 Nov",
+     "model": "3.6",
+     "brands": 9,
+     "brand_seconds": 380
+    },
+    {
+     "label": "keyframes 21 Nov (example)",
+     "model": "3.6",
+     "brands": 5,
+     "brand_seconds": 329
+    }
+   ],
+   "pairs": [
+    {
+     "a": "older example 20 Nov",
+     "b": "keyframes 21 Nov (example)",
+     "clean": false,
+     "brands": 0.5555555555555556,
+     "seconds": 0.5861297539149888,
+     "shared_brand_seconds": 0.706199460916442,
+     "shared_brands": 5
+    }
+   ]
+  },
+  "dhFY1yo83d4 (bag, 8:11)": {
+   "runs": [
+    {
+     "label": "A 3.7 low thinking",
+     "model": "3.7L",
+     "brands": 27,
+     "brand_seconds": 386
+    },
+    {
+     "label": "A 3.8",
+     "model": "3.8",
+     "brands": 22,
+     "brand_seconds": 375
+    },
+    {
+     "label": "B2 3.6 low thinking",
+     "model": "3.6L",
+     "brands": 23,
+     "brand_seconds": 309
+    },
+    {
+     "label": "B2 3.6 in 4 segments",
+     "model": "3.6seg",
+     "brands": 25,
+     "brand_seconds": 420
+    },
+    {
+     "label": "E run 1 (3.8)",
+     "model": "3.8",
+     "brands": 19,
+     "brand_seconds": 378
+    },
+    {
+     "label": "E run 2 (3.6)",
+     "model": "3.6",
+     "brands": 5,
+     "brand_seconds": 277
+    },
+    {
+     "label": "E run 3 (3.6)",
+     "model": "3.6",
+     "brands": 7,
+     "brand_seconds": 536
+    }
+   ],
+   "pairs": [
+    {
+     "a": "A 3.7 low thinking",
+     "b": "A 3.8",
+     "clean": false,
+     "brands": 0.8148148148148148,
+     "seconds": 0.8977556109725686,
+     "shared_brand_seconds": 0.9326424870466321,
+     "shared_brands": 22
+    },
+    {
+     "a": "A 3.7 low thinking",
+     "b": "B2 3.6 low thinking",
+     "clean": false,
+     "brands": 0.7241379310344828,
+     "seconds": 0.5513392857142857,
+     "shared_brand_seconds": 0.7017045454545454,
+     "shared_brands": 21
+    },
+    {
+     "a": "A 3.7 low thinking",
+     "b": "B2 3.6 in 4 segments",
+     "clean": false,
+     "brands": 0.7333333333333333,
+     "seconds": 0.7185501066098081,
+     "shared_brand_seconds": 0.7966903073286052,
+     "shared_brands": 22
+    },
+    {
+     "a": "A 3.7 low thinking",
+     "b": "E run 1 (3.8)",
+     "clean": false,
+     "brands": 0.6428571428571429,
+     "seconds": 0.7285067873303167,
+     "shared_brand_seconds": 0.8385416666666666,
+     "shared_brands": 18
+    },
+    {
+     "a": "A 3.7 low thinking",
+     "b": "E run 2 (3.6)",
+     "clean": false,
+     "brands": 0.18518518518518517,
+     "seconds": 0.7087628865979382,
+     "shared_brand_seconds": 0.9417808219178082,
+     "shared_brands": 5
+    },
+    {
+     "a": "A 3.7 low thinking",
+     "b": "E run 3 (3.6)",
+     "clean": false,
+     "brands": 0.25925925925925924,
+     "seconds": 0.4681528662420382,
+     "shared_brand_seconds": 0.5404411764705882,
+     "shared_brands": 7
+    },
+    {
+     "a": "A 3.8",
+     "b": "B2 3.6 low thinking",
+     "clean": false,
+     "brands": 0.8,
+     "seconds": 0.5616438356164384,
+     "shared_brand_seconds": 0.6852367688022284,
+     "shared_brands": 20
+    },
+    {
+     "a": "A 3.8",
+     "b": "B2 3.6 in 4 segments",
+     "clean": false,
+     "brands": 0.8076923076923077,
+     "seconds": 0.7207792207792207,
+     "shared_brand_seconds": 0.7708333333333334,
+     "shared_brands": 21
+    },
+    {
+     "a": "A 3.8",
+     "b": "E run 1 (3.8)",
+     "clean": false,
+     "brands": 0.782608695652174,
+     "seconds": 0.7470997679814385,
+     "shared_brand_seconds": 0.8256410256410256,
+     "shared_brands": 18
+    },
+    {
+     "a": "A 3.8",
+     "b": "E run 2 (3.6)",
+     "clean": false,
+     "brands": 0.22727272727272727,
+     "seconds": 0.7294429708222812,
+     "shared_brand_seconds": 0.9228187919463087,
+     "shared_brands": 5
+    },
+    {
+     "a": "A 3.8",
+     "b": "E run 3 (3.6)",
+     "clean": false,
+     "brands": 0.3181818181818182,
+     "seconds": 0.49835526315789475,
+     "shared_brand_seconds": 0.5600739371534196,
+     "shared_brands": 7
+    },
+    {
+     "a": "B2 3.6 low thinking",
+     "b": "B2 3.6 in 4 segments",
+     "clean": false,
+     "brands": 0.92,
+     "seconds": 0.5951859956236324,
+     "shared_brand_seconds": 0.6153846153846154,
+     "shared_brands": 23
+    },
+    {
+     "a": "B2 3.6 low thinking",
+     "b": "E run 1 (3.8)",
+     "clean": false,
+     "brands": 0.8260869565217391,
+     "seconds": 0.5829493087557603,
+     "shared_brand_seconds": 0.6640419947506562,
+     "shared_brands": 19
+    },
+    {
+     "a": "B2 3.6 low thinking",
+     "b": "E run 2 (3.6)",
+     "clean": false,
+     "brands": 0.21739130434782608,
+     "seconds": 0.5585106382978723,
+     "shared_brand_seconds": 0.7342657342657343,
+     "shared_brands": 5
+    },
+    {
+     "a": "B2 3.6 low thinking",
+     "b": "E run 3 (3.6)",
+     "clean": false,
+     "brands": 0.30434782608695654,
+     "seconds": 0.3629032258064516,
+     "shared_brand_seconds": 0.41821561338289964,
+     "shared_brands": 7
+    },
+    {
+     "a": "B2 3.6 in 4 segments",
+     "b": "E run 1 (3.8)",
+     "clean": false,
+     "brands": 0.76,
+     "seconds": 0.8820754716981132,
+     "shared_brand_seconds": 0.9714285714285714,
+     "shared_brands": 19
+    },
+    {
+     "a": "B2 3.6 in 4 segments",
+     "b": "E run 2 (3.6)",
+     "clean": false,
+     "brands": 0.2,
+     "seconds": 0.6595238095238095,
+     "shared_brand_seconds": 0.8123167155425219,
+     "shared_brands": 5
+    },
+    {
+     "a": "B2 3.6 in 4 segments",
+     "b": "E run 3 (3.6)",
+     "clean": false,
+     "brands": 0.28,
+     "seconds": 0.5697865353037767,
+     "shared_brand_seconds": 0.6414048059149723,
+     "shared_brands": 7
+    },
+    {
+     "a": "E run 1 (3.8)",
+     "b": "E run 2 (3.6)",
+     "clean": false,
+     "brands": 0.2631578947368421,
+     "seconds": 0.7236842105263158,
+     "shared_brand_seconds": 0.8112094395280236,
+     "shared_brands": 5
+    },
+    {
+     "a": "E run 1 (3.8)",
+     "b": "E run 3 (3.6)",
+     "clean": false,
+     "brands": 0.3684210526315789,
+     "seconds": 0.6063268892794376,
+     "shared_brand_seconds": 0.6412639405204461,
+     "shared_brands": 7
+    },
+    {
+     "a": "E run 2 (3.6)",
+     "b": "E run 3 (3.6)",
+     "clean": true,
+     "brands": 0.7142857142857143,
+     "seconds": 0.5111524163568774,
+     "shared_brand_seconds": 0.5208333333333334,
+     "shared_brands": 5
+    }
+   ]
+  },
+  "2fAruP6qKd4 (pillow, 3:50)": {
+   "runs": [
+    {
+     "label": "A 3.7",
+     "model": "3.7",
+     "brands": 3,
+     "brand_seconds": 26
+    },
+    {
+     "label": "A 3.7 low thinking",
+     "model": "3.7L",
+     "brands": 4,
+     "brand_seconds": 163
+    },
+    {
+     "label": "E run 1 (3.8)",
+     "model": "3.8",
+     "brands": 1,
+     "brand_seconds": 139
+    }
+   ],
+   "pairs": [
+    {
+     "a": "A 3.7",
+     "b": "A 3.7 low thinking",
+     "clean": false,
+     "brands": 0.75,
+     "seconds": 0.06779661016949153,
+     "shared_brand_seconds": 0.06779661016949153,
+     "shared_brands": 3
+    },
+    {
+     "a": "A 3.7",
+     "b": "E run 1 (3.8)",
+     "clean": false,
+     "brands": 0.3333333333333333,
+     "seconds": 0,
+     "shared_brand_seconds": 0,
+     "shared_brands": 1
+    },
+    {
+     "a": "A 3.7 low thinking",
+     "b": "E run 1 (3.8)",
+     "clean": false,
+     "brands": 0.25,
+     "seconds": 0.7869822485207101,
+     "shared_brand_seconds": 0.8471337579617835,
+     "shared_brands": 1
+    }
+   ]
+  },
+  "wtDyhM_18Yo (crash test, 1:54)": {
+   "runs": [
+    {
+     "label": "A 3.7",
+     "model": "3.7",
+     "brands": 2,
+     "brand_seconds": 141
+    },
+    {
+     "label": "A 3.8",
+     "model": "3.8",
+     "brands": 2,
+     "brand_seconds": 145
+    }
+   ],
+   "pairs": [
+    {
+     "a": "A 3.7",
+     "b": "A 3.8",
+     "clean": false,
+     "brands": 1,
+     "seconds": 0.9455782312925171,
+     "shared_brand_seconds": 0.9455782312925171,
+     "shared_brands": 2
+    }
+   ]
+  }
+ },
+ "summary": {
+  "pairs": 33,
+  "mean_brand_jaccard": 0.6093742855821624,
+  "mean_second_jaccard": 0.5513081954449462,
+  "mean_shared_second_jaccard": 0.6268675837133177,
+  "clean_pairs": 2,
+  "clean_brand_jaccard": 0.7857142857142857,
+  "clean_second_jaccard": 0.31916723062232893,
+  "clean_shared_second_jaccard": 0.349890350877193
+ }
+}

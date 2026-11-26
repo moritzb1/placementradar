@@ -1,0 +1,335 @@
+{
+  "video": "dhFY1yo83d4",
+  "lauf": "2",
+  "model": "gemini-3.6-flash",
+  "seconds": 50.8,
+  "usage": {
+    "promptTokenCount": 45044,
+    "candidatesTokenCount": 2045,
+    "totalTokenCount": 48834,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 367
+      },
+      {
+        "modality": "VIDEO",
+        "tokenCount": 44677
+      }
+    ],
+    "thoughtsTokenCount": 1745,
+    "serviceTier": "standard"
+  },
+  "versuch": 1,
+  "result": {
+    "brands": [
+      {
+        "brand": "Louis Vuitton",
+        "appearances": [
+          {
+            "start": "00:15",
+            "end": "01:34",
+            "channel": "visual",
+            "box_2d": [
+              18,
+              226,
+              804,
+              764
+            ],
+            "frame_time": "00:23",
+            "in_use": true,
+            "start_s": 15.0,
+            "end_s": 94.0,
+            "frame_s": 23.0
+          },
+          {
+            "start": "00:22",
+            "end": "00:26",
+            "channel": "audio",
+            "start_s": 22.0,
+            "end_s": 26.0
+          },
+          {
+            "start": "01:35",
+            "end": "03:06",
+            "channel": "visual",
+            "box_2d": [
+              321,
+              319,
+              792,
+              608
+            ],
+            "frame_time": "01:38",
+            "in_use": true,
+            "start_s": 95.0,
+            "end_s": 186.0,
+            "frame_s": 98.0
+          },
+          {
+            "start": "01:38",
+            "end": "01:41",
+            "channel": "audio",
+            "start_s": 98.0,
+            "end_s": 101.0
+          },
+          {
+            "start": "06:15",
+            "end": "07:05",
+            "channel": "visual",
+            "box_2d": [
+              151,
+              237,
+              808,
+              770
+            ],
+            "frame_time": "06:17",
+            "in_use": true,
+            "start_s": 375.0,
+            "end_s": 425.0,
+            "frame_s": 377.0
+          },
+          {
+            "start": "07:46",
+            "end": "08:05",
+            "channel": "visual",
+            "box_2d": [
+              151,
+              237,
+              808,
+              770
+            ],
+            "frame_time": "07:54",
+            "in_use": true,
+            "start_s": 466.0,
+            "end_s": 485.0,
+            "frame_s": 474.0
+          }
+        ],
+        "product": "Palm Springs Mini Backpack & Rosalie Coin Purse"
+      },
+      {
+        "brand": "Glow Recipe",
+        "appearances": [
+          {
+            "start": "03:30",
+            "end": "03:40",
+            "channel": "visual",
+            "box_2d": [
+              291,
+              521,
+              742,
+              706
+            ],
+            "frame_time": "03:31",
+            "in_use": true,
+            "start_s": 210.0,
+            "end_s": 220.0,
+            "frame_s": 211.0
+          },
+          {
+            "start": "03:30",
+            "end": "03:32",
+            "channel": "audio",
+            "start_s": 210.0,
+            "end_s": 212.0
+          }
+        ],
+        "product": "Watermelon Glow Niacinamide Dew Drops"
+      },
+      {
+        "brand": "Rare Beauty",
+        "appearances": [
+          {
+            "start": "03:59",
+            "end": "04:02",
+            "channel": "visual",
+            "box_2d": [
+              558,
+              226,
+              856,
+              448
+            ],
+            "frame_time": "04:00",
+            "in_use": false,
+            "start_s": 239.0,
+            "end_s": 242.0,
+            "frame_s": 240.0
+          },
+          {
+            "start": "03:59",
+            "end": "04:00",
+            "channel": "audio",
+            "start_s": 239.0,
+            "end_s": 240.0
+          },
+          {
+            "start": "04:22",
+            "end": "04:25",
+            "channel": "visual",
+            "box_2d": [
+              549,
+              417,
+              803,
+              629
+            ],
+            "frame_time": "04:23",
+            "in_use": false,
+            "start_s": 262.0,
+            "end_s": 265.0,
+            "frame_s": 263.0
+          },
+          {
+            "start": "04:23",
+            "end": "04:25",
+            "channel": "audio",
+            "start_s": 263.0,
+            "end_s": 265.0
+          }
+        ],
+        "product": "Kind Words Matte Lipstick & Soft Pinch Liquid Blush"
+      },
+      {
+        "brand": "Josie Maran",
+        "appearances": [
+          {
+            "start": "04:05",
+            "end": "04:21",
+            "channel": "visual",
+            "box_2d": [
+              447,
+              269,
+              874,
+              551
+            ],
+            "frame_time": "04:05",
+            "in_use": false,
+            "start_s": 245.0,
+            "end_s": 261.0,
+            "frame_s": 245.0
+          },
+          {
+            "start": "04:05",
+            "end": "04:06",
+            "channel": "audio",
+            "start_s": 245.0,
+            "end_s": 246.0
+          }
+        ],
+        "product": "Whipped Argan Oil Body Butter"
+      },
+      {
+        "brand": "Tarte",
+        "appearances": [
+          {
+            "start": "03:25",
+            "end": "03:27",
+            "channel": "visual",
+            "box_2d": [
+              399,
+              219,
+              770,
+              563
+            ],
+            "frame_time": "03:26",
+            "in_use": false,
+            "start_s": 205.0,
+            "end_s": 207.0,
+            "frame_s": 206.0
+          },
+          {
+            "start": "03:41",
+            "end": "03:43",
+            "channel": "visual",
+            "box_2d": [
+              558,
+              302,
+              856,
+              755
+            ],
+            "frame_time": "03:41",
+            "in_use": false,
+            "start_s": 221.0,
+            "end_s": 223.0,
+            "frame_s": 221.0
+          },
+          {
+            "start": "03:41",
+            "end": "03:42",
+            "channel": "audio",
+            "start_s": 221.0,
+            "end_s": 222.0
+          },
+          {
+            "start": "04:26",
+            "end": "04:28",
+            "channel": "visual",
+            "box_2d": [
+              552,
+              281,
+              856,
+              608
+            ],
+            "frame_time": "04:27",
+            "in_use": false,
+            "start_s": 266.0,
+            "end_s": 268.0,
+            "frame_s": 267.0
+          },
+          {
+            "start": "04:26",
+            "end": "04:27",
+            "channel": "audio",
+            "start_s": 266.0,
+            "end_s": 267.0
+          }
+        ],
+        "product": "Lights Camera Lashes Mascara, Shape Tape Concealer & Maracuja Lip Tint"
+      }
+    ],
+    "authenticity": [
+      {
+        "brand": "Louis Vuitton",
+        "overall": 72,
+        "verdict": "The creator straightforwardly discloses that the bag was gifted for review, sharing an amusing real-life story and practical details while keeping the tone relaxed and unpressured.",
+        "use_shown": {
+          "score": 75,
+          "evidence": "Shows actual everyday items packed inside the bag and recalls wearing it while out shopping at 00:36",
+          "time": "00:36"
+        },
+        "balance": {
+          "score": 50,
+          "evidence": "Focuses primarily on cute aesthetics, pockets, and features without noting any negatives or trade-offs at 01:01",
+          "time": "01:01"
+        },
+        "specificity": {
+          "score": 68,
+          "evidence": "Recounts a specific conversation with a cashier kid who said it reminded him of Dora the Explorer at 00:46",
+          "time": "00:46"
+        },
+        "delivery": {
+          "score": 85,
+          "evidence": "Speaks in an unscripted, casual tone consistent with an organic 'What's In My Bag' video at 00:50",
+          "time": "00:50"
+        },
+        "body_language": {
+          "score": 80,
+          "evidence": "Handles and presents the backpack smoothly up close, showing details effortlessly with natural gestures at 01:02",
+          "time": "01:02"
+        },
+        "sales_pressure": {
+          "score": 90,
+          "evidence": "Mentions providing a purchase link because the item was sent to her, but does not offer promo codes or push urgency at 00:58",
+          "time": "00:58"
+        },
+        "product": "Palm Springs Mini Backpack"
+      }
+    ],
+    "disclosures": [
+      {
+        "kind": "spoken",
+        "text": "This bag was actually kindly sent to me, they wanted me to do a review, so I'll list the link to where you can purchase this bag.",
+        "time": "00:55"
+      }
+    ]
+  }
+}

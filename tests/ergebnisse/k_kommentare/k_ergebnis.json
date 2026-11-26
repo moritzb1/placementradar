@@ -1,0 +1,57 @@
+{
+ "n": 50,
+ "categories": {
+  "buy": {
+   "tp": 4,
+   "fp": 1,
+   "fn": 0,
+   "precision": 0.8,
+   "recall": 1
+  },
+  "question": {
+   "tp": 4,
+   "fp": 0,
+   "fn": 0,
+   "precision": 1,
+   "recall": 1
+  },
+  "praise": {
+   "tp": 30,
+   "fp": 0,
+   "fn": 1,
+   "precision": 1,
+   "recall": 0.97
+  },
+  "critic": {
+   "tp": 2,
+   "fp": 0,
+   "fn": 1,
+   "precision": 1,
+   "recall": 0.67
+  },
+  "ad_doubt": {
+   "tp": 1,
+   "fp": 0,
+   "fn": 0,
+   "precision": 1,
+   "recall": 1
+  }
+ },
+ "brand_assignment": {
+  "tp": 13,
+  "fp": 0,
+  "fn": 5,
+  "precision": 1,
+  "recall": 0.72
+ },
+ "errors": [
+  "#3 buy too much",
+  "#3 praise missed",
+  "#11 brand Peak Design missed",
+  "#24 brand Peak Design missed",
+  "#30 brand Gaggia missed",
+  "#34 brand Peak Design missed",
+  "#39 critic missed",
+  "#50 brand Peak Design missed"
+ ]
+}

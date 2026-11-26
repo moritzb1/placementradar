@@ -1,0 +1,522 @@
+{
+ "note": "Hand labels for test K - proposal by Claude (24 Nov 2026), to be checked by Moritz. One reader, so subjective cases are listed in EVALUATION K.",
+ "items": [
+  {
+   "n": 1,
+   "video": "dhFY1yo83d4",
+   "i": 3,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "You have great things in your purse i like it"
+  },
+  {
+   "n": 2,
+   "video": "dhFY1yo83d4",
+   "i": 4,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "한국어 글씨 귀여워요:hand-pink-waving: love your video!"
+  },
+  {
+   "n": 3,
+   "video": "-pTGc7cIBIA",
+   "i": 9,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "We need this to be a yearly tradition now- just like the pho"
+  },
+  {
+   "n": 4,
+   "video": "-pTGc7cIBIA",
+   "i": 94,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "you are the best tech youtuber in the world ever"
+  },
+  {
+   "n": 5,
+   "video": "y1LUkfpTtu0",
+   "i": 14,
+   "cats": [],
+   "brands": [],
+   "text_start": "I am now imagining James and 2 other coffee content creators"
+  },
+  {
+   "n": 6,
+   "video": "-pTGc7cIBIA",
+   "i": 85,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Google"
+   ],
+   "text_start": "Most of the things that I really love on my android phone ri"
+  },
+  {
+   "n": 7,
+   "video": "-pTGc7cIBIA",
+   "i": 82,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "I feel like I've been watching marques for 5 years now and i"
+  },
+  {
+   "n": 8,
+   "video": "2CqNFIn1AEo",
+   "i": 74,
+   "cats": [
+    "question"
+   ],
+   "brands": [],
+   "text_start": "Wo ist Sony?"
+  },
+  {
+   "n": 9,
+   "video": "-pTGc7cIBIA",
+   "i": 40,
+   "cats": [
+    "question"
+   ],
+   "brands": [],
+   "text_start": "who else saw the color change at 9:17"
+  },
+  {
+   "n": 10,
+   "video": "y1LUkfpTtu0",
+   "i": 21,
+   "cats": [],
+   "brands": [],
+   "text_start": "Good god that was the most British advert ever. The bleak we"
+  },
+  {
+   "n": 11,
+   "video": "-pTGc7cIBIA",
+   "i": 65,
+   "cats": [
+    "buy",
+    "praise"
+   ],
+   "brands": [
+    "Peak Design"
+   ],
+   "text_start": "I wish i had such a backpack, would help with studying and o"
+  },
+  {
+   "n": 12,
+   "video": "y1LUkfpTtu0",
+   "i": 0,
+   "cats": [],
+   "brands": [],
+   "text_start": "How I went from zero to espresso with only £250 and decades "
+  },
+  {
+   "n": 13,
+   "video": "-pTGc7cIBIA",
+   "i": 38,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "I am watching this video to checking which headphones you ar"
+  },
+  {
+   "n": 14,
+   "video": "-pTGc7cIBIA",
+   "i": 3,
+   "cats": [],
+   "brands": [],
+   "text_start": "Marques: Iphone in the left pocket, Samsung in the right\nThe"
+  },
+  {
+   "n": 15,
+   "video": "-pTGc7cIBIA",
+   "i": 32,
+   "cats": [
+    "critic",
+    "praise"
+   ],
+   "brands": [
+    "Google"
+   ],
+   "text_start": "Same feeling for me with the pixel 6. Odd that it's getting "
+  },
+  {
+   "n": 16,
+   "video": "y1LUkfpTtu0",
+   "i": 85,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Sage"
+   ],
+   "text_start": "5 years ago, i went to curlinary school and got a bunch of d"
+  },
+  {
+   "n": 17,
+   "video": "dhFY1yo83d4",
+   "i": 7,
+   "cats": [
+    "buy",
+    "praise"
+   ],
+   "brands": [
+    "Sanrio"
+   ],
+   "text_start": "Hi, love your videos! Could you tell me where you found your"
+  },
+  {
+   "n": 18,
+   "video": "y1LUkfpTtu0",
+   "i": 40,
+   "cats": [],
+   "brands": [],
+   "text_start": "Seeing James buy the same scale I have might be my proudest "
+  },
+  {
+   "n": 19,
+   "video": "2CqNFIn1AEo",
+   "i": 79,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "Sehr gutes Video vielen Dank <3"
+  },
+  {
+   "n": 20,
+   "video": "y1LUkfpTtu0",
+   "i": 43,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Gaggia"
+   ],
+   "text_start": "I had absolutely no knowledge or experience and pulled every"
+  },
+  {
+   "n": 21,
+   "video": "-pTGc7cIBIA",
+   "i": 86,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Canon"
+   ],
+   "text_start": "Having shot Canon for 20 years I switched the Nikon in 2016."
+  },
+  {
+   "n": 22,
+   "video": "y1LUkfpTtu0",
+   "i": 75,
+   "cats": [
+    "question"
+   ],
+   "brands": [
+    "Sage"
+   ],
+   "text_start": "James, have you considered doing a video about the Sage/Brev"
+  },
+  {
+   "n": 23,
+   "video": "-pTGc7cIBIA",
+   "i": 56,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "For a to-do list, I really like using the \"Scheduled\" list o"
+  },
+  {
+   "n": 24,
+   "video": "-pTGc7cIBIA",
+   "i": 50,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Peak Design"
+   ],
+   "text_start": "Now that's a bag I'd love to rob."
+  },
+  {
+   "n": 25,
+   "video": "-pTGc7cIBIA",
+   "i": 19,
+   "cats": [],
+   "brands": [],
+   "text_start": "Hey everyone! :D I hope you stay safe and have a nice day, G"
+  },
+  {
+   "n": 26,
+   "video": "y1LUkfpTtu0",
+   "i": 70,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Gaggia"
+   ],
+   "text_start": "I bought a 2nd hand Gagg Classic during lockdown 1, to get m"
+  },
+  {
+   "n": 27,
+   "video": "-pTGc7cIBIA",
+   "i": 16,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "I think its very cool (and sweet) that one of the biggest te"
+  },
+  {
+   "n": 28,
+   "video": "y1LUkfpTtu0",
+   "i": 46,
+   "cats": [
+    "question"
+   ],
+   "brands": [],
+   "text_start": "Super curious about the details of your cleaning regimen. Ho"
+  },
+  {
+   "n": 29,
+   "video": "y1LUkfpTtu0",
+   "i": 17,
+   "cats": [
+    "critic"
+   ],
+   "brands": [],
+   "text_start": "The fact that that’s the cheap end is the main thing keeping"
+  },
+  {
+   "n": 30,
+   "video": "y1LUkfpTtu0",
+   "i": 33,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Gaggia"
+   ],
+   "text_start": "I managed to get the same machine on eBay for just over £200"
+  },
+  {
+   "n": 31,
+   "video": "y1LUkfpTtu0",
+   "i": 95,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Gaggia"
+   ],
+   "text_start": "Great video James - and wonderful to see you using the 6.5ba"
+  },
+  {
+   "n": 32,
+   "video": "y1LUkfpTtu0",
+   "i": 4,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "I love how James now recognizes that whatever piece of coffe"
+  },
+  {
+   "n": 33,
+   "video": "WK5s-gDideg",
+   "i": 56,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "Find dich voll cool💕 Liebe Unboxing Videos und dieser Strugg"
+  },
+  {
+   "n": 34,
+   "video": "-pTGc7cIBIA",
+   "i": 71,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Peak Design"
+   ],
+   "text_start": "First of all, love the backpack.  Very functional."
+  },
+  {
+   "n": 35,
+   "video": "dhFY1yo83d4",
+   "i": 8,
+   "cats": [
+    "buy"
+   ],
+   "brands": [],
+   "text_start": "Hi, what brand are your pads?"
+  },
+  {
+   "n": 36,
+   "video": "-pTGc7cIBIA",
+   "i": 83,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "Dude you are probably one of if not THE best tech YouTuber o"
+  },
+  {
+   "n": 37,
+   "video": "-pTGc7cIBIA",
+   "i": 90,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "One of my favorite videos returns. Can’t wait to see what yo"
+  },
+  {
+   "n": 38,
+   "video": "y1LUkfpTtu0",
+   "i": 55,
+   "cats": [
+    "praise"
+   ],
+   "brands": [
+    "Gaggia"
+   ],
+   "text_start": "I've owned a Gaggia Classic for £90. I fixed it, used it for"
+  },
+  {
+   "n": 39,
+   "video": "y1LUkfpTtu0",
+   "i": 29,
+   "cats": [
+    "praise",
+    "critic"
+   ],
+   "brands": [
+    "Gaggia",
+    "Sage"
+   ],
+   "text_start": "I love that you're encouraging folks to buy used items. A Ga"
+  },
+  {
+   "n": 40,
+   "video": "-pTGc7cIBIA",
+   "i": 92,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "I really love all your video (been a subs since 8 years ago!"
+  },
+  {
+   "n": 41,
+   "video": "-pTGc7cIBIA",
+   "i": 39,
+   "cats": [],
+   "brands": [
+    "Apple"
+   ],
+   "text_start": "Thanks Marques for sharing your daily driver tech. Hopefully"
+  },
+  {
+   "n": 42,
+   "video": "y1LUkfpTtu0",
+   "i": 3,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "Absolutely would love an updated version of this now three y"
+  },
+  {
+   "n": 43,
+   "video": "-pTGc7cIBIA",
+   "i": 74,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "For an office backpack my wife and I love the ones from NOMA"
+  },
+  {
+   "n": 44,
+   "video": "y1LUkfpTtu0",
+   "i": 11,
+   "cats": [],
+   "brands": [],
+   "text_start": "Jame's last video: Lets spend $5000 on grinder\nThis video:"
+  },
+  {
+   "n": 45,
+   "video": "y1LUkfpTtu0",
+   "i": 51,
+   "cats": [],
+   "brands": [],
+   "text_start": "I'm going to find a way to work \"portafilter sneeze\" in to a"
+  },
+  {
+   "n": 46,
+   "video": "y1LUkfpTtu0",
+   "i": 10,
+   "cats": [],
+   "brands": [],
+   "text_start": "\"But what I do have are a very particular set of scales; sca"
+  },
+  {
+   "n": 47,
+   "video": "-pTGc7cIBIA",
+   "i": 36,
+   "cats": [
+    "praise"
+   ],
+   "brands": [],
+   "text_start": "Sweeeet, glad you and UAC do these types of vids, love seein"
+  },
+  {
+   "n": 48,
+   "video": "-pTGc7cIBIA",
+   "i": 87,
+   "cats": [],
+   "brands": [],
+   "text_start": "0:08 it says in the captions \"MKBND here\" LOL"
+  },
+  {
+   "n": 49,
+   "video": "-pTGc7cIBIA",
+   "i": 63,
+   "cats": [
+    "ad_doubt"
+   ],
+   "brands": [],
+   "text_start": "Best part about being rich is everyone giving you free items"
+  },
+  {
+   "n": 50,
+   "video": "-pTGc7cIBIA",
+   "i": 8,
+   "cats": [
+    "buy"
+   ],
+   "brands": [
+    "Peak Design"
+   ],
+   "text_start": "This backpack could be called. \"The backpack every MKBHD fan"
+  }
+ ]
+}

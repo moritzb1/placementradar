@@ -1,0 +1,595 @@
+{
+ "request": {
+  "brand": "DJI",
+  "lang": "any",
+  "period": "any"
+ },
+ "events": [
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "plan",
+    "status": "done",
+    "title": "Plan",
+    "detail": "1 · look in the analyses we already have · 2 · search YouTube for “DJI” · 3 · keep videos: length 1–20 min, ≥ 1,000 views, not DJI's own channel (owned media, no placement) · 4 · use cached analyses first, at most 3 new ones and only with your OK · 5 · combine everything into one brand report",
+    "at_s": 0,
+    "plan": {
+     "brand": "DJI",
+     "lang": "any",
+     "period": "any",
+     "max": 8,
+     "max_new": 3,
+     "queries": [
+      "DJI"
+     ],
+     "rules": [
+      "length 1–20 min",
+      "≥ 1,000 views",
+      "not DJI's own channel (owned media, no placement)"
+     ]
+    }
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "library",
+    "status": "run",
+    "title": "Checking analyses we already have",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "library",
+    "status": "done",
+    "title": "Analyses we already have",
+    "detail": "2 of 12 analysed videos contain DJI (2 examples) – 0 requests",
+    "at_s": 0,
+    "videos": [
+     {
+      "id": "ip_R5z7tNvo",
+      "title": "BIKE TEST: mein neues E Bike! Das Rose FILE PLUS",
+      "channel": "Lukas Knopf"
+     },
+     {
+      "id": "irY6mKSCT0w",
+      "title": "8 geniale Auto-Gadgets die 2025 ein MUSS für jeden Autofahrer sind 🚗💡",
+      "channel": "Marc Packeisen"
+     }
+    ]
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "search:DJI",
+    "status": "run",
+    "title": "Searching YouTube for “DJI”",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "search:DJI",
+    "status": "done",
+    "title": "Searched YouTube for “DJI”",
+    "detail": "20 videos · from today's search cache, 0 units · YouTube search page",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "filter",
+    "status": "done",
+    "title": "Filtering",
+    "detail": "9 of 20 kept – left out: 2 under 1,000 views, 2 longer than 20 min, 1 shorter than 1 min, 6 DJI's own channel",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "pick",
+    "status": "done",
+    "title": "Choosing videos",
+    "detail": "2 from the cache · 6 new candidates, ranked by brand in title, views and recency",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "confirm",
+   "data": {
+    "candidates": [
+     {
+      "id": "aCmR8vl3fZs",
+      "title": "The Real Reason Nobody Can Beat DJI",
+      "channel": "Money Explained",
+      "channel_id": "UCEKYxpyEOleaJc01rVaoEGQ",
+      "views": 988362,
+      "duration_s": 645,
+      "published": null,
+      "description": "Understand the money behind one fascinating business story in 5 minutes, free every week: ...",
+      "live": false,
+      "score": 9,
+      "why": "brand in title · 988k views"
+     },
+     {
+      "id": "siAbYy6OlxI",
+      "title": "Why the DJI Pocket 4P Changed How I Film My Life",
+      "channel": "jaycie linh",
+      "channel_id": "UCAURylz_neU-YphmVrtFu-w",
+      "views": 47430,
+      "duration_s": 1117,
+      "published": null,
+      "description": "I spent months filming my everyday life on the DJI Pocket 4P, and it completely changed how I film. This isn't a deep spec review.",
+      "live": false,
+      "score": 8.7,
+      "why": "brand in title · 47k views"
+     },
+     {
+      "id": "bbuqupDc-s8",
+      "title": "iPhone 18 Pro Max vs DJI Pocket 4P - If Apple Made a Pocket Camera",
+      "channel": "Steven Divish",
+      "channel_id": "UC1KrRuj9mEuS6JhApLQjfLg",
+      "views": 37930,
+      "duration_s": 1029,
+      "published": null,
+      "description": "I used the DJI Pocket 4 Pro for a few months to see if it could actually replace my main cameras and my phone for everyday ...",
+      "live": false,
+      "score": 8.6,
+      "why": "brand in title · 38k views"
+     },
+     {
+      "id": "5ihHvOm-V68",
+      "title": "DJI Mini 5 Pro - Almost To Good to be a Mini Drone (Long Term Review)",
+      "channel": "Air Photography",
+      "channel_id": "UCoKMBuQ8YejlCbNm77ZL8jg",
+      "views": 36364,
+      "duration_s": 547,
+      "published": null,
+      "description": "It's been one year since the DJI Mini 5 Pro was released, and after a full year of flying, it's time to revisit this impressive little drone!",
+      "live": false,
+      "score": 8.6,
+      "why": "brand in title · 36k views"
+     },
+     {
+      "id": "ig9Xn4q-giw",
+      "title": "NEW DJI FIRMWARE UPDATE | Have They FIXED THE PROBLEM?! - DJI Mini 5 Pro",
+      "channel": "DM Productions",
+      "channel_id": "UCewJk3o-3DpDmRLl-RY-CgA",
+      "views": 27717,
+      "duration_s": 691,
+      "published": null,
+      "description": "HUGE BLACK FRIDAY DJI CHEAT SHEET SALE - https://dmprovisuals.com Get up to 75% OFF Drone Books, Digital Cheat ...",
+      "live": false,
+      "score": 8.4,
+      "why": "brand in title · 28k views"
+     },
+     {
+      "id": "u9ePc7-TmlI",
+      "title": "DJI Drones are FALLING out of the Sky! - Pilots Reporting‼️⚠️ #dji",
+      "channel": "Drone Camps RC",
+      "channel_id": "UCwojJxGQ0SNeVV09mKlnonA",
+      "views": 15084,
+      "duration_s": 242,
+      "published": null,
+      "description": "BREAKING NEWS - DJI Drones are FALLING out of the Sky! - Pilots Reporting‼️⚠️ #dji #dji Drone News by Drone Camps ...",
+      "live": false,
+      "score": 8.2,
+      "why": "brand in title · 15k views"
+     }
+    ],
+    "preselected": [
+     "aCmR8vl3fZs",
+     "siAbYy6OlxI",
+     "bbuqupDc-s8"
+    ],
+    "quota": {
+     "models": 4,
+     "exhausted": 0,
+     "used_requests": 0,
+     "left_requests": 80,
+     "free_per_model": 20,
+     "visitor_left": 10,
+     "visitor_cap": 10,
+     "reset_in_s": 64521,
+     "blocked": null
+    },
+    "max_new": 3,
+    "per_video_requests": 3
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "confirm",
+    "status": "skip",
+    "title": "Waiting for your OK",
+    "detail": "up to 3 new analyses (≈ 3 Gemini requests each) – the report below uses cached analyses only until you confirm",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "aggregate",
+    "status": "run",
+    "title": "Combining the results",
+    "detail": "",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "step",
+   "data": {
+    "id": "aggregate",
+    "status": "done",
+    "title": "Combined the results",
+    "detail": "2 videos with DJI · 1 finding to check",
+    "at_s": 0
+   }
+  },
+  {
+   "t": 0,
+   "ev": "report",
+   "data": {
+    "summary": {
+     "query": "DJI",
+     "generated_at": "2026-11-24T14:04:39.168Z",
+     "spread": 0.5,
+     "totals": {
+      "videos": 2,
+      "checked": 2,
+      "not_found": 0,
+      "views": 141492,
+      "screen_s": 13,
+      "screen_range": {
+       "low": 7,
+       "high": 20
+      },
+      "spoken_s": 3,
+      "mentions": 1,
+      "value": {
+       "low": 12.692307595336262,
+       "mid": 53.45716948445421,
+       "high": 157.90811790252195
+      },
+      "in_use": 1,
+      "commercial": 2,
+      "paid": 2,
+      "labelled": 1,
+      "weak": 0,
+      "unlabelled": 1,
+      "no_signals": 0
+     },
+     "videos": [
+      {
+       "id": "irY6mKSCT0w",
+       "title": "8 geniale Auto-Gadgets die 2025 ein MUSS für jeden Autofahrer sind 🚗💡",
+       "channel": "Marc Packeisen",
+       "views": 84975,
+       "duration_s": 757,
+       "upload_date": "2025-05-17",
+       "analyzed_at": "2026-11-21",
+       "found": true,
+       "brands": [
+        "DJI"
+       ],
+       "products": [
+        "DJI Mic 2"
+       ],
+       "category": "Electronics",
+       "screen_s": 13,
+       "screen_range": {
+        "low": 7,
+        "high": 20
+       },
+       "spoken_s": 0,
+       "text_s": 0,
+       "mentions": 0,
+       "shown": true,
+       "in_use": true,
+       "background_only": false,
+       "value": {
+        "low": 21.61804831778401,
+        "mid": 45.69598677964002,
+        "high": 90.29226923196003
+       },
+       "value_range": {
+        "low": 10.809024158892004,
+        "mid": 45.69598677964002,
+        "high": 135.43840384794004
+       },
+       "paid": true,
+       "disclosure": {
+        "level": "red",
+        "label": "Not labelled",
+        "title": "No disclosure found",
+        "signals": [
+         "Gemini rates the video as paid or gifted promotion",
+         "Shop / affiliate link in description (\"amzn.to\")",
+         "Products are actively recommended"
+        ]
+       },
+       "others": [
+        "Volkswagen",
+        "Vantrue",
+        "Audi",
+        "Asperx"
+       ],
+       "source": "demo"
+      },
+      {
+       "id": "ip_R5z7tNvo",
+       "title": "BIKE TEST: mein neues E Bike! Das Rose FILE PLUS",
+       "channel": "Lukas Knopf",
+       "views": 56517,
+       "duration_s": 1036,
+       "upload_date": "2025-10-09",
+       "analyzed_at": "2026-11-21",
+       "found": true,
+       "brands": [
+        "DJI"
+       ],
+       "products": [
+        "Mic"
+       ],
+       "category": "Cameras & Optics",
+       "screen_s": 0,
+       "screen_range": {
+        "low": 0,
+        "high": 0
+       },
+       "spoken_s": 3,
+       "text_s": 0,
+       "mentions": 1,
+       "shown": false,
+       "in_use": false,
+       "background_only": false,
+       "value": {
+        "low": 3.766566872888513,
+        "mid": 7.761182704814189,
+        "high": 14.97980936972128
+       },
+       "value_range": {
+        "low": 1.8832834364442566,
+        "mid": 7.761182704814189,
+        "high": 22.46971405458192
+       },
+       "paid": true,
+       "disclosure": {
+        "level": "green",
+        "label": "Labelled",
+        "title": "Disclosure found",
+        "signals": [
+         "Gemini rates the video as paid or gifted promotion",
+         "Shop / affiliate link in description (\"amzn.to\")",
+         "Products are actively recommended"
+        ]
+       },
+       "others": [
+        "ROSE",
+        "The Motion Brand",
+        "ALPINA",
+        "SRAM",
+        "RockShox",
+        "Continental"
+       ],
+       "source": "demo"
+      }
+     ],
+     "not_found": [],
+     "creators": [
+      {
+       "channel": "Marc Packeisen",
+       "videos": 1,
+       "views": 84975,
+       "screen_s": 13,
+       "value_mid": 45.69598677964002,
+       "labelled": 0,
+       "unlabelled": 1
+      },
+      {
+       "channel": "Lukas Knopf",
+       "videos": 1,
+       "views": 56517,
+       "screen_s": 0,
+       "value_mid": 7.761182704814189,
+       "labelled": 1,
+       "unlabelled": 0
+      }
+     ],
+     "months": [
+      {
+       "month": "2025-05",
+       "videos": 1,
+       "value_mid": 45.69598677964002,
+       "labelled": 0,
+       "unlabelled": 1
+      },
+      {
+       "month": "2025-10",
+       "videos": 1,
+       "value_mid": 7.761182704814189,
+       "labelled": 1,
+       "unlabelled": 0
+      }
+     ],
+     "next_to": [
+      {
+       "brand": "ROSE",
+       "category": "Bicycles & Accessories",
+       "videos": 1,
+       "screen_s": 70
+      },
+      {
+       "brand": "Volkswagen",
+       "category": "Car Accessories",
+       "videos": 1,
+       "screen_s": 29
+      },
+      {
+       "brand": "The Motion Brand",
+       "category": "Apparel & Accessories",
+       "videos": 1,
+       "screen_s": 25
+      },
+      {
+       "brand": "ALPINA",
+       "category": "Sports Equipment",
+       "videos": 1,
+       "screen_s": 13
+      },
+      {
+       "brand": "Vantrue",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 12
+      },
+      {
+       "brand": "Audi",
+       "category": "Vehicles",
+       "videos": 1,
+       "screen_s": 10
+      },
+      {
+       "brand": "SRAM",
+       "category": "Bicycles & Accessories",
+       "videos": 1,
+       "screen_s": 7
+      },
+      {
+       "brand": "RockShox",
+       "category": "Bicycles & Accessories",
+       "videos": 1,
+       "screen_s": 7
+      },
+      {
+       "brand": "Asperx",
+       "category": "Electronics",
+       "videos": 1,
+       "screen_s": 3
+      },
+      {
+       "brand": "Continental",
+       "category": "Bicycles & Accessories",
+       "videos": 1,
+       "screen_s": 2
+      }
+     ],
+     "findings": [
+      {
+       "kind": "warn",
+       "id": "unlabelled",
+       "title": "1 of 2 videos with ad signals but no label",
+       "text": "Gemini or the description point to paid, gifted or affiliate content, but no ad label was found in title, description, image or speech (§ 5a (4) UWG, § 22 MStV – screening aid, not legal advice).",
+       "videos": [
+        {
+         "id": "irY6mKSCT0w",
+         "title": "8 geniale Auto-Gadgets die 2025 ein MUSS für jeden Autofahrer sind 🚗💡",
+         "channel": "Marc Packeisen"
+        }
+       ]
+      },
+      {
+       "kind": "info",
+       "id": "paid_labelled",
+       "title": "1 paid or gifted video, labelled correctly",
+       "text": "Commercial content with a clear label.",
+       "videos": [
+        {
+         "id": "ip_R5z7tNvo",
+         "title": "BIKE TEST: mein neues E Bike! Das Rose FILE PLUS",
+         "channel": "Lukas Knopf"
+        }
+       ]
+      },
+      {
+       "kind": "info",
+       "id": "in_use",
+       "title": "Shown in use in 1 of 2",
+       "text": "Hands-on use is the strongest form of placement (×1.25 in the media value).",
+       "videos": [
+        {
+         "id": "irY6mKSCT0w",
+         "title": "8 geniale Auto-Gadgets die 2025 ein MUSS für jeden Autofahrer sind 🚗💡",
+         "channel": "Marc Packeisen"
+        }
+       ]
+      },
+      {
+       "kind": "info",
+       "id": "spoken_only",
+       "title": "Only mentioned, never shown: 1",
+       "text": "The brand is named in speech or text, but Gemini did not see it in the picture.",
+       "videos": [
+        {
+         "id": "ip_R5z7tNvo",
+         "title": "BIKE TEST: mein neues E Bike! Das Rose FILE PLUS",
+         "channel": "Lukas Knopf"
+        }
+       ]
+      },
+      {
+       "kind": "info",
+       "id": "next_to",
+       "title": "Seen next to",
+       "text": "ROSE (1 video), Volkswagen (1 video), The Motion Brand (1 video), ALPINA (1 video), Vantrue (1 video).",
+       "videos": []
+      },
+      {
+       "kind": "note",
+       "id": "spread",
+       "title": "Screen time and value are ranges",
+       "text": "Two analyses of the same video agree on only about half of the on-screen seconds (test M4), so one run's numbers carry about ±50 %. Totals are shown with that range; video counts and disclosure verdicts are more stable.",
+       "videos": []
+      }
+     ]
+    },
+    "plan": {
+     "brand": "DJI",
+     "lang": "any",
+     "period": "any",
+     "max": 8,
+     "max_new": 3,
+     "queries": [
+      "DJI"
+     ],
+     "rules": [
+      "length 1–20 min",
+      "≥ 1,000 views",
+      "not DJI's own channel (owned media, no placement)"
+     ],
+     "search_ok": true,
+     "search_source": "youtube-page"
+    },
+    "cost": {
+     "search_units": 0,
+     "search_cached": true,
+     "gemini_requests": 0,
+     "new_analyses": 0,
+     "kv_reads": 2
+    },
+    "pending": 6,
+    "seconds": 0
+   }
+  }
+ ]
+}

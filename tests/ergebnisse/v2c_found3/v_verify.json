@@ -1,0 +1,129 @@
+{
+ "at": "2026-11-24T18:28:53.398Z",
+ "chrome": "Chrome/158.0.8127.88",
+ "cases": [
+  {
+   "id": "2CqNFIn1AEo",
+   "mode": "element",
+   "loadS": 1.149,
+   "scenes": [
+    {
+     "name": "kh_0101_sonos_entfernt",
+     "from": 101,
+     "to": 114,
+     "shot": 108,
+     "found": [
+      {
+       "brand": "Sonos",
+       "frames": 2,
+       "spans": [
+        [
+         103,
+         105.25
+        ]
+       ],
+       "seconds": 2.25,
+       "how": {
+        "text": 2
+       },
+       "read": [
+        "SONOS",
+        "Sonos"
+       ],
+       "listed": false
+      }
+     ],
+     "foundAt": [],
+     "tiles": {
+      "tilesRun": 88,
+      "lastMs": 254,
+      "boxes": 0
+     },
+     "frames": 38,
+     "msLastFrame": 740,
+     "apps": [
+      {
+       "key": "Bowers & Wilkins|114|128",
+       "brand": "Bowers & Wilkins",
+       "product": "Px7 S3",
+       "type": null,
+       "status": "not_checkable",
+       "checks": 2,
+       "hits": 0,
+       "kind": null,
+       "read": [],
+       "checkable": false,
+       "zs": null,
+       "how": {},
+       "dev": [],
+       "meas": [],
+       "devMedian": null
+      }
+     ],
+     "unclaimed": [],
+     "measuredAtShot": [],
+     "screenshot": "ergebnisse/v2c_found3/kh_0101_sonos_entfernt.png"
+    }
+   ],
+   "vsTruth": {
+    "all": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 2
+    },
+    "sure": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "tn": 2
+    },
+    "perBrand": {
+     "Bowers & Wilkins": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "tn": 2
+     }
+    }
+   },
+   "summary": {
+    "confirmed": 0,
+    "not_seen": 0,
+    "not_checkable": 1,
+    "checking": 0,
+    "unchecked": 24,
+    "frames": 38,
+    "checked": 1,
+    "dev": {
+     "n": 0,
+     "iou": null,
+     "dist": null
+    }
+   },
+   "foundSection": "Found on screen 1 i S Sonos brand read “SONOS” · 2 frames found on screen 2 s on screen (checked frames) €16 – €57 ad cost eq. 1:43 Added by the models on your device, not by Gemini. Only seconds that were actually checked count, so the screen time is a lower bound.",
+   "replayAfterStop": [],
+   "afterReload": {
+    "confirmed": 0,
+    "not_seen": 0,
+    "not_checkable": 1,
+    "checking": 0,
+    "unchecked": 24,
+    "frames": 38,
+    "checked": 1,
+    "dev": {
+     "n": 0,
+     "iou": null,
+     "dist": null
+    }
+   },
+   "view_value": [
+    "S Sonos found on screen brand read “SONOS” · 2 frames · score 1 €16 – €57"
+   ],
+   "view_report": [],
+   "reportOptions": [
+    "Sonos (found on screen)"
+   ]
+  }
+ ]
+}

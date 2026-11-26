@@ -1,0 +1,92 @@
+{
+  "estimate": {
+    "audience": {
+      "age": "25-44",
+      "interests": [
+        "headphones",
+        "audio equipment",
+        "sound quality",
+        "technical measurements"
+      ],
+      "language": "English",
+      "country": "unknown",
+      "basis": "The content focuses on technical audio gear reviews and measurement data, which appeals to hobbyists and enthusiasts."
+    },
+    "tone": {
+      "style": "technical, critical, in-depth audio gear reviews",
+      "credibility": "high",
+      "basis": "The titles and descriptions emphasize measurements, comparisons, and critical analysis of sound quality."
+    },
+    "brand_safety": {
+      "level": "low_risk",
+      "topics": [],
+      "note": "The channel focuses exclusively on consumer electronics and audio equipment."
+    },
+    "partners": [
+      {
+        "brand": "headphones.com",
+        "kind": "affiliate",
+        "evidence": "Buy the AR5000 mk2: https://headphones.com/products/aune-ar5000-mk2-headphones",
+        "verified": true
+      }
+    ],
+    "fit": {
+      "level": "high",
+      "reasons": [
+        "The channel is entirely dedicated to headphone reviews and audio technology.",
+        "The audience is specifically looking for detailed analysis of headphone performance, which aligns with a premium audio brand like Sonos."
+      ],
+      "risk": "The creator is highly critical and technical; if the Sonos product does not measure well or perform to audiophile standards, the review will likely be negative.",
+      "format": "Dedicated review or deep-dive technical analysis"
+    },
+    "data_note": "The channel description is missing."
+  },
+  "checks": {
+    "partners_given": 1,
+    "dropped_partners": 0,
+    "dropped": [],
+    "topics_unverified": 0
+  },
+  "channel": {
+    "id": "UCt44wdefZzrhNDYYAyEy3Xg",
+    "title": "The Headphone Show",
+    "handle": "@TheHEADPHONEShow",
+    "avatar": "https://yt3.googleusercontent.com/mFHCIucWJyVyiZjfSYzxPs68woF38eXiYTw2x_QzS0whQLCpItxtS7V20gGgpVY97G7Hga74OA=s160-c-k-c0x00ffffff-no-rj",
+    "subscribers": "277K subscribers",
+    "video_count": 1200,
+    "source": "youtube-page",
+    "fetched_at": "2026-11-25T15:11:53.859Z"
+  },
+  "brand": "Sonos",
+  "product": "headphones",
+  "input": {
+    "uploads": 25,
+    "with_description": 7,
+    "channel_description": false,
+    "analysed": 0,
+    "comments": 0,
+    "chars": 6319
+  },
+  "model": "gemini-3.1-flash-lite-preview",
+  "usage": {
+    "prompt": 1973,
+    "output": 270,
+    "thoughts": 1550,
+    "total": 3793
+  },
+  "seconds": 56,
+  "created_at": "2026-11-25T19:48:34.590Z",
+  "prompt_version": 1,
+  "cached": false,
+  "quota": {
+    "visitor_left": 4,
+    "visitor_cap": 10,
+    "models": [
+      "gemini-3.7-flash",
+      "gemini-3.1-flash-lite-preview"
+    ],
+    "left_requests": 0,
+    "free_per_model": 20,
+    "blocked": null
+  }
+}

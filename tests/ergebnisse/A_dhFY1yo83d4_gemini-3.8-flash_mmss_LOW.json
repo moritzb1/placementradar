@@ -1,0 +1,19 @@
+{
+  "video": "dhFY1yo83d4",
+  "model": "gemini-3.8-flash",
+  "seconds": 13.1,
+  "http": 503,
+  "meta": {
+    "title": "What's in my Bag? These are the essentials",
+    "channel": "Brandy Nicholl",
+    "view_count": 9046,
+    "duration": 491,
+    "upload_date": "20261117",
+    "description": "#whatsinmybag  #essentials   \n\nHi there,\ncheck out all the items Below. \n\nWebsite : https://www.beltikbag.com/?coupon_code=BN4973\n\nDiscount code : BN4973 (Valid for all items)\nLV Palm Springs Mini Backpack: https://bit.ly/4guM7HD\nBags/Shoes/Clothing/Accessories/Belts/More\nWhatsApp : https://api.whatsapp.com/send/?phone=8618338157832\n\n\n\n❤️Items:\nhttps://www.amazon.com/shop/brandynicholl/list/2PC29HO7V8YJ4?ref_=aipsflist\n\n\n\n \n\nMusic from Filmora: You are full of Power- Ai music\nBusiness inquiries: brandynicholl761@gmail.com"
+  },
+  "error": {
+    "code": 503,
+    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+    "status": "UNAVAILABLE"
+  }
+}

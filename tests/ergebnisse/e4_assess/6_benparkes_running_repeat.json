@@ -1,0 +1,93 @@
+{
+  "estimate": {
+    "audience": {
+      "age": "25-44",
+      "interests": [
+        "running",
+        "marathon training",
+        "shoe reviews",
+        "fitness gear"
+      ],
+      "language": "English",
+      "country": "unknown",
+      "basis": "Content focuses on marathon training, VO2 max, and technical shoe reviews which typically appeal to dedicated adult runners."
+    },
+    "tone": {
+      "style": "analytical, honest, performance-focused running reviews",
+      "credibility": "high",
+      "basis": "Titles frequently emphasize 'honest review' and 'brutally honest' assessments of gear."
+    },
+    "brand_safety": {
+      "level": "low_risk",
+      "topics": [],
+      "note": "No sensitive topics or controversial content identified in the provided data."
+    },
+    "partners": [
+      {
+        "brand": "Ben Parkes",
+        "kind": "sponsor",
+        "evidence": "Save 10% site wide on training plans, hats, socks, shorts, technical & casual apparel - (Code - YOUTUBE10) https://benpa",
+        "verified": true
+      }
+    ],
+    "fit": {
+      "level": "high",
+      "reasons": [
+        "The channel is almost exclusively dedicated to running content and shoe reviews.",
+        "The creator frequently tests and compares major running shoe brands like Nike, Asics, and Adidas.",
+        "The audience is highly targeted, specifically looking for advice on shoe rotation and performance gear."
+      ],
+      "risk": "The creator is known for being 'brutally honest' and critical, which poses a risk if the product does not perform well during testing.",
+      "format": "dedicated review"
+    },
+    "data_note": "The channel description is missing from the provided data."
+  },
+  "checks": {
+    "partners_given": 1,
+    "dropped_partners": 0,
+    "dropped": [],
+    "topics_unverified": 0
+  },
+  "channel": {
+    "id": "UCZPqG0yh_xPm2AyLjffbDvw",
+    "title": "Ben Parkes",
+    "handle": "@BenParkes",
+    "avatar": "https://yt3.googleusercontent.com/ytc/AIdro_mDy4ZoQqcj7DiO_-1z6j2Y6Nu_PvFESGAsJagEM5FdPg=s160-c-k-c0x00ffffff-no-rj",
+    "subscribers": "377K subscribers",
+    "video_count": 581,
+    "source": "youtube-page",
+    "fetched_at": "2026-11-25T15:12:12.409Z"
+  },
+  "brand": "",
+  "product": "running shoes",
+  "input": {
+    "uploads": 25,
+    "with_description": 15,
+    "channel_description": false,
+    "analysed": 0,
+    "comments": 0,
+    "chars": 8312
+  },
+  "model": "gemini-3.1-flash-lite-preview",
+  "usage": {
+    "prompt": 2529,
+    "output": 429,
+    "thoughts": 1121,
+    "total": 4079
+  },
+  "seconds": 5,
+  "created_at": "2026-11-25T21:09:24.762Z",
+  "prompt_version": 1,
+  "cached": false,
+  "quota": {
+    "visitor_left": 2,
+    "visitor_cap": 10,
+    "models": [
+      "gemini-3.7-flash",
+      "gemini-3.1-flash-lite-preview"
+    ],
+    "left_requests": 0,
+    "free_per_model": 20,
+    "blocked": null
+  }
+}

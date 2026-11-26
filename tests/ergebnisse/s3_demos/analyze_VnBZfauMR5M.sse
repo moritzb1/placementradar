@@ -1,0 +1,144 @@
+event: stage
+data: {"id":"meta"}
+
+event: meta
+data: {"id":"VnBZfauMR5M","title":"What’s in my Bag 🎀✨ 45 Must Haves aus meiner Handtasche!","channel":"Rebecca","views":31577,"duration_s":755,"upload_date":"2025-06-01","description":"Meine NEUE Handtasche 😍 Heute zeig ich euch, was in meiner Handtasche ist – und ja, es sind 45 Dinge! Von praktischen Essentials bis zu geheimen Beauty Must Haves ist alles dabei. \n\n► Du findest mich auch auf Instagram: \nhttps://www.instagram.com/rebecca.blank/\n\n► Du findest mich auch auf TikTok:\nhttps://www.tiktok.com/@rebecca.blank\n\n► Unser neuer Podcast: https://podcasters.spotify.com/pod/show/lebeliebelipgloss\n\n► Kooperationsanfragen: bblanci539@gmail.com\n____\n\n*Alle meine Amazon Must Haves auf einen Blick: https://www.amazon.de/shop/rebeccablank\n\nDas sind meine Beauty Empfehlungen!\n*Lockenwickler: https://www.stylink.it/eXlQPC7Ya4\n*Selbstbräuner aus der Drogerie: https://www.stylink.it/NMB4as7vlj\n____\nDieses Video ist hiermit als \"Dauerwerbesendung\" gekennzeichnet, da Marken im Video zu erkennen sind.\n___\nImpressum:\nART DIGITAL PARTNERS - FZCO\nIFZA Business Park, DDP,\nPO Box 342001, Dubai, UAE\n___\n*Die mit * gekennzeichneten Links sind Affiliate Links.\nDiese dienen zur Orientierung und zum einfachen Finden der Produkte und werden, falls sie genutzt werden, mit einer kleinen Provision ausgezahlt. Ihr könnt die Produkte aber natürlich auch in anderen Online Shops kaufen.","source":"dataapi:200:ok"}
+
+event: stage
+data: {"id":"timeline"}
+
+event: model
+data: {"model":"gemini-3.8-flash"}
+
+event: ping
+data: {"s":5}
+
+event: ping
+data: {"s":10}
+
+event: ping
+data: {"s":15}
+
+event: ping
+data: {"s":20}
+
+event: ping
+data: {"s":25}
+
+event: ping
+data: {"s":30}
+
+event: retry
+data: {"model":"gemini-3.8-flash","status":503,"after_s":32}
+
+event: model
+data: {"model":"gemini-3.6-flash"}
+
+event: ping
+data: {"s":35}
+
+event: ping
+data: {"s":40}
+
+event: ping
+data: {"s":45}
+
+event: ping
+data: {"s":50}
+
+event: ping
+data: {"s":55}
+
+event: ping
+data: {"s":60}
+
+event: stage
+data: {"id":"authenticity"}
+
+event: model
+data: {"model":"gemini-3.8-flash"}
+
+event: ping
+data: {"s":65}
+
+event: ping
+data: {"s":70}
+
+event: ping
+data: {"s":75}
+
+event: ping
+data: {"s":80}
+
+event: ping
+data: {"s":85}
+
+event: ping
+data: {"s":90}
+
+event: ping
+data: {"s":95}
+
+event: ping
+data: {"s":100}
+
+event: ping
+data: {"s":105}
+
+event: ping
+data: {"s":110}
+
+event: ping
+data: {"s":115}
+
+event: ping
+data: {"s":120}
+
+event: ping
+data: {"s":125}
+
+event: ping
+data: {"s":130}
+
+event: ping
+data: {"s":135}
+
+event: ping
+data: {"s":140}
+
+event: ping
+data: {"s":145}
+
+event: ping
+data: {"s":150}
+
+event: ping
+data: {"s":155}
+
+event: ping
+data: {"s":160}
+
+event: ping
+data: {"s":165}
+
+event: ping
+data: {"s":170}
+
+event: ping
+data: {"s":175}
+
+event: ping
+data: {"s":180}
+
+event: ping
+data: {"s":185}
+
+event: retry
+data: {"model":"gemini-3.8-flash","status":524,"after_s":125}
+
+event: stage
+data: {"id":"done"}
+
+event: result
+data: {"video":{"id":"VnBZfauMR5M","title":"What’s in my Bag 🎀✨ 45 Must Haves aus meiner Handtasche!","channel":"Rebecca","views":31577,"duration_s":755,"upload_date":"2025-06-01","description":"Meine NEUE Handtasche 😍 Heute zeig ich euch, was in meiner Handtasche ist – und ja, es sind 45 Dinge! Von praktischen Essentials bis zu geheimen Beauty Must Haves ist alles dabei. \n\n► Du findest mich auch auf Instagram: \nhttps://www.instagram.com/rebecca.blank/\n\n► Du findest mich auch auf TikTok:\nhttps://www.tiktok.com/@rebecca.blank\n\n► Unser neuer Podcast: https://podcasters.spotify.com/pod/show/lebeliebelipgloss\n\n► Kooperationsanfragen: bblanci539@gmail.com\n____\n\n*Alle meine Amazon Must Haves auf einen Blick: https://www.amazon.de/shop/rebeccablank\n\nDas sind meine Beauty Empfehlungen!\n*Lockenwickler: https://www.stylink.it/eXlQPC7Ya4\n*Selbstbräuner aus der Drogerie: https://www.stylink.it/NMB4as7vlj\n____\nDieses Video ist hiermit als \"Dauerwerbesendung\" gekennzeichnet, da Marken im Video zu erkennen sind.\n___\nImpressum:\nART DIGITAL PARTNERS - FZCO\nIFZA Business Park, DDP,\nPO Box 342001, Dubai, UAE\n___\n*Die mit * gekennzeichneten Links sind Affiliate Links.\nDiese dienen zur Orientierung und zum einfachen Finden der Produkte und werden, falls sie genutzt werden, mit einer kleinen Provision ausgezahlt. Ihr könnt die Produkte aber natürlich auch in anderen Online Shops kaufen.","source":"dataapi:200:ok"},"brands":[{"brand":"GUESS","product":"Handbag","category":"Clothing & Fashion","appearances":[{"start_s":0,"end_s":9,"channel":"visual","size":"medium","position":null,"in_use":null,"evidence":""},{"start_s":19,"end_s":22,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":22,"end_s":23,"channel":"audio","size":null,"position":null,"in_use":null,"evidence":"Guess"},{"start_s":46,"end_s":73,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":59,"end_s":60,"channel":"audio","size":null,"position":null,"in_use":null,"evidence":"Guess"},{"start_s":76,"end_s":88,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":101,"end_s":105,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":119,"end_s":122,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":134,"end_s":137,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":142,"end_s":143,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":154,"end_s":156,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":158,"end_s":159,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":166,"end_s":168,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":170,"end_s":171,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":176,"end_s":179,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":202,"end_s":203,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":217,"end_s":221,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":238,"end_s":240,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":253,"end_s":257,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":306,"end_s":307,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":311,"end_s":312,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":318,"end_s":320,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":351,"end_s":352,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":382,"end_s":384,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":412,"end_s":415,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":417,"end_s":418,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":425,"end_s":426,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":430,"end_s":431,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":442,"end_s":443,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":460,"end_s":462,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":469,"end_s":470,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":475,"end_s":477,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":504,"end_s":507,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":514,"end_s":518,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":528,"end_s":529,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":531,"end_s":534,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":538,"end_s":541,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":547,"end_s":550,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":552,"end_s":554,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":563,"end_s":565,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":607,"end_s":609,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":611,"end_s":615,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":627,"end_s":631,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":637,"end_s":638,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":643,"end_s":645,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":658,"end_s":661,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":670,"end_s":673,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":680,"end_s":685,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":686,"end_s":688,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":689,"end_s":690,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":698,"end_s":703,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":715,"end_s":718,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""}],"frames":[]},{"brand":"TREK","product":"Protein Bar","category":"Food & Beverage","appearances":[{"start_s":349,"end_s":352,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":366,"end_s":374,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""}],"frames":[{"t":351,"box":[319,372,500,548]},{"t":369,"box":[335,372,500,577]}]},{"brand":"Lotus Biscoff","product":"Biscoff Spread / Flavouring in Protein Bar","category":"Food & Beverage","appearances":[{"start_s":351,"end_s":352,"channel":"visual","size":"medium","position":null,"in_use":null,"evidence":""},{"start_s":366,"end_s":373,"channel":"visual","size":"medium","position":null,"in_use":null,"evidence":""},{"start_s":368,"end_s":369,"channel":"audio","size":null,"position":null,"in_use":null,"evidence":"Biscoff"}],"frames":[{"t":351,"box":[295,656,354,751]},{"t":369,"box":[295,651,359,758]}]},{"brand":"Plackers","product":"Dental Flossers","category":"Beauty & Personal Care","appearances":[{"start_s":400,"end_s":404,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":411,"end_s":415,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""}],"frames":[{"t":400,"box":[187,104,386,358]},{"t":413,"box":[260,492,517,816]}]},{"brand":"Yves Saint Laurent","product":"Cosmetics Pouch","category":"Beauty & Personal Care","appearances":[{"start_s":430,"end_s":438,"channel":"visual","size":"small","position":null,"in_use":null,"evidence":""}],"frames":[{"t":430,"box":[368,499,418,669]}]},{"brand":"Typology","product":"Glow Drops / Skincare","category":"Beauty & Personal Care","appearances":[{"start_s":156,"end_s":157,"channel":"audio","size":null,"position":null,"in_use":null,"evidence":"Typology"},{"start_s":547,"end_s":554,"channel":"visual","size":"medium","position":null,"in_use":null,"evidence":""},{"start_s":547,"end_s":548,"channel":"audio","size":null,"position":null,"in_use":null,"evidence":"Typology"}],"frames":[{"t":549,"box":[759,560,775,656]}]},{"brand":"e.l.f.","product":"Lipgloss & Eyebrow Pencil","category":"Beauty & Personal Care","appearances":[{"start_s":455,"end_s":456,"channel":"audio","size":null,"position":null,"in_use":null,"evidence":"Elf"},{"start_s":457,"end_s":462,"channel":"visual","size":"medium","position":null,"in_use":null,"evidence":""},{"start_s":528,"end_s":529,"channel":"visual","size":"medium","position":null,"in_use":null,"evidence":""}],"frames":[{"t":461,"box":[369,396,442,491]},{"t":528,"box":[397,446,446,519]}]},{"brand":"bebe","product":"Cleansing Wipes","category":"Beauty & Personal Care","appearances":[{"start_s":562,"end_s":568,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""}],"frames":[{"t":563,"box":[233,510,324,714]}]},{"brand":"Doonails","product":"Nail Glue","category":"Beauty & Personal Care","appearances":[{"start_s":217,"end_s":222,"channel":"visual","size":"medium","position":null,"in_use":null,"evidence":""}],"frames":[{"t":218,"box":[368,380,380,471]}]},{"brand":"Wrigley's Extra","product":"Chewing Gum","category":"Food & Beverage","appearances":[{"start_s":303,"end_s":308,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""}],"frames":[{"t":307,"box":[323,248,481,655]}]},{"brand":"trend !t up","product":"Anti Shine Paper","category":"Beauty & Personal Care","appearances":[{"start_s":474,"end_s":479,"channel":"visual","size":"small","position":null,"in_use":null,"evidence":""}],"frames":[{"t":475,"box":[219,599,272,727]}]},{"brand":"SOS","product":"Disinfectant Spray","category":"Beauty & Personal Care","appearances":[{"start_s":138,"end_s":142,"channel":"visual","size":"small","position":null,"in_use":null,"evidence":""}],"frames":[{"t":141,"box":[319,670,345,727]}]},{"brand":"Maybelline","product":"Eyebrow Gel","category":"Beauty & Personal Care","appearances":[{"start_s":530,"end_s":534,"channel":"visual","size":"medium","position":null,"in_use":null,"evidence":""}],"frames":[{"t":531,"box":[276,546,335,688]}]},{"brand":"Bioré","product":"Sunscreen Spray","category":"Beauty & Personal Care","appearances":[{"start_s":607,"end_s":609,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""},{"start_s":612,"end_s":613,"channel":"audio","size":null,"position":null,"in_use":null,"evidence":"Bioré"},{"start_s":613,"end_s":615,"channel":"visual","size":"large","position":null,"in_use":null,"evidence":""}],"frames":[{"t":608,"box":[287,500,386,685]},{"t":615,"box":[312,497,400,685]}]},{"brand":"essence","product":"Concealer","category":"Beauty & Personal Care","appearances":[{"start_s":538,"end_s":541,"channel":"visual","size":"medium","position":null,"in_use":null,"evidence":""}],"frames":[{"t":539,"box":[239,574,295,634]}]},{"brand":"H&M","product":"Bag","category":"Clothing & Fashion","appearances":[{"start_s":26,"end_s":28,"channel":"visual","size":"small","position":null,"in_use":null,"evidence":""}],"frames":[{"t":26,"box":[308,471,335,503]}]},{"brand":"ebelin","product":"Hair Brush","category":"Beauty & Personal Care","appearances":[{"start_s":318,"end_s":320,"channel":"visual","size":"medium","position":null,"in_use":null,"evidence":""},{"start_s":329,"end_s":332,"channel":"audio","size":null,"position":null,"in_use":null,"evidence":"Ebelin"}],"frames":[{"t":320,"box":[308,512,324,589]}]},{"brand":"Anastasia Beverly Hills","product":"Setting Spray","category":"Beauty & Personal Care","appearances":[{"start_s":504,"end_s":506,"channel":"visual","size":"medium","position":null,"in_use":null,"evidence":""}],"frames":[{"t":505,"box":[286,517,345,643]}]},{"brand":"KAPTEN & SON","product":"Sunglasses","category":"Clothing & Fashion","appearances":[{"start_s":168,"end_s":169,"channel":"audio","size":null,"position":null,"in_use":null,"evidence":"Kapten & Son"},{"start_s":170,"end_s":171,"channel":"visual","size":"medium","position":null,"in_use":null,"evidence":""}],"frames":[{"t":170,"box":[324,571,347,751]}]},{"brand":"Manhattan","product":"Lipliner","category":"Beauty & Personal Care","appearances":[{"start_s":440,"end_s":441,"channel":"audio","size":null,"position":null,"in_use":null,"evidence":"Manhattan"},{"start_s":442,"end_s":443,"channel":"visual","size":"small","position":null,"in_use":null,"evidence":""}],"frames":[{"t":442,"box":[272,287,321,342]}]},{"brand":"Zara","product":"Handbag","category":"Clothing & Fashion","appearances":[{"start_s":10,"end_s":12,"channel":"audio","size":null,"position":null,"in_use":null,"evidence":"Zara"},{"start_s":38,"end_s":40,"channel":"audio","size":null,"position":null,"in_use":null,"evidence":"Zara"}],"frames":[]},{"brand":"Apple","product":"Headphones","category":"Electronics","appearances":[{"start_s":250,"end_s":251,"channel":"audio","size":null,"position":null,"in_use":null,"evidence":"Apple"}],"frames":[]},{"brand":"dm","product":"Retailer","category":"Retail","appearances":[{"start_s":628,"end_s":629,"channel":"audio","size":null,"position":null,"in_use":null,"evidence":"dm"}],"frames":[]}],"disclosures":[{"time_s":0,"kind":"text_overlay","text":"Werbung"}],"paid":{"looks_like_paid_promotion":true,"reasoning":"The video features an explicit 'Werbung' (advertising) label in the top right corner throughout, indicating commercial endorsement or product placement."},"authenticity":[],"source":{"engine":"gemini","models":["gemini-3.6-flash"],"analyzed_at":"2026-11-20"}}
+

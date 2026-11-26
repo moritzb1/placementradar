@@ -1,0 +1,195 @@
+event: stage
+data: {"id":"meta"}
+
+event: meta
+data: {"id":"-pTGc7cIBIA","title":"My Everyday Tech: 2022!","channel":"Marques Brownlee","views":5706598,"duration_s":859,"upload_date":"2022-01-07","description":"What’s in my bag and on my phones RIGHT NOW.\nAll links below v\n\nPeak Design V2 Everyday 20L: https://amzn.to/3qWv0nc\nMacBook Pro 16: https://amzn.to/3HIIwRT\nAirPods Max: https://amzn.to/3JPxNHi\nOpal C1 webcam: https://opalcamera.com\nCanon R5: https://amzn.to/3F8gePb\nCanon 15-35 RF: https://amzn.to/3q3b9n1\nUSB-C cable with display: https://amzn.to/3f5kXqc\n\nTrove slim wallet: https://www.trove.cc\niPhone 13 Pro: https://amzn.to/3F4lO5e\nPixel 6 Pro: https://amzn.to/31AC7Ja\nTickTick: https://ticktick.com\nAgenda Calendar Widget: https://play.google.com/store/apps/details?id=com.candl.auge&hl=en_US&gl=US\nOsmos game: https://apps.apple.com/us/developer/hemisphere-games/id379323385\n\nTech I'm using right now: https://www.amazon.com/shop/MKBHD\n\nIntro Track: http://youtube.com/20syl\nPlaylist of MKBHD Intro music: https://goo.gl/B3AWV5\n\n~\nhttp://twitter.com/MKBHD\nhttp://instagram.com/MKBHD\nhttp://facebook.com/MKBHD","source":"watch:200:OK:views+duration_s+description"}
+
+event: stage
+data: {"id":"timeline"}
+
+event: model
+data: {"model":"gemini-3.8-flash"}
+
+event: ping
+data: {"s":5}
+
+event: ping
+data: {"s":10}
+
+event: ping
+data: {"s":15}
+
+event: ping
+data: {"s":20}
+
+event: ping
+data: {"s":25}
+
+event: ping
+data: {"s":30}
+
+event: ping
+data: {"s":35}
+
+event: ping
+data: {"s":40}
+
+event: ping
+data: {"s":45}
+
+event: ping
+data: {"s":50}
+
+event: ping
+data: {"s":55}
+
+event: ping
+data: {"s":60}
+
+event: ping
+data: {"s":65}
+
+event: ping
+data: {"s":70}
+
+event: ping
+data: {"s":75}
+
+event: ping
+data: {"s":80}
+
+event: ping
+data: {"s":85}
+
+event: ping
+data: {"s":90}
+
+event: ping
+data: {"s":95}
+
+event: ping
+data: {"s":100}
+
+event: ping
+data: {"s":105}
+
+event: ping
+data: {"s":110}
+
+event: ping
+data: {"s":115}
+
+event: ping
+data: {"s":120}
+
+event: ping
+data: {"s":125}
+
+event: ping
+data: {"s":130}
+
+event: ping
+data: {"s":135}
+
+event: ping
+data: {"s":140}
+
+event: ping
+data: {"s":145}
+
+event: ping
+data: {"s":150}
+
+event: ping
+data: {"s":155}
+
+event: ping
+data: {"s":160}
+
+event: ping
+data: {"s":165}
+
+event: ping
+data: {"s":170}
+
+event: ping
+data: {"s":175}
+
+event: ping
+data: {"s":180}
+
+event: ping
+data: {"s":185}
+
+event: ping
+data: {"s":190}
+
+event: ping
+data: {"s":195}
+
+event: ping
+data: {"s":200}
+
+event: ping
+data: {"s":205}
+
+event: ping
+data: {"s":210}
+
+event: retry
+data: {"model":"gemini-3.8-flash","status":503,"after_s":210}
+
+event: model
+data: {"model":"gemini-3.6-flash"}
+
+event: ping
+data: {"s":215}
+
+event: ping
+data: {"s":220}
+
+event: ping
+data: {"s":225}
+
+event: ping
+data: {"s":230}
+
+event: stage
+data: {"id":"recheck"}
+
+event: model
+data: {"model":"gemini-3.8-flash"}
+
+event: ping
+data: {"s":235}
+
+event: ping
+data: {"s":240}
+
+event: retry
+data: {"model":"gemini-3.8-flash","status":503,"after_s":9}
+
+event: model
+data: {"model":"gemini-3.6-flash"}
+
+event: ping
+data: {"s":245}
+
+event: ping
+data: {"s":250}
+
+event: ping
+data: {"s":255}
+
+event: ping
+data: {"s":260}
+
+event: stage
+data: {"id":"authenticity"}
+
+event: stage
+data: {"id":"done"}
+
+event: result
+data: {"video":{"id":"-pTGc7cIBIA","title":"My Everyday Tech: 2022!","channel":"Marques Brownlee","views":5706598,"duration_s":859,"upload_date":"2022-01-07","description":"What’s in my bag and on my phones RIGHT NOW.\nAll links below v\n\nPeak Design V2 Everyday 20L: https://amzn.to/3qWv0nc\nMacBook Pro 16: https://amzn.to/3HIIwRT\nAirPods Max: https://amzn.to/3JPxNHi\nOpal C1 webcam: https://opalcamera.com\nCanon R5: https://amzn.to/3F8gePb\nCanon 15-35 RF: https://amzn.to/3q3b9n1\nUSB-C cable with display: https://amzn.to/3f5kXqc\n\nTrove slim wallet: https://www.trove.cc\niPhone 13 Pro: https://amzn.to/3F4lO5e\nPixel 6 Pro: https://amzn.to/31AC7Ja\nTickTick: https://ticktick.com\nAgenda Calendar Widget: https://play.google.com/store/apps/details?id=com.candl.auge&hl=en_US&gl=US\nOsmos game: https://apps.apple.com/us/developer/hemisphere-games/id379323385\n\nTech I'm using right now: https://www.amazon.com/shop/MKBHD\n\nIntro Track: http://youtube.com/20syl\nPlaylist of MKBHD Intro music: https://goo.gl/B3AWV5\n\n~\nhttp://twitter.com/MKBHD\nhttp://instagram.com/MKBHD\nhttp://facebook.com/MKBHD","source":"watch:200:OK:views+duration_s+description"},"brands":[{"brand":"Under Armour","product":"Sweatshirt","products":["Sweatshirt"],"category":"Clothing","appearances":[{"start_s":3,"end_s":119,"channel":"visual","size":"medium","position":"center","in_use":true,"evidence":"Logo on sleeve of grey turtleneck sweatshirt · UNDER ARMOUR text on the sleeve · Under Armour grey hoodie sweatshirt","product":"Sweatshirt","basis":"text","confidence":0.9,"parts":3,"track":[{"t":3,"box":[282,116,682,691]},{"t":6,"box":[269,468,680,701]},{"t":9,"box":[265,473,680,700]},{"t":12,"box":[265,473,679,700]},{"t":15,"box":[264,472,679,700]},{"t":18,"box":[264,467,679,700]},{"t":21,"box":[264,467,679,700]},{"t":24,"box":[247,381,687,582]},{"t":27,"box":[245,380,689,582]},{"t":30,"box":[264,467,678,700]},{"t":33,"box":[264,467,678,700]},{"t":36,"box":[264,467,678,700]},{"t":74,"box":[326,222,560,608]},{"t":77,"box":[326,222,560,608]},{"t":80,"box":[326,222,560,608]},{"t":83,"box":[326,222,560,608]},{"t":86,"box":[326,222,560,608]},{"t":89,"box":[326,222,560,608]},{"t":92,"box":[326,222,560,608]},{"t":95,"box":[326,222,560,608]},{"t":98,"box":[326,222,560,608]},{"t":101,"box":[326,222,560,608]},{"t":104,"box":[326,222,560,608]},{"t":107,"box":[326,222,560,608]}]}],"frames":[{"t":3,"box":[282,116,682,691]},{"t":6,"box":[269,468,680,701]},{"t":9,"box":[265,473,680,700]},{"t":12,"box":[265,473,679,700]},{"t":15,"box":[264,472,679,700]},{"t":18,"box":[264,467,679,700]},{"t":21,"box":[264,467,679,700]},{"t":24,"box":[247,381,687,582]},{"t":27,"box":[245,380,689,582]},{"t":30,"box":[264,467,678,700]},{"t":33,"box":[264,467,678,700]},{"t":36,"box":[264,467,678,700]},{"t":74,"box":[326,222,560,608]},{"t":77,"box":[326,222,560,608]},{"t":80,"box":[326,222,560,608]},{"t":83,"box":[326,222,560,608]},{"t":86,"box":[326,222,560,608]},{"t":89,"box":[326,222,560,608]},{"t":92,"box":[326,222,560,608]},{"t":95,"box":[326,222,560,608]},{"t":98,"box":[326,222,560,608]},{"t":101,"box":[326,222,560,608]},{"t":104,"box":[326,222,560,608]},{"t":107,"box":[326,222,560,608]}]},{"brand":"Peak Design","product":"Everyday Backpack 20L V2","products":["Everyday Backpack 20L V2"],"category":"Bags","appearances":[{"start_s":3,"end_s":54,"channel":"visual","size":"medium","position":"center","in_use":true,"evidence":"Peak Design Everyday Backpack shown on table · Peak Design Everyday Backpack 20L · Peak Design 20L text overlay and backpack","product":"Everyday Backpack 20L V2","basis":"design","confidence":0.9,"parts":3,"track":[{"t":3,"box":[206,119,787,444]},{"t":6,"box":[232,121,786,448]},{"t":9,"box":[231,121,785,447]},{"t":12,"box":[231,121,785,447]},{"t":15,"box":[231,121,785,447]},{"t":18,"box":[231,121,785,447]},{"t":21,"box":[231,121,785,447]},{"t":24,"box":[231,244,782,470]},{"t":27,"box":[231,244,782,470]},{"t":30,"box":[231,121,785,447]},{"t":33,"box":[231,121,785,447]},{"t":36,"box":[231,121,785,447]},{"t":39,"box":[188,203,513,381]},{"t":42,"box":[188,203,513,381]},{"t":45,"box":[232,281,538,485]},{"t":48,"box":[232,281,538,485]},{"t":51,"box":[208,269,521,580]},{"t":54,"box":[208,269,521,580]}]},{"start_s":39,"end_s":54,"channel":"text","size":"medium","position":"edge","in_use":false,"evidence":"Peak Design 20L title card on screen","product":"Everyday Backpack 20L V2","basis":"text","confidence":1},{"start_s":39,"end_s":50,"channel":"audio","size":"medium","position":"center","in_use":true,"evidence":"Host mentions 'Peak Design Everyday Carry 20 liter'","product":"Everyday Backpack 20L V2","basis":"speech","confidence":1}],"frames":[{"t":3,"box":[206,119,787,444]},{"t":6,"box":[232,121,786,448]},{"t":9,"box":[231,121,785,447]},{"t":12,"box":[231,121,785,447]},{"t":15,"box":[231,121,785,447]},{"t":18,"box":[231,121,785,447]},{"t":21,"box":[231,121,785,447]},{"t":24,"box":[231,244,782,470]},{"t":27,"box":[231,244,782,470]},{"t":30,"box":[231,121,785,447]},{"t":33,"box":[231,121,785,447]},{"t":36,"box":[231,121,785,447]},{"t":39,"box":[188,203,513,381]},{"t":42,"box":[188,203,513,381]},{"t":45,"box":[232,281,538,485]},{"t":48,"box":[232,281,538,485]},{"t":51,"box":[208,269,521,580]},{"t":54,"box":[208,269,521,580]}],"links":[{"product":"Everyday Backpack 20L V2","url":"https://amzn.to/3qWv0nc"}],"link":"https://amzn.to/3qWv0nc","model_from_description":true},{"brand":"Canon","product":"EOS R5","products":["EOS R5"],"category":"Cameras","appearances":[{"start_s":229,"end_s":254,"channel":"visual","size":"medium","position":"center","in_use":true,"evidence":"Canon R5 text overlay and camera","product":"EOS R5","basis":"design","confidence":0.95,"recheck":true,"track":[{"t":229,"box":[334,335,495,520]},{"t":232,"box":[334,335,495,520]},{"t":235,"box":[334,335,495,520]},{"t":238,"box":[334,335,495,520]},{"t":241,"box":[334,335,495,520]},{"t":244,"box":[334,335,495,520]},{"t":247,"box":[334,335,495,520]},{"t":250,"box":[334,335,495,520]},{"t":253,"box":[334,335,495,520]}]},{"start_s":230,"end_s":238,"channel":"text","size":"medium","position":"edge","in_use":false,"evidence":"Canon R5 text on screen","product":"EOS R5","basis":"text","confidence":1},{"start_s":230,"end_s":240,"channel":"audio","size":"medium","position":"center","in_use":true,"evidence":"Host mentions Canon R5","product":"EOS R5","basis":"speech","confidence":1}],"frames":[{"t":229,"box":[334,335,495,520]},{"t":232,"box":[334,335,495,520]},{"t":235,"box":[334,335,495,520]},{"t":238,"box":[334,335,495,520]},{"t":241,"box":[334,335,495,520]},{"t":244,"box":[334,335,495,520]},{"t":247,"box":[334,335,495,520]},{"t":250,"box":[334,335,495,520]},{"t":253,"box":[334,335,495,520]}],"links":[{"product":"EOS R5","url":"https://amzn.to/3F8gePb"}],"link":"https://amzn.to/3F8gePb","model_from_description":true},{"brand":"Apple","product":"MacBook Pro 16\"","products":["MacBook Pro 16\""],"category":"Electronics","appearances":[{"start_s":99,"end_s":111,"channel":"visual","size":"medium","position":"center","in_use":true,"evidence":"MacBook Pro 16\" M1 Max text overlay and laptop","product":"MacBook Pro 16\"","basis":"design","confidence":0.95,"recheck":true,"track":[{"t":99,"box":[326,219,530,439]},{"t":102,"box":[326,219,530,439]},{"t":105,"box":[326,219,530,439]},{"t":108,"box":[326,219,530,439]},{"t":111,"box":[326,219,530,439]}]},{"start_s":102,"end_s":108,"channel":"text","size":"medium","position":"edge","in_use":false,"evidence":"MacBook Pro 16\" M1 Max title card","product":"MacBook Pro 16\"","basis":"text","confidence":1},{"start_s":102,"end_s":110,"channel":"audio","size":"medium","position":"center","in_use":true,"evidence":"Host names '16 inch M1 Max MacBook Pro'","product":"MacBook Pro 16\"","basis":"speech","confidence":1},{"start_s":120,"end_s":128,"channel":"visual","size":"medium","position":"center","in_use":true,"evidence":"MacBook Pro laptop","product":"MacBook Pro 16\"","basis":"design","confidence":0.9,"recheck":true,"track":[{"t":120,"box":[291,584,537,856]},{"t":123,"box":[291,584,537,856]},{"t":126,"box":[291,584,537,856]}]},{"start_s":164,"end_s":170,"channel":"text","size":"medium","position":"edge","in_use":false,"evidence":"AirPods Max title card","product":"MacBook Pro 16\"","basis":"text","confidence":1},{"start_s":164,"end_s":176,"channel":"audio","size":"medium","position":"center","in_use":true,"evidence":"Host mentions AirPods Max","product":"MacBook Pro 16\"","basis":"speech","confidence":1},{"start_s":476,"end_s":482,"channel":"text","size":"medium","position":"edge","in_use":false,"evidence":"iPhone 13 Pro title card","product":"MacBook Pro 16\"","basis":"text","confidence":1},{"start_s":476,"end_s":485,"channel":"audio","size":"medium","position":"center","in_use":true,"evidence":"Host mentions iPhone 13 Pro","product":"MacBook Pro 16\"","basis":"speech","confidence":1}],"frames":[{"t":99,"box":[326,219,530,439]},{"t":102,"box":[326,219,530,439]},{"t":105,"box":[326,219,530,439]},{"t":108,"box":[326,219,530,439]},{"t":111,"box":[326,219,530,439]},{"t":120,"box":[291,584,537,856]},{"t":123,"box":[291,584,537,856]},{"t":126,"box":[291,584,537,856]}],"links":[{"product":"MacBook Pro 16\"","url":"https://amzn.to/3HIIwRT"}],"link":"https://amzn.to/3HIIwRT","model_from_description":true},{"brand":"Opal","product":"C1","products":["C1"],"category":"Electronics","appearances":[{"start_s":194,"end_s":210,"channel":"visual","size":"medium","position":"center","in_use":true,"evidence":"Opal C1 WEBCAM text overlay and product","product":"C1","basis":"design","confidence":0.95,"recheck":true,"track":[{"t":194,"box":[259,444,383,537]},{"t":197,"box":[259,444,383,537]},{"t":200,"box":[259,444,383,537]},{"t":203,"box":[287,442,458,622]},{"t":206,"box":[287,442,458,622]},{"t":209,"box":[287,442,458,622]}]},{"start_s":194,"end_s":200,"channel":"text","size":"medium","position":"edge","in_use":false,"evidence":"Opal C1 WEBCAM text on screen","product":"C1","basis":"text","confidence":1},{"start_s":194,"end_s":205,"channel":"audio","size":"small","position":"center","in_use":true,"evidence":"Host says 'Opal C1'","product":"C1","basis":"speech","confidence":1}],"frames":[{"t":194,"box":[259,444,383,537]},{"t":197,"box":[259,444,383,537]},{"t":200,"box":[259,444,383,537]},{"t":203,"box":[287,442,458,622]},{"t":206,"box":[287,442,458,622]},{"t":209,"box":[287,442,458,622]}],"links":[{"product":"C1","url":"https://opalcamera.com"}],"link":"https://opalcamera.com","model_from_description":true},{"brand":"Realme","product":"50W Mini SuperDart Charger","products":["50W Mini SuperDart Charger"],"category":"Electronics","appearances":[{"start_s":307,"end_s":318,"channel":"audio","size":"small","position":"center","in_use":true,"evidence":"Host mentions 'Realme' and 'SuperDart charger'","product":"50W Mini SuperDart Charger","basis":"speech","confidence":1},{"start_s":311,"end_s":325,"channel":"visual","size":"small","position":"center","in_use":true,"evidence":"RealMe Mini SuperDart (50W) text overlay and charger","product":"50W Mini SuperDart Charger","basis":"design","confidence":0.95,"recheck":true,"track":[{"t":311,"box":[278,520,483,638]},{"t":314,"box":[278,520,483,638]},{"t":317,"box":[278,520,483,638]},{"t":320,"box":[278,520,483,638]},{"t":323,"box":[278,520,483,638]}]},{"start_s":311,"end_s":320,"channel":"text","size":"medium","position":"edge","in_use":false,"evidence":"RealMe Mini SuperDart (50W) text on screen","product":"50W Mini SuperDart Charger","basis":"text","confidence":1}],"frames":[{"t":311,"box":[278,520,483,638]},{"t":314,"box":[278,520,483,638]},{"t":317,"box":[278,520,483,638]},{"t":320,"box":[278,520,483,638]},{"t":323,"box":[278,520,483,638]}]},{"brand":"Google","product":"Pixel 6 Pro","products":["Pixel 6 Pro"],"category":"Smartphones","appearances":[{"start_s":497,"end_s":500,"channel":"visual","size":"medium","position":"center","in_use":true,"evidence":"Pixel 6 Pro text overlay and smartphone","product":"Pixel 6 Pro","basis":"design","confidence":0.95,"recheck":true,"track":[{"t":497,"box":[283,444,558,622]},{"t":500,"box":[283,444,558,622]}]},{"start_s":497,"end_s":503,"channel":"text","size":"medium","position":"edge","in_use":false,"evidence":"Pixel 6 Pro text on screen","product":"Pixel 6 Pro","basis":"text","confidence":1},{"start_s":497,"end_s":505,"channel":"audio","size":"medium","position":"center","in_use":true,"evidence":"Host mentions Pixel 6 Pro","product":"Pixel 6 Pro","basis":"speech","confidence":1}],"frames":[{"t":497,"box":[283,444,558,622]},{"t":500,"box":[283,444,558,622]}],"links":[{"product":"Pixel 6 Pro","url":"https://amzn.to/31AC7Ja"}],"link":"https://amzn.to/31AC7Ja","model_from_description":true}],"unidentified":[],"disclosures":[],"paid":{"looks_like_paid_promotion":false,"reasoning":"The video is an organic 'Everyday Carry' tech review showcasing items the reviewer uses daily. While affiliate links are included in the description, there are no sponsor integrations or paid promotion disclosures."},"authenticity":[],"source":{"engine":"gemini","models":["gemini-3.6-flash","gemini-3.6-flash"],"analyzed_at":"2026-11-22","usage":[{"call":"timeline","model":"gemini-3.6-flash","prompt":69952,"output":3798,"thoughts":0,"total":73750},{"call":"recheck","model":"gemini-3.6-flash","prompt":69223,"output":4029,"thoughts":0,"total":73252}],"recheck":{"model":"gemini-3.6-flash","products":7,"spans":10,"seconds":30,"visual_raw":2,"visual_before":2,"visual_after":8,"seconds_before":71,"seconds_after":245}}}
+

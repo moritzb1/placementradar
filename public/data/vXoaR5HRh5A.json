@@ -1,0 +1,2621 @@
+{
+ "video": {
+  "id": "vXoaR5HRh5A",
+  "title": "Over-Ear Topmodell im Vergleich (bis 250€) » Sony / Sennheiser / Beats / Nothing",
+  "channel": "MoeKit",
+  "views": 25833,
+  "duration_s": 945,
+  "upload_date": "2025-10-05",
+  "description": "Hier vergleiche ich die Sony WH-1000XM5, die Sennheiser Momentum 4, die Beats Studio Pro und die Nothing Headphones (1). Es handelt sich um die jeweiligen Topmodelle um 250€ herum. Im Fokus stehen Klang, ANC, Komfort, Verarbeitung, Akkulaufzeit, Anschlüsse und Funktionalitäten. Am Ende bekommst du eine klare Kaufempfehlung für unterschiedliche Einsatzzwecke.\n\nDies sind die gezeigten Kopfhörer*:\nSony WH-1000XM5: https://amzn.to/4gWzB21 \nSennheiser Momentum 4: https://amzn.to/4n9ww0p \nBeats Studio Pro: https://amzn.to/4mLHGbd \nNothing Headphones (1): https://amzn.to/4h4NFqA\n\n\n#Kopfhörer #OverEar\n_______________________________________________________________\n\nKapitel: \n0:00 Intro: Vorstellung der Over-Ear Kopfhörer\n0:55 Design: Wie hochwertig sind die Kopfhörer?\n1:45 Komfort: Welches sind die bequemsten Over-Ear Kopfhörer?\n2:34 Anschlüsse: Multipoint Bluetooth, Aux Anschluss & Typ-C\n4:00 Akku & Laden: Welche Kopfhörer haben die längste Akkulaufzeit?\n4:45 Transportcase: Wie groß sind die Kopfhörer in der Tasche?\n5:36 Bedienung: Was ist besser Toucheingabe oder Buttons?\n7:59 App & Features: Kann ich die KI am Kopfhörer nutzen? \n10:57 Klang: Wie gut und wie laut klingen die Kopfhörer im Vergleich?\n13:41 ANC & Transparenz: Welche Over-Ear Kopfhörer haben das besten ANC?\n14:30 Preis: Preise und Verkaufsdaten im Überblick\n15:00 Fazit: Welches sind die besten Over-Ear Kopfhörer im Alltag für ca. 250€?\n\n\n_________________________________________________________________\n*Amazon Ref-Links (Ihr zahlt keinen Cent mehr und ich bekomme eine kleine Provision)\n\nHier findet ihr mein Impressum: \nhttps://moevies.de/impressum",
+  "source": "dataapi:200:ok"
+ },
+ "brands": [
+  {
+   "brand": "Sennheiser",
+   "product": "Momentum 4",
+   "products": [
+    "Momentum 4"
+   ],
+   "category": "Headphones",
+   "appearances": [
+    {
+     "start_s": 0,
+     "end_s": 8,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sennheiser Momentum 4 shown in hand with logo on band · Sennheiser Momentum 4 lying on table",
+     "product": "Momentum 4",
+     "basis": "logo",
+     "confidence": 1,
+     "parts": 2,
+     "track": [
+      {
+       "t": 0,
+       "box": [
+        252,
+        532,
+        792,
+        725
+       ]
+      },
+      {
+       "t": 2,
+       "box": [
+        252,
+        532,
+        792,
+        725
+       ]
+      },
+      {
+       "t": 6,
+       "box": [
+        316,
+        680,
+        770,
+        955
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 10,
+     "end_s": 18,
+     "channel": "text",
+     "size": "small",
+     "position": "edge",
+     "in_use": false,
+     "evidence": "Sennheiser Momentum 4 listed on screen",
+     "product": "Momentum 4",
+     "basis": "text",
+     "confidence": 1
+    },
+    {
+     "start_s": 10,
+     "end_s": 11,
+     "channel": "audio",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Mentioned Sennheiser in audio",
+     "product": "Momentum 4",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 59,
+     "end_s": 64,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Sennheiser Momentum 4 headband fabric close-up with logo",
+     "product": "Momentum 4",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 59,
+       "box": [
+        188,
+        129,
+        835,
+        893
+       ]
+      },
+      {
+       "t": 62,
+       "box": [
+        200,
+        203,
+        620,
+        617
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 116,
+     "end_s": 123,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sennheiser Momentum 4 held in hand showing logo",
+     "product": "Momentum 4",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 117,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      },
+      {
+       "t": 121,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 179,
+     "end_s": 189,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Sennheiser Momentum 4 jack port close-up",
+     "product": "Momentum 4",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 179,
+       "box": [
+        316,
+        219,
+        878,
+        868
+       ]
+      },
+      {
+       "t": 184,
+       "box": [
+        316,
+        219,
+        878,
+        868
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 296,
+     "end_s": 299,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Sennheiser case with logo shown with Momentum 4 headphones",
+     "product": "Momentum 4",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 297,
+       "box": [
+        222,
+        142,
+        856,
+        835
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 314,
+     "end_s": 317,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sennheiser Momentum 4 taken out of case",
+     "product": "Momentum 4",
+     "basis": "design",
+     "confidence": 0.98,
+     "track": [
+      {
+       "t": 315,
+       "box": [
+        188,
+        252,
+        989,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 382,
+     "end_s": 425,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sennheiser Momentum 4 held in hand · Host wearing Sennheiser Momentum 4 outdoors and putting them on in room · Host outdoors wearing Sennheiser Momentum 4 and using phone",
+     "product": "Momentum 4",
+     "basis": "logo",
+     "confidence": 1,
+     "parts": 3,
+     "track": [
+      {
+       "t": 383,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      },
+      {
+       "t": 387,
+       "box": [
+        188,
+        301,
+        620,
+        617
+       ]
+      },
+      {
+       "t": 394,
+       "box": [
+        188,
+        301,
+        620,
+        617
+       ]
+      },
+      {
+       "t": 401,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      },
+      {
+       "t": 410,
+       "box": [
+        188,
+        301,
+        620,
+        617
+       ]
+      },
+      {
+       "t": 420,
+       "box": [
+        188,
+        301,
+        620,
+        617
+       ]
+      },
+      {
+       "t": 423,
+       "box": [
+        188,
+        301,
+        620,
+        617
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 628,
+     "end_s": 637,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sennheiser app on phone screen next to Momentum 4",
+     "product": "Momentum 4",
+     "basis": "text",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 628,
+       "box": [
+        128,
+        172,
+        989,
+        942
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 648,
+     "end_s": 655,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sennheiser app anti-wind setting demonstrated",
+     "product": "Momentum 4",
+     "basis": "text",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 648,
+       "box": [
+        128,
+        172,
+        989,
+        942
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 676,
+     "end_s": 681,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sennheiser app audio settings screen",
+     "product": "Momentum 4",
+     "basis": "text",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 676,
+       "box": [
+        128,
+        172,
+        989,
+        942
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 831,
+     "end_s": 833,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sennheiser Momentum 4 on dummy head for ANC blow dryer test",
+     "product": "Momentum 4",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 831,
+       "box": [
+        200,
+        222,
+        989,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 848,
+     "end_s": 852,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sennheiser Momentum 4 on dummy head wind test",
+     "product": "Momentum 4",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 849,
+       "box": [
+        200,
+        222,
+        989,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 858,
+     "end_s": 861,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sennheiser Momentum 4 on dummy head transparency speech test",
+     "product": "Momentum 4",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 859,
+       "box": [
+        200,
+        222,
+        989,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 909,
+     "end_s": 915,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Sennheiser Momentum 4 summary graphic card",
+     "product": "Momentum 4",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 910,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      }
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "t": 0,
+     "box": [
+      252,
+      532,
+      792,
+      725
+     ]
+    },
+    {
+     "t": 2,
+     "box": [
+      252,
+      532,
+      792,
+      725
+     ]
+    },
+    {
+     "t": 6,
+     "box": [
+      316,
+      680,
+      770,
+      955
+     ]
+    },
+    {
+     "t": 59,
+     "box": [
+      188,
+      129,
+      835,
+      893
+     ]
+    },
+    {
+     "t": 62,
+     "box": [
+      200,
+      203,
+      620,
+      617
+     ]
+    },
+    {
+     "t": 117,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 121,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 179,
+     "box": [
+      316,
+      219,
+      878,
+      868
+     ]
+    },
+    {
+     "t": 184,
+     "box": [
+      316,
+      219,
+      878,
+      868
+     ]
+    },
+    {
+     "t": 297,
+     "box": [
+      222,
+      142,
+      856,
+      835
+     ]
+    },
+    {
+     "t": 315,
+     "box": [
+      188,
+      252,
+      989,
+      788
+     ]
+    },
+    {
+     "t": 383,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 387,
+     "box": [
+      188,
+      301,
+      620,
+      617
+     ]
+    },
+    {
+     "t": 394,
+     "box": [
+      188,
+      301,
+      620,
+      617
+     ]
+    },
+    {
+     "t": 401,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 410,
+     "box": [
+      188,
+      301,
+      620,
+      617
+     ]
+    },
+    {
+     "t": 420,
+     "box": [
+      188,
+      301,
+      620,
+      617
+     ]
+    },
+    {
+     "t": 423,
+     "box": [
+      188,
+      301,
+      620,
+      617
+     ]
+    },
+    {
+     "t": 628,
+     "box": [
+      128,
+      172,
+      989,
+      942
+     ]
+    },
+    {
+     "t": 648,
+     "box": [
+      128,
+      172,
+      989,
+      942
+     ]
+    },
+    {
+     "t": 676,
+     "box": [
+      128,
+      172,
+      989,
+      942
+     ]
+    },
+    {
+     "t": 831,
+     "box": [
+      200,
+      222,
+      989,
+      788
+     ]
+    },
+    {
+     "t": 849,
+     "box": [
+      200,
+      222,
+      989,
+      788
+     ]
+    },
+    {
+     "t": 859,
+     "box": [
+      200,
+      222,
+      989,
+      788
+     ]
+    },
+    {
+     "t": 910,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "Momentum 4",
+     "url": "https://amzn.to/4n9ww0p"
+    }
+   ],
+   "link": "https://amzn.to/4n9ww0p",
+   "model_from_description": true
+  },
+  {
+   "brand": "Nothing",
+   "product": "Headphones (1)",
+   "products": [
+    "Headphones (1)"
+   ],
+   "category": "Headphones",
+   "appearances": [
+    {
+     "start_s": 0,
+     "end_s": 8,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Nothing Headphones (1) held in hand · Nothing Headphones (1) lying on table",
+     "product": "Headphones (1)",
+     "basis": "design",
+     "confidence": 0.99,
+     "parts": 2,
+     "track": [
+      {
+       "t": 0,
+       "box": [
+        252,
+        429,
+        792,
+        580
+       ]
+      },
+      {
+       "t": 2,
+       "box": [
+        252,
+        429,
+        792,
+        580
+       ]
+      },
+      {
+       "t": 6,
+       "box": [
+        188,
+        351,
+        620,
+        680
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 10,
+     "end_s": 18,
+     "channel": "text",
+     "size": "small",
+     "position": "edge",
+     "in_use": false,
+     "evidence": "Nothing Headphones (1) listed on screen",
+     "product": "Headphones (1)",
+     "basis": "text",
+     "confidence": 1
+    },
+    {
+     "start_s": 13,
+     "end_s": 15,
+     "channel": "audio",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Mentioned Nothing in audio",
+     "product": "Headphones (1)",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 40,
+     "end_s": 42,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Nothing Phone back design shown",
+     "product": "Headphones (1)",
+     "basis": "design",
+     "confidence": 0.98,
+     "track": [
+      {
+       "t": 40,
+       "box": [
+        211,
+        230,
+        835,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 55,
+     "end_s": 57,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Host wearing Nothing Headphones (1) around neck",
+     "product": "Headphones (1)",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 55,
+       "box": [
+        188,
+        301,
+        620,
+        617
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 99,
+     "end_s": 102,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Nothing Headphones (1) animation card with IP52 rating",
+     "product": "Headphones (1)",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 99,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 124,
+     "end_s": 129,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Host wearing Nothing Headphones (1) outdoors & earcup cushions close-up",
+     "product": "Headphones (1)",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 124,
+       "box": [
+        188,
+        301,
+        620,
+        617
+       ]
+      },
+      {
+       "t": 127,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 175,
+     "end_s": 177,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Nothing Headphones (1) ports close-up",
+     "product": "Headphones (1)",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 175,
+       "box": [
+        316,
+        219,
+        878,
+        868
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 252,
+     "end_s": 256,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Nothing Headphones (1) product shot",
+     "product": "Headphones (1)",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 252,
+       "box": [
+        188,
+        203,
+        835,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 290,
+     "end_s": 293,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Nothing Headphones (1) lying on top of slim case",
+     "product": "Headphones (1)",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 290,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 318,
+     "end_s": 325,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Nothing Headphones (1) in thin case close-up",
+     "product": "Headphones (1)",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 318,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      },
+      {
+       "t": 322,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 339,
+     "end_s": 357,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Host operating controls on Nothing Headphones (1)",
+     "product": "Headphones (1)",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 339,
+       "box": [
+        188,
+        301,
+        620,
+        617
+       ]
+      },
+      {
+       "t": 343,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      },
+      {
+       "t": 349,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      },
+      {
+       "t": 354,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 541,
+     "end_s": 560,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Nothing X app screen showing EQ and Bass Enhance settings",
+     "product": "Headphones (1)",
+     "basis": "text",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 541,
+       "box": [
+        128,
+        172,
+        989,
+        942
+       ]
+      },
+      {
+       "t": 550,
+       "box": [
+        128,
+        172,
+        989,
+        942
+       ]
+      },
+      {
+       "t": 555,
+       "box": [
+        128,
+        172,
+        989,
+        942
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 723,
+     "end_s": 728,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Nothing Headphones (1) worn around neck",
+     "product": "Headphones (1)",
+     "basis": "design",
+     "confidence": 0.99
+    },
+    {
+     "start_s": 737,
+     "end_s": 741,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Nothing X app labs tune equalizer profile screen",
+     "product": "Headphones (1)",
+     "basis": "text",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 737,
+       "box": [
+        128,
+        172,
+        989,
+        942
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 751,
+     "end_s": 763,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "QR Code for Nothing X app EQ import displayed on screen",
+     "product": "Headphones (1)",
+     "basis": "text",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 751,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 834,
+     "end_s": 836,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Nothing Headphones (1) on dummy head blow dryer test",
+     "product": "Headphones (1)",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 834,
+       "box": [
+        200,
+        222,
+        989,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 853,
+     "end_s": 864,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Nothing Headphones (1) on dummy head wind noise test · Nothing Headphones (1) on dummy head transparency speech test",
+     "product": "Headphones (1)",
+     "basis": "design",
+     "confidence": 0.99,
+     "parts": 2,
+     "track": [
+      {
+       "t": 854,
+       "box": [
+        200,
+        222,
+        989,
+        788
+       ]
+      },
+      {
+       "t": 863,
+       "box": [
+        200,
+        222,
+        989,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 915,
+     "end_s": 922,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Nothing Headphones (1) summary graphic card",
+     "product": "Headphones (1)",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 916,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      }
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "t": 0,
+     "box": [
+      252,
+      429,
+      792,
+      580
+     ]
+    },
+    {
+     "t": 2,
+     "box": [
+      252,
+      429,
+      792,
+      580
+     ]
+    },
+    {
+     "t": 6,
+     "box": [
+      188,
+      351,
+      620,
+      680
+     ]
+    },
+    {
+     "t": 40,
+     "box": [
+      211,
+      230,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 55,
+     "box": [
+      188,
+      301,
+      620,
+      617
+     ]
+    },
+    {
+     "t": 99,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 124,
+     "box": [
+      188,
+      301,
+      620,
+      617
+     ]
+    },
+    {
+     "t": 127,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 175,
+     "box": [
+      316,
+      219,
+      878,
+      868
+     ]
+    },
+    {
+     "t": 252,
+     "box": [
+      188,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 290,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 318,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 322,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 339,
+     "box": [
+      188,
+      301,
+      620,
+      617
+     ]
+    },
+    {
+     "t": 343,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 349,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 354,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 541,
+     "box": [
+      128,
+      172,
+      989,
+      942
+     ]
+    },
+    {
+     "t": 550,
+     "box": [
+      128,
+      172,
+      989,
+      942
+     ]
+    },
+    {
+     "t": 555,
+     "box": [
+      128,
+      172,
+      989,
+      942
+     ]
+    },
+    {
+     "t": 737,
+     "box": [
+      128,
+      172,
+      989,
+      942
+     ]
+    },
+    {
+     "t": 751,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 834,
+     "box": [
+      200,
+      222,
+      989,
+      788
+     ]
+    },
+    {
+     "t": 854,
+     "box": [
+      200,
+      222,
+      989,
+      788
+     ]
+    },
+    {
+     "t": 863,
+     "box": [
+      200,
+      222,
+      989,
+      788
+     ]
+    },
+    {
+     "t": 916,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "Headphones (1)",
+     "url": "https://amzn.to/4h4NFqA"
+    }
+   ],
+   "link": "https://amzn.to/4h4NFqA",
+   "model_from_description": true
+  },
+  {
+   "brand": "Sony",
+   "product": "WH-1000XM5",
+   "products": [
+    "WH-1000XM5"
+   ],
+   "category": "Headphones",
+   "appearances": [
+    {
+     "start_s": 0,
+     "end_s": 8,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sony WH-1000XM5 shown in hand · Sony WH-1000XM5 lying on table",
+     "product": "WH-1000XM5",
+     "basis": "design",
+     "confidence": 0.95,
+     "parts": 2,
+     "track": [
+      {
+       "t": 0,
+       "box": [
+        188,
+        482,
+        803,
+        672
+       ]
+      },
+      {
+       "t": 2,
+       "box": [
+        188,
+        482,
+        803,
+        672
+       ]
+      },
+      {
+       "t": 6,
+       "box": [
+        334,
+        49,
+        764,
+        303
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 10,
+     "end_s": 18,
+     "channel": "text",
+     "size": "small",
+     "position": "edge",
+     "in_use": false,
+     "evidence": "Sony WH1000XM5 listed on screen",
+     "product": "WH-1000XM5",
+     "basis": "text",
+     "confidence": 1
+    },
+    {
+     "start_s": 10,
+     "end_s": 11,
+     "channel": "audio",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Mentioned Sony in audio",
+     "product": "WH-1000XM5",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 22,
+     "end_s": 29,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Sony WH-1000XM5 product shot",
+     "product": "WH-1000XM5",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 22,
+       "box": [
+        188,
+        129,
+        810,
+        893
+       ]
+      },
+      {
+       "t": 25,
+       "box": [
+        188,
+        129,
+        810,
+        893
+       ]
+      },
+      {
+       "t": 28,
+       "box": [
+        188,
+        129,
+        810,
+        893
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 26,
+     "end_s": 30,
+     "channel": "audio",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Mentioned WH-1000XM5 in speech",
+     "product": "WH-1000XM5",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 57,
+     "end_s": 59,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sony WH-1000XM5 worn by host",
+     "product": "WH-1000XM5",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 57,
+       "box": [
+        183,
+        115,
+        620,
+        549
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 107,
+     "end_s": 116,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sony WH-1000XM5 worn and close-up earcups",
+     "product": "WH-1000XM5",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 107,
+       "box": [
+        154,
+        301,
+        608,
+        621
+       ]
+      },
+      {
+       "t": 113,
+       "box": [
+        160,
+        203,
+        856,
+        803
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 170,
+     "end_s": 178,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Sony WH-1000XM5 hanging on tripod · Sony WH-1000XM5 port close-up",
+     "product": "WH-1000XM5",
+     "basis": "design",
+     "confidence": 0.98,
+     "parts": 2,
+     "track": [
+      {
+       "t": 170,
+       "box": [
+        429,
+        442,
+        856,
+        620
+       ]
+      },
+      {
+       "t": 177,
+       "box": [
+        316,
+        219,
+        878,
+        868
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 311,
+     "end_s": 315,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Sony case opened showing cables and compartment",
+     "product": "WH-1000XM5",
+     "basis": "design",
+     "confidence": 0.98,
+     "track": [
+      {
+       "t": 312,
+       "box": [
+        188,
+        252,
+        989,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 358,
+     "end_s": 371,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sony WH-1000XM5 product shot & touch control demo",
+     "product": "WH-1000XM5",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 358,
+       "box": [
+        211,
+        230,
+        835,
+        788
+       ]
+      },
+      {
+       "t": 366,
+       "box": [
+        200,
+        203,
+        620,
+        617
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 437,
+     "end_s": 454,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Host wearing Sony WH-1000XM5 outdoors with dog",
+     "product": "WH-1000XM5",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 437,
+       "box": [
+        188,
+        301,
+        620,
+        617
+       ]
+      },
+      {
+       "t": 445,
+       "box": [
+        188,
+        301,
+        620,
+        617
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 566,
+     "end_s": 575,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sony app settings on phone screen",
+     "product": "WH-1000XM5",
+     "basis": "text",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 566,
+       "box": [
+        128,
+        172,
+        989,
+        680
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 827,
+     "end_s": 830,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sony WH-1000XM5 on head dummy for ANC test",
+     "product": "WH-1000XM5",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 828,
+       "box": [
+        200,
+        222,
+        989,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 841,
+     "end_s": 847,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sony WH-1000XM5 on dummy head during blow dryer test",
+     "product": "WH-1000XM5",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 842,
+       "box": [
+        200,
+        222,
+        989,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 865,
+     "end_s": 867,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Sony WH-1000XM5 on dummy head during speech transparency test",
+     "product": "WH-1000XM5",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 865,
+       "box": [
+        200,
+        222,
+        989,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 900,
+     "end_s": 908,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Sony WH-1000XM5 graphic summary card",
+     "product": "WH-1000XM5",
+     "basis": "design",
+     "confidence": 0.99,
+     "track": [
+      {
+       "t": 901,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      }
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "t": 0,
+     "box": [
+      188,
+      482,
+      803,
+      672
+     ]
+    },
+    {
+     "t": 2,
+     "box": [
+      188,
+      482,
+      803,
+      672
+     ]
+    },
+    {
+     "t": 6,
+     "box": [
+      334,
+      49,
+      764,
+      303
+     ]
+    },
+    {
+     "t": 22,
+     "box": [
+      188,
+      129,
+      810,
+      893
+     ]
+    },
+    {
+     "t": 25,
+     "box": [
+      188,
+      129,
+      810,
+      893
+     ]
+    },
+    {
+     "t": 28,
+     "box": [
+      188,
+      129,
+      810,
+      893
+     ]
+    },
+    {
+     "t": 57,
+     "box": [
+      183,
+      115,
+      620,
+      549
+     ]
+    },
+    {
+     "t": 107,
+     "box": [
+      154,
+      301,
+      608,
+      621
+     ]
+    },
+    {
+     "t": 113,
+     "box": [
+      160,
+      203,
+      856,
+      803
+     ]
+    },
+    {
+     "t": 170,
+     "box": [
+      429,
+      442,
+      856,
+      620
+     ]
+    },
+    {
+     "t": 177,
+     "box": [
+      316,
+      219,
+      878,
+      868
+     ]
+    },
+    {
+     "t": 312,
+     "box": [
+      188,
+      252,
+      989,
+      788
+     ]
+    },
+    {
+     "t": 358,
+     "box": [
+      211,
+      230,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 366,
+     "box": [
+      200,
+      203,
+      620,
+      617
+     ]
+    },
+    {
+     "t": 437,
+     "box": [
+      188,
+      301,
+      620,
+      617
+     ]
+    },
+    {
+     "t": 445,
+     "box": [
+      188,
+      301,
+      620,
+      617
+     ]
+    },
+    {
+     "t": 566,
+     "box": [
+      128,
+      172,
+      989,
+      680
+     ]
+    },
+    {
+     "t": 828,
+     "box": [
+      200,
+      222,
+      989,
+      788
+     ]
+    },
+    {
+     "t": 842,
+     "box": [
+      200,
+      222,
+      989,
+      788
+     ]
+    },
+    {
+     "t": 865,
+     "box": [
+      200,
+      222,
+      989,
+      788
+     ]
+    },
+    {
+     "t": 901,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "WH-1000XM5",
+     "url": "https://amzn.to/4gWzB21"
+    }
+   ],
+   "link": "https://amzn.to/4gWzB21",
+   "model_from_description": true
+  },
+  {
+   "brand": "Beats",
+   "product": "Studio Pro",
+   "products": [
+    "Studio Pro"
+   ],
+   "category": "Headphones",
+   "appearances": [
+    {
+     "start_s": 0,
+     "end_s": 8,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Beats logo visible on earcup held in hand · Beats Studio Pro lying on table with b logo visible",
+     "product": "Studio Pro",
+     "basis": "logo",
+     "confidence": 1,
+     "parts": 2,
+     "track": [
+      {
+       "t": 0,
+       "box": [
+        232,
+        316,
+        755,
+        513
+       ]
+      },
+      {
+       "t": 2,
+       "box": [
+        232,
+        316,
+        755,
+        513
+       ]
+      },
+      {
+       "t": 6,
+       "box": [
+        334,
+        256,
+        735,
+        483
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 10,
+     "end_s": 18,
+     "channel": "text",
+     "size": "small",
+     "position": "edge",
+     "in_use": false,
+     "evidence": "Beats Studio Pro listed on screen",
+     "product": "Studio Pro",
+     "basis": "text",
+     "confidence": 1
+    },
+    {
+     "start_s": 10,
+     "end_s": 11,
+     "channel": "audio",
+     "size": "medium",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Mentioned Beats in audio",
+     "product": "Studio Pro",
+     "basis": "speech",
+     "confidence": 1
+    },
+    {
+     "start_s": 65,
+     "end_s": 83,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Beats Studio Pro product shot with b logo · Beats Studio Pro held, folded and unfolded showing b logo",
+     "product": "Studio Pro",
+     "basis": "logo",
+     "confidence": 1,
+     "parts": 2,
+     "track": [
+      {
+       "t": 65,
+       "box": [
+        188,
+        203,
+        835,
+        788
+       ]
+      },
+      {
+       "t": 69,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      },
+      {
+       "t": 73,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      },
+      {
+       "t": 81,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 141,
+     "end_s": 148,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Host wearing Beats Studio Pro, earcup close-up measured with ruler",
+     "product": "Studio Pro",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 141,
+       "box": [
+        188,
+        301,
+        620,
+        617
+       ]
+      },
+      {
+       "t": 144,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      },
+      {
+       "t": 146,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 300,
+     "end_s": 310,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Beats Studio Pro and compact case shown and host taking them out of case",
+     "product": "Studio Pro",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 300,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      },
+      {
+       "t": 306,
+       "box": [
+        188,
+        252,
+        989,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 463,
+     "end_s": 476,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Host wearing Beats Studio Pro outdoors demonstrating button click",
+     "product": "Studio Pro",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 463,
+       "box": [
+        188,
+        301,
+        620,
+        617
+       ]
+      },
+      {
+       "t": 471,
+       "box": [
+        188,
+        301,
+        620,
+        617
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 492,
+     "end_s": 507,
+     "channel": "visual",
+     "size": "medium",
+     "position": "center",
+     "in_use": true,
+     "evidence": "Beats app screen on smartphone next to Beats Studio Pro",
+     "product": "Studio Pro",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 492,
+       "box": [
+        128,
+        172,
+        989,
+        942
+       ]
+      },
+      {
+       "t": 501,
+       "box": [
+        128,
+        172,
+        989,
+        942
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 783,
+     "end_s": 786,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Beats Studio Pro product shot with logo",
+     "product": "Studio Pro",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 783,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 887,
+     "end_s": 896,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Beats Studio Pro Amazon listing screenshot",
+     "product": "Studio Pro",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 887,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      }
+     ]
+    },
+    {
+     "start_s": 923,
+     "end_s": 930,
+     "channel": "visual",
+     "size": "large",
+     "position": "center",
+     "in_use": false,
+     "evidence": "Beats Studio Pro summary graphic card",
+     "product": "Studio Pro",
+     "basis": "logo",
+     "confidence": 1,
+     "track": [
+      {
+       "t": 923,
+       "box": [
+        200,
+        203,
+        835,
+        788
+       ]
+      }
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "t": 0,
+     "box": [
+      232,
+      316,
+      755,
+      513
+     ]
+    },
+    {
+     "t": 2,
+     "box": [
+      232,
+      316,
+      755,
+      513
+     ]
+    },
+    {
+     "t": 6,
+     "box": [
+      334,
+      256,
+      735,
+      483
+     ]
+    },
+    {
+     "t": 65,
+     "box": [
+      188,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 69,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 73,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 81,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 141,
+     "box": [
+      188,
+      301,
+      620,
+      617
+     ]
+    },
+    {
+     "t": 144,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 146,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 300,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 306,
+     "box": [
+      188,
+      252,
+      989,
+      788
+     ]
+    },
+    {
+     "t": 463,
+     "box": [
+      188,
+      301,
+      620,
+      617
+     ]
+    },
+    {
+     "t": 471,
+     "box": [
+      188,
+      301,
+      620,
+      617
+     ]
+    },
+    {
+     "t": 492,
+     "box": [
+      128,
+      172,
+      989,
+      942
+     ]
+    },
+    {
+     "t": 501,
+     "box": [
+      128,
+      172,
+      989,
+      942
+     ]
+    },
+    {
+     "t": 783,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 887,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    },
+    {
+     "t": 923,
+     "box": [
+      200,
+      203,
+      835,
+      788
+     ]
+    }
+   ],
+   "links": [
+    {
+     "product": "Studio Pro",
+     "url": "https://amzn.to/4mLHGbd"
+    }
+   ],
+   "link": "https://amzn.to/4mLHGbd",
+   "model_from_description": true
+  }
+ ],
+ "unidentified": [],
+ "disclosures": [],
+ "paid": {
+  "looks_like_paid_promotion": false,
+  "reasoning": "The video is an independent comparative review of four over-ear headphone models by an tech reviewer channel. There are no paid promotion banners or spoken ad disclosures."
+ },
+ "authenticity": [],
+ "source": {
+  "engine": "gemini",
+  "models": [
+   "gemini-3.6-flash"
+  ],
+  "analyzed_at": "2026-11-25",
+  "usage": [
+   {
+    "call": "timeline",
+    "model": "gemini-3.6-flash",
+    "prompt": 81614,
+    "output": 12760,
+    "thoughts": 0,
+    "total": 94374
+   }
+  ],
+  "recheck": {
+   "skipped": true,
+   "visual_raw": 62,
+   "visual_before": 53,
+   "visual_after": 53,
+   "seconds_before": 415,
+   "seconds_after": 415
+  },
+  "note": "Headphone comparison (Sony, Sennheiser, Beats, Nothing): clear products, good tracking boxes - main demo example"
+ }
+}

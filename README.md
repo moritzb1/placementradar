@@ -26,7 +26,7 @@ Final project for *MMI5190E – The New Frontiers of AI: From Perception to Agen
 
 **2 · Products.** The original YouTube player with the **Right now** panel beside it: while the video plays (or after a pause or jump) it lists the products in the picture, the brands mentioned or written at that second, and unidentified products. Below: five key figures (products, brand on screen, disclosure, authenticity, media value as a range), the brand timeline and one card per product – logo (Wikidata), exact model, seconds on screen, mentions, equivalent ad cost and the **link from the video description** (affiliate links marked). Clicking a card jumps to the moment in the video.
 
-![Products view of "The Best Cheap Espresso Setup"](docs/screenshots/02_overview.png)
+![Products view of a headphone comparison by MoeKit (Sony, Sennheiser, Beats, Nothing) with tracking boxes and "Right now"](docs/screenshots/02_overview.png)
 
 ![Product cards with links from the description](docs/screenshots/02b_products.png)
 
@@ -34,7 +34,7 @@ Final project for *MMI5190E – The New Frontiers of AI: From Perception to Agen
 
 **2b · Show tracking.** A switch under the player draws rounded boxes with the product's name over the video – brand + model and how it was recognised (logo, text, speech, design) – and they follow the product while the video plays. The positions come from Gemini and are approximate, so the overlay is honest about it: a **solid box** only within 1.5 s of a reported position (or while the product stays put between two close ones), a **dashed box "approx. position"** up to 3 s away, otherwise just a **dot** where the product roughly is. Between keyframes that are far apart or show a jump, the box no longer glides across the picture. Where positions are rough, the hint suggests *Look closer*.
 
-![Tracking box over the player (Gaggia Classic at 4:11, solid = close to a reported position)](docs/screenshots/14_tracking.jpg)
+![Tracking boxes over the player (MoeKit at 0:04: four headphones; solid = close to a reported position, dashed = approximate)](docs/screenshots/14_tracking.jpg)
 
 **2c · Look closer and unidentified products.** Small products worn or used in passing (a smartwatch on the wrist, a case, glasses) are easy to miss in a whole-video pass. The analysis prompt now asks for a complete inventory and allows the brand "unknown" – such items appear under *Unidentified products* (category, description, jump to the moment) and never count towards media value or the disclosure check. The **Look closer** button under the player sends the current ~20 seconds to Gemini once more, at 2 frames per second with the inventory prompt (1 request, ~1 min, cached per clip on the server); what it finds is added to the product list, *Right now* and the tracking boxes; for products already known it refines their boxes.
 
@@ -88,7 +88,7 @@ The app is responsive (phone screenshots: `docs/screenshots/10_mobile_*.png`) an
 
 **2f · Audience.** What do viewers say about each product? The *Audience* tab reads the video's top ~100 comments (YouTube's own comment endpoint, or the Data API if a key is set) and sorts them by fixed English and German rules – no AI request, no quota: which product a comment names, and whether it shows **purchase intent** ("where can I get it", "link?"), a **question**, **praise**, **criticism** or **ad suspicion** ("is this sponsored?"). Per product: number of comments, the reactions as pills and up to three excerpts; the product cards show the count once the tab was opened. Only counts and excerpts of ≤ 100 characters are kept, never names. Measured on 50 held-back comments (test K): questions and praise are recognised well, the rare reactions less reliably – shown as a first impression, not a survey.
 
-![Audience: top comments of an espresso video per product – reactions and excerpts](docs/screenshots/19_audience.jpg)
+![Audience: top comments of the headphone comparison per product – reactions and excerpts](docs/screenshots/19_audience.jpg)
 
 **2g · Channel fit.** The view from the creator's side (`#/channel/@handle`, also a channel link, channel id or the link of one of its videos): the channel and its latest 25 uploads (YouTube Data API with 3 quota units, or without a key the channel page + RSS feed; cached 6 h), every analysis we already have of that channel (also older videos), comments already cached by the Audience tab – and, as with the agent, up to 3 new analyses of the latest uploads only after an OK, ranked by ad hints in their descriptions ("49 % off at …", "use code", "Werbung", shop links). The report shows **recurring brands**, **product fields** (Gemini's free-text categories mapped to 13 fields by a keyword list), **over time** per month: media value range, commercial partners (paid or gifted per Gemini / shop or affiliate link) and the disclosure verdicts; the analysed videos and the latest uploads (analysed ones highlighted). Type your own brand and the **fit card** rates it from 0 to 100 – rule-based (`shared/fit.js`), every part with its own calculation behind an (i):
 

@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlacementRadar – the project in 15 slides</title>
+<meta name="description" content="PlacementRadar finds every brand in a YouTube video, estimates what the exposure is worth, checks the ad label and helps brands find creators. Final project MMI5190E, Pforzheim University.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!--
+  One file, three uses:
+  - on a large screen every slide is a 16:9 card (sizes in container units, 1 cqw = 1 % of the slide width);
+  - on a phone the slides become a normal scrolling page (one column);
+  - printed (Chrome, 1920 px wide) every slide is one 1920 × 1080 PDF page – tools/story_pdf.mjs.
+  Same colours and type scale as the presentation deck (Apple-like light grey, one blue accent, Inter).
+-->
+<style>
+:root {
+  --bg: #F5F5F7; --panel: #FBFBFD; --ink: #1D1D1F; --body: #4A4F5C; --muted: #8A8F9C; --accent: #0066D6;
+  --dark: #14171F; --dark-ink: #F5F5F7; --dark-body: #B8C0CF; --dark-accent: #5AA9FF; --line: #D9DAE0;
+  --green: #1F9D55; --amber: #C77700; --red: #D33A3A; --violet: #6E56CF;
+  --page: #E8E8ED;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body { font-family: Inter, -apple-system, "Helvetica Neue", Arial, sans-serif; background: var(--page); color: var(--ink); }
+a { color: inherit; }
+
+/* top bar of the web page (hidden in print) */
+.bar { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 16px; justify-content: space-between;
+  padding: 12px 24px; background: rgba(232,232,237,.82); backdrop-filter: saturate(1.6) blur(16px); -webkit-backdrop-filter: saturate(1.6) blur(16px); border-bottom: 1px solid rgba(0,0,0,.06); }
+.bar .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; white-space: nowrap; }
+.bar nav { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.btn { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; text-decoration: none; padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--line); color: var(--ink); white-space: nowrap; }
+.btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn svg { width: 14px; height: 14px; }
+.logo { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #2F7BF6, #5E5CE6); display: grid; place-items: center; }
+.logo svg { width: 16px; height: 16px; }
+
+.deck { max-width: 1440px; margin: 0 auto; padding: 32px 24px 64px; display: flex; flex-direction: column; gap: 28px; }
+
+/* ---------- a slide ---------- */
+.slide { container-type: inline-size; width: 100%; aspect-ratio: 16 / 9; position: relative; overflow: hidden; background: var(--bg);
+  border-radius: 18px; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 12px 40px rgba(20,23,31,.10); }
+.slide.dark { background: var(--dark); color: var(--dark-ink); }
+.in { position: absolute; inset: 0; padding: 5.6cqw 6.67cqw 6.2cqw; display: flex; flex-direction: column; gap: 2cqw; }
+
+.eyebrow { font-size: 1.15cqw; font-weight: 600; letter-spacing: .16cqw; text-transform: uppercase; color: var(--accent); }
+.dark .eyebrow { color: var(--dark-accent); }
+.cover-h1 { font-size: 5.2cqw; }
+h1 { font-size: 5.8cqw; font-weight: 800; letter-spacing: -.16cqw; line-height: 1.02; }
+h2 { font-size: 3.2cqw; font-weight: 700; letter-spacing: -.07cqw; line-height: 1.08; }
+h3 { font-size: 1.55cqw; font-weight: 700; line-height: 1.2; }
+p, li { font-size: 1.3cqw; line-height: 1.45; color: var(--body); }
+.dark p, .dark li { color: var(--dark-body); }
+.lead { font-size: 1.62cqw; line-height: 1.4; max-width: 70cqw; }
+.small { font-size: 1.08cqw; line-height: 1.45; }
+.accent { color: var(--accent); } .dark .accent { color: var(--dark-accent); }
+b, strong { color: var(--ink); font-weight: 650; } .dark b, .dark strong { color: var(--dark-ink); }
+.head { display: flex; flex-direction: column; gap: .8cqw; }
+.foot { position: absolute; left: 6.67cqw; right: 6.67cqw; bottom: 2.4cqw; display: flex; justify-content: space-between; }
+.foot p { font-size: .95cqw; color: var(--muted); }
+.dark .foot p { color: #7D8597; }
+
+.grid { display: grid; gap: 1.5cqw; flex: 1; min-height: 0; }
+.g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: repeat(3, 1fr); } .g4 { grid-template-columns: repeat(4, 1fr); }
+.split { display: grid; grid-template-columns: 34cqw 1fr; gap: 3cqw; flex: 1; min-height: 0; align-items: start; }
+.split.wide { grid-template-columns: 30cqw 1fr; }
+.card.tool { flex-direction: row; gap: 1.1cqw; align-items: flex-start; padding: 1.1cqw 1.3cqw; }
+.card.tool h3 { font-size: 1.35cqw; } .card.tool .small { font-size: 1cqw; line-height: 1.4; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 1.25cqw; padding: 1.8cqw; display: flex; flex-direction: column; gap: .7cqw; min-width: 0; }
+.dark .card { background: #1F2430; border-color: #2E3544; }
+.tag { font-size: 1cqw; font-weight: 600; letter-spacing: .12cqw; text-transform: uppercase; color: var(--accent); }
+.dark .tag { color: var(--dark-accent); }
+.big { font-size: 4.4cqw; font-weight: 800; letter-spacing: -.12cqw; line-height: 1; color: var(--accent); }
+.dark .big { color: var(--dark-accent); }
+.big.sm { font-size: 3.3cqw; }
+.ic { width: 3cqw; height: 3cqw; border-radius: .8cqw; display: grid; place-items: center; flex-shrink: 0; }
+.ic svg { width: 1.7cqw; height: 1.7cqw; }
+.ic.blue { background: #E3EEFD; color: var(--accent); } .ic.violet { background: #ECE8FB; color: var(--violet); }
+.ic.green { background: #E2F4EA; color: var(--green); } .ic.amber { background: #FCEFD9; color: var(--amber); }
+.dark .ic { background: #26304A; color: var(--dark-accent); }
+
+.shot { display: block; width: 100%; border-radius: 1cqw; border: 1px solid var(--line); box-shadow: 0 1cqw 3cqw rgba(20,23,31,.14); background: #fff; object-fit: cover; object-position: top left; }
+.shots { position: relative; min-height: 0; }
+.list { list-style: none; display: flex; flex-direction: column; gap: 1.1cqw; }
+.list li { display: grid; grid-template-columns: 2.2cqw 1fr; gap: .9cqw; align-items: start; }
+.list .n { width: 2.2cqw; height: 2.2cqw; border-radius: 50%; background: var(--accent); color: #fff; font-size: 1.05cqw; font-weight: 700; display: grid; place-items: center; margin-top: .15cqw; }
+.dark .list .n { background: var(--dark-accent); color: var(--dark); }
+.pill { display: inline-block; font-size: .95cqw; font-weight: 600; padding: .25cqw .8cqw; border-radius: 99px; background: #E3EEFD; color: var(--accent); }
+.pill.g { background: #E2F4EA; color: var(--green); } .pill.a { background: #FCEFD9; color: var(--amber); } .pill.r { background: #FBE3E3; color: var(--red); }
+
+/* engine diagram */
+.flow { display: grid; grid-template-columns: 1fr 2.4cqw 1.15fr 2.4cqw 1fr; align-items: stretch; gap: 0; flex: 1; min-height: 0; }
+.flow .col { display: flex; flex-direction: column; gap: 1.1cqw; }
+.flow .arrow { display: grid; place-items: center; color: var(--muted); }
+.flow .arrow svg { width: 2cqw; height: 2cqw; }
+.node { background: var(--panel); border: 1px solid var(--line); border-radius: 1cqw; padding: 1.1cqw 1.3cqw; }
+.node h3 { font-size: 1.3cqw; } .node p { font-size: 1.02cqw; line-height: 1.4; }
+.node.e1 { border-left: .4cqw solid var(--accent); } .node.e2 { border-left: .4cqw solid var(--green); } .node.e3 { border-left: .4cqw solid var(--violet); } .node.ag { border-left: .4cqw solid var(--amber); }
+.colhead { font-size: 1cqw; font-weight: 600; letter-spacing: .12cqw; text-transform: uppercase; color: var(--muted); }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; font-size: 1.12cqw; padding: .75cqw .6cqw; border-bottom: 1px solid var(--line); color: var(--body); vertical-align: top; }
+th { color: var(--ink); font-weight: 650; border-bottom: 2px solid var(--line); }
+td b { color: var(--ink); }
+
+.qr { width: 15cqw; height: 15cqw; background: #fff; padding: 1cqw; border-radius: 1.2cqw; }
+.qr img { width: 100%; height: 100%; display: block; }
+
+/* ---------- phone: slides become a normal page ---------- */
+@media (max-width: 760px) {
+  .bar { padding: 10px 16px; } .bar .brand span { display: none; }
+  .btn { padding: 7px 11px; font-size: 13px; }
+  .deck { padding: 16px 16px 48px; gap: 16px; }
+  .slide { aspect-ratio: auto; border-radius: 16px; }
+  .in { position: static; padding: 26px 20px 46px; gap: 16px; }
+  .eyebrow { font-size: 12px; letter-spacing: 1.5px; }
+  h1, .cover-h1 { font-size: 38px; letter-spacing: -1.2px; } h2 { font-size: 27px; letter-spacing: -.5px; } h3 { font-size: 17px; }
+  p, li { font-size: 15px; } .lead { font-size: 17px; max-width: none; } .small { font-size: 13.5px; }
+  .foot { left: 20px; right: 20px; bottom: 16px; } .foot p { font-size: 11px; }
+  .g2, .g3, .g4, .split, .split.wide { grid-template-columns: 1fr; gap: 12px; }
+  .grid { gap: 12px; }
+  .card { border-radius: 14px; padding: 16px; gap: 6px; }
+  .tag { font-size: 11.5px; letter-spacing: 1px; } .big { font-size: 40px; letter-spacing: -1px; } .big.sm { font-size: 32px; }
+  .ic { width: 36px; height: 36px; border-radius: 10px; } .ic svg { width: 20px; height: 20px; }
+  .shot { border-radius: 10px; max-height: none !important; height: auto !important; }
+  .list { gap: 12px; } .list li { grid-template-columns: 26px 1fr; gap: 10px; } .list .n { width: 26px; height: 26px; font-size: 13px; }
+  .pill { font-size: 12px; padding: 3px 9px; }
+  .flow { grid-template-columns: 1fr; gap: 10px; } .flow .arrow { transform: rotate(90deg); height: 22px; } .flow .arrow svg { width: 22px; height: 22px; }
+  .node { border-radius: 12px; padding: 12px 14px; } .node h3 { font-size: 15px; } .node p { font-size: 13.5px; } .colhead { font-size: 11px; letter-spacing: 1px; }
+  th, td { font-size: 12.5px; padding: 8px 5px; }
+  .qr { width: 160px; height: 160px; padding: 10px; border-radius: 12px; }
+  .hide-m { display: none !important; }
+  .card[style*="flex-direction:row"] { flex-direction: column !important; align-items: flex-start !important; gap: 6px !important; }
+  .grid[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+  .url { word-break: break-all; }
+  .in h2[style] { font-size: 30px !important; }
+  .card.tool { padding: 14px; gap: 12px; } .card.tool h3 { font-size: 16px; } .card.tool .small { font-size: 13.5px; }
+  .in[style*="flex-direction:row"] { flex-direction: column !important; align-items: stretch !important; }
+  .in > div[style*="width:44cqw"] { width: auto !important; } .in > img[style*="38cqw"] { width: 100% !important; }
+  .tablewrap { overflow-x: auto; }
+}
+
+/* ---------- print / PDF: one slide = one 1920 × 1080 page ---------- */
+@page { size: 1920px 1080px; margin: 0; }
+@media print {
+  body { background: none; }
+  .bar { display: none; }
+  .deck { max-width: none; padding: 0; gap: 0; display: block; }
+  .slide { width: 1920px; height: 1080px; aspect-ratio: auto; border-radius: 0; box-shadow: none; break-after: page; page-break-after: always; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="brand"><div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 12 18 6"/></svg></div>PlacementRadar <span style="font-weight:500;color:var(--muted)">· final project MMI5190E</span></div>
+  <nav>
+    <a class="btn primary" href="https://placementradar.itsmoribind.workers.dev" target="_blank" rel="noopener">Open the app</a>
+    <a class="btn" href="https://github.com/moritzb1/placementradar" target="_blank" rel="noopener">Code</a>
+    <a class="btn" href="PlacementRadar_slides.pdf" download>PDF</a>
+  </nav>
+</header>
+
+<main class="deck">
+
+<!-- 1 · cover -->
+<section class="slide dark" id="s1" aria-label="Cover">
+  <div class="in" style="flex-direction:row; align-items:center; gap:4cqw;">
+    <div style="display:flex; flex-direction:column; gap:2cqw; width:44cqw; flex:none;">
+      <p class="eyebrow">Final project · MMI5190E · From Perception to Agentic Intelligence</p>
+      <h1 class="cover-h1">Placement<span class="accent">Radar</span></h1>
+      <p class="lead">Every product in a YouTube video – which exact model, what the exposure is worth, whether it is labelled as advertising, and which creators fit a brand.</p>
+      <p class="small">Moritz Binder · M.Sc. Marketing Intelligence · Prof. Pin Luarn · Pforzheim University · winter term 2026/27</p>
+    </div>
+    <img class="shot" style="width:38cqw; flex:none; aspect-ratio:16/10;" src="img/start.jpg" alt="PlacementRadar start screen with the four tools YouTube video, Live camera, Brand search and Channel fit">
+  </div>
+  <div class="foot"><p>placementradar.itsmoribind.workers.dev</p><p>1 / 15</p></div>
+</section>
+
+<!-- 2 · why -->
+<section class="slide" id="s2" aria-label="Why">
+  <div class="in">
+    <div class="head"><p class="eyebrow">Why</p><h2>Product placement is everywhere –<br>and almost nobody measures it</h2></div>
+    <div class="grid g3" style="flex:none;">
+      <div class="card"><p class="tag">Brands</p><h3>“What was my exposure in this video worth?”</h3><p class="small">Seconds on screen, size, spoken mentions – today counted by hand, if at all. A 15-minute review means 15 minutes of watching per video.</p></div>
+      <div class="card"><p class="tag">Viewers and regulators</p><h3>“Is this an ad – and is it labelled?”</h3><p class="small">In Germany commercial content must be recognisable (§ 5a (4) UWG, § 22 MStV). Hidden advertising (“Schleichwerbung”) keeps coming up.</p></div>
+      <div class="card"><p class="tag">Marketing teams</p><h3>“Which creator really fits us?”</h3><p class="small">Follower counts say little. What matters: which products a channel already shows, competitors next door, and whether it labels its ads.</p></div>
+    </div>
+    <div class="card" style="flex-direction:row; align-items:center; gap:2cqw; flex:0;">
+      <div class="big sm" style="white-space:nowrap;">1 link</div>
+      <p>PlacementRadar turns one YouTube link into a dashboard in about a minute: every brand, every model, every second it is visible, what comparable advertising would cost and whether the ad is labelled. No video is downloaded – the AI watches it straight from YouTube.</p>
+    </div>
+  </div>
+  <div class="foot"><p>PlacementRadar · Why</p><p>2 / 15</p></div>
+</section>
+
+<!-- 3 · for whom -->
+<section class="slide" id="s3" aria-label="For whom">
+  <div class="in">
+    <div class="head"><p class="eyebrow">What for, and for whom</p><h2>Three users, one evidence base</h2></div>
+    <div class="grid g3">
+      <div class="card">
+        <div class="ic blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg></div>
+        <h3>Brand and marketing teams</h3>
+        <ul class="list small" style="gap:.6cqw;">
+          <li><span class="n">1</span><span>Exposure and equivalent ad cost per video and brand</span></li>
+          <li><span class="n">2</span><span>Where does my brand appear on YouTube – paid or not?</span></li>
+          <li><span class="n">3</span><span>Shortlist of creators for a product, with a fit score</span></li>
+          <li><span class="n">4</span><span>One-page brand report and a ready pitch mail</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="ic green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        <h3>Viewers, consumer protection, research</h3>
+        <ul class="list small" style="gap:.6cqw;">
+          <li><span class="n">1</span><span>Is there a label – in the title, description, on screen or spoken?</span></li>
+          <li><span class="n">2</span><span>Commercial signals: affiliate links, gifted products, sponsors</span></li>
+          <li><span class="n">3</span><span>Does the recommendation feel genuine? Six factors with evidence</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="ic violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="12.5" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg></div>
+        <h3>Shoppers and store staff</h3>
+        <ul class="list small" style="gap:.6cqw;">
+          <li><span class="n">1</span><span>Point a camera at products – brands are named on the device</span></li>
+          <li><span class="n">2</span><span>Barcode gives the exact product (Open Food Facts)</span></li>
+          <li><span class="n">3</span><span>Camera images never leave the phone unless you tap a box</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><p>PlacementRadar · What for</p><p>3 / 15</p></div>
+</section>
+
+<!-- 4 · four tools -->
+<section class="slide" id="s4" aria-label="Four tools">
+  <div class="in">
+    <div class="head"><p class="eyebrow">What it is</p><h2>Four tools on one start page</h2></div>
+    <div class="split wide">
+      <div style="display:flex; flex-direction:column; gap:.9cqw;">
+        <div class="card tool"><div class="ic blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z" fill="currentColor"/></svg></div><div><h3>YouTube video</h3><p class="small">One link → products, screen time, media value, ad label, authenticity, audience, brand report.</p></div></div>
+        <div class="card tool"><div class="ic green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="12.5" r="3.5"/></svg></div><div><h3>Live camera</h3><p class="small">Packages boxed and named on the device: detector, text recognition, own brand model.</p></div></div>
+        <div class="card tool"><div class="ic amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></div><div><h3>Brand search</h3><p class="small">An agent: brand in → it searches YouTube, asks before spending quota, writes a report.</p></div></div>
+        <div class="card tool"><div class="ic violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c.8-3.5 3-5.5 6-5.5s5.2 2 6 5.5"/><path d="m16 11 2 2 4-4"/></svg></div><div><h3>Channel fit · Find creators</h3><p class="small">Does a creator fit my brand? Or: product in → ranked creators with an AI estimate.</p></div></div>
+      </div>
+      <div class="shots"><img class="shot" style="aspect-ratio:16/10;" src="img/start.jpg" alt="Start page: switcher with the four tools, link field and analysed examples"></div>
+    </div>
+  </div>
+  <div class="foot"><p>PlacementRadar · What · live: placementradar.itsmoribind.workers.dev</p><p>4 / 15</p></div>
+</section>
+
+<!-- 5 · one link -->
+<section class="slide" id="s5" aria-label="One link, every product">
+  <div class="in">
+    <div class="head"><p class="eyebrow">Tool 1 · YouTube video</p><h2>One link – every product, every second</h2></div>
+    <div class="split">
+      <ul class="list">
+        <li><span class="n">1</span><div><h3>Exact models</h3><p class="small">Gemini watches picture and sound: “Sony WH-1000XM5”, not just “headphones”. Title and description are read as evidence – a shop link is kept only if it really is in the description.</p></div></li>
+        <li><span class="n">2</span><div><h3>Right now + tracking boxes</h3><p class="small">While the video plays, a panel lists what is in the picture, spoken or written at that second; labelled boxes follow the products over the original player.</p></div></li>
+        <li><span class="n">3</span><div><h3>Timeline and product cards</h3><p class="small">One lane per brand (visible / spoken / on-screen text), screen time as a range, mentions, affiliate links. A click jumps to the moment.</p></div></li>
+      </ul>
+      <div class="shots" style="display:flex; flex-direction:column; gap:1.2cqw;">
+        <img class="shot" style="aspect-ratio:16/10;" src="img/overview.jpg" alt="Products view of a headphone comparison: player with tracking boxes, Right now panel listing Sennheiser, Nothing, Sony and Beats">
+      </div>
+    </div>
+  </div>
+  <div class="foot"><p>PlacementRadar · Example: MoeKit, “Over-Ear Topmodell im Vergleich”</p><p>5 / 15</p></div>
+</section>
+
+<!-- 6 · value, label, authenticity, report -->
+<section class="slide" id="s6" aria-label="Value, label, authenticity">
+  <div class="in">
+    <div class="head"><p class="eyebrow">Tool 1 · what it means</p><h2>What is it worth? Is it labelled? Does it feel genuine?</h2></div>
+    <div class="grid g3">
+      <div class="card" style="gap:1cqw;"><img class="shot" style="aspect-ratio:16/11;" src="img/value.jpg" alt="Media value: equivalent ad cost of all brands as a range, assumptions and per-brand ranges"><h3>Media value</h3><p class="small">Equivalent ad cost – views, seconds weighted by size, position, speech and text, audience drop-off, CPM. Shown as a range, every assumption adjustable.</p></div>
+      <div class="card" style="gap:1cqw;"><img class="shot" style="aspect-ratio:16/11;" src="img/disclosure.jpg" alt="Ad disclosure: no label found although there are Amazon affiliate links"><h3>Ad disclosure</h3><p class="small">Where a label was looked for, which commercial signals exist (affiliate, gifted, sponsor) – and a neutral verdict with timestamps.</p></div>
+      <div class="card" style="gap:1cqw;"><img class="shot" style="aspect-ratio:16/11;" src="img/authenticity.jpg" alt="Authenticity scores per brand with six factors"><h3>Authenticity · report</h3><p class="small">Six factors from source credibility and the Persuasion Knowledge Model, each with evidence. One A4 brand report and a pitch mail per brand.</p></div>
+    </div>
+  </div>
+  <div class="foot"><p>PlacementRadar · Formulas in README § 4</p><p>6 / 15</p></div>
+</section>
+
+<!-- 7 · verify -->
+<section class="slide" id="s7" aria-label="Verify on screen">
+  <div class="in">
+    <div class="head"><p class="eyebrow">Don't just trust the AI</p><h2>Verify on screen: our models check Gemini</h2></div>
+    <div class="split">
+      <div style="display:flex; flex-direction:column; gap:1.4cqw;">
+        <p>The page cannot look into the YouTube player. With one click the viewer shares the tab, and the models <b>on the device</b> look at the real frames: text recognition, our brand model, two object detectors and a product-type check.</p>
+        <div style="display:flex; gap:.7cqw; flex-wrap:wrap;"><span class="pill g">confirmed</span><span class="pill r">not seen</span><span class="pill a">not checkable</span><span class="pill">on screen only</span></div>
+        <p class="small">Measured boxes replace Gemini's estimated ones. Products the device sees but Gemini missed are added. Nothing is uploaded.</p>
+      </div>
+      <div class="shots"><img class="shot" style="aspect-ratio:1400/778;" src="img/verify.jpg" alt="Verify on screen on a desk tour: measured boxes with confirmed labels"></div>
+    </div>
+  </div>
+  <div class="foot"><p>PlacementRadar · Test V in EVALUATION.md</p><p>7 / 15</p></div>
+</section>
+
+<!-- 8 · live camera -->
+<section class="slide" id="s8" aria-label="Live camera">
+  <div class="in">
+    <div class="head"><p class="eyebrow">Tool 2 · Live camera</p><h2>Point a camera at products – named on the device</h2></div>
+    <div class="grid g2" style="grid-template-columns: 1.15fr 1fr;">
+      <img class="shot" style="aspect-ratio:16/10;" src="img/live.jpg" alt="Live scanner: six grocery products boxed and named">
+      <div style="display:flex; flex-direction:column; gap:1.2cqw;">
+        <ul class="list">
+          <li><span class="n">1</span><div><h3>Find</h3><p class="small">YOLOE packaging finder boxes and tracks every package.</p></div></li>
+          <li><span class="n">2</span><div><h3>Read</h3><p class="small">Text recognition against 3,599 brands; barcode → exact product.</p></div></li>
+          <li><span class="n">3</span><div><h3>Recognise</h3><p class="small">Script logos OCR cannot read (Coca-Cola, Oreo) → our own brand model.</p></div></li>
+          <li><span class="n">4</span><div><h3>Ask</h3><p class="small">Only a tapped crop goes to the cloud – and Gemini's confident answer teaches our model.</p></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><p>PlacementRadar · Runs in the browser with ONNX Runtime Web (WebGPU / WASM)</p><p>8 / 15</p></div>
+</section>
+
+<!-- 9 · agentic -->
+<section class="slide" id="s9" aria-label="Agentic tools">
+  <div class="in">
+    <div class="head"><p class="eyebrow">Tools 3 + 4 · agentic intelligence</p><h2>From one video to the whole market</h2></div>
+    <div class="grid g3">
+      <div class="card" style="gap:1cqw;"><img class="shot" style="aspect-ratio:4/3;" src="img/agent.jpg" alt="Brand agent report for Apple"><h3>Brand search</h3><p class="small">“Sonos” → the agent plans, searches YouTube, filters, reuses analyses it already has – and <b>stops to ask</b> before it spends quota on new ones. Then a report across videos.</p></div>
+      <div class="card" style="gap:1cqw;"><img class="shot" style="aspect-ratio:4/3;" src="img/channel.jpg" alt="Channel fit for Sonos on a headphone review channel"><h3>Channel fit</h3><p class="small">A creator's last 25 uploads and our analyses → fit score: category match, room next to competitors, labels its ads, audience reaction.</p></div>
+      <div class="card" style="gap:1cqw;"><img class="shot" style="aspect-ratio:4/3;" src="img/creators.jpg" alt="Find creators: ranked shortlist for headphones"><h3>Find creators + AI estimate</h3><p class="small">Product in → ranked YouTube creators with a short analysis. Gemini adds audience, tone and risks – its quotes are checked against the sources.</p></div>
+    </div>
+  </div>
+  <div class="foot"><p>PlacementRadar · Live steps over Server-Sent Events</p><p>9 / 15</p></div>
+</section>
+
+<!-- 10 · how it is built -->
+<section class="slide" id="s10" aria-label="How it is built">
+  <div class="in">
+    <div class="head"><p class="eyebrow">How it is built</p><h2>Three engines that perceive, one agent that acts</h2></div>
+    <div class="flow">
+      <div class="col">
+        <p class="colhead">Input</p>
+        <div class="node"><h3>YouTube link</h3><p>video, title, description, comments</p></div>
+        <div class="node"><h3>Camera or photo</h3><p>stays on the device</p></div>
+        <div class="node"><h3>Brand, product or channel</h3><p>for the agentic tools</p></div>
+      </div>
+      <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15m-5-5 5 5-5 5"/></svg></div>
+      <div class="col">
+        <p class="colhead">Perception</p>
+        <div class="node e1"><h3>Engine 1 · Gemini (cloud)</h3><p>watches the video from YouTube: brands, models, seconds, boxes, label, authenticity – fixed JSON schema</p></div>
+        <div class="node e2"><h3>Engine 2 · on-device vision</h3><p>YOLOE + YOLO26 detectors, PaddleOCR, barcode – in the browser, no quota</p></div>
+        <div class="node e3"><h3>Engine 3 · our own model</h3><p>MobileCLIP-S1 encoder + our brand heads, 1,137 brands, trained by us</p></div>
+      </div>
+      <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15m-5-5 5 5-5 5"/></svg></div>
+      <div class="col">
+        <p class="colhead">Reasoning and action</p>
+        <div class="node"><h3>Cloudflare Worker</h3><p>keeps the key secret, cache (KV), daily limits, checks every link and quote</p></div>
+        <div class="node ag"><h3>Agent</h3><p>plans → YouTube Data API → filters → asks before spending quota → aggregates</p></div>
+        <div class="node"><h3>Rules you can read</h3><p>media value, fit and creator scores are formulas, not black boxes</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><p>PlacementRadar · README § 3, MODELS.md</p><p>10 / 15</p></div>
+</section>
+
+<!-- 11 · own model -->
+<section class="slide dark" id="s11" aria-label="Our own model">
+  <div class="in">
+    <div class="head"><p class="eyebrow">Engine 3 · trained by us</p><h2>A brand model for things OCR cannot read</h2></div>
+    <div class="split">
+      <div style="display:flex; flex-direction:column; gap:1.3cqw;">
+        <p>Apple's small MobileCLIP image encoder stays frozen. We trained <b>brand heads</b> on top: 1,020 packaging brands from 64,000 Open Food / Beauty / Products Facts photos and 117 tech, fashion, sport, home and car brands from 20,549 Wikimedia Commons photos – every photo also seen in three simulated webcam views.</p>
+        <p class="small">It answers only when the head and the encoder's own knowledge of brand names agree; thresholds were calibrated for few false alarms. Gemini's confident answers become new training examples (distillation).</p>
+        <img class="shot hide-m" style="aspect-ratio:16/10; width:24cqw;" src="img/ownmodel.jpg" alt="Live scanner: own model recognises Coca-Cola">
+      </div>
+      <div class="grid g2" style="align-content:start;">
+        <div class="card"><p class="big">1,137</p><p class="small">brands, 76,000 freely licensed training photos</p></div>
+        <div class="card"><p class="big">96.8 %</p><p class="small">of its answers right on 5,189 products it never saw</p></div>
+        <div class="card"><p class="big">42/49</p><p class="small">real phone photos named by OCR + own model – also in webcam quality</p></div>
+        <div class="card"><p class="big">0</p><p class="small">wrong brands from the model on those 49 photos; ~0.24 s per box in the browser</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><p>PlacementRadar · Tests S2–S5 in EVALUATION.md</p><p>11 / 15</p></div>
+</section>
+
+<!-- 12 · free by design -->
+<section class="slide" id="s12" aria-label="Free by design">
+  <div class="in">
+    <div class="head"><p class="eyebrow">Engineering under a free quota</p><h2>Built to run on free tiers – and keep running</h2></div>
+    <div class="grid g4" style="flex:none;">
+      <div class="card"><p class="big sm">~20</p><p class="small">Gemini requests per day and model family on the free tier – every request counts</p></div>
+      <div class="card"><p class="big sm">0</p><p class="small">requests for the 11 examples and the live scanner – they work when the quota is gone</p></div>
+      <div class="card"><p class="big sm">1×</p><p class="small">each video is analysed once – stored and reused for every later visitor; AI estimates kept 7 days</p></div>
+      <div class="card"><p class="big sm">~200</p><p class="small">of 10,000 daily YouTube API units per creator search – the agent shows the cost first</p></div>
+    </div>
+    <div class="grid g3" style="flex:none;">
+      <div class="card"><h3>Model chain</h3><p class="small">If one Gemini model is busy (503) or out of quota, the Worker falls back to the next one; for a camera crop Llama 3.2 Vision on Cloudflare Workers AI.</p></div>
+      <div class="card"><h3>Ask before spending</h3><p class="small">Every agentic tool stops at a confirm card with today's quota before new analyses. At most 3 per run.</p></div>
+      <div class="card"><h3>Safe with untrusted text</h3><p class="small">Descriptions and comments go to the model as marked data; links and quotes are only kept if they appear verbatim in the source.</p></div>
+    </div>
+  </div>
+  <div class="foot"><p>PlacementRadar · README § 6 Hosting and the Gemini key</p><p>12 / 15</p></div>
+</section>
+
+<!-- 13 · how good -->
+<section class="slide" id="s13" aria-label="How good is it">
+  <div class="in">
+    <div class="head"><p class="eyebrow">How good is it – measured, not claimed</p><h2>Mostly right when it shows something – but it misses time</h2></div>
+    <p class="small" style="margin-top:-.6cqw;">Test M: three videos marked by hand every 2 s (957 frames, 24 products), checked frame by frame by a human, compared with the stored analyses.</p>
+    <div class="tablewrap">
+    <table>
+      <tr><th style="width:40%;">Question</th><th>MKBHD · one by one</th><th>JB · desk tour</th><th>iKnowReview · 5 headphones</th></tr>
+      <tr><td>When the app shows a product, is it in the picture? <b>(precision)</b></td><td><b>76 %</b> (re-check 86–92 %)</td><td><b>71 %</b></td><td><b>87 %</b></td></tr>
+      <tr><td>Of the time a product is visible, how much does the app show? <b>(recall)</b></td><td><b>9 %</b> (re-check 14–29 %)</td><td><b>62 %</b> with re-check</td><td><b>31 %</b></td></tr>
+      <tr><td>Products found at least once</td><td>7 of 10</td><td>9 of 9</td><td>5 of 5</td></tr>
+      <tr><td>Median start-time error of a found appearance</td><td>2 s</td><td>2 s</td><td>1 s</td></tr>
+    </table>
+    </div>
+    <div class="grid g3" style="flex:none;">
+      <div class="card" style="padding:1.2cqw 1.5cqw;"><p class="small"><b>Read screen time and value as ±50 %.</b> Two runs of one video share about half of their brand-seconds – the app shows ranges.</p></div>
+      <div class="card" style="padding:1.2cqw 1.5cqw;"><p class="small"><b>Ad label agrees with SponsorBlock</b> where the community marked a sponsor segment (1 of 1) – only 4 of 14 videos have any entry.</p></div>
+      <div class="card" style="padding:1.2cqw 1.5cqw;"><p class="small"><b>Every test is documented</b> – including what failed and what changed because of it (EVALUATION.md, 28 test series).</p></div>
+    </div>
+  </div>
+  <div class="foot"><p>PlacementRadar · EVALUATION.md, test M</p><p>13 / 15</p></div>
+</section>
+
+<!-- 14 · limits -->
+<section class="slide" id="s14" aria-label="Limits and ethics">
+  <div class="in">
+    <div class="head"><p class="eyebrow">Limits and ethics</p><h2>What it cannot do – said plainly</h2></div>
+    <div class="grid g2" style="flex:none;">
+      <div class="card"><h3>Accuracy</h3><ul class="list small" style="gap:.55cqw;">
+        <li><span class="n">1</span><span>Gemini misses products lying in the background and varies between runs.</span></li>
+        <li><span class="n">2</span><span>Boxes are Gemini's estimates unless “Verify on screen” measures them.</span></li>
+        <li><span class="n">3</span><span>Our model knows 1,137 brands; for others it stays silent on purpose.</span></li>
+      </ul></div>
+      <div class="card"><h3>Meaning</h3><ul class="list small" style="gap:.55cqw;">
+        <li><span class="n">1</span><span>Media value is an equivalent ad cost, not the creator's income.</span></li>
+        <li><span class="n">2</span><span>The disclosure check judges content, not people – estimates, not legal advice.</span></li>
+        <li><span class="n">3</span><span>Top comments are not a survey; word rules miss irony.</span></li>
+      </ul></div>
+      <div class="card"><h3>Privacy</h3><ul class="list small" style="gap:.55cqw;">
+        <li><span class="n">1</span><span>No video is downloaded or re-hosted; the original player is embedded.</span></li>
+        <li><span class="n">2</span><span>Camera and shared-tab frames are analysed on the device, never uploaded.</span></li>
+        <li><span class="n">3</span><span>Comment authors' names are never read; excerpts ≤ 100 characters.</span></li>
+      </ul></div>
+      <div class="card"><h3>Licences</h3><ul class="list small" style="gap:.55cqw;">
+        <li><span class="n">1</span><span>Own code AGPL-3.0 (because of the YOLO models) – fully public.</span></li>
+        <li><span class="n">2</span><span>MobileCLIP-derived files: Apple's research licence, non-commercial only.</span></li>
+        <li><span class="n">3</span><span>Training data: Open Food Facts (ODbL), Wikimedia Commons with authors listed.</span></li>
+      </ul></div>
+    </div>
+  </div>
+  <div class="foot"><p>PlacementRadar · README § 9, THIRD_PARTY_NOTICES.md</p><p>14 / 15</p></div>
+</section>
+
+<!-- 15 · try it -->
+<section class="slide dark" id="s15" aria-label="Try it">
+  <div class="in" style="flex-direction:row; align-items:center; gap:5cqw;">
+    <div style="display:flex; flex-direction:column; gap:1.8cqw; flex:1;">
+      <p class="eyebrow">Try it yourself</p>
+      <h2 style="font-size:4.2cqw;">No login, no key.<br>Open an example or paste a link.</h2>
+      <p class="lead url"><b>placementradar.itsmoribind.workers.dev</b></p>
+      <p class="small">Code, models and every test: <b>github.com/moritzb1/placementradar</b> · README (3-minute tour), MODELS.md, EVALUATION.md</p>
+      <p class="small">Built with Gemini, YouTube Data API, Cloudflare Workers, ONNX Runtime Web, Ultralytics YOLOE / YOLO26, PaddleOCR, Apple MobileCLIP, Open Food Facts and Wikimedia Commons.</p>
+    </div>
+    <div class="qr"><img src="img/qr.svg" alt="QR code linking to placementradar.itsmoribind.workers.dev"></div>
+  </div>
+  <div class="foot"><p>Moritz Binder · MMI5190E · Pforzheim University · 2026</p><p>15 / 15</p></div>
+</section>
+
+</main>
+</body>
+</html>

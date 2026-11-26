@@ -9,7 +9,7 @@ Final project for *MMI5190E – The New Frontiers of AI: From Perception to Agen
 
 | Document | What is in it |
 |---|---|
-| [Project in 18 slides](https://moritzb1.github.io/final_project/) ([PDF](docs/story/PlacementRadar_slides.pdf)) | why, for whom, what, how it is built, how good it is, limits – the graphic overview |
+| [Project in 19 slides](https://moritzb1.github.io/final_project/) ([PDF](docs/story/PlacementRadar_slides.pdf)) | why, for whom, what, how it is built, how good it is, limits – the graphic overview |
 | this README | 3-minute tour, architecture, formulas, hosting |
 | [MODELS.md](MODELS.md) | every model: source, licence, size, role, measured performance |
 | [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) | licences: own code AGPL-3.0, shipped models and data, Apple's model licence |
@@ -124,6 +124,17 @@ Influencer marketing is a multi-billion market, but two questions are hard to an
 2. **For viewers and regulators:** *Is this an advertisement, and is it labelled as one?* In Germany, commercial content must be clearly recognisable (§ 5a (4) UWG, § 22 MStV). Hidden advertising ("Schleichwerbung") is a recurring issue.
 
 PlacementRadar answers both from a single YouTube link and adds a third, newer question: *does the recommendation feel genuine?*
+
+### What the course units contributed
+
+| Unit | Topic in class | Where it is in PlacementRadar |
+|---|---|---|
+| 1 | Intro to AI, GitHub Pages | public GitHub repository with docs and tests; every push deploys the app to Cloudflare |
+| 2 | MediaPipe Solutions | perception on the device: models on live webcam frames in the browser, tracked boxes, no upload (Live camera, Verify on screen) |
+| 3 | Teachable Machine, YOLO, Neural Style Transfer | own brand model = Teachable Machine's principle at scale (frozen encoder + trained head, 1,137 brands); YOLO26 from the unit + YOLOE; ONNX Runtime Web with WebGPU/WASM |
+| 4 | Ollama, Gemini | Gemini watches the video and answers in a fixed JSON schema; model chain down to the open Llama 3.2 Vision |
+| 5 | n8n, OpenAI / Claude agents | brand agent and Find creators: plan → tools (YouTube search) → memory (cache) → report, steps streamed live |
+| 6 | Personal AI agents | agents that act need limits: confirm card with today's quota before spending, AI usage meter, human in the loop |
 
 ## 2. What it does
 
@@ -342,7 +353,7 @@ tools/                     reproducible scripts: demo data (add_demo.py), brand 
 tests/                     every test script, raw results (ergebnisse/) and the hand-checked ground truth (wahrheit/) of EVALUATION.md;
                            photos and video frames left out (privacy, size)
 docs/screenshots/          screenshots used in this README
-docs/story/                the project in 18 slides: one HTML page (16:9 on screens, a normal page on phones) + PDF
+docs/story/                the project in 19 slides: one HTML page (16:9 on screens, a normal page on phones) + PDF
                            (tools/story_pdf.mjs prints it); also published at moritzb1.github.io/final_project/
 LICENSE, THIRD_PARTY_NOTICES.md, licenses/   AGPL-3.0 for our code; licences of shipped models and data
 MODELS.md                  every model: source, licence, role, measured performance

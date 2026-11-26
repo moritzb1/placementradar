@@ -9,7 +9,7 @@ Final project for *MMI5190E – The New Frontiers of AI: From Perception to Agen
 
 | Document | What is in it |
 |---|---|
-| [Project in 15 slides](https://moritzb1.github.io/apps/placementradar/) ([PDF](docs/story/PlacementRadar_slides.pdf)) | why, for whom, what, how it is built, how good it is, limits – the graphic overview |
+| [Project in 15 slides](https://moritzb1.github.io/final_project/) ([PDF](docs/story/PlacementRadar_slides.pdf)) | why, for whom, what, how it is built, how good it is, limits – the graphic overview |
 | this README | 3-minute tour, architecture, formulas, hosting |
 | [MODELS.md](MODELS.md) | every model: source, licence, size, role, measured performance |
 | [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) | licences: own code AGPL-3.0, shipped models and data, Apple's model licence |
@@ -35,7 +35,7 @@ Final project for *MMI5190E – The New Frontiers of AI: From Perception to Agen
 
 **2b · Show tracking.** A switch under the player draws rounded boxes with the product's name over the video – brand + model and how it was recognised (logo, text, speech, design) – and they follow the product while the video plays. The positions come from Gemini and are approximate, so the overlay is honest about it: a **solid box** only within 1.5 s of a reported position (or while the product stays put between two close ones), a **dashed box "approx. position"** up to 3 s away, otherwise just a **dot** where the product roughly is. Between keyframes that are far apart or show a jump, the box no longer glides across the picture. Where positions are rough, the hint suggests *Look closer*.
 
-![Tracking boxes over the player (MoeKit at 0:04: four headphones; solid = close to a reported position, dashed = approximate)](docs/screenshots/14_tracking.jpg)
+![Tracking boxes over the player (MoeKit at 0:01: four headphones; solid = close to a reported position, dashed = approximate)](docs/screenshots/14_tracking.jpg)
 
 **2c · Look closer and unidentified products.** Small products worn or used in passing (a smartwatch on the wrist, a case, glasses) are easy to miss in a whole-video pass. The analysis prompt now asks for a complete inventory and allows the brand "unknown" – such items appear under *Unidentified products* (category, description, jump to the moment) and never count towards media value or the disclosure check. The **Look closer** button under the player sends the current ~20 seconds to Gemini once more, at 2 frames per second with the inventory prompt (1 request, ~1 min, cached per clip on the server); what it finds is added to the product list, *Right now* and the tracking boxes; for products already known it refines their boxes.
 
@@ -343,7 +343,7 @@ tests/                     every test script, raw results (ergebnisse/) and the 
                            photos and video frames left out (privacy, size)
 docs/screenshots/          screenshots used in this README
 docs/story/                the project in 15 slides: one HTML page (16:9 on screens, a normal page on phones) + PDF
-                           (tools/story_pdf.mjs prints it); also published at moritzb1.github.io/apps/placementradar/
+                           (tools/story_pdf.mjs prints it); also published at moritzb1.github.io/final_project/
 LICENSE, THIRD_PARTY_NOTICES.md, licenses/   AGPL-3.0 for our code; licences of shipped models and data
 MODELS.md                  every model: source, licence, role, measured performance
 EVALUATION.md              all tests, incl. what did not work

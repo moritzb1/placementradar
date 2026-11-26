@@ -776,6 +776,7 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
 /* ------------------------------------------------------------------------------------------------
    Footer
    ------------------------------------------------------------------------------------------------ */
+.site-foot a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .site-foot { max-width: var(--max); margin: 0 auto; padding: 22px var(--gut) 40px; border-top: 1px solid var(--line); color: var(--text-3); font-size: 12.5px; display: flex; gap: 16px; flex-wrap: wrap; justify-content: space-between; }
 
 /* ------------------------------------------------------------------------------------------------

@@ -11,6 +11,7 @@ Final project for *MMI5190E – The New Frontiers of AI: From Perception to Agen
 |---|---|
 | this README | 3-minute tour, architecture, formulas, hosting |
 | [MODELS.md](MODELS.md) | every model: source, licence, size, role, measured performance |
+| [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) | licences: own code AGPL-3.0, shipped models and data, Apple's model licence |
 | [EVALUATION.md](EVALUATION.md) | every test we ran – including what failed and what we changed because of it; measured accuracy: [How good is it?](#how-good-is-it-measured-test-m-in-evaluationmd) |
 
 ---
@@ -370,7 +371,7 @@ In short: **what the app shows is mostly right, but it misses much of the time a
 - **Privacy of "Gemini teaches the on-device model":** when a cloud model names a tapped crop with one confident brand, the Worker may keep that crop (JPEG, ≤ 160 KB) with the brand name as a training example. The scanner says so under the Identify button ("Recognised crops may be kept to improve the on-device model") with a one-click opt-out that is remembered in the browser. Kept: crop, brand, model, time – no full frame, no IP address, no visitor id. At most 1,500 examples, each deleted automatically after 90 days; the export (`/api/teach`) only works with a secret token and `tools/teach_pull.py --delete-used` removes examples after training. `TEACH=off` switches the feature off. A crop can still show a face or a hand – which is why only crops the user chose to send are ever kept.
 - Own model: knows 1,020 brands that are common in German retail (food, cosmetics, household) and, since v3, 117 tech, fashion, sport, home and car brands. Many non-packaging brands look alike without a readable logo (monitors, bike parts, cars of one segment): 255 of the 375 Commons brands stay silent, and on photos of unknown non-packaging brands false alarms rose from 2.1 % to 4.7 % (S5). For other brands it stays silent (false alarms on foreign packs: 3.4 %, on packs that look like a known brand: 7 %). Products without a visible logo (a smartwatch, a plain bottle) stay "unknown" on purpose; store brands without a logo (REWE Beste Wahl, Milbona) remain hard. Its training data comes from crowd-sourced open databases, so brands that are rare there are missing.
 - Live tracking: boxes are smoothed and predicted between detections; a product covered by a hand keeps its box for 1.5 s (drawn dashed) and its name for 6 s. With a slow detector (~4 frames/s) boxes still lag behind fast movements.
-- Licences: YOLOE/YOLO26 are AGPL-3.0, so the source code of this app has to be available to its users; MobileCLIP weights are under Apple's licence (fine for a course project, check before commercial use).
+- Licences: the app's own code is AGPL-3.0 ([LICENSE](LICENSE)), because YOLOE/YOLO26 are AGPL-3.0 and the source must be available to every user of the website. The MobileCLIP-derived files are under the Apple Machine Learning Research Model License – **research and non-commercial use only**. Every model, data source and licence: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## 10. Credits
 

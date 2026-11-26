@@ -9,7 +9,7 @@ Final project for *MMI5190E – The New Frontiers of AI: From Perception to Agen
 
 | Document | What is in it |
 |---|---|
-| [Project in 15 slides](https://moritzb1.github.io/final_project/) ([PDF](docs/story/PlacementRadar_slides.pdf)) | why, for whom, what, how it is built, how good it is, limits – the graphic overview |
+| [Project in 18 slides](https://moritzb1.github.io/final_project/) ([PDF](docs/story/PlacementRadar_slides.pdf)) | why, for whom, what, how it is built, how good it is, limits – the graphic overview |
 | this README | 3-minute tour, architecture, formulas, hosting |
 | [MODELS.md](MODELS.md) | every model: source, licence, size, role, measured performance |
 | [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) | licences: own code AGPL-3.0, shipped models and data, Apple's model licence |
@@ -342,7 +342,7 @@ tools/                     reproducible scripts: demo data (add_demo.py), brand 
 tests/                     every test script, raw results (ergebnisse/) and the hand-checked ground truth (wahrheit/) of EVALUATION.md;
                            photos and video frames left out (privacy, size)
 docs/screenshots/          screenshots used in this README
-docs/story/                the project in 15 slides: one HTML page (16:9 on screens, a normal page on phones) + PDF
+docs/story/                the project in 18 slides: one HTML page (16:9 on screens, a normal page on phones) + PDF
                            (tools/story_pdf.mjs prints it); also published at moritzb1.github.io/final_project/
 LICENSE, THIRD_PARTY_NOTICES.md, licenses/   AGPL-3.0 for our code; licences of shipped models and data
 MODELS.md                  every model: source, licence, role, measured performance

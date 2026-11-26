@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PlacementRadar – the project in 15 slides</title>
+<title>PlacementRadar – the project in 18 slides</title>
 <meta name="description" content="PlacementRadar finds every brand in a YouTube video, estimates what the exposure is worth, checks the ad label and helps brands find creators. Final project MMI5190E, Pforzheim University.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -100,6 +100,38 @@ b, strong { color: var(--ink); font-weight: 650; } .dark b, .dark strong { color
 .node.e1 { border-left: .4cqw solid var(--accent); } .node.e2 { border-left: .4cqw solid var(--green); } .node.e3 { border-left: .4cqw solid var(--violet); } .node.ag { border-left: .4cqw solid var(--amber); }
 .colhead { font-size: 1cqw; font-weight: 600; letter-spacing: .12cqw; text-transform: uppercase; color: var(--muted); }
 
+
+/* making of: training pipeline */
+.pipe { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1.4cqw; flex: none; }
+.pstep { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 1.1cqw; padding: 1.3cqw 1.2cqw; display: flex; flex-direction: column; gap: .55cqw; }
+.dark .pstep { background: #1F2430; border-color: #2E3544; }
+.pstep:not(:last-child)::after { content: ""; position: absolute; right: -1.15cqw; top: 50%; width: .8cqw; height: .8cqw; border-top: .22cqw solid var(--muted); border-right: .22cqw solid var(--muted); transform: translateY(-50%) rotate(45deg); }
+.pstep .k { font-size: .9cqw; font-weight: 700; letter-spacing: .1cqw; text-transform: uppercase; color: var(--muted); }
+.pstep .v { font-size: 2.3cqw; font-weight: 800; letter-spacing: -.06cqw; line-height: 1; color: var(--accent); }
+.dark .pstep .v { color: var(--dark-accent); }
+.pstep h3 { font-size: 1.25cqw; } .pstep p { font-size: .98cqw; line-height: 1.4; }
+.pstep.hl { border-color: var(--violet); box-shadow: 0 0 0 .15cqw rgba(110,86,207,.35); }
+/* making of: before -> after */
+.ba { display: flex; align-items: baseline; gap: .8cqw; }
+.ba .was { font-size: 1.9cqw; font-weight: 700; color: var(--muted); text-decoration: line-through; text-decoration-thickness: .12cqw; }
+.ba .arr { font-size: 1.6cqw; color: var(--muted); }
+.ba .now { font-size: 3cqw; font-weight: 800; letter-spacing: -.08cqw; color: var(--green); line-height: 1; }
+.ba .now.blue { color: var(--accent); }
+.drop { font-size: .95cqw; font-weight: 700; letter-spacing: .1cqw; text-transform: uppercase; color: var(--red); }
+/* making of: timeline */
+.tl { position: relative; display: grid; grid-template-columns: repeat(8, 1fr); gap: 1cqw; flex: none; padding-top: 2.6cqw; }
+.tl::before { content: ""; position: absolute; left: .6cqw; right: .6cqw; top: 1cqw; height: .25cqw; border-radius: 1cqw; background: linear-gradient(90deg, var(--dark-accent), #A78BFA, #34D399); }
+.tl .day { position: relative; display: flex; flex-direction: column; gap: .45cqw; }
+.tl .day::before { content: ""; position: absolute; left: 0; top: -2.05cqw; width: 1.05cqw; height: 1.05cqw; border-radius: 50%; background: var(--dark); border: .25cqw solid var(--dark-accent); }
+.tl .d { font-size: 1.05cqw; font-weight: 700; color: var(--dark-ink); }
+.tl .c { font-size: .85cqw; color: #7D8597; }
+.tl ul { list-style: none; display: flex; flex-direction: column; gap: .35cqw; }
+.tl li { font-size: .92cqw; line-height: 1.35; color: var(--dark-body); }
+.stats { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1.2cqw; flex: none; }
+.stat { border-top: 1px solid #2E3544; padding-top: .9cqw; }
+.stat .v { font-size: 2.6cqw; font-weight: 800; letter-spacing: -.08cqw; color: var(--dark-ink); line-height: 1; }
+.stat p { font-size: .95cqw; margin-top: .4cqw; }
+
 table { width: 100%; border-collapse: collapse; }
 th, td { text-align: left; font-size: 1.12cqw; padding: .75cqw .6cqw; border-bottom: 1px solid var(--line); color: var(--body); vertical-align: top; }
 th { color: var(--ink); font-weight: 650; border-bottom: 2px solid var(--line); }
@@ -132,6 +164,12 @@ td b { color: var(--ink); }
   th, td { font-size: 12.5px; padding: 8px 5px; }
   .qr { width: 160px; height: 160px; padding: 10px; border-radius: 12px; }
   .hide-m { display: none !important; }
+  .pipe, .stats { grid-template-columns: 1fr 1fr; gap: 10px; } .pstep { padding: 12px; border-radius: 12px; gap: 4px; } .pstep::after { display: none; }
+  .pstep .k { font-size: 10.5px; letter-spacing: 1px; } .pstep .v { font-size: 24px; } .pstep h3 { font-size: 14.5px; } .pstep p { font-size: 12.5px; }
+  .ba { gap: 8px; } .ba .was { font-size: 18px; } .ba .arr { font-size: 16px; } .ba .now { font-size: 28px; } .drop { font-size: 11px; letter-spacing: 1px; }
+  .tl { grid-template-columns: 1fr; gap: 14px; padding-top: 0; padding-left: 22px; } .tl::before { left: 5px; right: auto; top: 4px; bottom: 4px; width: 3px; height: auto; background: linear-gradient(180deg, var(--dark-accent), #A78BFA, #34D399); }
+  .tl .day::before { left: -22px; top: 3px; width: 13px; height: 13px; border-width: 3px; } .tl .d { font-size: 15px; } .tl .c { font-size: 12px; } .tl li { font-size: 13.5px; }
+  .stat .v { font-size: 26px; } .stat p { font-size: 12.5px; } .stat { padding-top: 8px; }
   .card[style*="flex-direction:row"] { flex-direction: column !important; align-items: flex-start !important; gap: 6px !important; }
   .grid[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
   .url { word-break: break-all; }
@@ -176,7 +214,7 @@ td b { color: var(--ink); }
     </div>
     <img class="shot" style="width:38cqw; flex:none; aspect-ratio:16/10;" src="img/start.jpg" alt="PlacementRadar start screen with the four tools YouTube video, Live camera, Brand search and Channel fit">
   </div>
-  <div class="foot"><p>placementradar.itsmoribind.workers.dev</p><p>1 / 15</p></div>
+  <div class="foot"><p>placementradar.itsmoribind.workers.dev</p><p>1 / 18</p></div>
 </section>
 
 <!-- 2 · why -->
@@ -193,7 +231,7 @@ td b { color: var(--ink); }
       <p>PlacementRadar turns one YouTube link into a dashboard in about a minute: every brand, every model, every second it is visible, what comparable advertising would cost and whether the ad is labelled. No video is downloaded – the AI watches it straight from YouTube.</p>
     </div>
   </div>
-  <div class="foot"><p>PlacementRadar · Why</p><p>2 / 15</p></div>
+  <div class="foot"><p>PlacementRadar · Why</p><p>2 / 18</p></div>
 </section>
 
 <!-- 3 · for whom -->
@@ -231,7 +269,7 @@ td b { color: var(--ink); }
       </div>
     </div>
   </div>
-  <div class="foot"><p>PlacementRadar · What for</p><p>3 / 15</p></div>
+  <div class="foot"><p>PlacementRadar · What for</p><p>3 / 18</p></div>
 </section>
 
 <!-- 4 · four tools -->
@@ -248,7 +286,7 @@ td b { color: var(--ink); }
       <div class="shots"><img class="shot" style="aspect-ratio:16/10;" src="img/start.jpg" alt="Start page: switcher with the four tools, link field and analysed examples"></div>
     </div>
   </div>
-  <div class="foot"><p>PlacementRadar · What · live: placementradar.itsmoribind.workers.dev</p><p>4 / 15</p></div>
+  <div class="foot"><p>PlacementRadar · What · live: placementradar.itsmoribind.workers.dev</p><p>4 / 18</p></div>
 </section>
 
 <!-- 5 · one link -->
@@ -266,7 +304,7 @@ td b { color: var(--ink); }
       </div>
     </div>
   </div>
-  <div class="foot"><p>PlacementRadar · Example: MoeKit, “Over-Ear Topmodell im Vergleich”</p><p>5 / 15</p></div>
+  <div class="foot"><p>PlacementRadar · Example: MoeKit, “Over-Ear Topmodell im Vergleich”</p><p>5 / 18</p></div>
 </section>
 
 <!-- 6 · value, label, authenticity, report -->
@@ -279,7 +317,7 @@ td b { color: var(--ink); }
       <div class="card" style="gap:1cqw;"><img class="shot" style="aspect-ratio:16/11;" src="img/authenticity.jpg" alt="Authenticity scores per brand with six factors"><h3>Authenticity · report</h3><p class="small">Six factors from source credibility and the Persuasion Knowledge Model, each with evidence. One A4 brand report and a pitch mail per brand.</p></div>
     </div>
   </div>
-  <div class="foot"><p>PlacementRadar · Formulas in README § 4</p><p>6 / 15</p></div>
+  <div class="foot"><p>PlacementRadar · Formulas in README § 4</p><p>6 / 18</p></div>
 </section>
 
 <!-- 7 · verify -->
@@ -295,7 +333,7 @@ td b { color: var(--ink); }
       <div class="shots"><img class="shot" style="aspect-ratio:1400/778;" src="img/verify.jpg" alt="Verify on screen on a desk tour: measured boxes with confirmed labels"></div>
     </div>
   </div>
-  <div class="foot"><p>PlacementRadar · Test V in EVALUATION.md</p><p>7 / 15</p></div>
+  <div class="foot"><p>PlacementRadar · Test V in EVALUATION.md</p><p>7 / 18</p></div>
 </section>
 
 <!-- 8 · live camera -->
@@ -314,7 +352,7 @@ td b { color: var(--ink); }
       </div>
     </div>
   </div>
-  <div class="foot"><p>PlacementRadar · Runs in the browser with ONNX Runtime Web (WebGPU / WASM)</p><p>8 / 15</p></div>
+  <div class="foot"><p>PlacementRadar · Runs in the browser with ONNX Runtime Web (WebGPU / WASM)</p><p>8 / 18</p></div>
 </section>
 
 <!-- 9 · agentic -->
@@ -327,7 +365,7 @@ td b { color: var(--ink); }
       <div class="card" style="gap:1cqw;"><img class="shot" style="aspect-ratio:4/3;" src="img/creators.jpg" alt="Find creators: ranked shortlist for headphones"><h3>Find creators + AI estimate</h3><p class="small">Product in → ranked YouTube creators with a short analysis. Gemini adds audience, tone and risks – its quotes are checked against the sources.</p></div>
     </div>
   </div>
-  <div class="foot"><p>PlacementRadar · Live steps over Server-Sent Events</p><p>9 / 15</p></div>
+  <div class="foot"><p>PlacementRadar · Live steps over Server-Sent Events</p><p>9 / 18</p></div>
 </section>
 
 <!-- 10 · how it is built -->
@@ -357,13 +395,34 @@ td b { color: var(--ink); }
       </div>
     </div>
   </div>
-  <div class="foot"><p>PlacementRadar · README § 3, MODELS.md</p><p>10 / 15</p></div>
+  <div class="foot"><p>PlacementRadar · README § 3, MODELS.md</p><p>10 / 18</p></div>
+</section>
+
+<!-- NEW · training pipeline -->
+<section class="slide" id="s-train" aria-label="How we trained our own model">
+  <div class="in">
+    <div class="head"><p class="eyebrow">Making of · Engine 3</p><h2>How we trained our own brand model – on a laptop</h2></div>
+    <div class="pipe">
+      <div class="pstep"><p class="k">1 · Collect</p><p class="v">76,000</p><h3>open photos</h3><p>64,000 packs from Open Food / Beauty / Products Facts + 20,549 Wikimedia Commons photos, author and licence of each listed</p></div>
+      <div class="pstep"><p class="k">2 · Augment</p><p class="v">×3</p><h3>webcam views</h3><p>our own <code>camaug.py</code>: blur, glare, a hand in front, perspective, JPEG – so it works on a real camera, not only on clean shots</p></div>
+      <div class="pstep"><p class="k">3 · Embed</p><p class="v">190k</p><h3>fingerprints</h3><p>Apple's MobileCLIP-S1 stays frozen and turns every view into 512 numbers – 56 min on the MacBook GPU (MPS)</p></div>
+      <div class="pstep hl"><p class="k">4 · Train</p><p class="v">1,137</p><h3>brands, two heads</h3><p>our linear heads: 1,020 packaging brands + a second stage for tech, fashion, sport, home, cars – seconds per run</p></div>
+      <div class="pstep"><p class="k">5 · Calibrate</p><p class="v">≤ 2.5 %</p><h3>false alarms</h3><p>it answers only if the head (≥ 0.95) and the encoder's own text knowledge agree; thresholds set on a held-out split</p></div>
+      <div class="pstep"><p class="k">6 · Ship</p><p class="v">0.24 s</p><h3>per box, in the browser</h3><p>float16, split into 3 files under Cloudflare's 25 MiB limit, run with ONNX Runtime Web – no server, no API</p></div>
+    </div>
+    <div class="grid g3" style="flex:none;">
+      <div class="card"><p class="tag">It keeps learning</p><p class="small">When a user taps a box and Gemini names the brand confidently, the crop becomes a new training example – <b>the big model teaches the small one</b> (distillation, <code>teach_pull.py</code>).</p></div>
+      <div class="card"><p class="tag">Also built by us</p><p class="small"><b>YOLOE exported</b> with 31 fixed packaging words, a <b>brand dictionary of 3,599 brands</b> from 60,000 products for text recognition, 93 product-type fingerprints for Verify on screen.</p></div>
+      <div class="card"><p class="tag">Reproducible</p><p class="small">Every step is a script in <code>tools/</code> – data, augmentation, training, export – and every result is in EVALUATION.md, tests S2–S5.</p></div>
+    </div>
+  </div>
+  <div class="foot"><p>PlacementRadar · MODELS.md, tools/</p><p>11 / 18</p></div>
 </section>
 
 <!-- 11 · own model -->
 <section class="slide dark" id="s11" aria-label="Our own model">
   <div class="in">
-    <div class="head"><p class="eyebrow">Engine 3 · trained by us</p><h2>A brand model for things OCR cannot read</h2></div>
+    <div class="head"><p class="eyebrow">Engine 3 · what it achieved</p><h2>A brand model for things OCR cannot read</h2></div>
     <div class="split">
       <div style="display:flex; flex-direction:column; gap:1.3cqw;">
         <p>Apple's small MobileCLIP image encoder stays frozen. We trained <b>brand heads</b> on top: 1,020 packaging brands from 64,000 Open Food / Beauty / Products Facts photos and 117 tech, fashion, sport, home and car brands from 20,549 Wikimedia Commons photos – every photo also seen in three simulated webcam views.</p>
@@ -378,7 +437,7 @@ td b { color: var(--ink); }
       </div>
     </div>
   </div>
-  <div class="foot"><p>PlacementRadar · Tests S2–S5 in EVALUATION.md</p><p>11 / 15</p></div>
+  <div class="foot"><p>PlacementRadar · Tests S2–S5 in EVALUATION.md</p><p>12 / 18</p></div>
 </section>
 
 <!-- 12 · free by design -->
@@ -397,7 +456,23 @@ td b { color: var(--ink); }
       <div class="card"><h3>Safe with untrusted text</h3><p class="small">Descriptions and comments go to the model as marked data; links and quotes are only kept if they appear verbatim in the source.</p></div>
     </div>
   </div>
-  <div class="foot"><p>PlacementRadar · README § 6 Hosting and the Gemini key</p><p>12 / 15</p></div>
+  <div class="foot"><p>PlacementRadar · README § 6 Hosting and the Gemini key</p><p>13 / 18</p></div>
+</section>
+
+<!-- NEW · tried, measured, changed -->
+<section class="slide" id="s-iter" aria-label="Tried, measured, changed">
+  <div class="in">
+    <div class="head"><p class="eyebrow">Making of · we measured, then changed course</p><h2>Every number here forced a decision</h2></div>
+    <div class="grid g3" style="flex:none;">
+      <div class="card"><p class="tag">Packaging finder</p><div class="ba"><span class="was">0/6</span><span class="arr">→</span><span class="now">6/6</span></div><p class="small">COCO's YOLO26 knows bottles and cups, not snack bags. We exported the open-vocabulary <b>YOLOE</b> with our own packaging words.</p></div>
+      <div class="card"><p class="tag">Own brand model v1 → v2</p><div class="ba"><span class="was">68 %</span><span class="arr">→</span><span class="now">96.8 %</span></div><p class="small">131 → 1,020 brands, webcam augmentation and hard negatives: answers right on products it never saw, 6× as many named.</p></div>
+      <div class="card"><p class="tag">Products lying around (desk tour)</p><div class="ba"><span class="was">13 %</span><span class="arr">→</span><span class="now">62 %</span></div><p class="small">Gemini missed what lies in the background. A second “re-check” pass plus a filter against copied spans – recall measured on hand-marked frames.</p></div>
+      <div class="card"><p class="tag">Brand list for text recognition</p><div class="ba"><span class="was">868</span><span class="arr">→</span><span class="now blue">3,599</span></div><p class="small">Built from 60,000 of the most scanned products in Germany; 36–37 → 39 of 49 real photos read by OCR alone.</p></div>
+      <div class="card"><p class="drop">Dropped</p><h3>Gemini's own confidence</h3><p class="small">It said 1.0 for every appearance, so it cannot tell good from bad boxes – the app grades boxes by distance to a reported position instead.</p></div>
+      <div class="card"><p class="drop">Dropped</p><h3>Bigger models in the browser</h3><p class="small">Marqo-Ecommerce (best in our test, ~350 MB) and the MobileCLIP text encoder (127 MB) were too heavy for a web page – replaced by our head and 93 precomputed types.</p></div>
+    </div>
+  </div>
+  <div class="foot"><p>PlacementRadar · EVALUATION.md – including what failed</p><p>14 / 18</p></div>
 </section>
 
 <!-- 13 · how good -->
@@ -420,7 +495,7 @@ td b { color: var(--ink); }
       <div class="card" style="padding:1.2cqw 1.5cqw;"><p class="small"><b>Every test is documented</b> – including what failed and what changed because of it (EVALUATION.md, 28 test series).</p></div>
     </div>
   </div>
-  <div class="foot"><p>PlacementRadar · EVALUATION.md, test M</p><p>13 / 15</p></div>
+  <div class="foot"><p>PlacementRadar · EVALUATION.md, test M</p><p>15 / 18</p></div>
 </section>
 
 <!-- 14 · limits -->
@@ -450,7 +525,33 @@ td b { color: var(--ink); }
       </ul></div>
     </div>
   </div>
-  <div class="foot"><p>PlacementRadar · README § 9, THIRD_PARTY_NOTICES.md</p><p>14 / 15</p></div>
+  <div class="foot"><p>PlacementRadar · README § 9, THIRD_PARTY_NOTICES.md</p><p>16 / 18</p></div>
+</section>
+
+<!-- NEW · making of timeline -->
+<section class="slide dark" id="s-making" aria-label="Making of">
+  <div class="in">
+    <div class="head"><p class="eyebrow">Making of</p><h2>8 days, 58 commits, three engines</h2></div>
+    <div class="tl">
+      <div class="day"><p class="d">19 Nov</p><p class="c">kick-off</p><ul><li>Video dashboard</li><li>Cloudflare Worker</li><li>Live scanner v1</li></ul></div>
+      <div class="day"><p class="d">20 Nov</p><p class="c">16 commits</p><ul><li>Online with KV cache</li><li>YOLOE + OCR on device</li><li>Own model v1</li></ul></div>
+      <div class="day"><p class="d">21 Nov</p><p class="c">11 commits</p><ul><li>Apple-style redesign</li><li>Tracking boxes</li><li>Own model v2: 1,020 brands</li></ul></div>
+      <div class="day"><p class="d">22 Nov</p><p class="c">re-check</p><ul><li>Products lying in the picture</li><li>Filter for copied spans</li></ul></div>
+      <div class="day"><p class="d">23 Nov</p><p class="c">measure</p><ul><li>Ground truth: 957 frames</li><li>Verify on screen</li></ul></div>
+      <div class="day"><p class="d">24 Nov</p><p class="c">13 commits</p><ul><li>Brand agent</li><li>Audience comments</li><li>Verify tiles</li></ul></div>
+      <div class="day"><p class="d">25 Nov</p><p class="c">agentic</p><ul><li>Own model v3: 1,137 brands</li><li>Channel fit, Find creators</li><li>AI estimate</li></ul></div>
+      <div class="day"><p class="d">26 Nov</p><p class="c">hand-in</p><ul><li>Licences, public repo</li><li>All tests published</li><li>These slides</li></ul></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><p class="v">15,300</p><p>lines of our own code (JS, Python, HTML, CSS)</p></div>
+      <div class="stat"><p class="v">76,000</p><p>openly licensed photos to train our model</p></div>
+      <div class="stat"><p class="v">28</p><p>test series, documented with failures</p></div>
+      <div class="stat"><p class="v">957</p><p>video frames marked and checked by hand</p></div>
+      <div class="stat"><p class="v">11</p><p>analysed example videos, free to open</p></div>
+      <div class="stat"><p class="v">€0</p><p>running cost – free tiers only</p></div>
+    </div>
+  </div>
+  <div class="foot"><p>PlacementRadar · git history: github.com/moritzb1/placementradar</p><p>17 / 18</p></div>
 </section>
 
 <!-- 15 · try it -->
@@ -465,7 +566,7 @@ td b { color: var(--ink); }
     </div>
     <div class="qr"><img src="img/qr.svg" alt="QR code linking to placementradar.itsmoribind.workers.dev"></div>
   </div>
-  <div class="foot"><p>Moritz Binder · MMI5190E · Pforzheim University · 2026</p><p>15 / 15</p></div>
+  <div class="foot"><p>Moritz Binder · MMI5190E · Pforzheim University · 2026</p><p>18 / 18</p></div>
 </section>
 
 </main>

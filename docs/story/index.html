@@ -472,6 +472,7 @@ td b { color: var(--ink); }
 <section class="slide" id="s12" aria-label="Free by design">
   <div class="in">
     <div class="head"><p class="eyebrow">Engineering under a free quota</p><h2>Built to run on free tiers – and keep running</h2></div>
+    <p class="small" style="max-width:none; margin-top:-.4cqw;">Why its own repository on Cloudflare: GitHub Pages only serves static files, but the app needs a server part – a Cloudflare Worker that keeps the Gemini and YouTube keys secret, caches analyses, enforces daily limits and runs the brand agent – so the code lives in its own public repository (<b>github.com/moritzb1/placementradar</b>) that deploys to Cloudflare on every push.</p>
     <div class="grid g4" style="flex:none;">
       <div class="card"><p class="big sm">~20</p><p class="small">Gemini requests per day and model family on the free tier – every request counts</p></div>
       <div class="card"><p class="big sm">0</p><p class="small">requests for the 11 examples and the live scanner – they work when the quota is gone</p></div>
